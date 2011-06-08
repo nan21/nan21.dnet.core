@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: DNet Core - presenter
+Bundle-SymbolicName: nan21.dnet.core.presenter
+Bundle-Vendor: Nan21 
+Bundle-Version: 1.0.0.M1
+Import-Template: 
+Import-Package: 
+ org.springframework.context.config;version="[3.0,3.1)"
+

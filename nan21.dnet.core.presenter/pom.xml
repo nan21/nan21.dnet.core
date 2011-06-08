@@ -1,0 +1,53 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>net.nan21.dnet</groupId>
+		<artifactId>nan21.dnet.core.parent</artifactId>
+		<version>1.0.0.M1</version>
+		<relativePath>../nan21.dnet.core.parent</relativePath>
+	</parent>
+	<groupId>net.nan21.dnet</groupId>
+	<artifactId>nan21.dnet.core.presenter</artifactId>
+	<name>DNet Core - presenter</name>	
+	<description>DNet Core - presenter. Contains base classes to manage view-models.</description>
+	<packaging>jar</packaging>	
+	
+	<!-- ===================== Dependencies ===================== -->
+
+	<dependencies>
+		<!-- DNet dependencies -->
+		<dependency>
+			<groupId>net.nan21.dnet</groupId>
+			<artifactId>nan21.dnet.core.api</artifactId>
+			<version>1.0.0.M1</version>
+			<type>jar</type>
+			<scope>provided</scope>
+		</dependency>	
+		 
+		<!-- External libraries -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>org.springframework.beans</artifactId>
+			<version>3.0.5.RELEASE</version>
+			<type>jar</type>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>org.springframework.context</artifactId>
+			<version>3.0.5.RELEASE</version>
+			<type>jar</type>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.persistence</groupId>
+			<artifactId>javax.persistence</artifactId>
+			<version>2.0.3</version>
+			<type>jar</type>
+			<scope>provided</scope>
+		</dependency>
+		 
+	</dependencies>
+</project>	 
