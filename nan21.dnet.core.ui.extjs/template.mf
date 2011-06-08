@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: DNet Core - ui extjs
+Bundle-SymbolicName: nan21.dnet.core.ui.extjs
+Bundle-Vendor: Nan21 
+Bundle-Version: 1.0.0.M1
+

@@ -1,0 +1,158 @@
+Ext.ns("dnet.base");
+dnet.base.AbstractCombo = Ext.extend(Ext.form.ComboBox, {
+
+	  _dataProviderFields_  :null
+	 ,_dataProviderName_ : null
+	 ,retFieldMapping : null
+
+    // ,triggerClass: 'x-form-search-trigger'
+     ,initComponent : function(){
+        dnet.base.AbstractCombo.superclass.initComponent.call(this);
+     }
+
+	 ,_createStore_: function() {
+
+		this.store = new Ext.data.Store({
+	        remoteSort:true
+	       ,proxy: new Ext.data.HttpProxy({
+			        api: getProtocolAPI(this._dataProviderName_,"json")
+			    })
+	       ,reader: new Ext.data.JsonReader(
+	   		 {totalProperty: 'totalCount',idProperty: 'id',root: 'data',messageProperty: 'message'}
+				,Ext.data.Record.create(this._dataProviderFields_))
+	      //, listeners: { "exception":{ fn:  this.proxyException, scope:this }}
+		})
+
+	 }
+
+	 ,_mapReturnFields_: function(record) {
+        if (this.retFieldMapping != null) {
+                var dcv = this._getDcView_();
+                if (dcv._dcViewType_ == "edit-form") {
+                   var rec = dcv._controller_.getRecord();
+                   for(var i=0, len=this.retFieldMapping.length; i<len; i++ ) {
+				   if (record && record.data) {
+				   		rec.set( this.retFieldMapping[i]["dsField"] ,record.data[ this.retFieldMapping[i]["lovField"] ]   );
+				   } else {
+				   	 rec.set( this.retFieldMapping[i]["dsField"] ,null);
+				   }
+			   }
+			}
+		}
+	 }
+	 ,onSelect : function(record, index){
+        if(this.fireEvent('beforeselect', this, record, index) !== false){
+            this.setValue(record.data[this.valueField || this.displayField]);
+			this._mapReturnFields_(record);
+            this.collapse();
+            this.fireEvent('select', this, record, index);
+        }
+     }
+
+
+    ,doQuery : function(q, forceAll){
+        q = Ext.isEmpty(q) ? '' : q;
+        var qe = {
+            query: q,
+            forceAll: forceAll,
+            combo: this,
+            cancel:false
+        };
+        if(this.fireEvent('beforequery', qe)===false || qe.cancel){
+            return false;
+        }
+        q = qe.query;
+        forceAll = qe.forceAll;
+        if(forceAll === true || (q.length >= this.minChars)){
+            if(this.lastQuery !== q){
+                this.lastQuery = q;
+                if(this.mode == 'local'){
+                    this.selectedIndex = -1;
+                    if(forceAll){
+                        this.store.clearFilter();
+                    }else{
+                        this.store.filter(this.displayField, q);
+                    }
+                    this.onLoad();
+                }else{
+                    //this.store.baseParams[this.queryParam] = q;
+                    var bp = {}
+                    bp[this.displayField] = q+"*";
+                    this.store.baseParams["data"] =  Ext.encode(bp)
+
+                    this.store.load({
+                        params: this.getParams(q)
+                    });
+                    this.expand();
+                }
+            }else{
+                this.selectedIndex = -1;
+                this.onLoad();
+            }
+        }
+    }
+    ,getParams : function(q){
+        var p = {};
+        //p[this.queryParam] = q;
+        if(this.pageSize){
+            p.start = 0;
+            p.limit = this.pageSize;
+        }
+        return p;
+    }
+    
+    ,assertValue  : function(){
+        var val = this.getRawValue(),
+            rec = this.findRecord(this.displayField, val);
+
+        if(!rec && this.forceSelection){
+            if(val.length > 0 && val != this.emptyText){
+                this.el.dom.value = Ext.value(this.lastSelectionText, '');
+                 this.applyEmptyText();
+            }else{
+                this.clearValue();
+            }   
+            this._mapReturnFields_(null);
+        }else{
+            if(rec){
+                // onSelect may have already set the value and by doing so
+                // set the display field properly.  Let's not wipe out the
+                // valueField here by just sending the displayField.
+                if (val == rec.get(this.displayField) && this.value == rec.get(this.valueField)){
+                    return;
+                }
+                val = rec.get(this.valueField || this.displayField);
+            }
+            this.setValue(val);
+            this._mapReturnFields_(rec);
+        }
+    }
+    // private
+   , onViewClick : function(doFocus){
+        var index = this.view.getSelectedIndexes()[0],
+            s = this.store,
+            r = s.getAt(index);
+        if(r && r.get(this.displayField).indexOf(this.getRawValue()) >=0 ){  // changed
+            this.onSelect(r, index);
+        }else {
+            this.collapse();
+        }
+        if(doFocus !== false){
+            this.el.focus();
+        }
+    }
+    ,getValue : function(){
+		var v = null;
+        if(this.valueField){
+            v= Ext.isDefined(this.value) ? this.value : '';
+        }else{
+            v= Ext.form.ComboBox.superclass.getValue.call(this);
+        }
+        if (this.initialConfig["caseRestriction"] == "uppercase")v=v.toUpperCase();
+        return v;
+    }
+    
+
+
+});
+Ext.reg('xcombo', dnet.base.AbstractCombo );
