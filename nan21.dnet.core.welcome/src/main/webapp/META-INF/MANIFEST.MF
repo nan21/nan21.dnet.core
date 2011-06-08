@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Export-Package: net.nan21.dnet.core.welcome;version="1.0.0.M1";uses:="
+ javax.servlet.http,org.springframework.web.servlet,org.springframewor
+ k.web.servlet.mvc"
+Bundle-Vendor: Nan21 
+Bundle-Version: 1.0.0.M1
+Tool: Bundlor 1.0.0.RELEASE
+Bundle-Name: DNet Core - welcome
+Bundle-ManifestVersion: 2
+Bundle-SymbolicName: nan21.dnet.core.welcome
+Import-Package: javax.servlet.http,org.springframework.beans.factory.c
+ onfig,org.springframework.web.servlet,org.springframework.web.servlet
+ .handler,org.springframework.web.servlet.mvc,org.springframework.web.
+ servlet.view
+
