@@ -1,0 +1,74 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>net.nan21.dnet</groupId>
+		<artifactId>nan21.dnet.core.parent</artifactId>
+		<version>1.0.0.M1</version>
+		<relativePath>../nan21.dnet.core.parent</relativePath>
+	</parent>
+	<groupId>net.nan21.dnet</groupId>
+	<artifactId>nan21.dnet.core.security</artifactId>
+	<name>DNet Core - security</name>	
+	<description>DNet Core - security. Implements the security checks.</description>
+	<packaging>jar</packaging>	
+	
+	<!-- ===================== Dependencies ===================== -->
+
+	<dependencies>
+		<!-- DNet dependencies -->
+		<dependency>
+			<groupId>net.nan21.dnet</groupId>
+			<artifactId>nan21.dnet.core.db</artifactId>
+			<version>1.0.0.M1</version>
+			<type>jar</type>
+			<scope>provided</scope>
+		</dependency>	
+		<dependency>
+			<groupId>net.nan21.dnet</groupId>
+			<artifactId>nan21.dnet.core.domain</artifactId>
+			<version>1.0.0.M1</version>
+			<type>jar</type>
+			<scope>provided</scope>
+		</dependency>	
+		 
+		<!-- External libraries -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>com.springsource.javax.servlet</artifactId>
+			<version>2.5.0</version>
+			<type>jar</type>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>org.springframework.spring-library</artifactId>
+			<version>3.0.5.RELEASE</version>
+			<type>libd</type>
+			<scope>provided</scope>
+		</dependency>
+		 
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>org.springframework.security.core</artifactId>
+			<version>3.0.3.RELEASE</version>
+			<type>jar</type>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>org.springframework.security.config</artifactId>
+			<version>3.0.3.RELEASE</version>
+			<type>jar</type>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>org.springframework.security.web</artifactId>
+			<version>3.0.3.RELEASE</version>
+			<type>jar</type>
+			<scope>provided</scope>
+		</dependency>
+	</dependencies>
+</project>	 
