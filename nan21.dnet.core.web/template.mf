@@ -1,0 +1,18 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: DNet Core - web
+Bundle-SymbolicName: nan21.dnet.core.web
+Bundle-Vendor: Nan21 
+Bundle-Version: 1.0.0.M1
+Import-Template: ,
+ org.eclipse.persistence.jpa.*;version="[2.0,2.3)"
+Import-Package: 
+ org.springframework.web.servlet.handler;version="[3.0,3.1)",
+ org.springframework.web.context;version="[3.0,3.1)",
+ org.springframework.context.config;version="[3.0,3.1)",
+ org.springframework.orm.jpa;version="[3.0,3.1)",
+ org.eclipse.virgo.web.dm;version="[2.0,4.0]",
+ org.codehaus.jackson.map;version="[1.4,2.0)",
+ javax.persistence;version="[2.0,2.1)",
+ javax.persistence.criteria;version="[2.0,2.1)"
+
