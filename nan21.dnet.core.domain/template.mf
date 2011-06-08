@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: DNet Core - domain
+Bundle-SymbolicName: nan21.dnet.core.domain
+Bundle-Vendor: Nan21 
+Bundle-Version: 1.0.0.M1
+Import-Template: ,
+ javax.persistence.*;version="[2.0,2.1)",
+ org.eclipse.persistence.jpa.*;version="[2.0,2.3)"
+Import-Package: 
+ org.springframework.context.config;version="[3.0,3.1)",
+ org.springframework.orm.jpa;version="[3.0,3.1)"
+Export-Template:  net.nan21.dnet.core.domain.*
+
