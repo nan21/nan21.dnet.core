@@ -1,0 +1,46 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>net.nan21.dnet</groupId>
+		<artifactId>nan21.dnet.core.parent</artifactId>
+		<version>1.0.0.M1</version>
+		<relativePath>../nan21.dnet.core.parent</relativePath>
+	</parent>
+	<groupId>net.nan21.dnet</groupId>
+	<artifactId>nan21.dnet.core.db</artifactId>
+	<name>DNet Core - db</name>	
+	<description>DNet Core - db</description>
+	<packaging>jar</packaging>	
+	
+	<!-- ===================== Dependencies ===================== -->
+
+	<dependencies>
+		<!-- DNet dependencies -->
+		 
+		<!-- External libraries -->
+		<dependency>
+			<groupId>org.springframework.osgi</groupId>
+			<artifactId>org.springframework.osgi.core</artifactId>
+			<version>1.2.1</version>
+			<type>jar</type>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>com.springsource.org.apache.commons.dbcp</artifactId>
+			<version>1.2.2.osgi</version>
+			<type>jar</type>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.mysql.jdbc</groupId>
+			<artifactId>com.springsource.com.mysql.jdbc</artifactId>
+			<version>5.1.6</version>
+			<type>jar</type>
+			<scope>provided</scope>
+		</dependency>
+		 
+	</dependencies>
+</project>	 

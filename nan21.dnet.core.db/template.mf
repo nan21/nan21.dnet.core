@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: DNet Core - db
+Bundle-SymbolicName: nan21.dnet.core.db
+Bundle-Vendor: Nan21 
+Bundle-Version: 1.0.0.M1
+Import-Template: 
+ org.apache.commons.dbcp.*;version="[1.0,2.0)"
+Import-Package: 
+ com.mysql.jdbc;version="[5.0,6.0)",
+ javax.sql;version="0"
+

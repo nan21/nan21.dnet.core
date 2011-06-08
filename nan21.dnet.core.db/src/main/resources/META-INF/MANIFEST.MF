@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-Vendor: Nan21 
+Bundle-Version: 0.7.0
+Tool: Bundlor 1.0.0.RELEASE
+Bundle-Name: DNet Core - db
+Bundle-ManifestVersion: 2
+Import-Package: com.mysql.jdbc;version="[5.0,6.0)",javax.sql;version="
+ 0",org.apache.commons.dbcp;version="[1.0,2.0)"
+Bundle-SymbolicName: nan21.dnet.core.db
+
