@@ -1,0 +1,16 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>net.nan21.dnet</groupId>
+		<artifactId>nan21.dnet.core.parent</artifactId>
+		<version>1.0.0.M1</version>
+		<relativePath>../nan21.dnet.core.parent</relativePath>
+	</parent>
+	<groupId>net.nan21.dnet</groupId>
+	<artifactId>nan21.dnet.core.config</artifactId>
+	<name>DNet Core - config</name>	
+	<description>DNet Core - configuration files</description>
+	<packaging>pom</packaging>	
+</project>	 
