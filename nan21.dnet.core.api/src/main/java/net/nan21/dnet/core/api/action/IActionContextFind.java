@@ -1,6 +1,6 @@
 package net.nan21.dnet.core.api.action;
 
-public interface IQueryContext {
+public interface IActionContextFind {
 
 	public int getResultStart();
     public void setResultStart(int resultStart);
