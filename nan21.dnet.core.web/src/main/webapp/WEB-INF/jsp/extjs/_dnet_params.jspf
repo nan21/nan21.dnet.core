@@ -1,0 +1,18 @@
+<script>
+		Dnet.name = '${productName}';
+		Dnet.version = '${productVersion}';
+		
+		//Dnet.url = "${deploymentUrl}"; /* deprecated */
+		Dnet.deploymentUrl = "${deploymentUrl}";
+		
+		//Dnet.hostUrl = "${deploymentDomainUrl}"; /* deprecated */
+		Dnet.deploymentDomainUrl = "${deploymentDomainUrl}";
+		
+		Dnet.dsUrl = "${deploymentUrl}/tx/java/ds";
+		Dnet.rpcUrl = "${deploymentUrl}/tx/java/rpc";
+		Dnet.asgnUrl = "${deploymentUrl}/tx/java/asgn";
+		Dnet.uiUrl = "${uiUrl}";  
+		Dnet.sessionUrl = "${deploymentUrl}/session/java/security/Session.json";
+		Dnet.staticResourceUrl = "${urlUiExtjs}";
+		Dnet.staticResourceUrlCore = "${urlUiExtjsCore}";
+</script>		

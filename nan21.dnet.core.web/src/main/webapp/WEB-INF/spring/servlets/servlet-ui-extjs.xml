@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:osgi-compendium="http://www.springframework.org/schema/osgi-compendium"
+	xsi:schemaLocation="
+			http://www.springframework.org/schema/beans
+				http://www.springframework.org/schema/beans/spring-beans.xsd
+			http://www.springframework.org/schema/context 
+				http://www.springframework.org/schema/context/spring-context.xsd
+			http://www.springframework.org/schema/osgi-compendium 
+    			http://www.springframework.org/schema/osgi-compendium/spring-osgi-compendium.xsd">
+    			
+    <bean name="uiExtjsMainController" class="net.nan21.dnet.core.web.controller.ui.UiExtjsMainController">
+    	<property name="productName" value="${product.name}"/>
+    	<property name="productVersion" value="${product.version}"/>
+    	<property name="jspName" value="extjs/indexMain"/> 
+    	<property name="uiExtjsSettings" ref="application_uiExtjsSettings"/>     	   
+    </bean>
+    
+    <bean name="uiExtjsFrameController" class="net.nan21.dnet.core.web.controller.ui.UiExtjsFrameController">    	
+    	<property name="jspName" value="extjs/indexFrame"/>  
+    	<property name="uiExtjsSettings" ref="application_uiExtjsSettings"/>   
+    </bean>
+   
+    <!-- When change the mapping keys below propagate the new values to the WEB-INF/jsp/extjs/index* pages also -->
+    <bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+        <property name="mappings"> 
+            <props>
+                <prop key="/">uiExtjsMainController</prop>
+                <prop key="/frame/*">uiExtjsFrameController</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/jsp/" />
+        <property name="suffix" value=".jsp" />
+    </bean>
+
+    <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+        <property name="exceptionMappings">
+            <props>
+                <prop key="java.lang.Exception">error</prop>
+            </props>
+        </property>
+    </bean>
+
+</beans>
