@@ -1,0 +1,21 @@
+Manifest-Version: 1.0
+Export-Package: net.nan21.dnet.core.presenter.action;version="1.0.0.M1
+ ";uses:="net.nan21.dnet.core.api.action",net.nan21.dnet.core.presente
+ r.converter;version="1.0.0.M1";uses:="javax.persistence,net.nan21.dne
+ t.core.api.converter,net.nan21.dnet.core.api.descriptor",net.nan21.dn
+ et.core.presenter.marshaller;version="1.0.0.M1";uses:="net.nan21.dnet
+ .core.api.action,net.nan21.dnet.core.api.marshall",net.nan21.dnet.cor
+ e.presenter.model;version="1.0.0.M1";uses:="net.nan21.dnet.core.api.m
+ odel"
+Bundle-Vendor: Nan21 
+Bundle-Version: 1.0.0.M1
+Tool: Bundlor 1.0.0.RELEASE
+Bundle-Name: DNet Core - presenter
+Bundle-ManifestVersion: 2
+Bundle-SymbolicName: nan21.dnet.core.presenter
+Import-Package: javax.persistence,net.nan21.dnet.core.api.action,net.n
+ an21.dnet.core.api.converter,net.nan21.dnet.core.api.descriptor,net.n
+ an21.dnet.core.api.marshall,net.nan21.dnet.core.api.model,org.codehau
+ s.jackson.map,org.codehaus.jackson.map.type,org.codehaus.jackson.type
+ ,org.springframework.beans,org.springframework.context.config
+
