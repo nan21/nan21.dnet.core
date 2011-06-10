@@ -29,11 +29,13 @@
         	document.getElementById('n21-loading-msg').innerHTML = 'Loading...';
         }
 	</script> 
-        
+         
 	<%@ include file="_includes_dev.jspf" %>
 
 	<%@ include file="_dnet_params.jspf" %>
 	
+ 	${extensions}
+ 	
 	<script type="text/javascript">
   		if(document && document.getElementById('n21-loading-msg')) {
   	  		document.getElementById('n21-loading-msg').innerHTML = Dnet.translate("msg", "initialize")+' ${item}...';

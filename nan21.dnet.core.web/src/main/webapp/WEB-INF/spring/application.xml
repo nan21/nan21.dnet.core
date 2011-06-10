@@ -7,13 +7,17 @@
 			http://www.springframework.org/schema/beans	http://www.springframework.org/schema/beans/spring-beans.xsd
 			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
 			http://www.springframework.org/schema/osgi-compendium http://www.springframework.org/schema/osgi-compendium/spring-osgi-compendium.xsd">
-				 
+	 
 	<context:property-placeholder properties-ref="net.nan21.dnet.properties"/>	  
-	<osgi-compendium:cm-properties id="net.nan21.dnet.properties"  persistent-id="net.nan21.dnet" >
-	</osgi-compendium:cm-properties>
+	<osgi-compendium:cm-properties id="net.nan21.dnet.properties"  persistent-id="net.nan21.dnet" />
+  
 	
+	<bean id="productInfo" class="net.nan21.dnet.core.web.settings.ProductInfo">
+		<property name="name" value="DNet eBusiness Suite"/>
+		<property name="version" value="1.0.0.M1"/>
+	</bean>
 	<context:annotation-config />
 	
 	<import resource="application/beans.xml" />
-	
+
 </beans>

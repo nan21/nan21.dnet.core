@@ -1,6 +1,6 @@
 Ext.ns("dnet.base");
 dnet.base.AbstractDc = function(config) {
-
+	this.ds = null;
 	this.dsName = "";
 	this.dcContext = null;
 	this.multiEdit = false;
@@ -60,7 +60,20 @@ dnet.base.AbstractDc = function(config) {
 	             ,'initComplete', 'afterSelectedRecordsChanged'
                  ,'inContextOfNewRecord'    ,'inContextOfEditRecord'
               ,'propertyChange' ,'parameterValueChanged'    );
-
+    this.recordFields = this.ds.recordFields;
+    this.paramFields = this.ds.paramFields;
+    this.store = new Ext.data.Store({			        
+        remoteSort:true,pruneModifiedRecords:true
+	       ,proxy: new Ext.data.HttpProxy({
+			        api: Dnet.dsAPI(this.ds.dsName,"json")
+			    })
+			,reader: new Ext.data.JsonReader(
+			   		 {totalProperty: 'totalCount',idProperty: 'id',root: 'data',messageProperty: 'message'}
+					,Ext.data.Record.create(this.recordFields))
+	       , writer: new Ext.data.JsonWriter({ encode: true, writeAllFields: true })  
+	       , autoSave: false 
+	       , listeners: { "exception":{ fn:  this.proxyException, scope:this }}
+	    })
       dnet.base.AbstractDc.superclass.constructor.call(this, config);
       this._setup_();
 };

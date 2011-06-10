@@ -2,16 +2,15 @@ package net.nan21.dnet.core.presenter.service;
 
 import java.lang.reflect.Method;
 import java.util.List;
-
-import net.nan21.dnet.core.api.action.IActionContextFind;
-import net.nan21.dnet.core.api.action.IActionResultFind;
-import net.nan21.dnet.core.api.action.IActionResultSave;
+ 
 import net.nan21.dnet.core.api.action.IExportWriter;
+import net.nan21.dnet.core.api.action.IQueryBuilder;
 import net.nan21.dnet.core.api.converter.IDsConverter;
 import net.nan21.dnet.core.api.descriptor.IDsDescriptor;
 import net.nan21.dnet.core.api.model.IDsModel;
 import net.nan21.dnet.core.api.model.IDsParam;
 import net.nan21.dnet.core.api.service.IEntityService;
+import net.nan21.dnet.core.presenter.action.QueryBuilder;
 import net.nan21.dnet.core.presenter.exception.ActionNotSupportedException;
 
 public class AbstractDsService<M extends IDsModel<?>, P extends IDsParam, E> {
@@ -24,41 +23,29 @@ public class AbstractDsService<M extends IDsModel<?>, P extends IDsParam, E> {
 	protected Class<M> modelClass;
 	protected Class<P> paramClass;
  
-	protected Class<P> getParamClass() {
-		return this.paramClass;
-	}
+	protected IDsDescriptor descriptor;
+	
 
-	protected Class<M> getModelClass() {
-		return this.modelClass;
-	}
-	
-	protected IEntityService<E> getEntityService() {
-		return null;
-	}
-	protected IDsConverter<M, E> getConverter() {
-		return null;
-	} 
-	
 	// ======================== Find ===========================
 	
 	public Long count(M filter, P params,
-			IActionContextFind ctx) throws Exception {
+			IQueryBuilder builder) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 	
 	protected void preFind(M filter, P params,
-			IActionContextFind ctx) throws Exception{
+			IQueryBuilder builder) throws Exception{
 	}
 	
 	public List<M> find(M filter, P params,
-			IActionContextFind ctx) throws Exception {
+			IQueryBuilder builder) throws Exception {
 		 
 		return null;
 	}
 	
 	protected void postFind(M filter, P params,
-			IActionContextFind ctx) throws Exception{
+			IQueryBuilder builder) throws Exception{
 	}
 	
 	 
@@ -281,7 +268,7 @@ public class AbstractDsService<M extends IDsModel<?>, P extends IDsParam, E> {
 	// ======================== Export ===========================
 	 
 	public void export(M filter, P params,
-			IActionContextFind ctx, IExportWriter writer) throws Exception {
+			IQueryBuilder builder, IExportWriter writer) throws Exception {
 		 
 		 
 	}
@@ -299,6 +286,40 @@ public class AbstractDsService<M extends IDsModel<?>, P extends IDsParam, E> {
 				List.class);
 		m.invoke(this, list);
 	}
+	
+
+	// ======================== Getters-setters ===========================
+	
+	protected Class<P> getParamClass() {
+		return this.paramClass;
+	}
+
+	protected Class<M> getModelClass() {
+		return this.modelClass;
+	}
+	
+	protected IEntityService<E> getEntityService() {
+		return null;
+	}
+	protected IDsConverter<M, E> getConverter() {
+		return null;
+	} 
+	 
+	public void setDescriptor(IDsDescriptor descriptor) {
+		this.descriptor = descriptor;
+	}
+
+	public IQueryBuilder createQueryBuilder() throws Exception {
+		return new QueryBuilder();	 
+	}
+	
+	// ======================== Helpers ===========================
+	
+	
+	public IDsDescriptor getDescriptor() {
+		return descriptor;
+	}
+
 	
 	
 }

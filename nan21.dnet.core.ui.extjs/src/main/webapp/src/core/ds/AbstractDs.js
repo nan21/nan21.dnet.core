@@ -19,10 +19,10 @@ dnet.base.AbstractDs = function(config) {
 	Ext.apply(this, config);
 
 	dnet.base.AbstractDs.superclass.constructor.call(this, config);
-	this._setup_();
+	//this._setup_();
 };
 
-Ext.extend(dnet.base.AbstractDc, Ext.util.Observable, {
+Ext.extend(dnet.base.AbstractDs, Ext.util.Observable, {
 	
 	
 });

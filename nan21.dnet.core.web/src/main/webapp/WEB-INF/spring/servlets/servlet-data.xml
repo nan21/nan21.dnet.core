@@ -3,15 +3,28 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:p="http://www.springframework.org/schema/p" 
     xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:osgi="http://www.springframework.org/schema/osgi"
     xsi:schemaLocation="
         http://www.springframework.org/schema/beans 
         	http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/context 
-        	http://www.springframework.org/schema/context/spring-context.xsd">
-    
-    
-    <!-- enable classpath scanning -->
-	<context:component-scan base-package="net.nan21.dnet.core.web.controller.data" />
+        	http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/osgi 
+		http://www.springframework.org/schema/osgi/spring-osgi.xsd">
+ 
+    <bean name="baseDsController" class="net.nan21.dnet.core.web.controller.data.BaseDsController">    	    
+    </bean>
+  
+  	<osgi:reference id="osgiBaseDsService" cardinality="1..1"
+  		interface="net.nan21.dnet.core.api.service.IDsService" />
+  	
+  	<!-- <osgi:list id="osgiDsService" cardinality="1..N" interface="net.nan21.dnet.core.api.service.IDsService">
+  	</osgi:list> -->
+  	
+  	
+    <!-- enable classpath scanning 
+	<context:component-scan base-package="net.nan21.dnet.core.web.controller.data"  />-->
+	
 	  
 	<!-- enable anntotation-driven controllers 
 	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter" />

@@ -52,8 +52,7 @@ Dnet = {
 		if (isSpecial) {
            return this.uiUrl+"/spframe/"+uiModule+"/"+uiName;
 		} else {
-           //return this.uiUrl+"/frame/"+uiModule+"/"+uiName;
-			return this.uiUrl+"/frame/"+uiName;
+           return this.uiUrl+"/frame/"+uiModule+"/"+uiName;			 
 		}
 	}
 
@@ -142,19 +141,18 @@ Dnet = {
 	   
 	,import: function(list) {
 		for(var i=0; i<list.length;i++) {
-			var rd = this.describeResource(list[i]);
-			document.write('<'+'scr'+'ipt type="text/javascript" src="'+Dnet.staticResourceUrl+'/'+rd.bundle+'/src/'+rd.type+'/'+rd.simpleName+'.js"></script>');
+			if (!Ext.isEmpty(list[i])) {
+				var rd = this.describeResource(list[i]);
+				document.write('<'+'scr'+'ipt type="text/javascript" src="'+Dnet.staticResourceUrl+'/'+rd.bundle+'/src/'+rd.type+'/'+rd.name+'.js"></script>');
+			}
 		}
 	}
-	,describeResource: function(resourceCanonicalName) {
-		var rd = {};
-		var t = resourceCanonicalName.split('.');
-		rd['simpleName'] = t[t.length-1];
-		rd['canonicalName'] = resourceCanonicalName;
-		// TODO: create a generic bundle-name lookup from item-name
-		// Sync with UiExtjsFrameController.java
-		rd['bundle'] = t[1]+"."+t[2]+"."+t[3]+"."+t[4]+"."+t[5]+".ui.extjs";
-		rd['type'] = t[t.length-2];
+	,describeResource: function(artifact) {
+		var rd = {};		 
+		var t = artifact.split('/');		 
+		rd['bundle'] = t[0];
+		rd['type'] = t[1];
+		rd['name'] = t[2];
 		return rd;	
 	}
 };

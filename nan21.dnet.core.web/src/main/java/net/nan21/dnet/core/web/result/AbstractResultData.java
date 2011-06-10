@@ -5,7 +5,7 @@
  * http://dnet.nan21.net
  * Use is subject to license terms.
  */
-package net.nan21.dnet.core.presenter.action;
+package net.nan21.dnet.core.web.result;
 
 /**
  * Abstract superclass for all result-data types.

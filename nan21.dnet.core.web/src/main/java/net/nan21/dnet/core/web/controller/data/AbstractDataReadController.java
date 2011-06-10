@@ -2,13 +2,15 @@ package net.nan21.dnet.core.web.controller.data;
 
 import java.util.List;
 
-import net.nan21.dnet.core.api.action.IActionContextFind;
 import net.nan21.dnet.core.api.action.IActionResultFind;
+import net.nan21.dnet.core.api.action.IQueryBuilder;
 import net.nan21.dnet.core.api.marshall.IDsMarshaller;
 import net.nan21.dnet.core.api.model.IDsModel;
 import net.nan21.dnet.core.api.model.IDsParam;
 import net.nan21.dnet.core.api.service.IDsService;
 import net.nan21.dnet.core.presenter.marshaller.JsonMarshaller;
+import net.nan21.dnet.core.presenter.service.BaseDsService;
+import net.nan21.dnet.core.web.result.ActionResultFind;
 
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +25,7 @@ public class AbstractDataReadController<M extends IDsModel<?>, P extends IDsPara
 	protected Class<P> paramClass;
  
 	private IDsMarshaller<M, P> marshaller;
+	protected IDsService<M, P> service;
  
 	/**
 	 * Default handler for find action.
@@ -52,30 +55,21 @@ public class AbstractDataReadController<M extends IDsModel<?>, P extends IDsPara
 		
 		this.resourceName = resourceName;		
 		IDsService<M, P> service = getDsService();
-		IActionContextFind ctx = service.createContextFind(resultStart, resultSize, orderByCol, orderBySense);
+		IQueryBuilder builder = service.createQueryBuilder()
+			.addFetchLimit(resultStart, resultSize)
+			.addSortInfo(orderByCol, orderBySense);
+		 
 		 
 		M filter = this.getMarshaller().readDataFromString(dataString);
 		P params = this.getMarshaller().readParamsFromString(paramString);
 		
-		List<M> list = service.find(filter, params, ctx);
-		long totalCount = service.count(filter, params, ctx);
+		List<M> list = service.find(filter, params, builder);
+		long totalCount = service.count(filter, params, builder);
 		
-		IActionResultFind result = service.packResultFind(list, params, totalCount);		 
+		IActionResultFind result = this.packResult(list, params, totalCount);		 
 		return this.getMarshaller().writeResultToString(result);
 		
 	}
-
-	/*
-	 * protected IActionResultFind packActionResultFind(List<M> data, P params,
-	 * long totalCount) { IActionResultFind result = new ActionResultFind();
-	 * result.setData(data); result.setParams(params);
-	 * result.setTotalCount(totalCount); return result; }
-	 * 
-	 * protected IActionResultSave packActionResultSave(List<M> data, P params)
-	 * { IActionResultSave result = new ActionResultSave();
-	 * result.setData(data); result.setParams(params); return result; }
-	 */
-
  
 	protected Class<P> getParamClass() {
 		return this.paramClass;
@@ -86,7 +80,10 @@ public class AbstractDataReadController<M extends IDsModel<?>, P extends IDsPara
 	}
 
 	protected IDsService<M, P> getDsService() {
-		return null;
+		if (this.service == null) {
+			this.service = (IDsService<M,P>)this.getWebappContext().getBean("osgiBaseDsService");
+		}
+		return this.service;
 	}
 	 
 	protected IDsMarshaller<M, P> getMarshaller() {
@@ -98,4 +95,15 @@ public class AbstractDataReadController<M extends IDsModel<?>, P extends IDsPara
 		}
 		return this.marshaller;
 	}
+	
+	public IActionResultFind packResult(List<M> data, P params, long totalCount) {
+		IActionResultFind pack = new ActionResultFind();
+		pack.setData(data);
+		pack.setParams(params);
+		pack.setTotalCount(totalCount);
+		return pack;
+	}
+	
+	 
+	
 }

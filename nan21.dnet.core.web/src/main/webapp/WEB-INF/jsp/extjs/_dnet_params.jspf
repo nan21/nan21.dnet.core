@@ -1,6 +1,6 @@
 <script>
-		Dnet.name = '${productName}';
-		Dnet.version = '${productVersion}';
+		Dnet.name = '${product.name}';
+		Dnet.version = '${product.version}';
 		
 		//Dnet.url = "${deploymentUrl}"; /* deprecated */
 		Dnet.deploymentUrl = "${deploymentUrl}";

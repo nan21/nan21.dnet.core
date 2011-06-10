@@ -13,18 +13,7 @@
 			http://www.springframework.org/schema/osgi-compendium 
     			http://www.springframework.org/schema/osgi-compendium/spring-osgi-compendium.xsd">
 	
-	
-	
 	 
-	
-	
-	
-	
-	
-	
-	
-	 
-	
 	<bean id="application_uiExtjsSettings" class="net.nan21.dnet.core.web.settings.UiExtjsSettings"
 		scope="singleton">
 		<property name="urlUiExtjs" value="${url.ui.extjs}" />
@@ -38,6 +27,13 @@
 	<osgi:reference id="osgiDataSource" cardinality="0..1" interface="javax.sql.DataSource" />
 	<osgi:list id="osgiEntityManagerFactory" cardinality="0..N" interface="javax.persistence.EntityManagerFactory"></osgi:list>
 	
+	
+	<osgi:list id="extensionProviders" cardinality="0..N" interface="net.nan21.dnet.core.api.ui.extjs.IExtensionProvider" />
+ 	<osgi:list id="extensionProvidersFrame" cardinality="0..N" interface="net.nan21.dnet.core.api.ui.extjs.IExtensionProviderFrame" />
+ 
+ 
+ 
+ 
 	<!-- 
 	<bean id="persistenceUnitManager"
 		class="org.springframework.orm.jpa.persistenceunit.DefaultPersistenceUnitManager">

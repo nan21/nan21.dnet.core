@@ -1,13 +1,15 @@
 Manifest-Version: 1.0
-Export-Package: net.nan21.dnet.core.api.action;version="1.0.0.M1",net.
- nan21.dnet.core.api.annotation;version="1.0.0.M1",net.nan21.dnet.core
- .api.controller;version="1.0.0.M1",net.nan21.dnet.core.api.converter;
- version="1.0.0.M1";uses:="javax.persistence",net.nan21.dnet.core.api.
- descriptor;version="1.0.0.M1",net.nan21.dnet.core.api.model;version="
- 1.0.0.M1",net.nan21.dnet.core.api.service;version="1.0.0.M1";uses:="j
- avax.persistence,net.nan21.dnet.core.api.action,net.nan21.dnet.core.a
- pi.converter,net.nan21.dnet.core.api.descriptor,net.nan21.dnet.core.a
- pi.model"
+Export-Package: net.nan21.dnet.core.api;version="1.0.0.M1",net.nan21.d
+ net.core.api.action;version="1.0.0.M1",net.nan21.dnet.core.api.annota
+ tion;version="1.0.0.M1",net.nan21.dnet.core.api.converter;version="1.
+ 0.0.M1";uses:="javax.persistence",net.nan21.dnet.core.api.descriptor;
+ version="1.0.0.M1",net.nan21.dnet.core.api.marshall;version="1.0.0.M1
+ ";uses:="net.nan21.dnet.core.api.action",net.nan21.dnet.core.api.mode
+ l;version="1.0.0.M1",net.nan21.dnet.core.api.service;version="1.0.0.M
+ 1";uses:="javax.persistence,net.nan21.dnet.core.api.action,net.nan21.
+ dnet.core.api.descriptor,net.nan21.dnet.core.api.model",net.nan21.dne
+ t.core.api.ui.extjs;version="1.0.0.M1",net.nan21.dnet.core.api.ui.ext
+ js.impl;version="1.0.0.M1";uses:="net.nan21.dnet.core.api.ui.extjs"
 Bundle-Vendor: Nan21 
 Bundle-Version: 1.0.0.M1
 Tool: Bundlor 1.0.0.RELEASE

@@ -13,27 +13,7 @@
     
     <!-- DNet locale -->            
     <script type="text/javascript" src="${urlUiExtjsCore}/resources/locale/${shortLanguage}/Dnet.js"></script>
-       
-   <!-- Menus :
-	TODO: replace with a published menus lookup approach i.e module bundles publish their menus 
-	foreach(menu-provider-bundle) {
-	  include menu-contribution.js
-	}
-	 -->
-	
-   <script type="text/javascript" src="${urlUiExtjs}/nan21.dnet.module.adm.usr.ui.extjs/src/menu.js"></script>
-   <script type="text/javascript" src="${urlUiExtjs}/nan21.dnet.module.adm.unit.ui.extjs/src/menu.js"></script>
-   <script type="text/javascript" src="${urlUiExtjs}/nan21.dnet.module.adm.geo.ui.extjs/src/menu.js"></script>
-   <script type="text/javascript" src="${urlUiExtjs}/nan21.dnet.module.adm.sys.ui.extjs/src/menu.js"></script>
-   
-   
-   
-   <!--   <script type="text/javascript" src="${urlUiExtjsCore}/src/core/menu/mbMenuCRM.js"></script>
-   <script type="text/javascript" src="${urlUiExtjsCore}/src/core/menu/mbMenuHR.js"></script>
-   <script type="text/javascript" src="${urlUiExtjsCore}/src/core/menu/mbMenuMY.js"></script> -->
-
-   
-   
+  
    <!-- DNet framework --> 
    
    <script type="text/javascript" src="${urlUiExtjsCore}/src/core/asgn/AbstractAsgn.js"></script>
@@ -54,7 +34,7 @@
     <script type="text/javascript" src="${urlUiExtjsCore}/src/core/base/FrameNavigatorWithIframe.js"></script>
     <script type="text/javascript" src="${urlUiExtjsCore}/src/core/base/FrameNavigator.js"></script>
     <script type="text/javascript" src="${urlUiExtjsCore}/src/core/base/Rpc.js"></script>
- 
+ 	<script type="text/javascript" src="${urlUiExtjsCore}/src/core/ds/AbstractDs.js"></script>
     <script type="text/javascript" src="${urlUiExtjsCore}/src/core/dc/AbstractDc.js"></script>
     <script type="text/javascript" src="${urlUiExtjsCore}/src/core/dc/AbstractDcvGrid.js"></script>
     <script type="text/javascript" src="${urlUiExtjsCore}/src/core/dc/AbstractDcvEditableGrid.js"></script>

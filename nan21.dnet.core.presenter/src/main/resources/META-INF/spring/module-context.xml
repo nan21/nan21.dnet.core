@@ -10,6 +10,6 @@
 			http://www.springframework.org/schema/osgi-compendium
     			http://www.springframework.org/schema/osgi-compendium/spring-osgi-compendium.xsd">
 	 
-	 <!-- <bean id="baseDsService" class="net.nan21.dnet.core.presenter.service.BaseDsService" /> -->
+	  <bean id="baseDsService" class="net.nan21.dnet.core.presenter.service.BaseDsService" />
 	 
 </beans>

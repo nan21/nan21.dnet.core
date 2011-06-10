@@ -1,4 +1,4 @@
-package net.nan21.dnet.core.presenter.action;
+package net.nan21.dnet.core.web.result;
 
 import java.util.List;
 

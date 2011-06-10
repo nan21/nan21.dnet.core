@@ -8,10 +8,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import net.nan21.dnet.core.api.action.IActionResultFind;
 import net.nan21.dnet.core.api.action.IActionResultSave;
 import net.nan21.dnet.core.api.model.IDsModel;
 import net.nan21.dnet.core.api.model.IDsParam;
 import net.nan21.dnet.core.api.service.IDsService;
+import net.nan21.dnet.core.web.result.ActionResultFind;
+import net.nan21.dnet.core.web.result.ActionResultSave;
 
 public class AbstractDataWriteController<M extends IDsModel<?>, P extends IDsParam>
 	extends AbstractDataReadController<M, P>{
@@ -42,7 +45,7 @@ public class AbstractDataWriteController<M extends IDsModel<?>, P extends IDsPar
 		
 		service.insert(list);
 		
-		IActionResultSave result = service.packResultSave(list, params); 
+		IActionResultSave result = this.packResult(list, params); 
 		return this.getMarshaller().writeResultToString(result);
 	}
 	
@@ -72,7 +75,16 @@ public class AbstractDataWriteController<M extends IDsModel<?>, P extends IDsPar
 		
 		service.update(list);
 
-		IActionResultSave result = service.packResultSave(list, params); 
+		IActionResultSave result = this.packResult(list, params); 
 		return this.getMarshaller().writeResultToString(result);
 	}
+	
+	public IActionResultSave packResult(List<M> data, P params ) {
+		IActionResultSave pack = new ActionResultSave();
+		pack.setData(data);
+		pack.setParams(params);
+		return pack;
+	}
+	
+	 
 }

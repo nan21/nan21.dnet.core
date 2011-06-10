@@ -36,8 +36,7 @@ dnet.base.HomePanel = Ext.extend(Ext.Panel , {
 
 		for (var i=0; i < menuConfig.length; i++) {
             navigAccordeonCfg.items[i] = {title: menuConfig[i]["title"], layout:'fit', border:false, items:[
-					 	{xtype:"dnetNavigationTree", id:"dnet-application-view-menu-"+menuConfig[i]["name"], withStdFilterHeader:true,loader_PreloadChildren: true
-						 	//,loader_Url: Dnet.url +"/menu/"+ menuConfig[i]["name"] +".js"
+					 	{xtype:"dnetNavigationTree", id:"dnet-application-view-menu-"+menuConfig[i]["name"], withStdFilterHeader:true,loader_PreloadChildren: true						 	 
 						 	,root: new Ext.tree.AsyncTreeNode({
 						           text:'TreeRoot'
 						               ,expanded:true
@@ -46,12 +45,9 @@ dnet.base.HomePanel = Ext.extend(Ext.Panel , {
 						             })
 						 	,listeners: {
 									openMenuLink: {scope:this
-										, fn: function(node) {
-										    var uiName = node.attributes.uiName;
-                                            var uiBP = node.attributes.uiBP;
-				                           // var path = Dnet.uiUrl+"/frame/"+uiBP+"/"+uiName;
-				                            var path = Dnet.buildUiPath(uiBP, uiName, false);
-				                            getApplication().showFrame(uiName, {url:path  } );
+										, fn: function(node) {										     
+				                            var path = Dnet.buildUiPath(node.attributes._bundle_, node.attributes._frame_, false);
+				                            getApplication().showFrame(node.attributes._frame_, {url:path  } );
 										}
 										}
 								}

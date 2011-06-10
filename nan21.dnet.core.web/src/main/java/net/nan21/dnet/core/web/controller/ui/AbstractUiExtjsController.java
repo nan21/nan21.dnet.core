@@ -6,14 +6,14 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.nan21.dnet.core.api.IProductInfo;
 import net.nan21.dnet.core.web.settings.UiExtjsSettings;
 
 import org.springframework.web.servlet.mvc.AbstractController;
 
 public abstract class AbstractUiExtjsController  extends AbstractController  {
 
-	protected String productName;
-	protected String productVersion;
+	protected IProductInfo productInfo;	 
 	protected String jspName;
 	protected String deploymentUrl;
 	protected String uiUrl;
@@ -35,9 +35,8 @@ public abstract class AbstractUiExtjsController  extends AbstractController  {
 		
 		this.model.put("deploymentUrl", this.deploymentUrl);
 		this.model.put("uiUrl", this.uiUrl);
-		this.model.put("productName", this.productName);
-		this.model.put("productVersion", this.productVersion);
-		
+		this.model.put("product", this.productInfo);
+		  
 		this.model.put("urlUiExtjs", uiExtjsSettings.getUrlUiExtjs() );
 		this.model.put("urlUiExtjsCore", uiExtjsSettings.getUrlUiExtjsCore() );
 		this.model.put("urlUiExtjsLibExtjs", uiExtjsSettings.getUrlUiExtjsLibExtjs() );
@@ -46,22 +45,18 @@ public abstract class AbstractUiExtjsController  extends AbstractController  {
 		this.model.put("theme", "gray" );
 		
 	}
-	public void setProductName(String productName) {
-		this.productName = productName;
-	}
- 
-	public void setProductVersion(String productVersion) {
-		this.productVersion = productVersion;
-	}
- 	
-	public String getProductName() {
-		return productName;
+	 
+	
+	public IProductInfo getProductInfo() {
+		return productInfo;
 	}
 
-	public String getProductVersion() {
-		return productVersion;
+
+	public void setProductInfo(IProductInfo productInfo) {
+		this.productInfo = productInfo;
 	}
-	
+
+
 	public String getJspName() {
 		return jspName;
 	}

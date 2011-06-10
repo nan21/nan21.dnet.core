@@ -2,10 +2,8 @@ package net.nan21.dnet.core.api.service;
 
 import java.util.List;
 
-import net.nan21.dnet.core.api.action.IActionResultFind;
-import net.nan21.dnet.core.api.action.IActionResultSave;
 import net.nan21.dnet.core.api.action.IExportWriter;
-import net.nan21.dnet.core.api.action.IActionContextFind;
+import net.nan21.dnet.core.api.action.IQueryBuilder;
 import net.nan21.dnet.core.api.descriptor.IDsDescriptor;
 import net.nan21.dnet.core.api.model.IDsModel;
 import net.nan21.dnet.core.api.model.IDsParam;
@@ -20,8 +18,7 @@ import net.nan21.dnet.core.api.model.IDsParam;
 public interface IDsService<M extends IDsModel<?>, P extends IDsParam> {
 
 	public IDsDescriptor getDescriptor();
-	public void setDescriptor(IDsDescriptor descriptor)
-			throws Exception;
+	public void setDescriptor(IDsDescriptor descriptor);
 
 	//public EntityManager getEntityManager();
 	//public void setEntityManager(EntityManager em);
@@ -44,18 +41,16 @@ public interface IDsService<M extends IDsModel<?>, P extends IDsParam> {
 	public M findById(Object id) throws Exception;
 	public List<M> findByIds(List<Object> ids) throws Exception;
 
-	public List<M> find(M filter, P params, IActionContextFind ctx) throws Exception;
-	public Long count(M filter, P params, IActionContextFind ctx) throws Exception;
+	public List<M> find(M filter, P params, IQueryBuilder builder) throws Exception;
+	public Long count(M filter, P params, IQueryBuilder builder) throws Exception;
 
-	public void export(M filter, P params, IActionContextFind ctx,
+	public void export(M filter, P params, IQueryBuilder builder,
 			IExportWriter writer) throws Exception;
 
-	public IActionContextFind createContextFind(int resultStart, int resultSize, String orderByColumns, String orderBySense) throws Exception;
+	public IQueryBuilder createQueryBuilder() throws Exception;
 
 	public void service(String procedureName, M ds) throws Exception;
 	public void service(String procedureName, List<M> list) throws Exception;
 
-	public IActionResultFind packResultFind(List<M> data, P params, long totalCount);
-	public IActionResultSave packResultSave(List<M> data, P params);
-	
+ 
 }
