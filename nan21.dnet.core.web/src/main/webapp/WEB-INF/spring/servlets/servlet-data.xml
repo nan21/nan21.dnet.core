@@ -12,18 +12,18 @@
         http://www.springframework.org/schema/osgi 
 		http://www.springframework.org/schema/osgi/spring-osgi.xsd">
  
-    <bean name="baseDsController" class="net.nan21.dnet.core.web.controller.data.BaseDsController">    	    
-    </bean>
+    <bean name="baseDsController" scope="request"
+    	class="net.nan21.dnet.core.web.controller.data.BaseDsController" >
+    	<property name="serviceFactories" ref="osgiDsServiceFactories"></property>
+    </bean>     
+    
   
-  	<osgi:reference id="osgiBaseDsService" cardinality="1..1"
-  		interface="net.nan21.dnet.core.api.service.IDsService" />
-  	
   	<!-- <osgi:list id="osgiDsService" cardinality="1..N" interface="net.nan21.dnet.core.api.service.IDsService">
   	</osgi:list> -->
   	
   	
-    <!-- enable classpath scanning 
-	<context:component-scan base-package="net.nan21.dnet.core.web.controller.data"  />-->
+    <!-- enable classpath scanning -->
+	<context:component-scan base-package="net.nan21.dnet.core.web.controller.data"  />
 	
 	  
 	<!-- enable anntotation-driven controllers 

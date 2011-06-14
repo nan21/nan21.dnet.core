@@ -10,6 +10,11 @@
 			http://www.springframework.org/schema/osgi-compendium
     			http://www.springframework.org/schema/osgi-compendium/spring-osgi-compendium.xsd">
 	 
-	  <bean id="baseDsService" class="net.nan21.dnet.core.presenter.service.BaseDsService" />
+	  <bean id="baseDsService" scope="request" 
+	  		class="net.nan21.dnet.core.presenter.service.BaseDsService" />
+	  <bean id="serviceProvider" 
+	  		class="net.nan21.dnet.core.presenter.service.DsServiceFactory" >
+	  		<property name="entityServiceFactories" ref="osgiEntityServiceFactories" />
+	  </bean>				
 	 
 </beans>

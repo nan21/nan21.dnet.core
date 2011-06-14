@@ -7,8 +7,8 @@
 		http://www.springframework.org/schema/beans/spring-beans.xsd
 	http://www.springframework.org/schema/osgi 
 		http://www.springframework.org/schema/osgi/spring-osgi.xsd"	>
-
-	  <osgi:service id="osgiBaseDsService" ref="baseDsService" 
-	  	ranking="0"	interface="net.nan21.dnet.core.api.service.IDsService"/>
-	  
+ 
+ 	<osgi:list id="osgiEntityServiceFactories" cardinality="0..N"
+ 		interface="net.nan21.dnet.core.api.service.IEntityServiceFactory">
+ 	</osgi:list>
 </beans>

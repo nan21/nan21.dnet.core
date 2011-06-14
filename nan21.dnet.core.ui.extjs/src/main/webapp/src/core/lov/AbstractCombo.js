@@ -305,7 +305,7 @@ dnet.base.AbstractCombo = Ext.extend(Ext.form.ComboBox, {
 			{tag: "img", src: Ext.BLANK_IMAGE_URL, title: "Open dialog to edit values", 
 				style:"border-bottom: none; margin-left:18px;", cls: "x-form-trigger " + "x-tbar-page-next" });
             this.openDialog.on('click', function(e) {
-				getApplication().showFrame(this._editDialog_.name,  {url: Dnet.buildUiPath(this._editDialog_.module, this._editDialog_.name, this._editDialog_.custom )} );
+				getApplication().showFrame(this._editDialog_.name,  {url: Dnet.buildUiPath(this._editDialog_.bundle, this._editDialog_.name, this._editDialog_.custom )} );
 				e.stopEvent();
 			} , this);
             //this.openDialog.alignTo(this.wrap, 'tl-tr', [2, 0]);

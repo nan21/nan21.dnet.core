@@ -1,5 +1,7 @@
 package net.nan21.dnet.core.presenter.model;
 
-public class EmptyParam {
+import net.nan21.dnet.core.api.model.IDsParam;
+
+public class EmptyParam implements IDsParam {
 
 }

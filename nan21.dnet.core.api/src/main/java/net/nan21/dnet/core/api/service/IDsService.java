@@ -5,6 +5,7 @@ import java.util.List;
 import net.nan21.dnet.core.api.action.IExportWriter;
 import net.nan21.dnet.core.api.action.IQueryBuilder;
 import net.nan21.dnet.core.api.descriptor.IDsDescriptor;
+import net.nan21.dnet.core.api.marshall.IDsMarshaller;
 import net.nan21.dnet.core.api.model.IDsModel;
 import net.nan21.dnet.core.api.model.IDsParam;
 /**
@@ -23,8 +24,8 @@ public interface IDsService<M extends IDsModel<?>, P extends IDsParam> {
 	//public EntityManager getEntityManager();
 	//public void setEntityManager(EntityManager em);
 	
-	//public IEntityService<E> getEntityService() throws Exception;
-	//public void setEntityService(IEntityService<E> entityService);
+	public IEntityService getEntityService() throws Exception;
+	public void setEntityService(IEntityService entityService);
 
 	//public IDsConverter<M, E> getConverter() throws Exception;
 	//public void setConverter(IDsConverter<M, E> converter);
@@ -48,9 +49,15 @@ public interface IDsService<M extends IDsModel<?>, P extends IDsParam> {
 			IExportWriter writer) throws Exception;
 
 	public IQueryBuilder createQueryBuilder() throws Exception;
-
+	public IDsMarshaller<M, P> createMarshaller(String dataFormat) throws Exception;
+	
 	public void service(String procedureName, M ds) throws Exception;
 	public void service(String procedureName, List<M> list) throws Exception;
 
- 
+	public Class<?> getEntityClass(); 
+	
+	public List<IEntityServiceFactory> getEntityServiceFactories();
+	public void setEntityServiceFactories(
+			List<IEntityServiceFactory> entityServiceFactories);
+	
 }

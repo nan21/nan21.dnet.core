@@ -6,7 +6,7 @@
     
     <script type="text/javascript" src="${urlUiExtjsCore}/src/core/Dnet.js" ></script>    
     <script type="text/javascript" src="${urlUiExtjsCore}/extjs-extend.js"></script>
-    <script type="text/javascript" src="${urlUiExtjsCore}/dnet-ux-all-debug.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/extjs-ux-extend.js"></script>
     <script type="text/javascript" src="${urlUiExtjsCore}/lib/Extjs/${extjsVersion}/ux/dnet-calendar-all-debug.js"></script>
     
     <script type="text/javascript" src="${urlUiExtjsLibExtjs}/js/extjs/locale/ext-lang-${shortLanguage}.js"></script>               

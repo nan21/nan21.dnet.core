@@ -1,13 +1,13 @@
 package net.nan21.dnet.core.api.descriptor;
 
+import java.util.Map;
+
 public interface IDsDescriptor {
 	
-	public String getName();
-	public void setName(String name);
+	public Map<String, String> getRefPaths();
 	
-	public String getModelClassName();
-	public void setModelClassName(String modelClassName);
-	
+	public Class<?> getDsClass();
+	/*
 	public String getParamClassName();
 	public void setParamClassName(String paramClassName);
 	
@@ -16,5 +16,5 @@ public interface IDsDescriptor {
 	
 	public String getServiceClassName() ;
 	public void setServiceClassName(String serviceClassName);
- 
+	*/
 }

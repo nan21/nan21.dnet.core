@@ -7,9 +7,10 @@ Export-Package: net.nan21.dnet.core.api;version="1.0.0.M1",net.nan21.d
  ";uses:="net.nan21.dnet.core.api.action",net.nan21.dnet.core.api.mode
  l;version="1.0.0.M1",net.nan21.dnet.core.api.service;version="1.0.0.M
  1";uses:="javax.persistence,net.nan21.dnet.core.api.action,net.nan21.
- dnet.core.api.descriptor,net.nan21.dnet.core.api.model",net.nan21.dne
- t.core.api.ui.extjs;version="1.0.0.M1",net.nan21.dnet.core.api.ui.ext
- js.impl;version="1.0.0.M1";uses:="net.nan21.dnet.core.api.ui.extjs"
+ dnet.core.api.descriptor,net.nan21.dnet.core.api.marshall,net.nan21.d
+ net.core.api.model",net.nan21.dnet.core.api.ui.extjs;version="1.0.0.M
+ 1",net.nan21.dnet.core.api.ui.extjs.impl;version="1.0.0.M1";uses:="ne
+ t.nan21.dnet.core.api.ui.extjs"
 Bundle-Vendor: Nan21 
 Bundle-Version: 1.0.0.M1
 Tool: Bundlor 1.0.0.RELEASE

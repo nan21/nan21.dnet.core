@@ -21,6 +21,8 @@ dnet.base.AbstractDcvGrid = Ext.extend( Ext.grid.GridPanel, {
 		   this._defineColumns_();
            this._afterDefineColumns_();
 		}
+        this._columns_.each(this._postProcessColumn_, this);
+        
 		this._defineDefaultElements_();
 		this._endDefine_();
 		// disable default selection handler in controller 
@@ -138,6 +140,31 @@ dnet.base.AbstractDcvGrid = Ext.extend( Ext.grid.GridPanel, {
 	}
 	,_afterEdit_: function(e) {          
 	}
+	
+	,_postProcessColumn_ : function(item, idx, len) {
+		if (item.header == undefined) {
+			if (item._rbkey_ != undefined ) {				 
+				item.header = Dnet.translate("ds",item._rbkey_); 
+				return true;				 
+			}
+			// check if the view has its own resource bundle 
+			if (this._trl_ != undefined && this._trl_[item.name]) {				
+				item.header = this._trl_[item.name];
+				return true;
+			}
+			//try to translate it from the model's resource bundle
+			if (item.dataIndex != undefined && this._controller_.ds._trl_ != null && this._controller_.ds._trl_[ item.dataIndex+'__lbl']) {				
+				item.header = this._controller_.ds._trl_[ item.dataIndex+'__lbl'];
+				return true;
+			}			
+			// nothing found, display the dataIndex
+			if (item.dataIndex != undefined ) {		
+				item.header = "<"+item.dataIndex+">";	
+			}
+		}
+		return true;
+	}
+	
     	/* get value from resource bundle for the specified key*/
 	,_getRBValue_: function(k) {
 		if (this._trl_ != null && this._trl_[k]) { return this._trl_[k]; }

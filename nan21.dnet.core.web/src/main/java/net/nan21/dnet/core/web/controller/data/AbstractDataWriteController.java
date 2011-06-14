@@ -2,18 +2,18 @@ package net.nan21.dnet.core.web.controller.data;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import net.nan21.dnet.core.api.action.IActionResultFind;
 import net.nan21.dnet.core.api.action.IActionResultSave;
+import net.nan21.dnet.core.api.marshall.IDsMarshaller;
 import net.nan21.dnet.core.api.model.IDsModel;
 import net.nan21.dnet.core.api.model.IDsParam;
 import net.nan21.dnet.core.api.service.IDsService;
-import net.nan21.dnet.core.web.result.ActionResultFind;
 import net.nan21.dnet.core.web.result.ActionResultSave;
 
 public class AbstractDataWriteController<M extends IDsModel<?>, P extends IDsParam>
@@ -32,21 +32,36 @@ public class AbstractDataWriteController<M extends IDsModel<?>, P extends IDsPar
 	@ResponseBody
 	public String insert(
 				@PathVariable String resourceName,
-				@PathVariable String dataformat,
+				@PathVariable String dataFormat,
 				@RequestParam(value="data", required=false, defaultValue="[]") String dataString,
-				@RequestParam(value="params", required=false, defaultValue="{}") String paramString				 
-	) throws Exception {
-		 
-		this.resourceName = resourceName;		
-		IDsService<M, P> service = getDsService();
-		
-		List<M> list = this.getMarshaller().readListFromString(dataString);
-		P params = this.getMarshaller().readParamsFromString(paramString); 	
-		
-		service.insert(list);
-		
-		IActionResultSave result = this.packResult(list, params); 
-		return this.getMarshaller().writeResultToString(result);
+				@RequestParam(value="params", required=false, defaultValue="{}") String paramString,
+				HttpServletResponse response
+	) throws Exception {		 
+		try {
+			this.prepareRequest();
+			
+			this.resourceName = resourceName;		
+			this.dataFormat = dataFormat;
+			
+			if (!dataString.startsWith("[")) {
+				dataString = "[" + dataString + "]";
+			}
+			
+			IDsService<M, P> service = getDsService(this.resourceName);		
+			IDsMarshaller<M, P> marshaller = service.createMarshaller(dataFormat);
+			
+			List<M> list = marshaller.readListFromString(dataString);
+			P params = marshaller.readParamsFromString(paramString); 	
+			
+			service.insert(list);
+			
+			IActionResultSave result = this.packResult(list, params); 
+			return marshaller.writeResultToString(result);
+		} catch(Exception e) {
+			 return this.handleException(e, response);
+		} finally {
+			this.finishRequest();
+		}
 	}
 	
 	/**
@@ -59,30 +74,45 @@ public class AbstractDataWriteController<M extends IDsModel<?>, P extends IDsPar
 	 * @throws Exception
 	 */
 	@RequestMapping(method=RequestMethod.POST , params="action=update")
-	@ResponseBody
+	@ResponseBody	
 	public String update(
 				@PathVariable String resourceName,
-				@PathVariable String dataformat,
+				@PathVariable String dataFormat,
 				@RequestParam(value="data", required=false, defaultValue="[]") String dataString,
-				@RequestParam(value="params", required=false, defaultValue="{}") String paramString				 
+				@RequestParam(value="params", required=false, defaultValue="{}") String paramString,	
+				HttpServletResponse response
 	) throws Exception {
 		
-		this.resourceName = resourceName;		
-		IDsService<M, P> service = getDsService();
-		
-		List<M> list = this.getMarshaller().readListFromString(dataString);
-		P params = this.getMarshaller().readParamsFromString(paramString); 	
-		
-		service.update(list);
+		try {
+			this.prepareRequest();
+			this.resourceName = resourceName;		
+			this.dataFormat = dataFormat;
+			
+			if (!dataString.startsWith("[")) {
+				dataString = "[" + dataString + "]";
+			}
+			IDsService<M, P> service = getDsService(this.resourceName);
+			IDsMarshaller<M, P> marshaller = service.createMarshaller(dataFormat);
+			
+			List<M> list = marshaller.readListFromString(dataString);
+			P params = marshaller.readParamsFromString(paramString); 	
+			
+			service.update(list);
 
-		IActionResultSave result = this.packResult(list, params); 
-		return this.getMarshaller().writeResultToString(result);
+			IActionResultSave result = this.packResult(list, params); 
+			return marshaller.writeResultToString(result);
+		} catch(Exception e) {
+			 this.handleException(e, response);
+			 return null;
+		} finally {
+			this.finishRequest();
+		}
 	}
 	
 	public IActionResultSave packResult(List<M> data, P params ) {
 		IActionResultSave pack = new ActionResultSave();
 		pack.setData(data);
-		pack.setParams(params);
+		//pack.setParams(params);
 		return pack;
 	}
 	

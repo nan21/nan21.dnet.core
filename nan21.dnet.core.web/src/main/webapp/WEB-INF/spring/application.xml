@@ -1,23 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:osgi="http://www.springframework.org/schema/osgi"
 	xmlns:osgi-compendium="http://www.springframework.org/schema/osgi-compendium"
 	xsi:schemaLocation="
 			http://www.springframework.org/schema/beans	http://www.springframework.org/schema/beans/spring-beans.xsd
 			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+			http://www.springframework.org/schema/osgi http://www.springframework.org/schema/osgi/spring-osgi.xsd
 			http://www.springframework.org/schema/osgi-compendium http://www.springframework.org/schema/osgi-compendium/spring-osgi-compendium.xsd">
-	 
-	<context:property-placeholder properties-ref="net.nan21.dnet.properties"/>	  
-	<osgi-compendium:cm-properties id="net.nan21.dnet.properties"  persistent-id="net.nan21.dnet" />
-  
+	<context:property-placeholder
+		properties-ref="net.nan21.dnet.properties" />
+	<osgi-compendium:cm-properties id="net.nan21.dnet.properties"
+		persistent-id="net.nan21.dnet" />
 	
-	<bean id="productInfo" class="net.nan21.dnet.core.web.settings.ProductInfo">
-		<property name="name" value="DNet eBusiness Suite"/>
-		<property name="version" value="1.0.0.M1"/>
-	</bean>
 	<context:annotation-config />
 	
-	<import resource="application/beans.xml" />
-
+	<!--  Local  -->
+	
+	<bean id="productInfo" class="net.nan21.dnet.core.web.settings.ProductInfo">
+		<property name="name" value="DNet eBusiness Suite" />
+		<property name="version" value="1.0.0.M1" />
+	</bean>
+	
+	<bean id="application_uiExtjsSettings" class="net.nan21.dnet.core.web.settings.UiExtjsSettings"
+		scope="singleton">
+		<property name="urlUiExtjs" value="${url.ui.extjs}" />
+		<property name="urlUiExtjsCore" value="${url.ui.extjs.core}" />
+		<property name="urlUiExtjsLibExtjs" value="${url.ui.extjs.lib.extjs}" />
+	</bean>
+	
+	<!--  Osgi  -->
+	
+	<osgi:reference id="osgiDataSource" cardinality="0..1"
+		interface="javax.sql.DataSource" />
+		
+	<osgi:list id="osgiEntityManagerFactory" cardinality="0..N"
+		interface="javax.persistence.EntityManagerFactory"></osgi:list>
+		
+	<osgi:list id="extensionProviders" cardinality="0..N"
+		interface="net.nan21.dnet.core.api.ui.extjs.IExtensionProvider" />
+		
+	<osgi:list id="extensionProvidersFrame" cardinality="0..N"
+		interface="net.nan21.dnet.core.api.ui.extjs.IExtensionProviderFrame" />
+		
+	<osgi:list id="osgiDsServiceFactories" cardinality="0..N"
+		interface="net.nan21.dnet.core.api.service.IDsServiceFactory"/>
 </beans>

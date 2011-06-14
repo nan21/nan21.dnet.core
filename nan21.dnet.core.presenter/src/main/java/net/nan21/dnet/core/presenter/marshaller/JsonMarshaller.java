@@ -27,8 +27,12 @@ public class JsonMarshaller<M, P> extends AbstractMarshaller<M, P>
                 SerializationConfig.Feature.WRITE_DATES_AS_TIMESTAMPS,
                 false);
         this.mapper.configure(
+        		SerializationConfig.Feature.FAIL_ON_EMPTY_BEANS,
+                false);
+        this.mapper.configure(
                 DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES,
                 false);
+        
 	}
 	
 	

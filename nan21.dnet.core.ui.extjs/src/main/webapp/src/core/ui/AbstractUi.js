@@ -96,7 +96,7 @@ dnet.base.AbstractUi = Ext.extend( Ext.Panel, {
 			]
 		});
 
-		this._title_ = Dnet.translate("ui", this._name_)
+		this._title_ = Dnet.translate("ui", this._name_.substring(this._name_.lastIndexOf(".")+1 )  ); //.substr(this._name_.strpos() )
 
     	dnet.base.AbstractUi.superclass.initComponent.apply(this, arguments);
     	this.addListener("afterlayout", this._onReady_, this);
