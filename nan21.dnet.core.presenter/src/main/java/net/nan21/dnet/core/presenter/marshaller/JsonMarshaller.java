@@ -51,8 +51,11 @@ public class JsonMarshaller<M, P> extends AbstractMarshaller<M, P>
 	public P readParamsFromString(String source) throws Exception {
 		return this.mapper.readValue(source, getParamClass());
 	}
-
-	
+	@Override
+	public <T> List<T> readListFromString(String source, Class<T> type) throws Exception {
+		return this.mapper.readValue(source,
+    			TypeFactory.collectionType(List.class, type));
+	}
 	
 	@Override
 	public String writeDataToString(M m) throws Exception {

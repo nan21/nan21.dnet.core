@@ -8,6 +8,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
+import org.springframework.transaction.annotation.Transactional;
  
 import net.nan21.dnet.core.api.action.IExportWriter;
 import net.nan21.dnet.core.api.action.IQueryBuilder;
@@ -167,8 +168,7 @@ public class AbstractDsService<M extends IDsModel<?>, P extends IDsParam, E> {
 		List<E> entities = new ArrayList<E>();
 		for(M ds: list) {
 			this.preInsert(ds);
-			E e = this.getEntityService().create();
-			
+			E e = this.getEntityService().create();			
 			entities.add(e);
 			((AbstractDsModel<E>) ds)._setEntity_(e);
 			this.getConverter().modelToEntity(ds, e);
@@ -277,6 +277,7 @@ public class AbstractDsService<M extends IDsModel<?>, P extends IDsParam, E> {
 	public void preUpdate(List<M> list) throws Exception {		 
 	}
 	
+	
 	public void update(List<M> list) throws Exception {
 		if (this.noUpdate) {
 			throw new ActionNotSupportedException("Update not allowed.");
@@ -284,20 +285,28 @@ public class AbstractDsService<M extends IDsModel<?>, P extends IDsParam, E> {
 		this.preUpdate(list);
 		// add entities in a queue and then try to insert them all in one transaction
 		// find the entities
+		
 		List<E> entities = this.getEntityService().findByIds(this.collectIds(list));
 
 		for(M ds: list) {
 			this.preUpdate(ds);
 			//TODO: optimize me 
-			E e = lookupEntityById(entities, ((IModelWithId)ds).getId() );			 
-			((AbstractDsModel<E>) ds)._setEntity_(e);
+			E e = lookupEntityById(entities, ((IModelWithId)ds).getId() );
+			//E e = this.getEntityService().getEntityManager().find(this.getEntityClass(), ((IModelWithId)ds).getId());
+			
+			//((AbstractDsModel<E>) ds)._setEntity_(e);
 			this.preUpdateBeforeEntity(ds, e);			
 			this.getConverter().modelToEntity(ds, e);
 			this.preUpdateAfterEntity(ds, e);			 
 		}	
+		System.out.println("--------AbstractDsService.update before this.getEntityService().update(entities)");
 		this.getEntityService().update(entities);
+		System.out.println("--------AbstractDsService.update after this.getEntityService().update(entities)");
+		//entities = this.getEntityService().findByIds(this.collectIds(list));
 		for(M ds: list) {	
-			E e = ((AbstractDsModel<E>) ds)._getEntity_();
+			//E e = ((AbstractDsModel<E>) ds)._getEntity_();
+			E e = this.getEntityService().getEntityManager().find(this.getEntityClass(), ((IModelWithId)ds).getId());
+			//this.getEntityService().getEntityManager().refresh(e);
 			postUpdateBeforeModel(ds, e);
 			this.getConverter().entityToModel(e, ds);
 			postUpdateAfterModel(ds, e);
@@ -376,8 +385,7 @@ public class AbstractDsService<M extends IDsModel<?>, P extends IDsParam, E> {
 	 
 	public void export(M filter, P params,
 			IQueryBuilder builder, IExportWriter writer) throws Exception {
-		 
-		 
+
 	}
 	
 	// ======================== Service ===========================

@@ -4,6 +4,9 @@ import net.nan21.dnet.core.api.model.IDsModel;
 
 public class AbstractDsModel<E> implements IDsModel<E>{
 	
+	/**
+	 * Required when inserting a list of objects to be able to identify the entity as there is no id yet.
+	 */
 	private E _entity_;
 	
 	public AbstractDsModel() {	 
