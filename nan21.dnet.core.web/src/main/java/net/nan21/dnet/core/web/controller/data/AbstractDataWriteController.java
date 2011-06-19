@@ -109,6 +109,53 @@ public class AbstractDataWriteController<M extends IDsModel<?>, P extends IDsPar
 		}
 	}
 	
+	
+	/**
+	 * Default handler for delete action.
+	 * @param resourceName
+	 * @param dataformat
+	 * @param idsString
+	 * @param paramString
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(method=RequestMethod.POST , params="action=delete")
+	@ResponseBody	
+	public String delete(
+				@PathVariable String resourceName,
+				@PathVariable String dataFormat,
+				@RequestParam(value="data", required=false, defaultValue="[]") String idsString,
+				@RequestParam(value="params", required=false, defaultValue="{}") String paramString,	
+				HttpServletResponse response
+	) throws Exception {
+		
+		try {
+			this.prepareRequest();
+			this.resourceName = resourceName;		
+			this.dataFormat = dataFormat;
+			
+			if (!idsString.startsWith("[")) {
+				idsString = "[" + idsString + "]";
+			}
+			IDsService<M, P> service = getDsService(this.resourceName);
+			IDsMarshaller<M, P> marshaller = service.createMarshaller(dataFormat);
+			
+			List<Object> list = marshaller.readListFromString(idsString, Object.class );
+			P params = marshaller.readParamsFromString(paramString); 	
+			
+			service.deleteByIds(list);
+
+			//IActionResultSave result = this.packResult(list, params); 
+			return "{'success':'true'}"; // marshaller.writeResultToString(result);
+		} catch(Exception e) {
+			 this.handleException(e, response);
+			 return null;
+		} finally {
+			this.finishRequest();
+		}
+	}
+	
+	
 	public IActionResultSave packResult(List<M> data, P params ) {
 		IActionResultSave pack = new ActionResultSave();
 		pack.setData(data);
