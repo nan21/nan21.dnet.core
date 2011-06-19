@@ -133,10 +133,10 @@ Dnet = {
 	}
 	
 	,navigationTreeMenus : {
-		 ad : { name: "mbMenuAD" , title :"AD: Administration", children: [] }
+		/* ad : { name: "mbMenuAD" , title :"AD: Administration", children: [] }
 		,hr: {name: "mbMenuHR" , title :"HR: Human Resources", children:[]}
 		,crm: {name: "mbMenuCRM" , title :"CRM: Customer Relationships", children: []}
-		,my : {name: "mbMenuMY" , title :"MY: My DNet", children: []}
+		,my : {name: "mbMenuMY" , title :"MY: My DNet", children: []}*/
 	}
 	   
 	,import: function(list) {
