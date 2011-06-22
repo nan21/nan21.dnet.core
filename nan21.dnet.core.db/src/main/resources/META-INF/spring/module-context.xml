@@ -9,16 +9,36 @@
 				http://www.springframework.org/schema/context/spring-context.xsd
 			http://www.springframework.org/schema/osgi-compendium
     			http://www.springframework.org/schema/osgi-compendium/spring-osgi-compendium.xsd">
+	
 	<context:property-placeholder
 		properties-ref="net.nan21.dnet.properties" />
+		
+	<!-- Default properties -->	
 	<osgi-compendium:cm-properties id="net.nan21.dnet.properties"
-		persistent-id="net.nan21.dnet" />
+		persistent-id="net.nan21.dnet">		
+		<prop key="dbcp.initialSize">0</prop>
+		<prop key="dbcp.maxActive">5</prop>
+		<prop key="dbcp.maxIdle">5</prop>
+		<prop key="dbcp.minIdle">0</prop>
+		<prop key="dbcp.maxWait">30</prop>
+		<prop key="dbcp.minEvictableIdleTimeMillis">1800000</prop>
+		<prop key="dbcp.timeBetweenEvictionRunsMillis">1800000</prop>
+		
+		<prop key="jdbc.driverClassName">org.apache.derby.jdbc.EmbeddedDriver</prop>
+		<prop key="jdbc.url">jdbc:derby:memory:derbyDB;create=true</prop>
+		<prop key="jdbc.username">app</prop>
+		<prop key="jdbc.password">app</prop>		 
+	</osgi-compendium:cm-properties>	
+		
+	<!-- Data-source -->		
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
 		init-method="createDataSource" destroy-method="close">
+		
 		<property name="driverClassName" value="${jdbc.driverClassName}" />
 		<property name="url" value="${jdbc.url}" />
 		<property name="username" value="${jdbc.username}" />
 		<property name="password" value="${jdbc.password}" />
+		
 		<property name="initialSize" value="${dbcp.initialSize}" />
 		<property name="maxActive" value="${dbcp.maxActive}" />
 		<property name="maxIdle" value="${dbcp.maxIdle}" />

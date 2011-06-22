@@ -1,18 +1,19 @@
 Manifest-Version: 1.0
 Export-Package: net.nan21.dnet.core.presenter.action;version="1.0.0.M1
- ";uses:="net.nan21.dnet.core.api.action",net.nan21.dnet.core.presente
- r.converter;version="1.0.0.M1";uses:="javax.persistence,net.nan21.dne
- t.core.api.converter,net.nan21.dnet.core.api.service",net.nan21.dnet.
- core.presenter.exception;version="1.0.0.M1",net.nan21.dnet.core.prese
- nter.marshaller;version="1.0.0.M1";uses:="net.nan21.dnet.core.api.act
- ion,net.nan21.dnet.core.api.marshall",net.nan21.dnet.core.presenter.m
- odel;version="1.0.0.M1";uses:="net.nan21.dnet.core.api.descriptor,net
- .nan21.dnet.core.api.model",net.nan21.dnet.core.presenter.service;ver
- sion="1.0.0.M1";uses:="net.nan21.dnet.core.api.action,net.nan21.dnet.
- core.api.converter,net.nan21.dnet.core.api.descriptor,net.nan21.dnet.
- core.api.marshall,net.nan21.dnet.core.api.model,net.nan21.dnet.core.a
- pi.service,org.springframework.beans.factory.annotation,org.springfra
- mework.context,org.springframework.transaction.annotation"
+ ";uses:="javax.persistence,net.nan21.dnet.core.api.action,net.nan21.d
+ net.core.api.descriptor",net.nan21.dnet.core.presenter.converter;vers
+ ion="1.0.0.M1";uses:="javax.persistence,net.nan21.dnet.core.api.conve
+ rter,net.nan21.dnet.core.api.service",net.nan21.dnet.core.presenter.e
+ xception;version="1.0.0.M1",net.nan21.dnet.core.presenter.marshaller;
+ version="1.0.0.M1";uses:="net.nan21.dnet.core.api.action,net.nan21.dn
+ et.core.api.marshall",net.nan21.dnet.core.presenter.model;version="1.
+ 0.0.M1";uses:="net.nan21.dnet.core.api.descriptor,net.nan21.dnet.core
+ .api.model",net.nan21.dnet.core.presenter.service;version="1.0.0.M1";
+ uses:="net.nan21.dnet.core.api.action,net.nan21.dnet.core.api.convert
+ er,net.nan21.dnet.core.api.descriptor,net.nan21.dnet.core.api.marshal
+ l,net.nan21.dnet.core.api.model,net.nan21.dnet.core.api.service,org.s
+ pringframework.beans.factory.annotation,org.springframework.context,o
+ rg.springframework.transaction.annotation"
 Bundle-Vendor: Nan21 
 Bundle-Version: 1.0.0.M1
 Tool: Bundlor 1.0.0.RELEASE
@@ -26,5 +27,6 @@ Import-Package: javax.persistence,net.nan21.dnet.core.api.action,net.n
  jackson.map,org.codehaus.jackson.map.type,org.codehaus.jackson.type,o
  rg.springframework.beans.factory,org.springframework.beans.factory.an
  notation,org.springframework.context,org.springframework.context.conf
- ig,org.springframework.transaction.annotation
+ ig,org.springframework.transaction.annotation,org.springframework.uti
+ l
 

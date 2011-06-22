@@ -14,6 +14,7 @@ public interface IDsMarshaller<M, P> {
 	
 	public M readDataFromString(String source) throws Exception;
 	public List<M> readListFromString(String source) throws Exception;
+	public <T> List<T> readListFromString(String source, Class<T> type) throws Exception ;
 	public P readParamsFromString(String source) throws Exception;
 		
 	public String writeDataToString(M m) throws Exception;

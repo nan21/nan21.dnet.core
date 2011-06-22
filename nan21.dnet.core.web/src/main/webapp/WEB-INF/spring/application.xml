@@ -8,10 +8,13 @@
 			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
 			http://www.springframework.org/schema/osgi http://www.springframework.org/schema/osgi/spring-osgi.xsd
 			http://www.springframework.org/schema/osgi-compendium http://www.springframework.org/schema/osgi-compendium/spring-osgi-compendium.xsd">
-	<context:property-placeholder
-		properties-ref="net.nan21.dnet.properties" />
+	
+	<context:property-placeholder properties-ref="net.nan21.dnet.properties" />
+	
 	<osgi-compendium:cm-properties id="net.nan21.dnet.properties"
-		persistent-id="net.nan21.dnet" />
+		persistent-id="net.nan21.dnet" >
+		<prop key="emf.persistenceUnitName">net.nan21.dnet</prop>
+	</osgi-compendium:cm-properties>	
 	
 	<context:annotation-config />
 	

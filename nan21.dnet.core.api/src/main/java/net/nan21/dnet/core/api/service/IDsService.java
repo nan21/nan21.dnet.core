@@ -42,13 +42,13 @@ public interface IDsService<M extends IDsModel<?>, P extends IDsParam> {
 	public M findById(Object id) throws Exception;
 	public List<M> findByIds(List<Object> ids) throws Exception;
 
-	public List<M> find(M filter, P params, IQueryBuilder builder) throws Exception;
-	public Long count(M filter, P params, IQueryBuilder builder) throws Exception;
+	public List<M> find(M filter, P params, IQueryBuilder<M, P> builder) throws Exception;
+	public Long count(M filter, P params, IQueryBuilder<M, P> builder) throws Exception;
 
-	public void export(M filter, P params, IQueryBuilder builder,
+	public void export(M filter, P params, IQueryBuilder<M, P> builder,
 			IExportWriter writer) throws Exception;
 
-	public IQueryBuilder createQueryBuilder() throws Exception;
+	public IQueryBuilder<M, P> createQueryBuilder() throws Exception;
 	public IDsMarshaller<M, P> createMarshaller(String dataFormat) throws Exception;
 	
 	public void service(String procedureName, M ds) throws Exception;

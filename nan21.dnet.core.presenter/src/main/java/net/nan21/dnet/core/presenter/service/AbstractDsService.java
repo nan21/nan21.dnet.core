@@ -4,11 +4,9 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
-import org.springframework.transaction.annotation.Transactional;
  
 import net.nan21.dnet.core.api.action.IExportWriter;
 import net.nan21.dnet.core.api.action.IQueryBuilder;
@@ -20,7 +18,7 @@ import net.nan21.dnet.core.api.model.IDsParam;
 import net.nan21.dnet.core.api.model.IModelWithId;
 import net.nan21.dnet.core.api.service.IEntityService;
 import net.nan21.dnet.core.api.service.IEntityServiceFactory;
-import net.nan21.dnet.core.presenter.action.QueryBuilder;
+import net.nan21.dnet.core.presenter.action.QueryBuilderWithJpql;
 import net.nan21.dnet.core.presenter.converter.BaseDsConverter;
 import net.nan21.dnet.core.presenter.exception.ActionNotSupportedException;
 import net.nan21.dnet.core.presenter.marshaller.JsonMarshaller;
@@ -41,7 +39,7 @@ public class AbstractDsService<M extends IDsModel<?>, P extends IDsParam, E> {
  
 	protected IDsDescriptor descriptor;
 	protected IEntityService entityService;
-	protected IDsConverter converter;
+	protected IDsConverter<M, E> converter;
 	private List<IEntityServiceFactory> entityServiceFactories;
 	
 	//@PersistenceContext
@@ -50,20 +48,25 @@ public class AbstractDsService<M extends IDsModel<?>, P extends IDsParam, E> {
 	// ======================== Find ===========================
 	
 	public Long count(M filter, P params,
-			IQueryBuilder builder) throws Exception {
+			IQueryBuilder<M, P> builder) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 	
 	protected void preFind(M filter, P params,
-			IQueryBuilder builder) throws Exception{
+			IQueryBuilder<M, P> builder) throws Exception{
 	}
 	
 	public List<M> find(M filter, P params,
-			IQueryBuilder builder) throws Exception {
+			IQueryBuilder<M, P> builder) throws Exception {
+		QueryBuilderWithJpql<M, P> bld = (QueryBuilderWithJpql<M, P>) builder;
 		
+		bld.setFilter(filter);
+		bld.setParams(params);
+		 
 		List<M> result = new ArrayList<M>(); 
-		List<E> list = this.getEntityService().getEntityManager().createQuery("select e from "+this.getEntityClass().getSimpleName()+" e").getResultList();		
+				 
+		List<E> list = bld.createQuery().getResultList();		
 		for(E e : list) {
 			M m = this.getModelClass().newInstance();
 			this.getConverter().entityToModel(e, m);
@@ -73,7 +76,7 @@ public class AbstractDsService<M extends IDsModel<?>, P extends IDsParam, E> {
 	}
 	
 	protected void postFind(M filter, P params,
-			IQueryBuilder builder) throws Exception{
+			IQueryBuilder<M, P> builder) throws Exception{
 	}
 	
 	 
@@ -141,7 +144,7 @@ public class AbstractDsService<M extends IDsModel<?>, P extends IDsParam, E> {
 			throw new ActionNotSupportedException("Insert not allowed.");
 		}
 		this.preInsert(ds);
-		E e = this.getEntityService().create();		 
+		E e = (E)this.getEntityService().create();		 
 		this.getConverter().modelToEntity(ds, e);
 		this.preInsert(ds,e);
 		this.getEntityService().insert(e);
@@ -168,7 +171,7 @@ public class AbstractDsService<M extends IDsModel<?>, P extends IDsParam, E> {
 		List<E> entities = new ArrayList<E>();
 		for(M ds: list) {
 			this.preInsert(ds);
-			E e = this.getEntityService().create();			
+			E e = (E)this.getEntityService().create();			
 			entities.add(e);
 			((AbstractDsModel<E>) ds)._setEntity_(e);
 			this.getConverter().modelToEntity(ds, e);
@@ -259,7 +262,7 @@ public class AbstractDsService<M extends IDsModel<?>, P extends IDsParam, E> {
 		}
 		
 		this.preUpdate(ds);
-		E e = this.getEntityService().findById(((IModelWithId)ds).getId());	
+		E e = (E)this.getEntityService().findById(((IModelWithId)ds).getId());	
 		this.preUpdateBeforeEntity(ds, e);
 		this.getConverter().modelToEntity(ds, e);
 		this.preUpdateAfterEntity(ds, e);
@@ -384,7 +387,7 @@ public class AbstractDsService<M extends IDsModel<?>, P extends IDsParam, E> {
 	// ======================== Export ===========================
 	 
 	public void export(M filter, P params,
-			IQueryBuilder builder, IExportWriter writer) throws Exception {
+			IQueryBuilder<M, P> builder, IExportWriter writer) throws Exception {
 
 	}
 	
@@ -453,7 +456,7 @@ public class AbstractDsService<M extends IDsModel<?>, P extends IDsParam, E> {
 		}
 		return this.converter;
 	} 	
-	public void setConverter(IDsConverter converter) {
+	public void setConverter(IDsConverter<M, E> converter) {
 		this.converter = converter;
 	}
 	 
@@ -465,15 +468,16 @@ public class AbstractDsService<M extends IDsModel<?>, P extends IDsParam, E> {
 		return descriptor;
 	}
 	
-	public IEntityService<E> getEntityService() throws Exception {
+	public IEntityService getEntityService() throws Exception {
 		if ( this.entityService == null) {
 			
 			//TODO: enhance to use a bundleID instead of iterating 
 			//through all the available entityServiceFactories
+			// extract it .. -> See also AbstractDsConverter
 			
 			for(IEntityServiceFactory esf: entityServiceFactories) {
 				try {
-					IEntityService<?> es = esf.create(this.getEntityClass().getSimpleName() + "Service");
+					IEntityService<E> es = esf.create(this.getEntityClass().getSimpleName() + "Service");
 					if (es != null) {
 						this.entityService = es;
 						return this.entityService;
@@ -510,11 +514,16 @@ public class AbstractDsService<M extends IDsModel<?>, P extends IDsParam, E> {
 		}
 		return ids;
 	}
-
-	
-
-	public IQueryBuilder createQueryBuilder() throws Exception {
-		return new QueryBuilder();	 
+ 
+	public IQueryBuilder<M,P> createQueryBuilder() throws Exception {
+		QueryBuilderWithJpql<M,P> qb = new QueryBuilderWithJpql<M,P>();
+		qb.setFilterClass(this.getModelClass());
+		qb.setParamClass(this.getParamClass());
+		qb.setDescriptor(this.descriptor);
+		//TODO: correct this
+		qb.setEntityManager(this.getEntityService().getEntityManager());
+		qb.setBaseEql("select e from "+this.getEntityClass().getSimpleName()+" e");
+		return qb;	 
 	}
 
 	public IDsMarshaller<M, P> createMarshaller(
