@@ -158,4 +158,35 @@ Dnet = {
 		rd['name'] = t[2];
 		return rd;	
 	}
+	
+	
+	,translateField: function(vrb, mrb, item) {
+		// check if the view has its own resource bundle 
+		if (vrb != undefined && vrb[item.name]) {				
+			item.fieldLabel = vrb[item.name];
+			return true;
+		}
+		//try to translate it from the model's resource bundle
+		if (item.dataIndex != undefined && mrb != null && mrb[ item.dataIndex+'__lbl']) {				
+			item.fieldLabel = mrb[ item.dataIndex+'__lbl'];
+			return true;
+		}
+		// try to translate from the shared resource-bundle
+		item.fieldLabel = Dnet.translate("ds",item.dataIndex); 
+	}
+	,translateColumn: function(vrb, mrb, item) {
+		// check if the view has its own resource bundle 
+		if (vrb != undefined && vrb[item.name]) {				
+			item.header = vrb[item.name];
+			return true;
+		}
+		//try to translate it from the model's resource bundle
+		if (item.dataIndex != undefined && mrb != null && mrb[ item.dataIndex+'__lbl']) {				
+			item.header = mrb[ item.dataIndex+'__lbl'];
+			return true;
+		}
+		// try to translate from the shared resource-bundle
+		item.header = Dnet.translate("ds",item.dataIndex); 
+	}
+	
 };

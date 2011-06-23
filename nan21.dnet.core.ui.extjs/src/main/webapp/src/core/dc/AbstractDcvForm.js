@@ -10,9 +10,10 @@ dnet.base.AbstractDcvForm = Ext.extend( Ext.form.FormPanel, {
     ,_noInsert_ : null
     ,_noUpdate_ : null
     ,_noEdit_ : null
-
+    ,_builder_: null
 	,_dcViewType_:"edit-form"
 
+		
 	,initComponent: function(config) {
 		if (this._noInsert_ == null) this._noInsert_ = [];
 		if (this._noUpdate_ == null) this._noUpdate_ = [];
@@ -138,24 +139,7 @@ dnet.base.AbstractDcvForm = Ext.extend( Ext.form.FormPanel, {
 	,_postProcessElem_ : function(item, idx, len) {
 		item["_dcView_"] = this;
 		if (item.fieldLabel == undefined) {
-			if (item._rbkey_ != undefined ) {				 
-				item.fieldLabel = Dnet.translate("ds",item._rbkey_); 
-				return true;				 
-			}
-			// check if the view has its own resource bundle 
-			if (this._trl_ != undefined && this._trl_[item.name]) {				
-				item.fieldLabel = this._trl_[item.name];
-				return true;
-			}
-			//try to translate it from the model's resource bundle
-			if (item.dataIndex != undefined && this._controller_.ds._trl_ != null && this._controller_.ds._trl_[ item.dataIndex+'__lbl']) {				
-				item.fieldLabel = this._controller_.ds._trl_[ item.dataIndex+'__lbl'];
-				return true;
-			}			
-			// nothing found, display the dataIndex
-			if (item.dataIndex != undefined ) {		
-				item.fieldLabel = "<"+item.dataIndex+">";	
-			}
+			Dnet.translateField(this._trl_, this._controller_.ds._trl_,item);
 		}
 		return true;
 	}
@@ -196,5 +180,11 @@ dnet.base.AbstractDcvForm = Ext.extend( Ext.form.FormPanel, {
 	      });
 	      return false;
 		}
+	}
+	,_getBuilder_: function() {
+		if (this._builder_ == null) {
+			this._builder_ = new dnet.base.DcvFormBuilder({dcv: this});
+		}	
+		return this._builder_;
 	}
 });

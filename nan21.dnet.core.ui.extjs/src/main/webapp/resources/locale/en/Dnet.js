@@ -225,6 +225,8 @@ dnet.Translation = Ext.apply({},{
 
     ,ds: {
         id: "ID"
+       ,version: "Version"
+    	   ,clientId:"Client" 	   
        ,code: "Code"
        ,name: "Name"
        ,description: "Description"

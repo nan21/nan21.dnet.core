@@ -36,11 +36,16 @@
     <script type="text/javascript" src="${urlUiExtjsCore}/src/core/base/Rpc.js"></script>
  	<script type="text/javascript" src="${urlUiExtjsCore}/src/core/ds/AbstractDs.js"></script>
     <script type="text/javascript" src="${urlUiExtjsCore}/src/core/dc/AbstractDc.js"></script>
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/core/dc/AbstractDcvGrid.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/src/core/dc/AbstractDcvGrid.js"></script>    
     <script type="text/javascript" src="${urlUiExtjsCore}/src/core/dc/AbstractDcvEditableGrid.js"></script>
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/core/dc/AbstractDcvForm.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/src/core/dc/AbstractDcvForm.js"></script>    
     <script type="text/javascript" src="${urlUiExtjsCore}/src/core/dc/AbstractDcvTree.js"></script>
     <script type="text/javascript" src="${urlUiExtjsCore}/src/core/dc/AbstractDcvFilterForm.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/src/core/dc/DcvFilterFormBuilder.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/src/core/dc/DcvFormBuilder.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/src/core/dc/DcvGridBuilder.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/src/core/dc/DcvEditableGridBuilder.js"></script>
+    
     <script type="text/javascript" src="${urlUiExtjsCore}/src/core/dc/DcContext.js"></script>
     <script type="text/javascript" src="${urlUiExtjsCore}/src/core/dc/DcExceptions.js"></script>
 

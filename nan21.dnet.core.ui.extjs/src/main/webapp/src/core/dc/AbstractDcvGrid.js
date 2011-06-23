@@ -15,6 +15,10 @@ dnet.base.AbstractDcvGrid = Ext.extend( Ext.grid.GridPanel, {
 	,initComponent: function(config) {
         this._elems_ =  new Ext.util.MixedCollection();
         this._columns_ =  new Ext.util.MixedCollection();
+        //this._controller_ = null;
+        this._noExport_= false;
+        this._noImport_= false;
+    	
 		this._startDefine_();
 		/* define columns */
         if (this._beforeDefineColumns_()) {
@@ -143,26 +147,8 @@ dnet.base.AbstractDcvGrid = Ext.extend( Ext.grid.GridPanel, {
 	
 	,_postProcessColumn_ : function(item, idx, len) {
 		if (item.header == undefined) {
-			if (item._rbkey_ != undefined ) {				 
-				item.header = Dnet.translate("ds",item._rbkey_); 
-				return true;				 
-			}
-			// check if the view has its own resource bundle 
-			if (this._trl_ != undefined && this._trl_[item.name]) {				
-				item.header = this._trl_[item.name];
-				return true;
-			}
-			//try to translate it from the model's resource bundle
-			if (item.dataIndex != undefined && this._controller_.ds._trl_ != null && this._controller_.ds._trl_[ item.dataIndex+'__lbl']) {				
-				item.header = this._controller_.ds._trl_[ item.dataIndex+'__lbl'];
-				return true;
-			}			
-			// nothing found, display the dataIndex
-			if (item.dataIndex != undefined ) {		
-				item.header = "<"+item.dataIndex+">";	
-			}
+			Dnet.translateColumn(this._trl_, this._controller_.ds._trl_,item);
 		}
-		return true;
 	}
 	
     	/* get value from resource bundle for the specified key*/
@@ -174,5 +160,10 @@ dnet.base.AbstractDcvGrid = Ext.extend( Ext.grid.GridPanel, {
 			return k; 
 		}
 	}
-
+	,_getBuilder_: function() {
+		if (this._builder_ == null) {
+			this._builder_ = new dnet.base.DcvGridBuilder({dcv: this});
+		}	
+		return this._builder_;
+	}
 });
