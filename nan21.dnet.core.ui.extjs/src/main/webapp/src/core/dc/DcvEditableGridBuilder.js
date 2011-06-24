@@ -47,6 +47,23 @@ Ext.extend(dnet.base.DcvEditableGridBuilder, Ext.util.Observable, {
 		this.applySharedConfig(config);
 		return this;
 	}
+	
+	,add: function(config) {
+		this.applySharedConfig(config);
+		return this;
+	}
+	,merge: function(name, config) {
+		Ext.applyIf(this.dcv._columns_.get(name) , config );
+		return this;
+	}
+	,change: function(name, config) {
+		Ext.apply(this.dcv._columns_.get(name) , config );
+		return this;
+	}
+	,remove: function(name) {
+		this.dcv._columns_.remove(name);
+		return this;
+	}
 	//private
 	
 	,applySharedConfig: function(config) {

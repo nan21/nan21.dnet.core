@@ -77,6 +77,22 @@ Ext.extend(dnet.base.DcvFilterFormBuilder, Ext.util.Observable, {
 		this.dcv._elems_.get(c)["items"] = items;
 		return this;
 	}
+	,add: function(config) {
+		this.applySharedConfig(config);
+		return this;
+	}
+	,merge: function(name, config) {
+		Ext.applyIf(this.dcv._elems_.get(name) , config );
+		return this;
+	}
+	,change: function(name, config) {
+		Ext.apply(this.dcv._elems_.get(name) , config );
+		return this;
+	}
+	,remove: function(name) {
+		this.dcv._elems_.remove(name);
+		return this;
+	}
 	//private
 	
 	,applySharedConfig: function(config) {
