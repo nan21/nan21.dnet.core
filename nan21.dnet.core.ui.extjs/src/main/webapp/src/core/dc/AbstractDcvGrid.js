@@ -21,7 +21,7 @@ dnet.base.AbstractDcvGrid = Ext.extend( Ext.grid.GridPanel, {
     	
 		this._startDefine_();
 		/* define columns */
-        if (this._beforeDefineColumns_()) {
+        if (this._beforeDefineColumns_() !== false) {
 		   this._defineColumns_();
            this._afterDefineColumns_();
 		}
