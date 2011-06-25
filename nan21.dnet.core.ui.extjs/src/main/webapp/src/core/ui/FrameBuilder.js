@@ -94,9 +94,27 @@ dnet.base.FrameBuilder.prototype =  {
 					} }, this.frame );	
 		return this;
 	}
-	 
+	,addButton: function(config) {
+		this.frame._elems_.add(config.name, config);
+		return this;
+	} 
 	
-	
+	,add: function(config) {
+		this.frame._elems_.add(name, config);
+		return this;
+	}
+	,merge: function(name, config) {
+		Ext.applyIf(this.frame._elems_.get(name) , config );
+		return this;
+	}
+	,change: function(name, config) {
+		Ext.apply(this.frame._elems_.get(name) , config );
+		return this;
+	}
+	,remove: function(name) {
+		this.frame._elems_.remove(name);
+		return this;
+	}
 	
 	
 };
