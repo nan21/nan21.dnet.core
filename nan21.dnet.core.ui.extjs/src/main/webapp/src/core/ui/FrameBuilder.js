@@ -45,7 +45,8 @@ dnet.base.FrameBuilder.prototype =  {
 	}
 
 	,addChildrenTo: function(c,list,regions) {
-		var items = this.frame._elems_.get(c)["items"] || [];
+		var isWrapped = this.frame._elems_.get(c)._wrapped_;
+		var items = ((isWrapped)? this.frame._elems_.get(c)["items"]["items"]:this.frame._elems_.get(c)["items"] )|| [];
 		for(var i=0, len=list.length; i<len; i++ ) {
 			var cmp = this.frame._elems_.get(list[i]);
 			items[items.length] = cmp;
@@ -53,7 +54,12 @@ dnet.base.FrameBuilder.prototype =  {
 				cmp.region = regions[i];
 			}
 		}
-		this.frame._elems_.get(c)["items"] = items;
+		if(isWrapped) {
+			this.frame._elems_.get(c)["items"]["items"] = items;
+		} else {
+			this.frame._elems_.get(c)["items"] = items;
+		}
+		
 		return this;
 	}
 	

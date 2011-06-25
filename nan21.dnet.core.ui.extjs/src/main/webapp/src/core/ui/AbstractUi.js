@@ -79,9 +79,26 @@ dnet.base.AbstractUi = Ext.extend( Ext.Panel, {
 		   this._defineBindings_();
            this._afterDefineBindings_();
 		}
-
         this._endDefine_();
 
+        // find a _bindable_views and create the binding 
+        /*this._dcs_.each(function(item, idx, len) { 
+        	if(Ext.isArray(item.bindedViews)) {
+        		item.on('afterCurrentRecordChange', 
+        				function(evnt) { 
+        					var newRecord = evnt.newRecord; 
+        					var oldRecord = evnt.oldRecord; 
+        					var newIdx = evnt.newIdx;
+        					if(newRecord) {								 
+        						Ext.BindMgr.unbind(oldRecord);    						
+        						Ext.BindMgr.bind(newRecord, item.bindedViews);								 
+        					} else {								 
+        						Ext.BindMgr.unbind(oldRecord);								 
+        					} }, this.frame );
+        	}        	
+        }, this);
+        */
+        
 		Ext.apply(this, {
 			layout:"fit"
 			,bbar: 	this._statusBar_
@@ -98,7 +115,7 @@ dnet.base.AbstractUi = Ext.extend( Ext.Panel, {
 
 
     }
-
+	 
 	,_onReady_: function(p) {
 		//this._header_.setTitle(this._title_);
 

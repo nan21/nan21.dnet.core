@@ -76,6 +76,15 @@ dnet.base.AbstractDcvGrid = Ext.extend( Ext.grid.GridPanel, {
 		dnet.base.AbstractDcvGrid.superclass.initComponent.call(this);
 		this._controller_.store.on("load", function(store,records,options) { 
 			 this._onStoreLoad_(store,records,options);}, this);
+		this._controller_.on("afterDoNew", function(dc) {
+			this.getSelectionModel().suspendEvents();
+			this.getSelectionModel().selectLastRow(false);
+			//this.getView().focusRow(this.store.getCount() );
+            this.getSelectionModel().resumeEvents();
+		}, this);
+		this.getSelectionModel().on('beforerowselect',function(sm,ridx,ke,rec) {
+			return this._controller_.isRecordChangeAllowed();
+		}, this);
 	}
 
     ,_getElement_: function(name) {  return Ext.getCmp( this._elems_.get(name).id); }

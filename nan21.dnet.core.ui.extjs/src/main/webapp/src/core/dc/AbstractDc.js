@@ -5,7 +5,7 @@ dnet.base.AbstractDc = function(config) {
 	this.dcContext = null;
 	this.multiEdit = false;
 	this.afterStoreLoadDoDefaultSelection = true;
-	
+	this.bindedViews = null;
 	/**
 	 *  External control to actions. 
 	 *  Actions can be blocked from outside bootstrapping the standard check-flow.
@@ -103,6 +103,12 @@ Ext.extend(dnet.base.AbstractDc, Ext.util.Observable, {
                this.afterDoSaveSuccess();
 			}
 			if(!this.isCurrentRecordDirty())  {
+				this.actions.doQuery.setDisabled(false);
+				this.actions.doCancel.setDisabled(true);
+				this.actions.doSave.setDisabled(true);
+				this.actions.doNew.setDisabled(false);
+				this.actions.doPrevRec.setDisabled(false);
+				this.actions.doNextRec.setDisabled(false);
 				this.fireEvent("cleanRecord",this);
 				this.fireEvent("recordChanged", { dc: this, record: this.record, state: 'clean', status:this.getRecordStatus(), oldRecord: null }); 
 			}
@@ -117,27 +123,27 @@ Ext.extend(dnet.base.AbstractDc, Ext.util.Observable, {
    			,tooltip: Dnet.translate("tlbitem", "new__tlp")   			
    			,scope:this, handler: this.doNew
        	});	
-        this.actions.doSave = new Ext.Action({ name:"doSave",iconCls: "icon-action-save", disabled: false
+        this.actions.doSave = new Ext.Action({ name:"doSave",iconCls: "icon-action-save", disabled: true
        		,text: Dnet.translate("tlbitem", "save__lbl")
    			,tooltip: Dnet.translate("tlbitem", "save__tlp")   			
    			,scope:this, handler: this.doSave
        	});	
-        this.actions.doCopy = new Ext.Action({ name:"doCopy",iconCls: "icon-action-copy", disabled: false
+        this.actions.doCopy = new Ext.Action({ name:"doCopy",iconCls: "icon-action-copy", disabled: true
        		,text: Dnet.translate("tlbitem", "copy__lbl")
    			,tooltip: Dnet.translate("tlbitem", "copy__tlp")   			
    			,scope:this, handler: this.doCopy
        	});	 
-        this.actions.doDeleteSelected = new Ext.Action({ name:"deleteSelected",iconCls: "icon-action-delete", disabled: false
+        this.actions.doDeleteSelected = new Ext.Action({ name:"deleteSelected",iconCls: "icon-action-delete", disabled: true
        		,text: Dnet.translate("tlbitem", "delete_selected__lbl")
    			,tooltip: Dnet.translate("tlbitem", "delete_selected__tlp")   			
    			,scope:this, handler: this.confirmDeleteSelection
        	});
-        this.actions.doEdit = new Ext.Action({ name:"doEdit",iconCls: "icon-action-edit", disabled: false
+        this.actions.doEdit = new Ext.Action({ name:"doEdit",iconCls: "icon-action-edit", disabled: true
        		,text: Dnet.translate("tlbitem", "edit__lbl")
    			,tooltip: Dnet.translate("tlbitem", "edit__tlp")   			
    			,scope:this, handler: function() {}
        	});	
-        this.actions.doCancel = new Ext.Action({ name:"doCancel",iconCls: "icon-action-rollback", disabled: false
+        this.actions.doCancel = new Ext.Action({ name:"doCancel",iconCls: "icon-action-rollback", disabled: true
        		,text: Dnet.translate("tlbitem", "cancel__lbl")
    			,tooltip: Dnet.translate("tlbitem", "cancel__tlp")   			
    			,scope:this, handler: function() {this.discardChanges();}
@@ -146,12 +152,12 @@ Ext.extend(dnet.base.AbstractDc, Ext.util.Observable, {
         this.actions.doPrevRec = new Ext.Action({ name:"doPrevRec",iconCls: "icon-action-previous", disabled: false
        		,text: Dnet.translate("tlbitem", "prev_rec__lbl")
    			,tooltip: Dnet.translate("tlbitem", "prev_rec__tlp")   			
-   			,scope:this, handler: function() {this.discardChanges();}
+   			,scope:this, handler: function() { try { this.setPreviousAsCurrent();  } catch(e) { dnet.base.DcExceptions.showMessage(e); }}
        	});
         this.actions.doNextRec = new Ext.Action({ name:"doNextRec",iconCls: "icon-action-next", disabled: false
        		,text: Dnet.translate("tlbitem", "next_rec__lbl")
    			,tooltip: Dnet.translate("tlbitem", "next_rec__tlp")   			
-   			,scope:this, handler: function() {this.discardChanges();}
+   			,scope:this, handler: function() { try { this.setNextAsCurrent();  } catch(e) { dnet.base.DcExceptions.showMessage(e); }}
        	});
         
 	}
@@ -161,7 +167,26 @@ Ext.extend(dnet.base.AbstractDc, Ext.util.Observable, {
 		dc.on("dirtyRecord", this.dataModified, this);
 		dc.on("cleanRecord", function() {  if(!this.isCurrentRecordDirty())  {this.fireEvent("cleanRecord",this);}  }, this);
 	}
+	,addBindedView: function(id) {
+		if (this.bindedViews == null) {
+			this.bindedViews=[];
+		}
+		this.bindedViews[this.bindedViews.length]=id;
+		
+		this.on('afterCurrentRecordChange', 
+				function(evnt) { 
+					var newRecord = evnt.newRecord; 
+					var oldRecord = evnt.oldRecord; 
+					var newIdx = evnt.newIdx;
+					if(newRecord) {								 
+						Ext.BindMgr.unbind(oldRecord);    						
+						Ext.BindMgr.bind(newRecord, this.bindedViews);								 
+					} else {								 
+						Ext.BindMgr.unbind(oldRecord);								 
+					} }, this );
+	   
 	
+	}
 	,emptyRecordData: function(fd) {
        var r = {};
        r["clientId"] = getApplication().getSession().client.id;
@@ -223,9 +248,16 @@ Ext.extend(dnet.base.AbstractDc, Ext.util.Observable, {
 			return null;
 	}
 	,dataModified: function() {
+		this.actions.doQuery.setDisabled(true);
+		this.actions.doCancel.setDisabled(false);
+		this.actions.doSave.setDisabled(false);
+		if(!this.isRecordChangeAllowed()) {
+			this.actions.doNew.setDisabled(true);
+			this.actions.doPrevRec.setDisabled(true);
+			this.actions.doNextRec.setDisabled(true);			
+		}
 		this.fireEvent("dirtyRecord",this); /* to be removed in favor of recordStateChanged  */
-		this.fireEvent("recordChanged" , { dc: this, record: this.record, state: 'dirty', status:this.getRecordStatus(), oldRecord: null } );
-		 
+		this.fireEvent("recordChanged" , { dc: this, record: this.record, state: 'dirty', status:this.getRecordStatus(), oldRecord: null } );		 
 	}
 
 	/****************************************************************************/
@@ -570,6 +602,9 @@ Ext.extend(dnet.base.AbstractDc, Ext.util.Observable, {
     	}    	 
     }
 	
+	,doEdit: function() {
+		this.onEdit();
+	}
 	,onEdit: function() {
 		this._checkCanDoEdit_();
 		this.fireEvent("onEdit",this);
@@ -674,6 +709,17 @@ Ext.extend(dnet.base.AbstractDc, Ext.util.Observable, {
 	,discardChanges: function () {
 		this.discardChildrenChanges();
 		this.discardRecordChanges();
+		this.actions.doQuery.setDisabled(false);
+		this.actions.doCancel.setDisabled(true);
+		this.actions.doSave.setDisabled(true);
+		
+		this.actions.doNew.setDisabled(false);
+		if (this.isRecordChangeAllowed() && this.store.getCount() > 0) {
+			this.actions.doPrevRec.setDisabled(false);
+			this.actions.doNextRec.setDisabled(false);
+		}
+					
+		 
 	}
 
 	,setPreviousAsCurrent:
@@ -734,6 +780,9 @@ Ext.extend(dnet.base.AbstractDc, Ext.util.Observable, {
 	
 	,isDirty: function() {
 		return this.isStoreDirty() || this.isCurrentRecordDirty();
+	}
+	,isRecordChangeAllowed: function() {
+		return (!( this.isAnyChildDirty() || ( (!this.multiEdit) && this.isCurrentRecordDirty()) ));
 	}
 	/*********************************************************************************/
     /**************************      QUERY           *********************************/
@@ -961,9 +1010,16 @@ Ext.extend(dnet.base.AbstractDc, Ext.util.Observable, {
   ,setSelectedRecords: function (recArray) {  		 
   		if (this.selectedRecords != recArray) { 
   			this.selectedRecords = recArray;
-  			this.fireEvent('afterSelectedRecordsChanged', this ); /* to be removed in favor of the below one*/
-  			this.fireEvent('selectionChanged', { dc: this, record: this.record  } );
+  			if (Ext.isArray(this.selectedRecords) && this.selectedRecords.length > 0) {
+  				this.actions.doDeleteSelected.setDisabled(false);
+  	  			this.actions.doEdit.setDisabled(false);
+  			} else {
+  				this.actions.doDeleteSelected.setDisabled(true);
+  	  			this.actions.doEdit.setDisabled(true);
+  			}
   			
+  			this.fireEvent('afterSelectedRecordsChanged', this ); /* to be removed in favor of the below one*/
+  			this.fireEvent('selectionChanged', { dc: this, record: this.record  } );  			
   		};  		
   	}    			
   

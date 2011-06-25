@@ -69,8 +69,12 @@ dnet.base.ActionBuilder.prototype =  {
 		Ext.applyIf(cfg, { dc: this.dc});	
 		var fn = function() {
 			try {					
-				//this._getDc_(cfg.dc).doEdit(); 
-				//this._invokeTlbItem_(cfg.tlb+"__edit_sr");
+				this._getDc_(cfg.dc).doEdit(); 
+				if (cfg.view) {
+					this._getElement_(view).activate();					
+				} else {
+					this._getElement_("main").getLayout().setActiveItem(1);
+				}
 			} catch(e) { 
 				dnet.base.DcExceptions.showMessage(e);
 			}
@@ -86,14 +90,14 @@ dnet.base.ActionBuilder.prototype =  {
 		Ext.applyIf(cfg, { dc: this.dc});	
 		var fn = function() {
 			try {					
-				//this._getDc_(cfg.dc).doEdit(); 
-				//this._invokeTlbItem_(cfg.tlb+"__edit_sr");
+				this._getDc_(cfg.dc).doEdit(); 
+				this._invokeTlbItem_(cfg.tlb+"__edit_sr");
 			} catch(e) { 
 				dnet.base.DcExceptions.showMessage(e);
 			}
 		};
 		var a = this.frame._getDc_(cfg.dc).actions.doCancel;
-		a.setHandler(fn, this.frame);
+		//a.setHandler(fn, this.frame);
 		this.frame._tlbitms_.add(this.name+"__"+a.initialConfig.name, a);  //new Ext.Action(cfg)	
 		return this;
 	}
@@ -116,29 +120,13 @@ dnet.base.ActionBuilder.prototype =  {
 	 
      
 	,addSave: function(config) {
-		var cfg = config||{};
-		var name = cfg.name || "save";
-		Ext.applyIf(cfg, { id:Ext.id(), _name_:name, name:name, disabled: true
-			,text:Dnet.translate("tlbitem", name+"__lbl")
-			,tooltip: Dnet.translate("tlbitem", name+"__tlp")
-			,iconCls: "icon-action-save"
-			,scope:	this.frame
-			,dc: this.dc
-			,tlb: this.name
-		});
-		var fn = function() {
-				try {										 
-					this._getDc_(cfg.dc).doSave(); 					 
-				} catch(e) { 
-					dnet.base.DcExceptions.showMessage(e);
-				}
-			};
-			cfg.handler = fn;	
-		this.frame._tlbitms_.add(this.name+"__"+cfg.name, new Ext.Action(cfg)); 
-		 
+		var cfg = config||{};		
+		Ext.applyIf(cfg, { dc: this.dc });	
+		var a = this.frame._getDc_(cfg.dc).actions.doSave;
+		this.frame._tlbitms_.add(this.name+"__"+a.initialConfig.name, a);    
 		return this;	
 	}
- 
+	
 	,addSeparator: function() {
 		if(this.sepIdx == null) {
 			this.sepIdx = 0;
@@ -153,15 +141,31 @@ dnet.base.ActionBuilder.prototype =  {
 					return (k.indexOf(n+"__") != -1); 
 				} )
 		this.frame._tlbs_.add(this.name , t.getRange() ); 
+		return this.frame._getBuilder_();
 	} 
 	
-	
-	
-	
-	
-	
-	
-	
-	
+	,addBack: function(config) {
+		var cfg = config||{
+			 name:"doBack",iconCls: "icon-action-back", disabled: false, id:Ext.id()
+       		,text: Dnet.translate("tlbitem", "back__lbl")
+   			,tooltip: Dnet.translate("tlbitem", "back__tlp") 
+   			
+		};	
+		var fn = function() {
+			try {					
+				this._getElement_("main").getLayout().setActiveItem(0); 
+				 
+			} catch(e) { 
+				dnet.base.DcExceptions.showMessage(e);
+			}
+		}
+		cfg.handler = fn;
+		cfg.scope=this.frame;
+		//Ext.applyIf(cfg, { dc: this.dc });	
+		var a = new Ext.Action(cfg) ;
+		this.frame._tlbitms_.add(this.name+"__"+a.initialConfig.name, a);    
+		return this;	
+	}
+ 
 	
 }

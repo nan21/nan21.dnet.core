@@ -12,7 +12,7 @@ dnet.base.AbstractDcvForm = Ext.extend( Ext.form.FormPanel, {
     ,_noEdit_ : null
     ,_builder_: null
 	,_dcViewType_:"edit-form"
-
+	,_bindable_: true	
 		
 	,initComponent: function(config) {
 		if (this._noInsert_ == null) this._noInsert_ = [];
@@ -64,6 +64,7 @@ dnet.base.AbstractDcvForm = Ext.extend( Ext.form.FormPanel, {
 		this.on({  scope: this ,afterrender: function() { 
 			this.updateBound(this._controller_.getRecord()); 
 		}   });
+		this._controller_.addBindedView(this.id);
 	}
 
     ,_startDefine_: function () {}
