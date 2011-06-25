@@ -45,6 +45,8 @@
     <script type="text/javascript" src="${urlUiExtjsCore}/src/core/dc/DcvFormBuilder.js"></script>
     <script type="text/javascript" src="${urlUiExtjsCore}/src/core/dc/DcvGridBuilder.js"></script>
     <script type="text/javascript" src="${urlUiExtjsCore}/src/core/dc/DcvEditableGridBuilder.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/src/core/ui/FrameBuilder.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/src/core/ui/ActionBuilder.js"></script>
     
     <script type="text/javascript" src="${urlUiExtjsCore}/src/core/dc/DcContext.js"></script>
     <script type="text/javascript" src="${urlUiExtjsCore}/src/core/dc/DcExceptions.js"></script>

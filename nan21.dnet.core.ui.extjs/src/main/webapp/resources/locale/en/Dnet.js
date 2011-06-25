@@ -12,57 +12,39 @@ dnet.Translation = Ext.apply({},{
 
         ,save__lbl : "Save"
 		,save__tlp : "Save changes."
-
-        ,save_mr__lbl : "Save"
-		,save_mr__tlp : "Save changes."
-
+ 
         // *******************  Standard actions for SINGLE-RECORD data-control ******************
 
-		,edit_sr__lbl : "Edit"
-		,edit_sr__tlp : "Toogle edit mode for the current record."
+		,edit__lbl : "Edit"
+		,edit__tlp : "Toogle edit mode for the current record."
 
-		,new_sr__lbl : "New"
-		,new_sr__tlp : "Create new record"
+		,new__lbl : "New"
+		,new__tlp : "Create new record"
 
-		,copy_sr__lbl : "Copy"
-		,copy_sr__tlp : "Create a copy of the current record."
+		,copy__lbl : "Copy"
+		,copy__tlp : "Create a copy of the current record."
 		
-		,next_rec_sr__lbl : "Next"
-		,next_rec_sr__tlp : "Go to next selected record or next available record if no selection."
+		,next_rec__lbl : "Next"
+		,next_rec__tlp : "Go to next selected record or next available record if no selection."
 
-		,prev_rec_sr__lbl : "Previous"
-		,prev_rec_sr__tlp : "Go to previous selected record or previous available record if no selection."
+		,prev_rec__lbl : "Previous"
+		,prev_rec__tlp : "Go to previous selected record or previous available record if no selection."
 
-		,delete_current_sr__lbl : "Delete"
-		,delete_current_sr__tlp : "Delete current record."
+		,delete_current__lbl : "Delete"
+		,delete_current__tlp : "Delete current record."
 		
-		,delete_selected_sr__lbl : "Delete"
-		,delete_selected_sr__tlp : "Delete selected records."
+		,delete_selected__lbl : "Delete"
+		,delete_selected__tlp : "Delete selected records."
 
-        ,rollback_sr__lbl : "Cancel"
-		,rollback_sr__tlp : "Cancel all changes made to all records since the last save or load."
+        ,cancel__lbl : "Cancel"
+		,cancel__tlp : "Cancel all changes made to all records since the last save or load."
 
-		,back_sr__lbl : "Back"
-		,back_sr__tlp : "Back to previous canvas."
+		,back__lbl : "Back"
+		,back__tlp : "Back to previous canvas."
 
         // *******************  Standard actions for MULTI-RECORD data-control ******************
 
-        ,new_mr__lbl : "New"
-		,new_mr__tlp : "Create new record"
-		
-		,copy_mr__lbl : "Copy"
-		,copy_mr__tlp : "Create a copy of the current record."
-
-        ,delete_mr__lbl : "Remove"
-		,delete_mr__tlp : "Remove selected records from list. Removed records are deleted from database after `Save`."
-
-        ,rollback_mr__lbl : "Cancel"
-		,rollback_mr__tlp : "Cancel all changes made to all records since the last save or load."
-
-		,back_mr__lbl : "Back"
-		,back_mr__tlp : "Back to previous canvas."
-
-
+       
 
 	}
     ,appmenuitem: {

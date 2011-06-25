@@ -13,53 +13,40 @@ dnet.Translation = Ext.apply({},{
         ,save__lbl : "Salvează"
 		,save__tlp : "Salvează modificările."                  
 
-		,save_mr__lbl : "Salvează"
-		,save_mr__tlp : "Salvează modificările."
+		,save__lbl : "Salvează"
+		,save__tlp : "Salvează modificările."
         // *******************  Standard actions for SINGLE-RECORD data-control ******************
 
-		,edit_sr__lbl : "Modifică"
-		,edit_sr__tlp : "Afisează formularul de modificare."
+		,edit__lbl : "Modifică"
+		,edit__tlp : "Afisează formularul de modificare."
 
-		,new_sr__lbl : "Crează"
-		,new_sr__tlp : "Crează înregistrare nouă"
+		,new__lbl : "Crează"
+		,new__tlp : "Crează înregistrare nouă"
 
-		,copy_sr__lbl : "Copiază"
-		,copy_sr__tlp : "Copiază înregistrarea curentă"
+		,copy__lbl : "Copiază"
+		,copy__tlp : "Copiază înregistrarea curentă"
 
-		,next_rec_sr__lbl : "Următor"
-		,next_rec_sr__tlp : "Incarcă înregistrarea următoare din cele selectate sau următoare disponibilă dacă nu există selecţie multiplă"
+		,next_rec__lbl : "Următor"
+		,next_rec__tlp : "Incarcă înregistrarea următoare din cele selectate sau următoare disponibilă dacă nu există selecţie multiplă"
 
-		,prev_rec_sr__lbl : "Anterior"
-		,prev_rec_sr__tlp : "Incarcă înregistrarea anterioară din cele selectate sau cea anterioră disponibilă dacă nu există selecţie multiplă"
+		,prev_rec__lbl : "Anterior"
+		,prev_rec__tlp : "Incarcă înregistrarea anterioară din cele selectate sau cea anterioră disponibilă dacă nu există selecţie multiplă"
 
-		,delete_current_sr__lbl : "Sterge"
-		,delete_current_sr__tlp : "Sterge înregistrarea curentă"
+		,delete_current__lbl : "Sterge"
+		,delete_current__tlp : "Sterge înregistrarea curentă"
 
-		,delete_selected_sr__lbl : "Sterge"
-		,delete_selected_sr__tlp : "Sterge înregistrările selectate"
+		,delete_selected__lbl : "Sterge"
+		,delete_selected__tlp : "Sterge înregistrările selectate"
 
-        ,rollback_sr__lbl : "Anulează"
-		,rollback_sr__tlp : "Anulează modificările utilizatorului."
+        ,cancel__lbl : "Anulează"
+		,cancel__tlp : "Anulează modificările utilizatorului."
 
-		,back_sr__lbl : "Înapoi"
-		,back_sr__tlp : "Înapoi."
+		,back__lbl : "Înapoi"
+		,back__tlp : "Înapoi."
 
         // *******************  Standard actions for MULTI-RECORD data-control ******************
 
-        ,new_mr__lbl : "Crează"
-		,new_mr__tlp : "Crează înregistrare nouă"
-
-		,copy_mr__lbl : "Copiază"
-		,copy_mr__tlp : "Copiază înregistrarea curentă"
-
-        ,delete_mr__lbl : "Sterge"
-		,delete_mr__tlp : "Sterge înregistrările selectate din listă. Se vor șterge și din baza de date doar după `Salvează`."
-
-        ,rollback_mr__lbl : "Anulează"
-		,rollback_mr__tlp : "Anulează modificările utilizatorului."
-
-		,back_mr__lbl : "Înapoi"
-		,back_mr__tlp : "Înapoi."
+        
 
 	}
 

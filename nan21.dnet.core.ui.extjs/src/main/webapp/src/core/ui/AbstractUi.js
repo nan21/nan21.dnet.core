@@ -16,7 +16,7 @@ dnet.base.AbstractUi = Ext.extend( Ext.Panel, {
 	 ,_statusBar_: null
 	 
 	 ,_header_: null
-	 
+	 ,_builder_: null
 	,initComponent: function() {
 		 this._mainViewName_= "main";
 		 
@@ -45,43 +45,37 @@ dnet.base.AbstractUi = Ext.extend( Ext.Panel, {
         this._startDefine_();
 
 		/* define data-controls */
-		if (this._beforeDefineDcs_()) {
+		if (this._beforeDefineDcs_() !== false) {
 		   this._defineDcs_();
            this._afterDefineDcs_();
 		}
-
-		/* define model relations */
-		if (this._beforeDefineDcRelations_()) {
-		   this._defineDcRelations_();
-           this._afterDefineDcRelations_();
-		}
-
+  
         /* define toolbars */
-        if (this._beforeDefineActions_()) {
+        if (this._beforeDefineActions_()!== false) {
 		   this._defineActions_();
            this._afterDefineActions_();
 		}
 
         /* define toolbars */
-        if (this._beforeDefineToolbars_()) {
+        if (this._beforeDefineToolbars_()!== false) {
 		   this._defineToolbars_();
            this._afterDefineToolbars_();
 		}
 
         /* define stand-alone user-interface elements */
-		if (this._beforeDefineElements_()) {
+		if (this._beforeDefineElements_()!== false) {
 		   this._defineElements_();
            this._afterDefineElements_();
 		}
 
         /* build the ui, linking elements */
-		if (this._beforeLinkElements_()) {
+		if (this._beforeLinkElements_()!== false) {
 		   this._linkElements_();
            this._afterLinkElements_();
 		}
 
         /* setup model-view binding behaviour */
-		if (this._beforeDefineBindings_()) {
+		if (this._beforeDefineBindings_()!== false) {
 		   this._defineBindings_();
            this._afterDefineBindings_();
 		}
@@ -219,6 +213,14 @@ dnet.base.AbstractUi = Ext.extend( Ext.Panel, {
 			this._getElement_(svn).getLayout().setActiveItem(this._getElement_(idx));
 		}
 	}
+    
+    ,_getBuilder_: function() {
+		if (this._builder_ == null) {
+			this._builder_ = new dnet.base.FrameBuilder({frame: this});
+		}	
+		return this._builder_;
+	}
+    
 });
 /*
 	define the key as one of the following:

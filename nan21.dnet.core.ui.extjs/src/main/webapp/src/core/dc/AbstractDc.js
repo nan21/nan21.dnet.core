@@ -30,6 +30,8 @@ dnet.base.AbstractDc = function(config) {
 	this.paramFields = null;
 	this.paramModel = null;
 
+	this.actions = null;
+	
     this._trl_ = null;
 	this.selectedRecords = [];
 	this.children = [];
@@ -105,6 +107,52 @@ Ext.extend(dnet.base.AbstractDc, Ext.util.Observable, {
 				this.fireEvent("recordChanged", { dc: this, record: this.record, state: 'clean', status:this.getRecordStatus(), oldRecord: null }); 
 			}
 		},this);
+        this.actions = {};         
+        this.actions.doQuery = new Ext.Action({ name:"doQuery",iconCls: "icon-action-fetch", disabled: false
+        		,text: Dnet.translate("tlbitem", "load__lbl"), tooltip: Dnet.translate("tlbitem", "load__tlp")    			
+    			,scope:this, handler: function() { try { this.doQuery(); } catch(e) { dnet.base.DcExceptions.showMessage(e);}}
+        	});	
+        this.actions.doNew = new Ext.Action({ name:"doNew",iconCls: "icon-action-new", disabled: false
+       		,text: Dnet.translate("tlbitem", "new__lbl")
+   			,tooltip: Dnet.translate("tlbitem", "new__tlp")   			
+   			,scope:this, handler: this.doNew
+       	});	
+        this.actions.doSave = new Ext.Action({ name:"doSave",iconCls: "icon-action-save", disabled: false
+       		,text: Dnet.translate("tlbitem", "save__lbl")
+   			,tooltip: Dnet.translate("tlbitem", "save__tlp")   			
+   			,scope:this, handler: this.doSave
+       	});	
+        this.actions.doCopy = new Ext.Action({ name:"doCopy",iconCls: "icon-action-copy", disabled: false
+       		,text: Dnet.translate("tlbitem", "copy__lbl")
+   			,tooltip: Dnet.translate("tlbitem", "copy__tlp")   			
+   			,scope:this, handler: this.doCopy
+       	});	 
+        this.actions.doDeleteSelected = new Ext.Action({ name:"deleteSelected",iconCls: "icon-action-delete", disabled: false
+       		,text: Dnet.translate("tlbitem", "delete_selected__lbl")
+   			,tooltip: Dnet.translate("tlbitem", "delete_selected__tlp")   			
+   			,scope:this, handler: this.confirmDeleteSelection
+       	});
+        this.actions.doEdit = new Ext.Action({ name:"doEdit",iconCls: "icon-action-edit", disabled: false
+       		,text: Dnet.translate("tlbitem", "edit__lbl")
+   			,tooltip: Dnet.translate("tlbitem", "edit__tlp")   			
+   			,scope:this, handler: function() {}
+       	});	
+        this.actions.doCancel = new Ext.Action({ name:"doCancel",iconCls: "icon-action-rollback", disabled: false
+       		,text: Dnet.translate("tlbitem", "cancel__lbl")
+   			,tooltip: Dnet.translate("tlbitem", "cancel__tlp")   			
+   			,scope:this, handler: function() {this.discardChanges();}
+       	});
+        
+        this.actions.doPrevRec = new Ext.Action({ name:"doPrevRec",iconCls: "icon-action-previous", disabled: false
+       		,text: Dnet.translate("tlbitem", "prev_rec__lbl")
+   			,tooltip: Dnet.translate("tlbitem", "prev_rec__tlp")   			
+   			,scope:this, handler: function() {this.discardChanges();}
+       	});
+        this.actions.doNextRec = new Ext.Action({ name:"doNextRec",iconCls: "icon-action-next", disabled: false
+       		,text: Dnet.translate("tlbitem", "next_rec__lbl")
+   			,tooltip: Dnet.translate("tlbitem", "next_rec__tlp")   			
+   			,scope:this, handler: function() {this.discardChanges();}
+       	});
         
 	}
 
@@ -208,7 +256,7 @@ Ext.extend(dnet.base.AbstractDc, Ext.util.Observable, {
 			,afterDoGetSummariesFailure: function() {this.fireEvent("afterDoGetSummariesFailure",this);}
 		*/
 
-	,doNew: function(){ this.doNewImpl(); }	  
+	,doNew: function(){ this.doNewImpl();}	  
 		,beforeDoNew: function() {this.fireEvent("beforeDoNew",this);}	
 		,afterDoNew: function() {this.fireEvent("afterDoNew",this); }
 
@@ -220,7 +268,7 @@ Ext.extend(dnet.base.AbstractDc, Ext.util.Observable, {
 	,doSave: function(){ this.doSaveImpl();}
 		,beforeDoSave: function() {this.fireEvent("beforeDoSave",this);}	
 		,afterDoSave: function() {this.fireEvent("afterDoSave",this);}
-        	,afterDoSaveSuccess: function() {this.fireEvent("afterDoSaveSuccess",this);}
+        	,afterDoSaveSuccess: function() {this.fireEvent("afterDoSaveSuccess",this);this.actions.doQuery.setDisabled(false);}
 			,afterDoSaveFailure: function() {this.fireEvent("afterDoSaveFailure",this);}
 
 	,doDelete: function(){ this.doDeleteImpl(); }
