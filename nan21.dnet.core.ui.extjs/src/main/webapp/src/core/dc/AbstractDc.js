@@ -113,53 +113,7 @@ Ext.extend(dnet.base.AbstractDc, Ext.util.Observable, {
 				this.fireEvent("recordChanged", { dc: this, record: this.record, state: 'clean', status:this.getRecordStatus(), oldRecord: null }); 
 			}
 		},this);
-        this.actions = {};         
-        this.actions.doQuery = new Ext.Action({ name:"doQuery",iconCls: "icon-action-fetch", disabled: false
-        		,text: Dnet.translate("tlbitem", "load__lbl"), tooltip: Dnet.translate("tlbitem", "load__tlp")    			
-    			,scope:this, handler: function() { try { this.doQuery(); } catch(e) { dnet.base.DcExceptions.showMessage(e);}}
-        	});	
-        this.actions.doNew = new Ext.Action({ name:"doNew",iconCls: "icon-action-new", disabled: false
-       		,text: Dnet.translate("tlbitem", "new__lbl")
-   			,tooltip: Dnet.translate("tlbitem", "new__tlp")   			
-   			,scope:this, handler: this.doNew
-       	});	
-        this.actions.doSave = new Ext.Action({ name:"doSave",iconCls: "icon-action-save", disabled: true
-       		,text: Dnet.translate("tlbitem", "save__lbl")
-   			,tooltip: Dnet.translate("tlbitem", "save__tlp")   			
-   			,scope:this, handler: this.doSave
-       	});	
-        this.actions.doCopy = new Ext.Action({ name:"doCopy",iconCls: "icon-action-copy", disabled: true
-       		,text: Dnet.translate("tlbitem", "copy__lbl")
-   			,tooltip: Dnet.translate("tlbitem", "copy__tlp")   			
-   			,scope:this, handler: this.doCopy
-       	});	 
-        this.actions.doDeleteSelected = new Ext.Action({ name:"deleteSelected",iconCls: "icon-action-delete", disabled: true
-       		,text: Dnet.translate("tlbitem", "delete_selected__lbl")
-   			,tooltip: Dnet.translate("tlbitem", "delete_selected__tlp")   			
-   			,scope:this, handler: this.confirmDeleteSelection
-       	});
-        this.actions.doEdit = new Ext.Action({ name:"doEdit",iconCls: "icon-action-edit", disabled: true
-       		,text: Dnet.translate("tlbitem", "edit__lbl")
-   			,tooltip: Dnet.translate("tlbitem", "edit__tlp")   			
-   			,scope:this, handler: function() {}
-       	});	
-        this.actions.doCancel = new Ext.Action({ name:"doCancel",iconCls: "icon-action-rollback", disabled: true
-       		,text: Dnet.translate("tlbitem", "cancel__lbl")
-   			,tooltip: Dnet.translate("tlbitem", "cancel__tlp")   			
-   			,scope:this, handler: function() {this.discardChanges();}
-       	});
-        
-        this.actions.doPrevRec = new Ext.Action({ name:"doPrevRec",iconCls: "icon-action-previous", disabled: false
-       		,text: Dnet.translate("tlbitem", "prev_rec__lbl")
-   			,tooltip: Dnet.translate("tlbitem", "prev_rec__tlp")   			
-   			,scope:this, handler: function() { try { this.setPreviousAsCurrent();  } catch(e) { dnet.base.DcExceptions.showMessage(e); }}
-       	});
-        this.actions.doNextRec = new Ext.Action({ name:"doNextRec",iconCls: "icon-action-next", disabled: false
-       		,text: Dnet.translate("tlbitem", "next_rec__lbl")
-   			,tooltip: Dnet.translate("tlbitem", "next_rec__tlp")   			
-   			,scope:this, handler: function() { try { this.setNextAsCurrent();  } catch(e) { dnet.base.DcExceptions.showMessage(e); }}
-       	});
-        
+        this.actions = dnet.base.DcActionsFactory.createActions(this);
 	}
 
 	,addChild: function (dc) {
@@ -251,11 +205,19 @@ Ext.extend(dnet.base.AbstractDc, Ext.util.Observable, {
 		this.actions.doQuery.setDisabled(true);
 		this.actions.doCancel.setDisabled(false);
 		this.actions.doSave.setDisabled(false);
-		if(!this.isRecordChangeAllowed()) {
-			this.actions.doNew.setDisabled(true);
-			this.actions.doPrevRec.setDisabled(true);
-			this.actions.doNextRec.setDisabled(true);			
-		}
+		this.actions.doCopy.setDisabled(true);
+		
+		if (this.multiEdit) {
+			this.actions.doNew.setDisabled(false);
+			this.actions.doPrevRec.setDisabled(false);
+			this.actions.doNextRec.setDisabled(false);			
+		} else {
+			if(!this.isRecordChangeAllowed()) {
+				this.actions.doNew.setDisabled(true);
+				this.actions.doPrevRec.setDisabled(true);
+				this.actions.doNextRec.setDisabled(true);			
+			}
+		}		 
 		this.fireEvent("dirtyRecord",this); /* to be removed in favor of recordStateChanged  */
 		this.fireEvent("recordChanged" , { dc: this, record: this.record, state: 'dirty', status:this.getRecordStatus(), oldRecord: null } );		 
 	}
@@ -654,10 +616,27 @@ Ext.extend(dnet.base.AbstractDc, Ext.util.Observable, {
 	,setDcContext: function(dcCtx) {
 		this.dcContext = dcCtx;
         this.dcContext.on("dataContextChanged", function(dctx) { 
+        	if ( dctx.parentDc.getRecord() == null ) {
+        		this.actions.doQuery.setDisabled(true);
+				this.actions.doCancel.setDisabled(true);
+				this.actions.doSave.setDisabled(true);
+				this.actions.doNew.setDisabled(true);
+				this.actions.doDeleteSelected.setDisabled(true);  
+				return true;
+        	}
 			if (dctx.parentDc.getRecord() && dctx.parentDc.getRecord().phantom) { 
 				this.fireEvent("inContextOfNewRecord", this);
+				
+				this.actions.doQuery.setDisabled(true);
+				this.actions.doCancel.setDisabled(true);
+				this.actions.doSave.setDisabled(true);
+				this.actions.doNew.setDisabled(true);
+				this.actions.doDeleteSelected.setDisabled(true);
+				  
 			}  else {
                 this.fireEvent("inContextOfEditRecord", this);
+                this.actions.doQuery.setDisabled(false);
+                this.actions.doNew.setDisabled(false);
 			}
 		}  , this);
 	}
@@ -718,8 +697,7 @@ Ext.extend(dnet.base.AbstractDc, Ext.util.Observable, {
 			this.actions.doPrevRec.setDisabled(false);
 			this.actions.doNextRec.setDisabled(false);
 		}
-					
-		 
+		this.actions.doCopy.setDisabled(false);		 
 	}
 
 	,setPreviousAsCurrent:
@@ -1013,9 +991,15 @@ Ext.extend(dnet.base.AbstractDc, Ext.util.Observable, {
   			if (Ext.isArray(this.selectedRecords) && this.selectedRecords.length > 0) {
   				this.actions.doDeleteSelected.setDisabled(false);
   	  			this.actions.doEdit.setDisabled(false);
+  	  			if( this.selectedRecords.length == 1 && !this.isCurrentRecordDirty() ) {
+  	  				this.actions.doCopy.setDisabled(false);
+  	  			} else {
+  	  				this.actions.doCopy.setDisabled(true);
+  	  			}
   			} else {
   				this.actions.doDeleteSelected.setDisabled(true);
   	  			this.actions.doEdit.setDisabled(true);
+  	  			this.actions.doCopy.setDisabled(true);
   			}
   			
   			this.fireEvent('afterSelectedRecordsChanged', this ); /* to be removed in favor of the below one*/
@@ -1052,7 +1036,11 @@ Ext.extend(dnet.base.AbstractDc, Ext.util.Observable, {
   				 changed=(oldrec!=null);
   			}  		
   		if(changed) { 
-  			 			 
+  			if ( this.isCurrentRecordDirty() ) {
+  				this.actions.doCopy.setDisabled(true);
+  			} else {
+  				this.actions.doCopy.setDisabled(false);
+  			}
   			this.fireEvent('afterCurrentRecordChange', { dc: this, newRecord: rec, oldRecord:oldrec, newIdx:idx , status: this.getRecordStatus() });
   			this.fireEvent("recordChanged" , { dc: this, record: this.record, state: this.getRecordState(), status:this.getRecordStatus(), oldRecord: oldrec, newIdx:idx } );
   			//this.fireEvent('recordStatusChanged', { dc: this, record: rec, status: this.getRecordStatus() });  			

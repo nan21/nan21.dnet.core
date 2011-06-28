@@ -48,6 +48,7 @@
     <script type="text/javascript" src="${urlUiExtjsCore}/src/core/ui/FrameBuilder.js"></script>
     <script type="text/javascript" src="${urlUiExtjsCore}/src/core/ui/ActionBuilder.js"></script>
     
+    <script type="text/javascript" src="${urlUiExtjsCore}/src/core/dc/DcActionsFactory.js"></script>    
     <script type="text/javascript" src="${urlUiExtjsCore}/src/core/dc/DcContext.js"></script>
     <script type="text/javascript" src="${urlUiExtjsCore}/src/core/dc/DcExceptions.js"></script>
 
