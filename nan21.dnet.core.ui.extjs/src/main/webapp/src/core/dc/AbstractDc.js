@@ -667,9 +667,8 @@ Ext.extend(dnet.base.AbstractDc, Ext.util.Observable, {
 			      this.setCurrentRecord(null);
 			   }
 		}
-		/* to be removed the cleanRecord event */ 
+		/*TODO: remove the cleanRecord in favor of recordChanged */ 
 		this.fireEvent("cleanRecord" , this); 
-		//this.fireEvent("recordStateChanged" , { dc: this, record: this.record, state: 'clean' } );
 		this.fireEvent("recordChanged" , { dc: this, record: this.record, state: this.getRecordState(), status:this.getRecordStatus(), oldRecord: null  } );
 	}
 	,discardChildrenChanges: function () {
@@ -680,10 +679,9 @@ Ext.extend(dnet.base.AbstractDc, Ext.util.Observable, {
 			}
 		}
 		/* to be removed the cleanRecord event */ 
-		this.fireEvent("cleanRecord" , this); 
+		//this.fireEvent("cleanRecord" , this); 
 		//this.fireEvent("recordStateChanged" , { dc: this, record: this.record, state: 'clean' } );
-		this.fireEvent("recordChanged" , { dc: this, record: this.record, state: this.getRecordState(), status:this.getRecordStatus(), oldRecord: null  } );
-		
+		//this.fireEvent("recordChanged" , { dc: this, record: this.record, state: this.getRecordState(), status:this.getRecordStatus(), oldRecord: null  } );		
 	}
 	,discardChanges: function () {
 		this.discardChildrenChanges();

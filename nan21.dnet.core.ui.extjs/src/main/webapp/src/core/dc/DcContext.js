@@ -46,6 +46,8 @@ Ext.extend(dnet.base.DcContext, Ext.util.Observable, {
 		//this.childDc.on("beforeDoNew", this._checkParentIsNew_, this);
 		//this.childDc.on("beforeDoCopy", this._checkParentIsNew_, this);
 		//this.childDc.on("afterDoNew", this._onChildModified_,  this);
+		
+		
 		this.childDc.store.on("beforeload", this._checkParentIsNew_, this);
 		this.parentDc.store.on("write", function(store, action, result, tx, recs) {			 
 				this._updateCtxData_("afterDoSave");

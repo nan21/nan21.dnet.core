@@ -25,35 +25,22 @@ dnet.base.ActionBuilder.prototype =  {
 		return this;
 	}
 	,addNew: function(config) {
-		var cfg = config||{};		 
-		Ext.applyIf(cfg, { dc: this.dc});	
-		var fn = function() {
-			try {					
-				this._getDc_(cfg.dc).doNew(); 
-				//this._invokeTlbItem_(cfg.tlb+"__edit_sr");
-			} catch(e) { 
-				dnet.base.DcExceptions.showMessage(e);
-			}
-		};
+		var cfg = config||{};		
+		Ext.applyIf(cfg, { dc: this.dc, tlb:this.name });		  
 		var a = this.frame._getDc_(cfg.dc).actions.doNew;
-		a.setHandler(fn, this.frame);
-		this.frame._tlbitms_.add(this.name+"__"+a.initialConfig.name , a);  //new Ext.Action(cfg)	
-		return this;
+		this.frame._tlbitms_.add(this.name+"__"+a.initialConfig.name, a);  //new Ext.Action(cfg)
+		if (cfg.autoEdit) {
+			this.frame._getDc_(cfg.dc).on('afterDoNew', function() {
+				this._invokeTlbItem_("doEdit", cfg.tlb);
+			}, this.frame);
+		}		
+		return this;		
 	}
 	
 	,addCopy: function(config) {
-		var cfg = config||{};		 
-		Ext.applyIf(cfg, { dc: this.dc});	
-		var fn = function() {
-			try {					
-				this._getDc_(cfg.dc).doCopy(); 
-				//this._invokeTlbItem_(cfg.tlb+"__edit_sr");
-			} catch(e) { 
-				dnet.base.DcExceptions.showMessage(e);
-			}
-		};
+		var cfg = config||{};		
+		Ext.applyIf(cfg, { dc: this.dc });		  
 		var a = this.frame._getDc_(cfg.dc).actions.doCopy;
-		a.setHandler(fn, this.frame);
 		this.frame._tlbitms_.add(this.name+"__"+a.initialConfig.name, a);  //new Ext.Action(cfg)	
 		return this;
 	}
@@ -66,14 +53,15 @@ dnet.base.ActionBuilder.prototype =  {
 	}
 	,addEdit: function(config) {
 		var cfg = config||{};		 
-		Ext.applyIf(cfg, { dc: this.dc});	
+		Ext.applyIf(cfg, { dc: this.dc, tlb:this.name});	
 		var fn = function() {
 			try {					
-				this._getDc_(cfg.dc).doEdit(); 
-				if (cfg.view) {
-					this._getElement_(view).activate();					
+				//this._getDc_(cfg.dc).doEdit();
+				var ct = (cfg.inContainer )? this._getElement_(cfg.inContainer):this._getElement_(this._mainViewName_);				
+				if (cfg.showView ) {
+					ct.getLayout().setActiveItem( this._getElementConfig_(cfg.showView).id );				
 				} else {
-					this._getElement_("main").getLayout().setActiveItem(1);
+					ct.getLayout().setActiveItem(1);
 				}
 			} catch(e) { 
 				dnet.base.DcExceptions.showMessage(e);
@@ -81,25 +69,27 @@ dnet.base.ActionBuilder.prototype =  {
 		};
 		var a = this.frame._getDc_(cfg.dc).actions.doEdit;
 		a.setHandler(fn, this.frame);
-		this.frame._tlbitms_.add(this.name+"__"+a.initialConfig.name, a);  //new Ext.Action(cfg)	
+		this.frame._tlbitms_.add(this.name+"__"+a.initialConfig.name, a);
+		
+		this.frame._getDc_(cfg.dc).on("onEdit", function() {
+			this._invokeTlbItem_("doEdit", cfg.tlb);			
+		} , this.frame);
 		return this;
 	}
 	
 	,addCancel: function(config) {
-		var cfg = config||{};		 
-		Ext.applyIf(cfg, { dc: this.dc});	
-		var fn = function() {
-			try {					
-				this._getDc_(cfg.dc).doEdit(); 
-				this._invokeTlbItem_(cfg.tlb+"__edit_sr");
-			} catch(e) { 
-				dnet.base.DcExceptions.showMessage(e);
-			}
-		};
+		var cfg = config||{};		
+		Ext.applyIf(cfg, { dc: this.dc, tlb:this.name });		  
 		var a = this.frame._getDc_(cfg.dc).actions.doCancel;
-		//a.setHandler(fn, this.frame);
-		this.frame._tlbitms_.add(this.name+"__"+a.initialConfig.name, a);  //new Ext.Action(cfg)	
-		return this;
+		this.frame._tlbitms_.add(this.name+"__"+a.initialConfig.name, a); 
+		if (cfg.autoBack) {
+			this.frame._getDc_(cfg.dc).on('recordChanged', function(event) {
+				if(event.record ==null) {
+					this._invokeTlbItem_("doBack", cfg.tlb);
+				}				
+			}, this.frame);
+		}		
+		return this;		 
 	}
 	
 	
@@ -145,15 +135,20 @@ dnet.base.ActionBuilder.prototype =  {
 	} 
 	
 	,addBack: function(config) {
-		var cfg = config||{
+		var cfg = config||{};
+		Ext.applyIf(cfg,{
 			 name:"doBack",iconCls: "icon-action-back", disabled: false, id:Ext.id()
        		,text: Dnet.translate("tlbitem", "back__lbl")
-   			,tooltip: Dnet.translate("tlbitem", "back__tlp") 
-   			
-		};	
+   			,tooltip: Dnet.translate("tlbitem", "back__tlp")    			
+		});			
 		var fn = function() {
 			try {					
-				this._getElement_("main").getLayout().setActiveItem(0); 
+				var ct = (cfg.inContainer )? this._getElement_(cfg.inContainer):this._getElement_(this._mainViewName_);				
+				if (cfg.showView ) {
+					ct.getLayout().setActiveItem( this._getElementConfig_(cfg.showView).id );				
+				} else {
+					ct.getLayout().setActiveItem(0);
+				}
 				 
 			} catch(e) { 
 				dnet.base.DcExceptions.showMessage(e);

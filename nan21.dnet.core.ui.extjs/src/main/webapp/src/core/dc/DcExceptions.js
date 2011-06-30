@@ -36,7 +36,7 @@ dnet.base.DcExceptions = function(){
 	            if (t=="W")  this.showWarning(Dnet.translate("exception",m));
 	            return;
 			}
-            if (Ext.isObject(e)) {   alert( "object: " + e);
+            if (e.message) {  // alert( "object: " + e);
 				var m = e.name+": "+e.message + "<br>" + e.fileName + " line " + e.lineNumber;
 				this.showError(Dnet.translate("exception",e));
 			}
