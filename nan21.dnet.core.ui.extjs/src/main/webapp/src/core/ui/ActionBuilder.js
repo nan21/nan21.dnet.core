@@ -26,7 +26,7 @@ dnet.base.ActionBuilder.prototype =  {
 	}
 	,addNew: function(config) {
 		var cfg = config||{};		
-		Ext.applyIf(cfg, { dc: this.dc, tlb:this.name });		  
+		Ext.applyIf(cfg, { dc: this.dc, tlb:this.name, autoEdit:true });		  
 		var a = this.frame._getDc_(cfg.dc).actions.doNew;
 		this.frame._tlbitms_.add(this.name+"__"+a.initialConfig.name, a);  //new Ext.Action(cfg)
 		if (cfg.autoEdit) {
@@ -79,7 +79,7 @@ dnet.base.ActionBuilder.prototype =  {
 	
 	,addCancel: function(config) {
 		var cfg = config||{};		
-		Ext.applyIf(cfg, { dc: this.dc, tlb:this.name });		  
+		Ext.applyIf(cfg, { dc: this.dc, tlb:this.name, autoBack:true });		  
 		var a = this.frame._getDc_(cfg.dc).actions.doCancel;
 		this.frame._tlbitms_.add(this.name+"__"+a.initialConfig.name, a); 
 		if (cfg.autoBack) {
