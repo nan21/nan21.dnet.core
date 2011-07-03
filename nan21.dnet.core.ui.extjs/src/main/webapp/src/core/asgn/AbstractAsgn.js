@@ -2,10 +2,10 @@
 Ext.ns("dnet.base");
 dnet.base.AbstractAsgn = function(config) {
 
-  	this.dsName = null
+  	//this.dsName = null
 	this.storeLeft = null
 	this.storeRight = null
-	this.recordFields = null;
+	//this.recordFields = null;
 
 	this.tuning = {
 			 queryDelay: 150 // nr of milliseconds before execute the query. Used if value>0	
@@ -26,7 +26,7 @@ dnet.base.AbstractAsgn = function(config) {
 	       ,proxy: new Ext.data.HttpProxy({
 			        api: Dnet.asgnLeftAPI(this.dsName,"json")
 			    })
-   			,reader: new Ext.data.JsonReader(
+ 			,reader: new Ext.data.JsonReader(
 			   		 {totalProperty: 'totalCount',idProperty: 'id',root: 'data',messageProperty: 'message'}
 					,Ext.data.Record.create(this.recordFields))
 	       , writer: new Ext.data.JsonWriter({ encode: true, writeAllFields: true })  
@@ -41,7 +41,7 @@ dnet.base.AbstractAsgn = function(config) {
 	       ,proxy: new Ext.data.HttpProxy({
 			        api: Dnet.asgnRightAPI(this.dsName,"json")
 			    })
-   			,reader: new Ext.data.JsonReader(
+ 			,reader: new Ext.data.JsonReader(
 			   		 {totalProperty: 'totalCount',idProperty: 'id',root: 'data',messageProperty: 'message'}
 					,Ext.data.Record.create( this.recordFields ))
 	       , writer: new Ext.data.JsonWriter({ encode: true, writeAllFields: true })  
@@ -51,8 +51,9 @@ dnet.base.AbstractAsgn = function(config) {
 	}
 	
 	this.addEvents(  "afterDoSaveSuccess"  );
+	dnet.base.AbstractAsgn.superclass.constructor.call(this, config);
 
-    dnet.base.AbstractAsgn.superclass.constructor.call(this, config);
+   // dnet.base.AbstractAsgn.superclass.constructor.call(this, config);
 
    // this._setup_();
 
@@ -60,7 +61,10 @@ dnet.base.AbstractAsgn = function(config) {
 
 
 Ext.extend(dnet.base.AbstractAsgn, Ext.util.Observable, {
-	    
+	//constructor: function(config) {
+
+	//}   
+
 	 initAssignement: function () {	 	 
 	 	  this.params.clientId = getApplication().getSession().getClient().id;
 		  this.doSetup();  //

@@ -6,11 +6,12 @@ dnet.base.AbstractAsgnGrid = Ext.extend( Ext.grid.GridPanel, {
 	,_elems_ : new Ext.util.MixedCollection()
 	,_controller_: null
 	,_side_:null
-
+	,_builder_ : null
+	
 	,initComponent: function(config) {
 		this._startDefine_();
 		/* define columns */
-        if (this._beforeDefineColumns_()) {
+        if (this._beforeDefineColumns_()!== false) {
 		   this._defineColumns_();
            this._afterDefineColumns_();
 		}
@@ -60,6 +61,11 @@ dnet.base.AbstractAsgnGrid = Ext.extend( Ext.grid.GridPanel, {
 	,_afterEdit_: function(e) {
 
 	}
-
+	,_getBuilder_: function() {
+		if (this._builder_ == null) {
+			this._builder_ = new dnet.base.AsgnGridBuilder({asgnGrid:this});
+		}	
+		return this._builder_;
+	}
 
 });

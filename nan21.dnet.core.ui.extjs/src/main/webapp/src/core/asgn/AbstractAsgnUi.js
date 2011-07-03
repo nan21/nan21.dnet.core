@@ -11,25 +11,34 @@ dnet.base.AbstractAsgnUi = Ext.extend(Ext.Panel,{
 	,_rightGridId_:null
 	 
 	,initComponent: function() {
-
+ 
+		var Cls = this._controller_;
+		this._controller_ = new Cls();
+  
+		this._leftGridId_ = Ext.id()
+		this._rightGridId_ = Ext.id() 
+  
         this._startDefine_();
-
-		/* define data-controls */
-		//if (this._beforeDefineDcs_()) {
-		//   this._defineDcs_();
-        //   this._afterDefineDcs_();
-		//}
-
-        /* define toolbars */
-        //if (this._beforeDefineToolbars_()) {
-		   this._defineToolbars_();
-        //   this._afterDefineToolbars_();
-		//}
+ 
+		this._defineToolbars_();
+ 
 
         /* define stand-alone user-interface elements */
 
 		//if (this._beforeDefineElements_()) {
 		   this._defineElements_();
+		   
+
+			this._elems_.add("leftFilterCombo", {xtype:"combo", value:"", width:100, selectOnFocus:true,  triggerAction:"all", id:Ext.id()
+				,listeners:{ "change" : { scope:this  , fn:function(f,nv,ov) {this._theController.filter.left.field = nv;} } }
+				, store:[["id","Id"],["code","Code"],["name","Name"]] 
+			});
+			this._elems_.add("rightFilterCombo", {xtype:"combo", value:"", width:100, selectOnFocus:true,  triggerAction:"all", id:Ext.id()
+				,listeners:{ "change" : { scope:this  , fn:function(f,nv,ov) {this._theController.filter.left.field = nv;} } }
+				, store:[["id","Id"],["code","Code"],["name","Name"]] 
+			});
+			
+			
         //   this._afterDefineElements_();
 		//}
         this._defineDefaultElements_();
@@ -39,9 +48,7 @@ dnet.base.AbstractAsgnUi = Ext.extend(Ext.Panel,{
 		   this._linkElements_();
            this._afterLinkElements_();
 		}
-
-
-
+ 
         this._endDefine_();
 
 
@@ -132,6 +139,11 @@ dnet.base.AbstractAsgnUi = Ext.extend(Ext.Panel,{
 				,items:[this._elems_.get("rightFilterField"), this._elems_.get("rightFilterCombo") ]  });
 	}
 
-
+	,_getBuilder_: function() {
+		if (this._builder_ == null) {
+			this._builder_ = new dnet.base.AsgnUiBuilder({asgnUi: this});
+		}	
+		return this._builder_;
+	}
 
 });
