@@ -1,6 +1,6 @@
 
 Ext.ns("dnet.base");
-dnet.base.AbstractAsgnUi = Ext.extend(Ext.Panel,{
+dnet.base.AbstractAsgnUi = Ext.extend(Ext.Window,{
 
 
     _elems_: new Ext.util.MixedCollection()
@@ -9,7 +9,8 @@ dnet.base.AbstractAsgnUi = Ext.extend(Ext.Panel,{
     ,_controller_: null
     ,_leftGridId_:null
 	,_rightGridId_:null
-	 
+	,_windowConfig_:null
+	
 	,initComponent: function() {
  
 		var Cls = this._controller_;
@@ -50,14 +51,13 @@ dnet.base.AbstractAsgnUi = Ext.extend(Ext.Panel,{
 		}
  
         this._endDefine_();
-
-
+         
 		Ext.apply(this, {
 			 layout:"hbox"
 			,layoutConfig:{ align:"stretch"}
-			,closable:true
+		 	,closable:true
 			,closeAction:"hide"
-			,modal:true
+			,modal:true	
 			,items:[
 				 /* left column: filter + list */
                  {layout:"vbox",frame :true, flex:10,layoutConfig:{ align:"stretch"}, items: [this._elems_.get("leftFilter"), this._elems_.get("leftList")] }

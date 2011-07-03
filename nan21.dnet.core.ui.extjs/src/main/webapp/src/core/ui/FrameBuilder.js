@@ -100,11 +100,20 @@ dnet.base.FrameBuilder.prototype =  {
 					} }, this.frame );	
 		return this;
 	}
-	,addButton: function(config) {
+	,addButton: function(config) {		
+		Ext.applyIf(config , {id:Ext.id(), xtype:"button"} );
 		this.frame._elems_.add(config.name, config);
+		if (config.stateManager ) {
+			dnet.base.FrameButtonStateManager.register(config.name, config.stateManager.name, config.stateManager.dc, this.frame );
+		}
 		return this;
 	} 
 	
+	,addAsgn: function(config) {	 
+		Ext.applyIf(config,{ id:Ext.id(), objectIdField: "id"  } );
+		this.frame._elems_.add(config.name, config);
+		return this;
+	} 
 	,add: function(config) {
 		this.frame._elems_.add(name, config);
 		return this;

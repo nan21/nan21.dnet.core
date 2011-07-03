@@ -218,7 +218,16 @@ dnet.base.AbstractUi = Ext.extend( Ext.Panel, {
 		}	
 		return this._builder_;
 	}
-    
+    ,showAsgnWindow: function(asgnWdwClass,cfg) { 
+    	//this.showAsgnWindow(net.nan21.dnet.module.ad.usr.asgn.RolesOfUser$Ui ,{dc:"rol",objectIdField:"id"});
+    	
+    	//var cfg = this._getConfig_(name);
+		//var objectId = this._dcs_.get(cfg.dc).record[cfg.objectIdField];
+		var aw=new asgnWdwClass(cfg);
+		aw.show();
+		//Ext.getCmp(wcfg.id)._controller_.params.objectId = objectId ;
+		//Ext.getCmp(wcfg.id)._controller_.initAssignement();				
+    }
 });
 /*
 	define the key as one of the following:

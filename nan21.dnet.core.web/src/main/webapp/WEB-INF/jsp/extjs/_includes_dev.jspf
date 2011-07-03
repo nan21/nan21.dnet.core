@@ -19,6 +19,8 @@
    <script type="text/javascript" src="${urlUiExtjsCore}/src/core/asgn/AbstractAsgn.js"></script>
    <script type="text/javascript" src="${urlUiExtjsCore}/src/core/asgn/AbstractAsgnGrid.js"></script>
    <script type="text/javascript" src="${urlUiExtjsCore}/src/core/asgn/AbstractAsgnUi.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/src/core/asgn/AsgnGridBuilder.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/src/core/asgn/AsgnUiBuilder.js"></script>
     
     <script type="text/javascript" src="${urlUiExtjsCore}/src/core/base/NavigationTree.js"></script>
     <script type="text/javascript" src="${urlUiExtjsCore}/src/core/base/TemplateRepository.js"></script>
@@ -47,6 +49,7 @@
     <script type="text/javascript" src="${urlUiExtjsCore}/src/core/dc/DcvEditableGridBuilder.js"></script>
     <script type="text/javascript" src="${urlUiExtjsCore}/src/core/ui/FrameBuilder.js"></script>
     <script type="text/javascript" src="${urlUiExtjsCore}/src/core/ui/ActionBuilder.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/src/core/ui/FrameButtonStateManager.js"></script>
     
     <script type="text/javascript" src="${urlUiExtjsCore}/src/core/dc/DcActionsFactory.js"></script>    
     <script type="text/javascript" src="${urlUiExtjsCore}/src/core/dc/DcContext.js"></script>
