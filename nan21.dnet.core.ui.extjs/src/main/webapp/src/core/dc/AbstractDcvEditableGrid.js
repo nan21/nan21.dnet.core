@@ -95,6 +95,9 @@ dnet.base.AbstractDcvEditableGrid = Ext.extend( Ext.grid.EditorGridPanel, {
     ,_getElement_: function(name) {  return Ext.getCmp( this._elems_.get(name).id); }
     ,_getElementConfig_: function(name) {  return this._elems_.get(name); }
 
+    ,_get_: function(name) { return this._getElement_(name);} 
+    ,_getConfig_: function(name) {  return this._elems_.get(name); }
+    
     ,_startDefine_: function () {}
     ,_endDefine_: function () {}
 

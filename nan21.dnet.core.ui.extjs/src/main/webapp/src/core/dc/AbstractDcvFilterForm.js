@@ -51,6 +51,9 @@ dnet.base.AbstractDcvFilterForm = Ext.extend( Ext.form.FormPanel, {
     ,_getElement_: function(name) {  return Ext.getCmp( this._elems_.get(name).id); }
     ,_getElementConfig_: function(name) {  return this._elems_.get(name); }
 
+    ,_get_: function(name) { return this._getElement_(name);} 
+    ,_getConfig_: function(name) {  return this._elems_.get(name); }
+    
 	,onBind:function(record) { this.updateBound(record); }
 	,onUnbind:function(record) { this.updateBound(); }
 	,afterEdit:function(record) { this.updateBound(record); }

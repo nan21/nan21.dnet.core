@@ -76,6 +76,10 @@ dnet.base.AbstractDcvForm = Ext.extend( Ext.form.FormPanel, {
 		} catch(e) { if (console) { console.log(name+':'+ e.message);} }
 		}
     ,_getElementConfig_: function(name) {  return this._elems_.get(name); }
+    
+    ,_get_: function(name) { return this._getElement_(name);} 
+    ,_getConfig_: function(name) {  return this._elems_.get(name); }
+    
 	,onBind:function(record) { this.updateBound(record); this._afterBindRecord_(record);}
 	,onUnbind:function(record) { this.updateBound(); }
 	,afterEdit:function(record) { this.updateBound(record); }

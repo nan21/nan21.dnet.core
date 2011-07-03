@@ -80,25 +80,7 @@ dnet.base.AbstractUi = Ext.extend( Ext.Panel, {
            this._afterDefineBindings_();
 		}
         this._endDefine_();
-
-        // find a _bindable_views and create the binding 
-        /*this._dcs_.each(function(item, idx, len) { 
-        	if(Ext.isArray(item.bindedViews)) {
-        		item.on('afterCurrentRecordChange', 
-        				function(evnt) { 
-        					var newRecord = evnt.newRecord; 
-        					var oldRecord = evnt.oldRecord; 
-        					var newIdx = evnt.newIdx;
-        					if(newRecord) {								 
-        						Ext.BindMgr.unbind(oldRecord);    						
-        						Ext.BindMgr.bind(newRecord, item.bindedViews);								 
-        					} else {								 
-        						Ext.BindMgr.unbind(oldRecord);								 
-        					} }, this.frame );
-        	}        	
-        }, this);
-        */
-        
+ 
 		Ext.apply(this, {
 			layout:"fit"
 			,bbar: 	this._statusBar_
@@ -111,14 +93,10 @@ dnet.base.AbstractUi = Ext.extend( Ext.Panel, {
 
     	dnet.base.AbstractUi.superclass.initComponent.apply(this, arguments);
     	this.addListener("afterlayout", this._onReady_, this);
-    //	this.addListener("canvaschange", function(p) {this._header_.setCanvas(p.title); } , this);
-
-
+ 
     }
 	 
-	,_onReady_: function(p) {
-		//this._header_.setTitle(this._title_);
-
+	,_onReady_: function(p) { 
 		getApplication().setFrameTabTitle(this._name_, this._title_);
 		//getApplication().registerFrameInstance(this._name_,this);
 		//getApplication().applyFrameCallback(this._name_,this);
@@ -131,9 +109,12 @@ dnet.base.AbstractUi = Ext.extend( Ext.Panel, {
     ,_getElement_: function(name) {
     	return  Ext.getCmp( this._elems_.get(name).id );    	 
     }
-     
+    ,_get_: function(name) {
+    	return this._getElement_(name);    	 
+    } 
     ,_getElementConfig_: function(name) {  return this._elems_.get(name); }
-
+    ,_getConfig_: function(name) {  return this._elems_.get(name); }
+    
     ,_getWindow_ : function(name) {
     	var cfg = this._elems_.get(name);
     	var w =  Ext.getCmp( cfg.id);
