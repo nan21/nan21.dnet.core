@@ -41,6 +41,14 @@ public abstract class AbstractEntityService <E>  {
 	}  
 
 	/**
+	 * Find all entities.
+	 */
+	public List<E> findAll() {
+		return this.em.createQuery("select e from "+getEntityClass().getSimpleName()+" e" )
+			.getResultList();
+	}
+	
+	/**
 	 * Find entity by id.
 	 */
 	public E findById(Object object) {
@@ -66,6 +74,14 @@ public abstract class AbstractEntityService <E>  {
 			q.setParameter(key, params.get(key));
 		}
 		return (E)q.getSingleResult();
+	}
+	
+	/**
+	 * Delete all.
+	 */
+	public void deleteAll() {
+	    this.em.createQuery("delete from "+getEntityClass().getSimpleName()+" e")
+				.executeUpdate();
 	}
 	
 	/**

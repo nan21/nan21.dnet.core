@@ -1,5 +1,6 @@
 package net.nan21.dnet.core.api.service;
 
+import java.io.File;
 import java.util.List;
 
 import net.nan21.dnet.core.api.action.IExportWriter;
@@ -45,14 +46,14 @@ public interface IDsService<M extends IDsModel<?>, P extends IDsParam> {
 	public List<M> find(M filter, P params, IQueryBuilder<M, P> builder) throws Exception;
 	public Long count(M filter, P params, IQueryBuilder<M, P> builder) throws Exception;
 
-	public void export(M filter, P params, IQueryBuilder<M, P> builder,
-			IExportWriter writer) throws Exception;
+	public void doImport(String absoluteFileName) throws Exception ;
+	public void doImport(String relativeFileName, String path) throws Exception ;
 
 	public IQueryBuilder<M, P> createQueryBuilder() throws Exception;
 	public IDsMarshaller<M, P> createMarshaller(String dataFormat) throws Exception;
 	
-	public void service(String procedureName, M ds) throws Exception;
-	public void service(String procedureName, List<M> list) throws Exception;
+	//public void service(String procedureName, M ds) throws Exception;
+	//public void service(String procedureName, List<M> list) throws Exception;
 
 	public Class<?> getEntityClass(); 
 	
@@ -60,4 +61,10 @@ public interface IDsService<M extends IDsModel<?>, P extends IDsParam> {
 	public void setEntityServiceFactories(
 			List<IEntityServiceFactory> entityServiceFactories);
 	
+	public List<IDsServiceFactory> getDsServiceFactories();
+	public void setDsServiceFactories(List<IDsServiceFactory> dsServiceFactories);
+	
+	public void rpcFilter(String procedureName, M filter, P params) throws Exception;
+	public void rpcData(String procedureName, M ds, P params) throws Exception;	
+	public void rpcData(String procedureName, List<M> list, P params) throws Exception;
 }

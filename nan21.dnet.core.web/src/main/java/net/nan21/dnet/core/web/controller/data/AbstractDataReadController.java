@@ -5,6 +5,9 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
 import net.nan21.dnet.core.api.action.IActionResultFind;
+import net.nan21.dnet.core.api.action.IActionResultRpcData;
+import net.nan21.dnet.core.api.action.IActionResultRpcFilter;
+import net.nan21.dnet.core.api.action.IActionResultSave;
 import net.nan21.dnet.core.api.action.IQueryBuilder;
 import net.nan21.dnet.core.api.marshall.IDsMarshaller;
 import net.nan21.dnet.core.api.model.IDsModel;
@@ -12,6 +15,9 @@ import net.nan21.dnet.core.api.model.IDsParam;
 import net.nan21.dnet.core.api.service.IDsService;
 import net.nan21.dnet.core.api.service.IDsServiceFactory;
 import net.nan21.dnet.core.web.result.ActionResultFind;
+import net.nan21.dnet.core.web.result.ActionResultRpcData;
+import net.nan21.dnet.core.web.result.ActionResultRpcFilter;
+import net.nan21.dnet.core.web.result.ActionResultSave;
 
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,11 +31,8 @@ public class AbstractDataReadController<M extends IDsModel<?>, P extends IDsPara
 
 	protected Class<M> modelClass;
 	protected Class<P> paramClass;
-	// protected IDsService<M, P> service;
 
 	protected List<IDsServiceFactory> serviceFactories;
-
-	// protected List<IDsService> osgiService;
 
 	/**
 	 * Default handler for find action.
@@ -76,7 +79,7 @@ public class AbstractDataReadController<M extends IDsModel<?>, P extends IDsPara
 			long totalCount = 30L; // service.count(filter, params, builder);
 
 			IActionResultFind result = this
-					.packResult(list, params, totalCount);
+					.packfindResult(list, params, totalCount);
 			return marshaller.writeResultToString(result);
 		} catch (Exception e) {
 			return this.handleException(e, response);
@@ -86,6 +89,90 @@ public class AbstractDataReadController<M extends IDsModel<?>, P extends IDsPara
 
 	}
 
+	/**
+	 * Default handler for remote procedure call on a single value-object.
+	 * @param resourceName
+	 * @param dataformat
+	 * @param dataString
+	 * @param paramString
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(method=RequestMethod.POST , params={"action=rpc", "rpcType=data", })
+	@ResponseBody	
+	public String rpcData(
+				@PathVariable String resourceName,
+				@PathVariable String dataFormat,
+				@RequestParam(value="rpcName", required=true) String rpcName,
+				@RequestParam(value="data", required=false, defaultValue="[]") String dataString,
+				@RequestParam(value="params", required=false, defaultValue="{}") String paramString,	
+				HttpServletResponse response
+	) throws Exception {
+		
+		try {
+			this.prepareRequest();
+			this.resourceName = resourceName;		
+			this.dataFormat = dataFormat;
+	 
+			IDsService<M, P> service = getDsService(this.resourceName);
+			IDsMarshaller<M, P> marshaller = service.createMarshaller(dataFormat);
+			
+			M data = marshaller.readDataFromString(dataString);
+			P params = marshaller.readParamsFromString(paramString); 	
+			
+			service.rpcData(rpcName, data, params);
+
+			IActionResultRpcData result = this.packRpcDataResult(data, params); 
+			return marshaller.writeResultToString(result);
+		} catch(Exception e) {
+			 this.handleException(e, response);
+			 return null;
+		} finally {
+			this.finishRequest();
+		}
+	}
+	/**
+	 * Default handler for remote procedure call on a filter.
+	 * @param resourceName
+	 * @param dataformat
+	 * @param dataString
+	 * @param paramString
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(method=RequestMethod.POST , params={"action=rpc", "rpcType=filter", })
+	@ResponseBody	
+	public String rpcFilter(
+				@PathVariable String resourceName,
+				@PathVariable String dataFormat,
+				@RequestParam(value="rpcName", required=true) String rpcName,				 
+				@RequestParam(value="data", required=false, defaultValue="{}") String dataString,
+				@RequestParam(value="params", required=false, defaultValue="{}") String paramString,	
+				HttpServletResponse response
+	) throws Exception {
+		
+		try {
+			this.prepareRequest();
+			this.resourceName = resourceName;		
+			this.dataFormat = dataFormat;
+ 
+			IDsService<M, P> service = getDsService(this.resourceName);
+			IDsMarshaller<M, P> marshaller = service.createMarshaller(dataFormat);
+			
+			M filter = marshaller.readDataFromString(dataString);
+			P params = marshaller.readParamsFromString(paramString); 	
+			
+			service.rpcFilter(rpcName, filter, params);
+			IActionResultRpcFilter result = this.packRpcFilterResult(filter, params); 
+			return marshaller.writeResultToString(result);
+		} catch(Exception e) {
+			 this.handleException(e, response);
+			 return null;
+		} finally {
+			this.finishRequest();
+		}
+	}
+	 
 	protected Class<P> getParamClass() {
 		return this.paramClass;
 	}
@@ -100,6 +187,7 @@ public class AbstractDataReadController<M extends IDsModel<?>, P extends IDsPara
 			try {
 				srv = f.create(dsName + "Service");
 				if (srv != null) {
+					srv.setDsServiceFactories(serviceFactories);
 					return srv;
 				}
 			} catch (NoSuchBeanDefinitionException e) {
@@ -109,14 +197,27 @@ public class AbstractDataReadController<M extends IDsModel<?>, P extends IDsPara
 		throw new Exception(dsName + "Service not found !");
 	}
 
-	public IActionResultFind packResult(List<M> data, P params, long totalCount) {
+	public IActionResultFind packfindResult(List<M> data, P params, long totalCount) {
 		IActionResultFind pack = new ActionResultFind();
 		pack.setData(data);
 		pack.setParams(params);
 		pack.setTotalCount(totalCount);
 		return pack;
 	}
-
+	public IActionResultRpcData packRpcDataResult(M data, P params ) {
+		IActionResultRpcData pack = new ActionResultRpcData();
+		pack.setData(data);
+		pack.setParams(params);		 
+		return pack;
+	}
+	 
+	public IActionResultRpcFilter packRpcFilterResult(M data, P params ) {
+		IActionResultRpcFilter pack = new ActionResultRpcFilter();
+		pack.setData(data);
+		pack.setParams(params);		 
+		return pack;
+	}
+	
 	public List<IDsServiceFactory> getServiceFactories() {
 		return serviceFactories;
 	}

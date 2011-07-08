@@ -4,6 +4,8 @@ import java.io.OutputStream;
 import java.util.List;
 
 import net.nan21.dnet.core.api.action.IActionResultFind;
+import net.nan21.dnet.core.api.action.IActionResultRpcData;
+import net.nan21.dnet.core.api.action.IActionResultRpcFilter;
 import net.nan21.dnet.core.api.action.IActionResultSave;
 import net.nan21.dnet.core.api.marshall.IDsMarshaller;
 
@@ -34,9 +36,7 @@ public class JsonMarshaller<M, P> extends AbstractMarshaller<M, P>
                 false);
         
 	}
-	
-	
-	
+	 
 	@Override
 	public M readDataFromString(String source) throws Exception {
 		return this.mapper.readValue(source, getModelClass());
@@ -79,8 +79,16 @@ public class JsonMarshaller<M, P> extends AbstractMarshaller<M, P>
 			throws Exception {
 		return this.mapper.writeValueAsString(result);
 	}
-	
-	
+	@Override
+	public String writeResultToString(IActionResultRpcData result)
+			throws Exception {
+		return this.mapper.writeValueAsString(result);
+	}
+	@Override
+	public String writeResultToString(IActionResultRpcFilter result)
+			throws Exception {
+		return this.mapper.writeValueAsString(result);
+	}
 	 
 	@Override
 	public void writeDataToStream(M m, OutputStream out) throws Exception {
@@ -106,7 +114,15 @@ public class JsonMarshaller<M, P> extends AbstractMarshaller<M, P>
 			throws Exception {
 		this.mapper.writeValue(out, result);
 	}
-
-	
-
+	@Override
+	public void writeResultToStream(IActionResultRpcData result, OutputStream out)
+			throws Exception {
+		this.mapper.writeValue(out, result);
+	}
+	@Override 
+	public void writeResultToStream(IActionResultRpcFilter result, OutputStream out)
+			throws Exception {
+		this.mapper.writeValue(out, result);
+	}
+ 
 }

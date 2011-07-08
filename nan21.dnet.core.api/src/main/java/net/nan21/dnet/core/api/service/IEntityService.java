@@ -10,11 +10,13 @@ public interface IEntityService<E> {
 	public EntityManager getEntityManager();
 	public void setEntityManager(EntityManager em);
 	
+	public List<E> findAll() throws Exception;
 	public E findById(Object id) throws Exception;
 	public List<E> findByIds(List<Object> ids) throws Exception;
 
 	public E findByUk(String namedQueryName, Map<String, Object> params) throws Exception;
 
+	public void deleteAll() throws Exception;
 	public void deleteById(Object id) throws Exception;
 	public void deleteByIds(List<Object> ids) throws Exception;
 

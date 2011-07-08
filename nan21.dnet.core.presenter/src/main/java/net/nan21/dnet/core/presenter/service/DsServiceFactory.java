@@ -13,11 +13,9 @@ public class DsServiceFactory implements IDsServiceFactory {
 
 	@Autowired
 	private ApplicationContext appContext;
-	
-	
+	 
 	private List<IEntityServiceFactory> entityServiceFactories;
-	
-	
+	 
 	@Override
 	public IDsService create(String key) {
 		IDsService s = (IDsService)this.appContext.getBean(key);

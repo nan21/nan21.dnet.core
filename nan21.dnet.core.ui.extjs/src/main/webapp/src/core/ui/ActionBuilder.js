@@ -57,7 +57,7 @@ dnet.base.ActionBuilder.prototype =  {
 		var fn = function() {
 			try {					
 				//this._getDc_(cfg.dc).doEdit();
-				var ct = (cfg.inContainer )? this._getElement_(cfg.inContainer):this._getElement_(this._mainViewName_);				
+				var ct = (cfg.inContainer )? this._getElement_(cfg.inContainer):this._getElement_("main");				
 				if (cfg.showView ) {
 					ct.getLayout().setActiveItem( this._getElementConfig_(cfg.showView).id );				
 				} else {
@@ -143,7 +143,7 @@ dnet.base.ActionBuilder.prototype =  {
 		});			
 		var fn = function() {
 			try {					
-				var ct = (cfg.inContainer )? this._getElement_(cfg.inContainer):this._getElement_(this._mainViewName_);				
+				var ct = (cfg.inContainer )? this._getElement_(cfg.inContainer):this._getElement_("main");				
 				if (cfg.showView ) {
 					ct.getLayout().setActiveItem( this._getElementConfig_(cfg.showView).id );				
 				} else {

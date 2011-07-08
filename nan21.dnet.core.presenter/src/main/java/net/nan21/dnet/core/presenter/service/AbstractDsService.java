@@ -1,23 +1,26 @@
 package net.nan21.dnet.core.presenter.service;
 
+import java.io.File;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import javax.persistence.TypedQuery;
-
-import org.springframework.beans.factory.NoSuchBeanDefinitionException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
  
 import net.nan21.dnet.core.api.action.IExportWriter;
 import net.nan21.dnet.core.api.action.IQueryBuilder;
 import net.nan21.dnet.core.api.converter.IDsConverter;
 import net.nan21.dnet.core.api.descriptor.IDsDescriptor;
 import net.nan21.dnet.core.api.marshall.IDsMarshaller;
-import net.nan21.dnet.core.api.model.IDsModel;
 import net.nan21.dnet.core.api.model.IDsParam;
+import net.nan21.dnet.core.api.model.IModelWithClientId;
 import net.nan21.dnet.core.api.model.IModelWithId;
 import net.nan21.dnet.core.api.service.IEntityService;
-import net.nan21.dnet.core.api.service.IEntityServiceFactory;
+import net.nan21.dnet.core.domain.session.Session;
+import net.nan21.dnet.core.presenter.action.DsCsvLoader;
 import net.nan21.dnet.core.presenter.action.QueryBuilderWithJpql;
 import net.nan21.dnet.core.presenter.converter.BaseDsConverter;
 import net.nan21.dnet.core.presenter.exception.ActionNotSupportedException;
@@ -25,7 +28,8 @@ import net.nan21.dnet.core.presenter.marshaller.JsonMarshaller;
 import net.nan21.dnet.core.presenter.model.AbstractDsModel;
 import net.nan21.dnet.core.presenter.model.DsDescriptorManager;
 
-public class AbstractDsService<M extends IDsModel<?>, P extends IDsParam, E> {
+public class AbstractDsService<M extends AbstractDsModel<?>, P extends IDsParam, E> 
+		extends AbstractDsProcessor {
  
 	protected boolean noInsert = false;
 	protected boolean noUpdate = false;
@@ -38,12 +42,12 @@ public class AbstractDsService<M extends IDsModel<?>, P extends IDsParam, E> {
 	protected Class<?> converterClass; //? extends AbstractDsConverter<M, E>
  
 	protected IDsDescriptor descriptor;
-	protected IEntityService entityService;
-	protected IDsConverter<M, E> converter;
-	private List<IEntityServiceFactory> entityServiceFactories;
 	
-	//@PersistenceContext
-    //private EntityManager em;
+	protected IDsConverter<M, E> converter;
+	//private List<IEntityServiceFactory> entityServiceFactories;
+	private Map<String, Class<AbstractDsDelegate<M>>> rpcData = new HashMap<String, Class<AbstractDsDelegate<M>>>();
+	private Map<String, Class<AbstractDsDelegate<M>>> rpcFilter = new HashMap<String, Class<AbstractDsDelegate<M>>>();
+	
 	
 	// ======================== Find ===========================
 	
@@ -143,6 +147,10 @@ public class AbstractDsService<M extends IDsModel<?>, P extends IDsParam, E> {
 		if (this.noInsert) {
 			throw new ActionNotSupportedException("Insert not allowed.");
 		}
+		// add the client 
+		if(ds instanceof IModelWithClientId) {
+			((IModelWithClientId)ds).setClientId(Session.user.get().getClientId());
+		}
 		this.preInsert(ds);
 		E e = (E)this.getEntityService().create();		 
 		this.getConverter().modelToEntity(ds, e);
@@ -165,7 +173,13 @@ public class AbstractDsService<M extends IDsModel<?>, P extends IDsParam, E> {
 	public void insert(List<M> list) throws Exception {
 		if (this.noInsert) {
 			throw new ActionNotSupportedException("Insert not allowed.");
-		} 		 
+		} 	
+		// add the client 
+		for(M ds: list) {
+			if(ds instanceof IModelWithClientId) {
+				((IModelWithClientId)ds).setClientId(Session.user.get().getClientId());
+			}
+		}
 		this.preInsert(list);
 		// add entities in a queue and then try to insert them all in one transaction
 		List<E> entities = new ArrayList<E>();
@@ -384,22 +398,52 @@ public class AbstractDsService<M extends IDsModel<?>, P extends IDsParam, E> {
 	}
 	
 	
-	// ======================== Export ===========================
-	 
-	public void export(M filter, P params,
+	// ======================== Import/Export ===========================
+	
+	public void doImport(String absoluteFileName) throws Exception {
+		this.doImport( new File(absoluteFileName) );
+	}
+	public void doImport(String relativeFileName, String path) throws Exception {
+		this.doImport( new File(path + "/"+ relativeFileName ) );
+	}
+	
+	private void doImport(File file) throws Exception {
+		//TODO: check type-> csv, json, etc
+		DsCsvLoader l = new DsCsvLoader();
+		List<M> list = l.run(file, this.modelClass, null);
+		this.insert(list);
+	}
+	
+	public void doExport(M filter, P params,
 			IQueryBuilder<M, P> builder, IExportWriter writer) throws Exception {
 
 	}
 	
-	// ======================== Service ===========================
+	// ======================== RPC ===========================
 	
-	public void service(String procedureName, M ds) throws Exception {
-		Method m = this.getClass().getMethod("execute" + procedureName,
-				this.getModelClass());
-		m.invoke(this, ds);
+	public void rpcData(String procedureName, M ds, P params) throws Exception {
+		if (!rpcData.containsKey(procedureName)) {
+			throw new Exception("No such procedure defined: "+procedureName);
+		}
+		AbstractDsDelegate<M> delegate = rpcData.get(procedureName).newInstance();
+		delegate.setAppContext(this.appContext);
+		delegate.setEntityServiceFactories(entityServiceFactories);
+		delegate.setDsServiceFactories(dsServiceFactories);
+		delegate.execute(ds);		
 	}
 
-	public void service(String procedureName, List<M> list) throws Exception {
+	public void rpcFilter(String procedureName, M filter, P params) throws Exception {
+		if (!rpcFilter.containsKey(procedureName)) {
+			throw new Exception("No such procedure defined: "+procedureName);
+		}
+		AbstractDsDelegate<M> delegate = rpcFilter.get(procedureName).newInstance();
+		delegate.setAppContext(this.appContext);
+		delegate.setEntityServiceFactories(entityServiceFactories);
+		delegate.setDsServiceFactories(dsServiceFactories);
+		delegate.execute(filter);		
+	}
+	
+	public void rpcData(String procedureName, List<M> list, P params) throws Exception {
 		Method m = this.getClass().getMethod("execute" + procedureName,
 				List.class);
 		m.invoke(this, list);
@@ -407,8 +451,7 @@ public class AbstractDsService<M extends IDsModel<?>, P extends IDsParam, E> {
 	
 
 	// ======================== Getters-setters ===========================
-	 
-	 
+ 
 	public Class<E> getEntityClass() {
 		return entityClass;
 	}
@@ -468,45 +511,37 @@ public class AbstractDsService<M extends IDsModel<?>, P extends IDsParam, E> {
 		return descriptor;
 	}
 	
-	public IEntityService getEntityService() throws Exception {
+	@Override
+	public IEntityService getEntityService() throws Exception {	
 		if ( this.entityService == null) {
-			
-			//TODO: enhance to use a bundleID instead of iterating 
-			//through all the available entityServiceFactories
-			// extract it .. -> See also AbstractDsConverter
-			
-			for(IEntityServiceFactory esf: entityServiceFactories) {
-				try {
-					IEntityService<E> es = esf.create(this.getEntityClass().getSimpleName() + "Service");
-					if (es != null) {
-						this.entityService = es;
-						return this.entityService;
-					}					
-				} catch(NoSuchBeanDefinitionException e) {
-					// service not found in this factory, ignore 		
-				}				
-			}
-			throw new Exception (this.getEntityClass().getSimpleName() + "Service" + " not found ");
-		}
-		
-		return entityService;
+			this.entityService = this.findEntityService(this.getEntityClass());
+		}		
+		return this.entityService;
 	}
-
-	public void setEntityService(IEntityService entityService) {
-		this.entityService = entityService;
-	}
+	 
 	
-	public List<IEntityServiceFactory> getEntityServiceFactories() {
-		return entityServiceFactories;
-	}
-
-	public void setEntityServiceFactories(
-			List<IEntityServiceFactory> entityServiceFactories) {
-		this.entityServiceFactories = entityServiceFactories;
-	}
 	
 	// ======================== Helpers ===========================
 	 
+	public Map<String, Class<AbstractDsDelegate<M>>> getRpcData() {
+		return rpcData;
+	}
+
+	public void setRpcData(
+			Map<String, Class<AbstractDsDelegate<M>>> rpcData) {
+		this.rpcData = rpcData;
+	}
+
+	 
+	public Map<String, Class<AbstractDsDelegate<M>>> getRpcFilter() {
+		return rpcFilter;
+	}
+
+	public void setRpcFilter(
+			Map<String, Class<AbstractDsDelegate<M>>> rpcFilter) {
+		this.rpcFilter = rpcFilter;
+	}
+
 	protected List<Object> collectIds(List<M> list) {
 		List<Object> ids = new ArrayList<Object>();
 		for (M ds: list) {

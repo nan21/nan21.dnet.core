@@ -4,6 +4,8 @@ import java.io.OutputStream;
 import java.util.List;
 
 import net.nan21.dnet.core.api.action.IActionResultFind;
+import net.nan21.dnet.core.api.action.IActionResultRpcData;
+import net.nan21.dnet.core.api.action.IActionResultRpcFilter;
 import net.nan21.dnet.core.api.action.IActionResultSave;
 
 public interface IDsMarshaller<M, P> {
@@ -22,11 +24,14 @@ public interface IDsMarshaller<M, P> {
 	public String writeParamsToString(P p) throws Exception;
 	public String writeResultToString(IActionResultFind result) throws Exception;
 	public String writeResultToString(IActionResultSave result) throws Exception;
+	public String writeResultToString(IActionResultRpcData result) throws Exception;
+	public String writeResultToString(IActionResultRpcFilter result) throws Exception;
 
 	public void writeDataToStream(M m, OutputStream out) throws Exception;
 	public void writeListToStream(List<M> list, OutputStream out) throws Exception;
 	public void writeParamsToStream(P p, OutputStream out) throws Exception;
 	public void writeResultToStream(IActionResultFind result, OutputStream out) throws Exception;
 	public void writeResultToStream(IActionResultSave result, OutputStream out) throws Exception;
-
+	public void writeResultToStream(IActionResultRpcData result, OutputStream out) throws Exception;
+	public void writeResultToStream(IActionResultRpcFilter result, OutputStream out) throws Exception;
 }

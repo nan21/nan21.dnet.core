@@ -39,7 +39,7 @@ Dnet = {
 		,START      : "resultStart"
 		,SIZE       : "resultSize"
 		
-		,SERVICE_NAME_PARAM   : "serviceName"
+		,SERVICE_NAME_PARAM   : "rpcName"
 
 		,EXPORT_COL_NAMES    : "c[export_col_names]"
 		,EXPORT_COL_TITLES   : "c[export_col_titles]"
@@ -87,7 +87,7 @@ Dnet = {
             ,update: this.dsUrl +'/'+resource+'.'+format+'?action=update'
             ,save: this.dsUrl +'/'+resource+'.'+format+'?action=save'
             ,destroy: this.dsUrl +'/'+resource+'.'+format+'?action=delete'
-            ,service: this.dsUrl +'/'+resource+'.'+format+'?action=service'
+            ,service: this.dsUrl +'/'+resource+'.'+format+'?action=rpc'
 
         }
 	}

@@ -83,6 +83,7 @@ dnet.base.AbstractDc = function(config) {
 Ext.extend(dnet.base.AbstractDc, Ext.util.Observable, {
 
 	 _setup_: function () {
+		this.dsName=this.ds.dsName;
 	 	//this.FilterModel = Ext.data.Record.create( this.recordFields );
 	 	this.RecordModel = Ext.data.Record.create( this.recordFields );
 	 	this.ParamModel = Ext.data.Record.create( this.paramFields );
@@ -317,6 +318,7 @@ Ext.extend(dnet.base.AbstractDc, Ext.util.Observable, {
     	}    	
     	var p = {data: Ext.encode(this.record.data ) };
 		p[Dnet.requestParam.SERVICE_NAME_PARAM]= serviceName;
+		p["rpcType"]= "data";
 		if (s.modal) {
 			Ext.Msg.progress('Working...');
 	    }
@@ -419,6 +421,7 @@ Ext.extend(dnet.base.AbstractDc, Ext.util.Observable, {
     	}    	
     	var p = {data: Ext.encode(this.filter.data ) };
 		p[Dnet.requestParam.SERVICE_NAME_PARAM]= serviceName;
+		p["rpcType"]= "filter";
 		if (s.modal) {
 			Ext.Msg.progress('Working...');
 	    }

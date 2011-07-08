@@ -36,8 +36,9 @@ dnet.base.FrameBuilder.prototype =  {
 	}
 
 	,addPanel:function(config) {
-		Ext.apply(config, {			 
-			listeners:{ activate:{scope:this,fn:function(p){p.doLayout(false,true);} } }
+		config.listeners = config.listeners || {};
+		Ext.applyIf(config.listeners, {			 
+			 activate:{scope:this,fn:function(p){p.doLayout(false,true);}  }
 		});
 		//this.fireEvent('canvaschange', p); for canvas
 		this.applyViewSharedConfig(config);	
