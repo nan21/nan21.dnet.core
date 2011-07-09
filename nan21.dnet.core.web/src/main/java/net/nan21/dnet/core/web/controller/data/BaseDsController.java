@@ -11,6 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @Scope(value="request")
 @RequestMapping(value="/java/ds/{resourceName}.{dataFormat}")
-public class BaseDsController extends AbstractDataWriteController<IDsModel<?>, IDsParam> {
+public class BaseDsController extends AbstractDsWriteController<IDsModel<?>, IDsParam> {
   
 }

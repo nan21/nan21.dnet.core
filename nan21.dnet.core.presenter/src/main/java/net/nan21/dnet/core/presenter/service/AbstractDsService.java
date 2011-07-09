@@ -53,8 +53,13 @@ public class AbstractDsService<M extends AbstractDsModel<?>, P extends IDsParam,
 	
 	public Long count(M filter, P params,
 			IQueryBuilder<M, P> builder) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		QueryBuilderWithJpql<M, P> bld = (QueryBuilderWithJpql<M, P>) builder;
+		Object count = bld.createQueryCount().getSingleResult(); 
+		if (count instanceof Integer) {
+			return ((Integer) count).longValue();
+		} else {
+			return (Long) count;
+		}
 	}
 	
 	protected void preFind(M filter, P params,
@@ -70,7 +75,10 @@ public class AbstractDsService<M extends AbstractDsModel<?>, P extends IDsParam,
 		 
 		List<M> result = new ArrayList<M>(); 
 				 
-		List<E> list = bld.createQuery().getResultList();		
+		List<E> list = bld.createQuery()
+			.setFirstResult(bld.getResultStart())
+			.setMaxResults(bld.getResultSize())
+			.getResultList();		
 		for(E e : list) {
 			M m = this.getModelClass().newInstance();
 			this.getConverter().entityToModel(e, m);
@@ -558,6 +566,7 @@ public class AbstractDsService<M extends AbstractDsModel<?>, P extends IDsParam,
 		//TODO: correct this
 		qb.setEntityManager(this.getEntityService().getEntityManager());
 		qb.setBaseEql("select e from "+this.getEntityClass().getSimpleName()+" e");
+		qb.setBaseEqlCount("select count(1) from "+this.getEntityClass().getSimpleName()+" e");
 		return qb;	 
 	}
 

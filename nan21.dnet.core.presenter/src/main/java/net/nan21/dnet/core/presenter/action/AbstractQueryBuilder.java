@@ -113,5 +113,25 @@ public abstract class AbstractQueryBuilder<F, P> implements IQueryBuilder<F,P> {
 		this.em = em;
 	}
 
+
+	public int getResultStart() {
+		return resultStart;
+	}
+
+
+	public void setResultStart(int resultStart) {
+		this.resultStart = resultStart;
+	}
+
+
+	public int getResultSize() {
+		return resultSize;
+	}
+
+
+	public void setResultSize(int resultSize) {
+		this.resultSize = resultSize;
+	}
+
 	
 }

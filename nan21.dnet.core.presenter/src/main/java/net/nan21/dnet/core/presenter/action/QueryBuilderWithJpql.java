@@ -18,6 +18,7 @@ public class QueryBuilderWithJpql<F, P> extends AbstractQueryBuilder<F, P> {
 	protected StringBuffer sort;
 	
 	protected String baseEql;
+	protected String baseEqlCount;
 
 	protected Map<String, Object> customFilterItems;
     protected Map<String, Object> defaultFilterItems;
@@ -31,39 +32,62 @@ public class QueryBuilderWithJpql<F, P> extends AbstractQueryBuilder<F, P> {
 	public void setBaseEql(String baseEql) {
 		this.baseEql = baseEql;
 	}
-	
+		
+	public String getBaseEqlCount() {
+		return baseEqlCount;
+	}
+
+	public void setBaseEqlCount(String baseEqlCount) {
+		this.baseEqlCount = baseEqlCount;
+	}
+
 	public String buildQueryStatement() throws Exception {
 		 
 		StringBuffer eql = new StringBuffer(this.baseEql);
-		this.buildJpqlWhere(filter);
 		
-		if ((where != null && !where.equals(""))
+		this.buildJpqlWhere(this.filter);
+		this.attachWhereClause(eql);
+		
+		this.buildSort();		
+		this.attachSortClause(eql);
+		
+		return eql.toString();
+	}
+	
+	public String buildCountStatement() throws Exception {
+		 
+		StringBuffer eql = new StringBuffer(this.baseEqlCount);
+		this.attachWhereClause(eql);
+		
+		return eql.toString();
+	}
+	
+	private void attachWhereClause(StringBuffer eql) {
+		if ((this.where != null && !this.where.equals(""))
 				|| 
-				(defaultWhere != null && !defaultWhere.equals(""))) {
+				(this.defaultWhere != null && !this.defaultWhere.equals(""))) {
 
 			eql.append(" where ");
-			if (defaultWhere != null && !defaultWhere.equals("")) {
-				eql.append(defaultWhere);
+			if (this.defaultWhere != null && !this.defaultWhere.equals("")) {
+				eql.append(this.defaultWhere);
 			}
 			if (where != null && !where.equals("")) {
-				if (defaultWhere != null && !defaultWhere.equals(""))
+				if (this.defaultWhere != null && !this.defaultWhere.equals(""))
 					eql.append(" and ");
 				eql.append(where);
 			}
 		}
-		
-		this.buildSort();
-		
-		if (sort != null) {
+	}
+	
+	private void attachSortClause(StringBuffer eql) {
+		if (this.sort != null) {
 			eql.append(" order by " + sort.toString());
 		} else {
 			if (defaultSort != null && !defaultSort.equals("")) {
 				eql.append(" order by " + defaultSort);
 			}
 		}
-		return eql.toString();
 	}
-	
 	private void buildSort() {
 		if(this.sortColumnNames != null) {
 			this.sort = new StringBuffer();
@@ -147,5 +171,9 @@ public class QueryBuilderWithJpql<F, P> extends AbstractQueryBuilder<F, P> {
 		bindFilterParams(q);
 		return q;
 	}
-	
+	public Query createQueryCount() throws Exception {
+		Query q = this.em.createQuery(this.buildCountStatement());
+		bindFilterParams(q);
+		return q;
+	}
 }

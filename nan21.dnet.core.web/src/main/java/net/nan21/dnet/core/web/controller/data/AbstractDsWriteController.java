@@ -16,8 +16,8 @@ import net.nan21.dnet.core.api.model.IDsParam;
 import net.nan21.dnet.core.api.service.IDsService;
 import net.nan21.dnet.core.web.result.ActionResultSave;
 
-public class AbstractDataWriteController<M extends IDsModel<?>, P extends IDsParam>
-	extends AbstractDataReadController<M, P>{
+public class AbstractDsWriteController<M extends IDsModel<?>, P extends IDsParam>
+	extends AbstractDsRpcController<M, P>{
 
 	/**
 	 * Default handler for insert action.
