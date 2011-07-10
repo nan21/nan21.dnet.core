@@ -76,10 +76,11 @@ public class AbstractDsProcessor {
 	public ApplicationContext getAppContext() {
 		return appContext;
 	}
-
 	public void setAppContext(ApplicationContext appContext) {
 		this.appContext = appContext;
 	}
+	
+	
 	public List<IDsServiceFactory> getDsServiceFactories() {
 		return dsServiceFactories;
 	}

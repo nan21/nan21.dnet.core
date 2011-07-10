@@ -21,15 +21,9 @@ public interface IDsService<M extends IDsModel<?>, P extends IDsParam> {
 
 	public IDsDescriptor getDescriptor();
 	public void setDescriptor(IDsDescriptor descriptor);
-
-	//public EntityManager getEntityManager();
-	//public void setEntityManager(EntityManager em);
 	
 	public IEntityService getEntityService() throws Exception;
 	public void setEntityService(IEntityService entityService);
-
-	//public IDsConverter<M, E> getConverter() throws Exception;
-	//public void setConverter(IDsConverter<M, E> converter);
 
 	public void insert(M ds) throws Exception;
 	public void insert(List<M> list) throws Exception;
@@ -51,9 +45,6 @@ public interface IDsService<M extends IDsModel<?>, P extends IDsParam> {
 
 	public IQueryBuilder<M, P> createQueryBuilder() throws Exception;
 	public IDsMarshaller<M, P> createMarshaller(String dataFormat) throws Exception;
-	
-	//public void service(String procedureName, M ds) throws Exception;
-	//public void service(String procedureName, List<M> list) throws Exception;
 
 	public Class<?> getEntityClass(); 
 	

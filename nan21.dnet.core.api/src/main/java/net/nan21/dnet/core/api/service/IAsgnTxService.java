@@ -2,10 +2,9 @@ package net.nan21.dnet.core.api.service;
 
 import java.util.List;
 
-import net.nan21.dnet.core.api.action.IQueryBuilder;
-import net.nan21.dnet.core.api.marshall.IDsMarshaller;
+import javax.persistence.EntityManager;
 
-public interface IAsgnService<M, P> {
+public interface IAsgnTxService<E> {
 
 	/**
 	 * Saves the selection(s).
@@ -68,25 +67,25 @@ public interface IAsgnService<M, P> {
 	 */
 	public void cleanup() throws Exception;
 	
-	public List<M> findLeft( M filter, P params, IQueryBuilder<M, P> builder) throws Exception;	
-	public List<M> findRight( M filter, P params, IQueryBuilder<M, P> builder) throws Exception;
- 
-	public Long countLeft(M filter, P params, IQueryBuilder<M, P> builder) throws Exception;
-	public Long countRight(M filter, P params, IQueryBuilder<M, P> builder) throws Exception;
-	
-	public IQueryBuilder<M, P> createQueryBuilder() throws Exception;
-	public IDsMarshaller<M, P> createMarshaller(String dataFormat) throws Exception;
 	 
-	public List<IAsgnTxServiceFactory> getAsgnTxServiceFactories();
-	public void setAsgnTxServiceFactories(
-			List<IAsgnTxServiceFactory> asgnTxServiceFactories);
-	
-	
 	public String getSelectionId();
 	public void setSelectionId(String selectionId);
 
 	public Long getObjectId();
 	public void setObjectId(Long objectId) ;
+	 
+	public String getLeftTable();
+	public void setLeftTable(String leftTable);
+	public String getRightTable();
+	public void setRightTable(String rightTable) ;
+
+	public String getRightObjectIdField();
+	public void setRightObjectIdField(String rightObjectIdField);
+	public String getRightItemIdField();
+	public void setRightItemIdField(String rightItemIdField);
 	
+	
+	public EntityManager getEntityManager();
+	public void setEntityManager(EntityManager em);
 	
 }

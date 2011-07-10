@@ -269,8 +269,8 @@ Ext.extend(dnet.base.AbstractAsgn, Ext.util.Observable, {
 
 
 	,afterDoSetupSuccess: function(response, options) {
-		 var r = Ext.util.JSON.decode(response.responseText);
-		 this.params["selectionId"] =  r;
+		 //var r = Ext.util.JSON.decode(response.responseText);
+		 this.params["selectionId"] =  response.responseText; //r;
 		 this.doQueryLeft();
 	 	 this.doQueryRight();
 	}

@@ -6,9 +6,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
  
 import net.nan21.dnet.core.api.action.IExportWriter;
 import net.nan21.dnet.core.api.action.IQueryBuilder;

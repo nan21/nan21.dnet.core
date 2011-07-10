@@ -48,4 +48,7 @@
 		
 	<osgi:list id="osgiDsServiceFactories" cardinality="0..N"
 		interface="net.nan21.dnet.core.api.service.IDsServiceFactory"/>
+		
+	<osgi:list id="osgiAsgnServiceFactories" cardinality="0..N"
+		interface="net.nan21.dnet.core.api.service.IAsgnServiceFactory"/>	
 </beans>

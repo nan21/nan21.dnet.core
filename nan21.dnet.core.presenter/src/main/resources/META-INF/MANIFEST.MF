@@ -31,8 +31,8 @@ Import-Package: au.com.bytecode.opencsv,au.com.bytecode.opencsv.bean,j
  pi.descriptor,net.nan21.dnet.core.api.marshall,net.nan21.dnet.core.ap
  i.model,net.nan21.dnet.core.api.service,net.nan21.dnet.core.domain.se
  ssion,org.codehaus.jackson.map,org.codehaus.jackson.map.type,org.code
- haus.jackson.type,org.springframework.beans.factory,org.springframewo
- rk.beans.factory.annotation,org.springframework.context,org.springfra
- mework.context.config,org.springframework.transaction.annotation,org.
- springframework.util
+ haus.jackson.type,org.springframework.beans,org.springframework.beans
+ .factory,org.springframework.beans.factory.annotation,org.springframe
+ work.context,org.springframework.context.config,org.springframework.t
+ ransaction.annotation,org.springframework.util
 

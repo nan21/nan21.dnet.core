@@ -1,6 +1,6 @@
 package net.nan21.dnet.core.api.service;
 
 public interface IEntityServiceFactory {
-	public IEntityService create(String key);
-	public IEntityService create(Class<?> type);
+	public <E> IEntityService<E> create(String key);
+	public <E> IEntityService<E> create(Class<E> type);
 }
