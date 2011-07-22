@@ -4,8 +4,6 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
- 
-import net.nan21.dnet.core.api.ui.extjs.IExtensionProvider;
 import net.nan21.dnet.core.api.ui.extjs.IExtensionProviderFrame;
 
 import org.springframework.web.servlet.ModelAndView;

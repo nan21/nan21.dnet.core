@@ -170,11 +170,11 @@ dnet.base.Application = Ext.apply({}, {
 	
 	,changeCurrentTheme: function(t) {
 		//Ext.util.Cookies.set(__COOKIE_CURRENT_THEME__,t);
-	    window.location.href = Dnet.uiUrl+"?theme="+t
+	    window.location.href = Dnet.uiUrl+"/?theme="+t
 	}
     ,changeCurrentLanguage: function(l) {
 		//Ext.util.Cookies.set(__COOKIE_CURRENT_THEME__,t);
-	    window.location.href = Dnet.uiUrl+"?lang="+l
+	    window.location.href = Dnet.uiUrl+"/?lang="+l
 	}
 	
 	,setFrameTabTitle:function(frame, title) {
