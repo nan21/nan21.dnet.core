@@ -9,6 +9,11 @@
 	<description>DNet Core - parent maven project.</description>
 	<packaging>pom</packaging>	
 	
+	<properties>		 
+		<dnet.repository.url>ftp://nan21.net//public_html/dnet/maven2repo</dnet.repository.url>
+		<dnet.snapshotrepository.url>ftp://nan21.net//public_html/dnet/maven2repo_snapshots</dnet.snapshotrepository.url>
+	</properties>
+	
 	<!-- ===================== Repositories ===================== -->
 	
 	<repositories>
@@ -138,4 +143,20 @@
 			</plugin>				
  	</plugins>
  	</build>
+ 	
+ 	
+ 	<distributionManagement>
+		<repository>
+			<uniqueVersion>false</uniqueVersion>
+			<id>nan21.net</id>
+			<url>${dnet.repository.url}</url>
+		</repository>
+		<snapshotRepository>
+			<uniqueVersion>false</uniqueVersion>
+			<id>nan21.net</id>
+			<url>${dnet.repository.url}</url>
+		</snapshotRepository>		 
+	</distributionManagement>
+	
+	
 </project>	 
