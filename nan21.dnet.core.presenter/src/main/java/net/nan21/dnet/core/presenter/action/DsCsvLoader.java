@@ -33,7 +33,7 @@ public class DsCsvLoader {
 	}
 	
 	
-	public <M extends AbstractDsModel<?>> List<M> run(File file, Class<M> dsClass, String[] columns) throws Exception {
+	public <M> List<M> run(File file, Class<M> dsClass, String[] columns) throws Exception {
 		 
 		FileReader fileReader = null;	     
 	    CSVReader reader = null;

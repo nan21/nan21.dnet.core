@@ -4,9 +4,7 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.persistence.EntityManager;
 import javax.persistence.Query;
-import javax.persistence.TypedQuery;
 import org.springframework.util.StringUtils;
  
 public class QueryBuilderWithJpql<F, P> extends AbstractQueryBuilder<F, P> {

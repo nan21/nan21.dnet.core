@@ -8,13 +8,15 @@ import javax.persistence.PersistenceContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class AbstractAsgnTxService<E>  {
+public abstract class AbstractAsgnTxService<E>  {
 	@PersistenceContext
 	@Autowired
 	protected EntityManager em;	 
-	 
-	protected final String ASGN_TEMP_TABLE = "TEMP_ASGN";
-	protected final String ASGNLINE_TEMP_TABLE = "TEMP_ASGN_LINE";
+	
+	protected abstract Class<E> getEntityClass();
+	
+	protected final String ASGN_TEMP_TABLE = "AD_TEMP_ASGN";
+	protected final String ASGNLINE_TEMP_TABLE = "AD_TEMP_ASGN_LINE";
  
 	protected String leftTable;
 	protected String leftPkField;
@@ -23,6 +25,7 @@ public class AbstractAsgnTxService<E>  {
 	protected String rightObjectIdField;
 	protected String rightItemIdField;
 	
+	protected boolean saveAsSqlInsert = true;
 	protected String selectionId;
 	protected Long objectId;
 	
@@ -165,8 +168,36 @@ public class AbstractAsgnTxService<E>  {
  
 	 
 	public void save() throws Exception {
-		// TODO Auto-generated method stub
-		
+		this.em.createNativeQuery(
+				"delete from " + this.rightTable + " where  "
+						+ this.rightObjectIdField + " = ? ").setParameter(1,
+				this.objectId).executeUpdate();
+		this.em.flush();
+		if (this.saveAsSqlInsert) {						
+			this.em.createNativeQuery(
+					"insert into " + this.rightTable + " ( "
+							+ this.rightObjectIdField + ",  "
+							+ this.rightItemIdField + " ) "
+							+ " select ?, itemId from  "
+							+ this.ASGNLINE_TEMP_TABLE + " "
+							+ "  where selection_uuid = ? ").setParameter(1,
+					this.objectId).setParameter(2, this.selectionId)
+					.executeUpdate();	
+		} else {
+			List<Long> list = this.em.createNativeQuery(
+					" select itemId from  "
+					+ this.ASGNLINE_TEMP_TABLE + " "
+					+ "  where selection_uuid = ? ") 
+					.setParameter(1, this.selectionId)
+					.getResultList();
+			this.onSave(list);
+			//TODO: find a solution other than create entities 
+			// Might be expensive if there are lots of selected items
+			// Anyway this situations requires custom code 
+		}		
+	}
+	
+	protected void onSave(List<Long> ids) throws Exception {
 	}
 	
 	// ====================  getters- setters =====================
@@ -213,8 +244,6 @@ public class AbstractAsgnTxService<E>  {
 		this.em = em;		 
 	}
 
-
-
 	public String getLeftTable() {
 		return leftTable;
 	}
@@ -237,9 +266,14 @@ public class AbstractAsgnTxService<E>  {
  
 	public void setRightItemIdField(String rightItemIdField) {
 		this.rightItemIdField = rightItemIdField;
+	}
+
+	public String getLeftPkField() {
+		return leftPkField;
+	}
+
+	public void setLeftPkField(String leftPkField) {
+		this.leftPkField = leftPkField;
 	}  
-	
-	
-	
 	
 }

@@ -12,11 +12,10 @@ Export-Package: net.nan21.dnet.core.presenter.action;version="1.0.0.M1
  mework.context",net.nan21.dnet.core.presenter.propertyeditors;version
  ="1.0.0.M1",net.nan21.dnet.core.presenter.service;version="1.0.0.M1";
  uses:="net.nan21.dnet.core.api.action,net.nan21.dnet.core.api.convert
- er,net.nan21.dnet.core.api.descriptor,net.nan21.dnet.core.api.marshal
- l,net.nan21.dnet.core.api.model,net.nan21.dnet.core.api.service,net.n
- an21.dnet.core.presenter.model,org.springframework.beans.factory.anno
- tation,org.springframework.context,org.springframework.transaction.an
- notation"
+ er,net.nan21.dnet.core.api.marshall,net.nan21.dnet.core.api.service,n
+ et.nan21.dnet.core.presenter.model,org.springframework.beans.factory.
+ annotation,org.springframework.context,org.springframework.transactio
+ n.annotation"
 Import-Bundle: nan21.dnet.core.domain;version="[1.0.0.M1,1.0.0.M1]",ne
  t.nan21.osgi.opencsv;version="[2.0,3.0)"
 Bundle-Vendor: Nan21 

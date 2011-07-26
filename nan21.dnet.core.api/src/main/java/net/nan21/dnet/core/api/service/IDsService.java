@@ -1,14 +1,9 @@
 package net.nan21.dnet.core.api.service;
 
-import java.io.File;
 import java.util.List;
 
-import net.nan21.dnet.core.api.action.IExportWriter;
 import net.nan21.dnet.core.api.action.IQueryBuilder;
-import net.nan21.dnet.core.api.descriptor.IDsDescriptor;
 import net.nan21.dnet.core.api.marshall.IDsMarshaller;
-import net.nan21.dnet.core.api.model.IDsModel;
-import net.nan21.dnet.core.api.model.IDsParam;
 /**
  * Interface to be implemented by custom data-source services.
  * @author amathe
@@ -17,13 +12,10 @@ import net.nan21.dnet.core.api.model.IDsParam;
  * @param <P>
  * @param <E>
  */
-public interface IDsService<M extends IDsModel<?>, P extends IDsParam> {
-
-	public IDsDescriptor getDescriptor();
-	public void setDescriptor(IDsDescriptor descriptor);
-	
-	public IEntityService getEntityService() throws Exception;
-	public void setEntityService(IEntityService entityService);
+public interface IDsService<M, P> {
+  
+	//public  IEntityService<E> getEntityService() throws Exception;
+	//public void setEntityService(IEntityService<E> entityService);
 
 	public void insert(M ds) throws Exception;
 	public void insert(List<M> list) throws Exception;

@@ -84,8 +84,13 @@ public interface IAsgnTxService<E> {
 	public String getRightItemIdField();
 	public void setRightItemIdField(String rightItemIdField);
 	
+	public String getLeftPkField();
+	public void setLeftPkField(String leftPkField);
 	
 	public EntityManager getEntityManager();
 	public void setEntityManager(EntityManager em);
 	
-}
+	public Class<E> getEntityClass() ;
+	public void setEntityClass(Class<E> entityClass);
+	 
+}	

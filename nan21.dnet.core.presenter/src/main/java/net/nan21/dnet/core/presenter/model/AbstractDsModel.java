@@ -1,8 +1,6 @@
 package net.nan21.dnet.core.presenter.model;
-
-import net.nan21.dnet.core.api.model.IDsModel;
-
-public class AbstractDsModel<E> implements IDsModel<E>{
+ 
+public class AbstractDsModel<E> {
 	
 	/**
 	 * Required when inserting a list of objects to be able to identify the entity as there is no id yet.

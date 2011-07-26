@@ -3,7 +3,7 @@ package net.nan21.dnet.core.presenter.action;
 import javax.persistence.EntityManager;
 
 import net.nan21.dnet.core.api.action.IQueryBuilder;
-import net.nan21.dnet.core.api.descriptor.IDsDescriptor;
+import net.nan21.dnet.core.api.descriptor.IViewModelDescriptor;
 
 public abstract class AbstractQueryBuilder<F, P> implements IQueryBuilder<F,P> {
 
@@ -13,30 +13,30 @@ public abstract class AbstractQueryBuilder<F, P> implements IQueryBuilder<F,P> {
 	protected String[] sortColumnNames;
 	protected String[] sortColumnSense;
 	
-	private Class<?> filterClass;
-	private Class<?> paramClass;
+	private Class<F> filterClass;
+	private Class<P> paramClass;
 	
 	protected F filter;
 	protected P params;
 	
-	protected IDsDescriptor descriptor;
+	protected IViewModelDescriptor<F> descriptor;
 	protected EntityManager em;	
 	
-	public IQueryBuilder addFetchLimit(int resultStart, int resultSize) {
+	public IQueryBuilder<F,P> addFetchLimit(int resultStart, int resultSize) {
 		this.resultSize = resultSize;
 		this.resultStart = resultStart;
 		return this;
 	}
 
 	 
-	public IQueryBuilder addSortInfo(String[] columnList, String[] senseList) {
+	public IQueryBuilder<F,P> addSortInfo(String[] columnList, String[] senseList) {
 		this.sortColumnNames = columnList;
 		this.sortColumnSense = senseList;
 		return this;
 	}
 
 	 
-	public IQueryBuilder addSortInfo(String columns, String sense) {
+	public IQueryBuilder<F,P> addSortInfo(String columns, String sense) {
 		if (columns != null && sense != null) {
 			this.sortColumnNames = columns.split(",");
 			this.sortColumnSense = sense.split(",");
@@ -48,28 +48,27 @@ public abstract class AbstractQueryBuilder<F, P> implements IQueryBuilder<F,P> {
 	}
 
 	 
-	public IQueryBuilder addSortInfo(String[] sortTokens) {
-		// TODO Auto-generated method stub
+	public IQueryBuilder<F,P> addSortInfo(String[] sortTokens) {		
 		return this;
 	}
 
 
-	public Class<?> getFilterClass() {
+	public Class<F> getFilterClass() {
 		return filterClass;
 	}
 
 
-	public void setFilterClass(Class<?> filterClass) {
+	public void setFilterClass(Class<F> filterClass) {
 		this.filterClass = filterClass;
 	}
 
 
-	public Class<?> getParamClass() {
+	public Class<P> getParamClass() {
 		return paramClass;
 	}
 
 
-	public void setParamClass(Class<?> paramClass) {
+	public void setParamClass(Class<P> paramClass) {
 		this.paramClass = paramClass;
 	}
 
@@ -94,12 +93,12 @@ public abstract class AbstractQueryBuilder<F, P> implements IQueryBuilder<F,P> {
 	}
 
 
-	public IDsDescriptor getDescriptor() {
+	public IViewModelDescriptor<F> getDescriptor() {
 		return descriptor;
 	}
 
 
-	public void setDescriptor(IDsDescriptor descriptor) {
+	public void setDescriptor(IViewModelDescriptor<F> descriptor) {
 		this.descriptor = descriptor;
 	}
 

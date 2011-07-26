@@ -5,16 +5,10 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
 import net.nan21.dnet.core.api.action.IActionResultFind;
-import net.nan21.dnet.core.api.action.IActionResultRpcData;
-import net.nan21.dnet.core.api.action.IActionResultRpcFilter;
 import net.nan21.dnet.core.api.action.IQueryBuilder;
 import net.nan21.dnet.core.api.marshall.IDsMarshaller;
-import net.nan21.dnet.core.api.model.IDsModel;
-import net.nan21.dnet.core.api.model.IDsParam;
 import net.nan21.dnet.core.api.service.IDsService;
 import net.nan21.dnet.core.web.result.ActionResultFind;
-import net.nan21.dnet.core.web.result.ActionResultRpcData;
-import net.nan21.dnet.core.web.result.ActionResultRpcFilter;
 
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-public class AbstractDsReadController<M extends IDsModel<?>, P extends IDsParam>
+public class AbstractDsReadController<M, P>
 		extends AbstractDsBaseController<M, P> {
  
 
@@ -57,7 +51,7 @@ public class AbstractDsReadController<M extends IDsModel<?>, P extends IDsParam>
 			this.resourceName = resourceName;
 			this.dataFormat = dataFormat;
 			IDsService<M, P> service = getDsService(this.resourceName);
-			IQueryBuilder builder = service.createQueryBuilder().addFetchLimit(
+			IQueryBuilder<M,P> builder = service.createQueryBuilder().addFetchLimit(
 					resultStart, resultSize).addSortInfo(orderByCol,
 					orderBySense);
 

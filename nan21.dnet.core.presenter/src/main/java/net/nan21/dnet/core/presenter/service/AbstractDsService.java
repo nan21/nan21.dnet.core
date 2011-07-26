@@ -10,9 +10,7 @@ import java.util.Map;
 import net.nan21.dnet.core.api.action.IExportWriter;
 import net.nan21.dnet.core.api.action.IQueryBuilder;
 import net.nan21.dnet.core.api.converter.IDsConverter;
-import net.nan21.dnet.core.api.descriptor.IDsDescriptor;
 import net.nan21.dnet.core.api.marshall.IDsMarshaller;
-import net.nan21.dnet.core.api.model.IDsParam;
 import net.nan21.dnet.core.api.model.IModelWithClientId;
 import net.nan21.dnet.core.api.model.IModelWithId;
 import net.nan21.dnet.core.api.service.IEntityService;
@@ -23,28 +21,33 @@ import net.nan21.dnet.core.presenter.converter.BaseDsConverter;
 import net.nan21.dnet.core.presenter.exception.ActionNotSupportedException;
 import net.nan21.dnet.core.presenter.marshaller.JsonMarshaller;
 import net.nan21.dnet.core.presenter.model.AbstractDsModel;
-import net.nan21.dnet.core.presenter.model.DsDescriptorManager;
+import net.nan21.dnet.core.presenter.model.DsDescriptor;
+import net.nan21.dnet.core.presenter.model.ViewModelDescriptorManager;
 
-public class AbstractDsService<M extends AbstractDsModel<?>, P extends IDsParam, E> 
-		extends AbstractDsProcessor {
+public class AbstractDsService<M, P, E> 
+		extends AbstractDsProcessor<M, P> {
  
-	protected boolean noInsert = false;
+	protected boolean noInsert = false; 
 	protected boolean noUpdate = false;
 	protected boolean noDelete = false;
-	
-	
+ 
 	protected Class<M> modelClass;
 	protected Class<P> paramClass;
 	protected Class<E> entityClass;
 	protected Class<?> converterClass; //? extends AbstractDsConverter<M, E>
- 
-	protected IDsDescriptor descriptor;
-	
 	protected IDsConverter<M, E> converter;
-	//private List<IEntityServiceFactory> entityServiceFactories;
-	private Map<String, Class<AbstractDsDelegate<M>>> rpcData = new HashMap<String, Class<AbstractDsDelegate<M>>>();
-	private Map<String, Class<AbstractDsDelegate<M>>> rpcFilter = new HashMap<String, Class<AbstractDsDelegate<M>>>();
 	
+	protected DsDescriptor<M> descriptor;
+	
+	private IEntityService<E> entityService;
+	//
+	//private List<IEntityServiceFactory> entityServiceFactories;
+	//private Map<String, Class<AbstractDsDelegate<M, P>>> rpcData = new HashMap<String, Class<AbstractDsDelegate<M, P>>>();
+	//private Map<String, Class<AbstractDsDelegate<M, P>>> rpcFilter = new HashMap<String, Class<AbstractDsDelegate<M, P>>>();
+	
+	private Map<String, Class<AbstractDsDelegate<M, P, E>>> rpcData = new HashMap<String, Class<AbstractDsDelegate<M, P, E>>>();
+	private Map<String, Class<AbstractDsDelegate<M, P, E>>> rpcFilter = new HashMap<String, Class<AbstractDsDelegate<M, P, E>>>();
+	 
 	
 	// ======================== Find ===========================
 	
@@ -305,30 +308,22 @@ public class AbstractDsService<M extends AbstractDsModel<?>, P extends IDsParam,
 			throw new ActionNotSupportedException("Update not allowed.");
 		} 		 
 		this.preUpdate(list);
-		// add entities in a queue and then try to insert them all in one transaction
-		// find the entities
-		
 		List<E> entities = this.getEntityService().findByIds(this.collectIds(list));
 
 		for(M ds: list) {
 			this.preUpdate(ds);
 			//TODO: optimize me 
 			E e = lookupEntityById(entities, ((IModelWithId)ds).getId() );
-			//E e = this.getEntityService().getEntityManager().find(this.getEntityClass(), ((IModelWithId)ds).getId());
-			
-			//((AbstractDsModel<E>) ds)._setEntity_(e);
 			this.preUpdateBeforeEntity(ds, e);			
 			this.getConverter().modelToEntity(ds, e);
 			this.preUpdateAfterEntity(ds, e);			 
 		}	
-		System.out.println("--------AbstractDsService.update before this.getEntityService().update(entities)");
+		//System.out.println("--------AbstractDsService.update before this.getEntityService().update(entities)");
 		this.getEntityService().update(entities);
-		System.out.println("--------AbstractDsService.update after this.getEntityService().update(entities)");
+		//System.out.println("--------AbstractDsService.update after this.getEntityService().update(entities)");
 		//entities = this.getEntityService().findByIds(this.collectIds(list));
 		for(M ds: list) {	
-			//E e = ((AbstractDsModel<E>) ds)._getEntity_();
 			E e = this.getEntityService().getEntityManager().find(this.getEntityClass(), ((IModelWithId)ds).getId());
-			//this.getEntityService().getEntityManager().refresh(e);
 			postUpdateBeforeModel(ds, e);
 			this.getConverter().entityToModel(e, ds);
 			postUpdateAfterModel(ds, e);
@@ -430,7 +425,7 @@ public class AbstractDsService<M extends AbstractDsModel<?>, P extends IDsParam,
 		if (!rpcData.containsKey(procedureName)) {
 			throw new Exception("No such procedure defined: "+procedureName);
 		}
-		AbstractDsDelegate<M> delegate = rpcData.get(procedureName).newInstance();
+		AbstractDsDelegate<M, P, E> delegate = rpcData.get(procedureName).newInstance();
 		delegate.setAppContext(this.appContext);
 		delegate.setEntityServiceFactories(entityServiceFactories);
 		delegate.setDsServiceFactories(dsServiceFactories);
@@ -441,7 +436,7 @@ public class AbstractDsService<M extends AbstractDsModel<?>, P extends IDsParam,
 		if (!rpcFilter.containsKey(procedureName)) {
 			throw new Exception("No such procedure defined: "+procedureName);
 		}
-		AbstractDsDelegate<M> delegate = rpcFilter.get(procedureName).newInstance();
+		AbstractDsDelegate<M, P, E> delegate = rpcFilter.get(procedureName).newInstance();
 		delegate.setAppContext(this.appContext);
 		delegate.setEntityServiceFactories(entityServiceFactories);
 		delegate.setDsServiceFactories(dsServiceFactories);
@@ -471,7 +466,7 @@ public class AbstractDsService<M extends AbstractDsModel<?>, P extends IDsParam,
 
 	public void setModelClass(Class<M> modelClass) throws Exception {
 		this.modelClass = modelClass;
-		this.descriptor = DsDescriptorManager.get(this.modelClass);
+		this.descriptor = ViewModelDescriptorManager.getDsDescriptor(this.modelClass);
 	}
 
 	public Class<P> getParamClass() {
@@ -498,7 +493,7 @@ public class AbstractDsService<M extends AbstractDsModel<?>, P extends IDsParam,
 			if (this.converterClass == null ) {
 				this.converterClass = BaseDsConverter.class;
 			}
-			this.converter = (IDsConverter)this.converterClass.newInstance();
+			this.converter = (IDsConverter<M, E>)this.converterClass.newInstance();
 			this.converter.setEntityManager(this.getEntityService().getEntityManager());
 			this.converter.setEntityServiceFactories(this.entityServiceFactories);
 		}
@@ -508,42 +503,41 @@ public class AbstractDsService<M extends AbstractDsModel<?>, P extends IDsParam,
 		this.converter = converter;
 	}
 	 
-	public void setDescriptor(IDsDescriptor descriptor) {
+	public void setDescriptor(DsDescriptor<M> descriptor) {
 		this.descriptor = descriptor;
 	}
 	
-	public IDsDescriptor getDescriptor() {
+	public DsDescriptor<M> getDescriptor() {
 		return descriptor;
 	}
 	
-	@Override
-	public IEntityService getEntityService() throws Exception {	
+	 
+	public IEntityService<E> getEntityService() throws Exception {	
 		if ( this.entityService == null) {
 			this.entityService = this.findEntityService(this.getEntityClass());
 		}		
-		return this.entityService;
+		return this.entityService;		
 	}
-	 
-	
+	  
 	
 	// ======================== Helpers ===========================
 	 
-	public Map<String, Class<AbstractDsDelegate<M>>> getRpcData() {
+	public Map<String, Class<AbstractDsDelegate<M, P, E>>> getRpcData() {
 		return rpcData;
 	}
 
 	public void setRpcData(
-			Map<String, Class<AbstractDsDelegate<M>>> rpcData) {
+			Map<String, Class<AbstractDsDelegate<M, P, E>>> rpcData) {
 		this.rpcData = rpcData;
 	}
 
 	 
-	public Map<String, Class<AbstractDsDelegate<M>>> getRpcFilter() {
+	public Map<String, Class<AbstractDsDelegate<M, P, E>>> getRpcFilter() {
 		return rpcFilter;
 	}
 
 	public void setRpcFilter(
-			Map<String, Class<AbstractDsDelegate<M>>> rpcFilter) {
+			Map<String, Class<AbstractDsDelegate<M, P, E>>> rpcFilter) {
 		this.rpcFilter = rpcFilter;
 	}
 

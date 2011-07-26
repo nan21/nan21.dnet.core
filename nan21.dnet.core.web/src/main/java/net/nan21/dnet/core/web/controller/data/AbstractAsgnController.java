@@ -1,5 +1,6 @@
 package net.nan21.dnet.core.web.controller.data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
@@ -16,8 +17,6 @@ import net.nan21.dnet.core.api.action.IQueryBuilder;
 import net.nan21.dnet.core.api.marshall.IDsMarshaller;
 import net.nan21.dnet.core.api.service.IAsgnService;
 import net.nan21.dnet.core.api.service.IAsgnServiceFactory;
-import net.nan21.dnet.core.api.service.IDsService;
-import net.nan21.dnet.core.api.service.IDsServiceFactory;
 import net.nan21.dnet.core.web.result.ActionResultFind;
 
 public class AbstractAsgnController<M,P> extends AbstractDataController {
@@ -66,7 +65,7 @@ public class AbstractAsgnController<M,P> extends AbstractDataController {
 			service.setObjectId(objectId);
 			service.setSelectionId(selectionId);
 			
-			IQueryBuilder builder = service.createQueryBuilder().addFetchLimit(
+			IQueryBuilder<M,P> builder = service.createQueryBuilder().addFetchLimit(
 					resultStart, resultSize).addSortInfo(orderByCol,
 					orderBySense);
 
@@ -126,7 +125,7 @@ public class AbstractAsgnController<M,P> extends AbstractDataController {
 			service.setObjectId(objectId);
 			service.setSelectionId(selectionId);
 			
-			IQueryBuilder builder = service.createQueryBuilder().addFetchLimit(
+			IQueryBuilder<M,P> builder = service.createQueryBuilder().addFetchLimit(
 					resultStart, resultSize).addSortInfo(orderByCol,
 					orderBySense);
 
@@ -172,9 +171,7 @@ public class AbstractAsgnController<M,P> extends AbstractDataController {
 			this.dataFormat = dataFormat;
 			IAsgnService<M, P> service = getAsgnService(this.resourceName);
 			service.setObjectId(objectId);
-			
-			service.setup(this.resourceName); 
-	 
+			 
 			return service.setup(this.resourceName);
 		} catch (Exception e) {
 			return this.handleException(e, response);
@@ -183,6 +180,202 @@ public class AbstractAsgnController<M,P> extends AbstractDataController {
 		}
 
 	} 
+	
+	
+	/**
+	 * 
+	 * @param resourceName
+	 * @param dataFormat
+	 * @param objectId
+	 * @param selectionId
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(method = RequestMethod.POST, params = "action=moveLeft")
+	@ResponseBody
+	public String moveLeft(
+			@PathVariable String resourceName,
+			@PathVariable String dataFormat,
+			@RequestParam(value = "objectId", required = true) Long objectId,
+			@RequestParam(value = "selectionId", required = true) String selectionId,
+			@RequestParam(value = "p_selected_ids", required = true) String selectedIds,	
+			HttpServletResponse response) throws Exception {
+		try {
+			this.prepareRequest();
+			this.resourceName = resourceName;
+			this.dataFormat = dataFormat;
+			IAsgnService<M, P> service = getAsgnService(this.resourceName);
+
+			service.setObjectId(objectId);
+			service.setSelectionId(selectionId);			
+			String[] tmp = selectedIds.split(",");
+			List<Long> ids = new ArrayList<Long>();
+			for(String i: tmp) {
+				ids.add(new Long(i));
+			}
+			service.moveLeft( ids ); 
+	 
+			return "";
+		} catch (Exception e) {
+			return this.handleException(e, response);
+		} finally {
+			this.finishRequest();
+		}
+
+	} 
+	
+	/**
+	 * 
+	 * @param resourceName
+	 * @param dataFormat
+	 * @param objectId
+	 * @param selectionId
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(method = RequestMethod.POST, params = "action=moveRight")
+	@ResponseBody
+	public String moveRight( 
+			@PathVariable String resourceName,
+			@PathVariable String dataFormat,
+			@RequestParam(value = "objectId", required = true) Long objectId,
+			@RequestParam(value = "selectionId", required = true) String selectionId,
+			@RequestParam(value = "p_selected_ids", required = true) String selectedIds,	
+			HttpServletResponse response) throws Exception {
+		try {
+			this.prepareRequest();
+			this.resourceName = resourceName;
+			this.dataFormat = dataFormat;
+			IAsgnService<M, P> service = getAsgnService(this.resourceName);
+
+			service.setObjectId(objectId);
+			service.setSelectionId(selectionId);			
+			String[] tmp = selectedIds.split(",");
+			List<Long> ids = new ArrayList<Long>();
+			for(String i: tmp) {
+				ids.add(new Long(i));
+			}
+			service.moveRight( ids ); 
+	 
+			return "";
+		} catch (Exception e) {
+			return this.handleException(e, response);
+		} finally {
+			this.finishRequest();
+		}
+	}
+	
+	@RequestMapping(method = RequestMethod.POST, params = "action=moveLeftAll")
+	@ResponseBody
+	public String moveLeftAll( 
+			@PathVariable String resourceName,
+			@PathVariable String dataFormat,
+			@RequestParam(value = "objectId", required = true) Long objectId,
+			@RequestParam(value = "selectionId", required = true) String selectionId,			 
+			HttpServletResponse response) throws Exception {
+		try {
+			this.prepareRequest();
+			this.resourceName = resourceName;
+			this.dataFormat = dataFormat;
+			IAsgnService<M, P> service = getAsgnService(this.resourceName);
+
+			service.setObjectId(objectId);
+			service.setSelectionId(selectionId);			
+			 
+			service.moveLeftAll(); 
+	 
+			return "";
+		} catch (Exception e) {
+			return this.handleException(e, response);
+		} finally {
+			this.finishRequest();
+		}
+	}
+	
+ 
+	@RequestMapping(method = RequestMethod.POST, params = "action=moveRightAll")
+	@ResponseBody
+	public String moveRightAll( 
+			@PathVariable String resourceName,
+			@PathVariable String dataFormat,
+			@RequestParam(value = "objectId", required = true) Long objectId,
+			@RequestParam(value = "selectionId", required = true) String selectionId,			 
+			HttpServletResponse response) throws Exception {
+		try {
+			this.prepareRequest();
+			this.resourceName = resourceName;
+			this.dataFormat = dataFormat;
+			IAsgnService<M, P> service = getAsgnService(this.resourceName);
+
+			service.setObjectId(objectId);
+			service.setSelectionId(selectionId);			
+			 
+			service.moveRightAll(); 
+	 
+			return "";
+		} catch (Exception e) {
+			return this.handleException(e, response);
+		} finally {
+			this.finishRequest();
+		}
+
+	}
+	
+	
+	@RequestMapping(method = RequestMethod.POST, params = "action=reset")
+	@ResponseBody
+	public String reset(
+			@PathVariable String resourceName,
+			@PathVariable String dataFormat,
+			@RequestParam(value = "objectId", required = true) Long objectId,
+			@RequestParam(value = "selectionId", required = true) String selectionId,			
+			HttpServletResponse response) throws Exception {
+		try {
+			this.prepareRequest();
+			this.resourceName = resourceName;
+			this.dataFormat = dataFormat;
+			IAsgnService<M, P> service = getAsgnService(this.resourceName);
+			
+			service.setObjectId(objectId);
+			service.setSelectionId(selectionId);	
+			service.reset();
+			return "";
+		} catch (Exception e) {
+			return this.handleException(e, response);
+		} finally {
+			this.finishRequest();
+		}
+	} 
+	
+	
+	@RequestMapping(method = RequestMethod.POST, params = "action=save")
+	@ResponseBody
+	public String save(
+			@PathVariable String resourceName,
+			@PathVariable String dataFormat,
+			@RequestParam(value = "objectId", required = true) Long objectId,
+			@RequestParam(value = "selectionId", required = true) String selectionId,			
+			HttpServletResponse response) throws Exception {
+		try {
+			this.prepareRequest();
+			this.resourceName = resourceName;
+			this.dataFormat = dataFormat;
+			IAsgnService<M, P> service = getAsgnService(this.resourceName);
+			
+			service.setObjectId(objectId);
+			service.setSelectionId(selectionId);	
+			service.save();
+			return "";
+		} catch (Exception e) {
+			return this.handleException(e, response);
+		} finally {
+			this.finishRequest();
+		}
+	} 
+	
+	
 	
 	
 	public IActionResultFind packfindResult(List<M> data, P params, long totalCount) {

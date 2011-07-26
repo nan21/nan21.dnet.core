@@ -16,9 +16,10 @@ public class DsServiceFactory implements IDsServiceFactory {
 	 
 	private List<IEntityServiceFactory> entityServiceFactories;
 	 
+	@SuppressWarnings("unchecked")
 	@Override
-	public IDsService create(String key) {
-		IDsService s = (IDsService)this.appContext.getBean(key);
+	public <M, P> IDsService<M, P> create(String key) {
+		IDsService<M, P> s = (IDsService<M, P>)this.appContext.getBean(key);
 		s.setEntityServiceFactories(entityServiceFactories);
 		return s; 		 
 	}

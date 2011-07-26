@@ -68,6 +68,8 @@ public interface IAsgnService<M, P> {
 	 */
 	public void cleanup() throws Exception;
 	
+	 
+	
 	public List<M> findLeft( M filter, P params, IQueryBuilder<M, P> builder) throws Exception;	
 	public List<M> findRight( M filter, P params, IQueryBuilder<M, P> builder) throws Exception;
  

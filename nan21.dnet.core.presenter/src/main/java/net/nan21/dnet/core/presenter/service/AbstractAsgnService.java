@@ -3,15 +3,16 @@ package net.nan21.dnet.core.presenter.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Query;
+
 import net.nan21.dnet.core.api.action.IQueryBuilder;
 import net.nan21.dnet.core.api.marshall.IDsMarshaller;
 import net.nan21.dnet.core.api.service.IAsgnTxService;
 import net.nan21.dnet.core.api.service.IAsgnTxServiceFactory;
-import net.nan21.dnet.core.api.service.IEntityService;
-import net.nan21.dnet.core.api.service.IEntityServiceFactory;
-import net.nan21.dnet.core.domain.service.AbstractAsgnTxService;
-import net.nan21.dnet.core.domain.service.BaseAsgnTxService;
 import net.nan21.dnet.core.presenter.action.QueryBuilderWithJpql;
+import net.nan21.dnet.core.presenter.marshaller.JsonMarshaller;
+import net.nan21.dnet.core.presenter.model.AsgnDescriptor;
+import net.nan21.dnet.core.presenter.model.ViewModelDescriptorManager;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
@@ -24,13 +25,16 @@ public abstract class AbstractAsgnService<M, P, E> {
 	  
 	private Class<M> modelClass;
 	private Class<P> paramClass;
+	private Class<E> entityClass;
+	
+	protected AsgnDescriptor<M> descriptor;
 	
 	protected String selectionId;
 	protected Long objectId;
 	
 	protected String leftTable;
 	protected String rightTable;
-	protected String leftPkField;
+	protected String leftPkField = "id";
 	protected String rightObjectIdField;
 	protected String rightItemIdField;
 	
@@ -38,33 +42,25 @@ public abstract class AbstractAsgnService<M, P, E> {
 	/**
 	 * Delegate service in business layer to perform transactions. 
 	 */
-	private IAsgnTxService txService;
+	private IAsgnTxService<E> txService;
 	
 
 	//TODO: this becomes findasgTxService 
-	private IAsgnTxService findTxService() throws Exception {
+	private IAsgnTxService<E> findTxService() throws Exception {
 		for(IAsgnTxServiceFactory f: asgnTxServiceFactories) {
 			try {
-				IAsgnTxService es = f.create( "baseAsgnTxService" ); //this.getEntityClass()
+				IAsgnTxService<E> es = f.create( "baseAsgnTxService" ); //this.getEntityClass()
 				if (es != null) {
 					//this.entityService = es;
+					es.setEntityClass(entityClass); 
 					es.setObjectId(objectId);
 					es.setSelectionId(selectionId);
-					
-					 
-					this.leftTable = "BD_ROLES";
-			        this.rightTable = "BD_USERS_ROLES";
-			        //this.saveAsSqlInsert = true;
-
-			        this.leftPkField = "id";
-			        this.rightItemIdField = "ROLES_ID";
-			        this.rightObjectIdField = "USERS_ID";
-			        
+					  
 					es.setLeftTable(leftTable);
 					es.setRightItemIdField(rightItemIdField);
 					es.setRightTable(rightTable);
 					es.setRightObjectIdField(rightObjectIdField);
-					
+					es.setLeftPkField(leftPkField);
 					return es;
 				}					
 			} catch(NoSuchBeanDefinitionException e) {
@@ -75,14 +71,14 @@ public abstract class AbstractAsgnService<M, P, E> {
  
 	}
 	
-	public IAsgnTxService getTxService() throws Exception {
+	public IAsgnTxService<E> getTxService() throws Exception {
 		if(this.txService == null) {
 			this.txService =  this.findTxService();
 		}
 		return this.txService;
 	}
 
-	public void setTxService(IAsgnTxService txService) {
+	public void setTxService(IAsgnTxService<E> txService) {
 		this.txService = txService;
 	}
 	
@@ -128,8 +124,7 @@ public abstract class AbstractAsgnService<M, P, E> {
 
 	 
 	public void save() throws Exception {
-		// TODO Auto-generated method stub
-		
+		this.getTxService().save();
 	}
 	
 	/**
@@ -165,14 +160,20 @@ public abstract class AbstractAsgnService<M, P, E> {
 	
 	public List<M> findLeft(M filter, P params,
 			IQueryBuilder<M, P> builder) throws Exception {
-		QueryBuilderWithJpql<M, P> bld = (QueryBuilderWithJpql<M, P>) builder;
+		QueryBuilderWithJpql<M, P> bld = (QueryBuilderWithJpql<M, P>) builder;		
+		
+		bld.setBaseEql("select e from "+this.entityClass.getSimpleName()+" e");
+		bld.setBaseEqlCount("select count(1) from "+this.entityClass.getSimpleName()+" e");
+		
+		bld.addFilterCondition("e."+this.leftPkField+" not in (select x.itemId from TempAsgnLine x where x.selectionId = :pSelectionId)"); 
 		
 		bld.setFilter(filter);
 		bld.setParams(params);
 		 
 		List<M> result = new ArrayList<M>(); 
-				 
-		List<E> list = bld.createQuery()
+		Query q = bld.createQuery();	
+		q.setParameter("pSelectionId", this.selectionId);
+		List<E> list = q
 			.setFirstResult(bld.getResultStart())
 			.setMaxResults(bld.getResultSize())
 			.getResultList();		
@@ -188,12 +189,18 @@ public abstract class AbstractAsgnService<M, P, E> {
 			IQueryBuilder<M, P> builder) throws Exception {
 		QueryBuilderWithJpql<M, P> bld = (QueryBuilderWithJpql<M, P>) builder;
 		
+		bld.setBaseEql("select e from "+this.entityClass.getSimpleName()+" e");
+		bld.setBaseEqlCount("select count(1) from "+this.entityClass.getSimpleName()+" e");
+		
+		bld.addFilterCondition("e."+this.leftPkField+" in (select x.itemId from TempAsgnLine x where x.selectionId = :pSelectionId)"); 
 		bld.setFilter(filter);
 		bld.setParams(params);
 		 
 		List<M> result = new ArrayList<M>(); 
 				 
-		List<E> list = bld.createQuery()
+		Query q = bld.createQuery();	
+		q.setParameter("pSelectionId", this.selectionId);
+		List<E> list = q
 			.setFirstResult(bld.getResultStart())
 			.setMaxResults(bld.getResultSize())
 			.getResultList();		
@@ -208,30 +215,46 @@ public abstract class AbstractAsgnService<M, P, E> {
 	public Long countLeft(M filter, P params, IQueryBuilder<M, P> builder)
 			throws Exception {
 		// TODO Auto-generated method stub
-		return null;
+		return 10L;
 	}
 
 
 	public Long countRight(M filter, P params, IQueryBuilder<M, P> builder)
 			throws Exception {
 		// TODO Auto-generated method stub
-		return null;
+		return 10L;
 	}
 	
 	public IDsMarshaller<M, P> createMarshaller(String dataFormat)
 			throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		IDsMarshaller<M, P>  marshaller = null;
+		if (dataFormat.equals(IDsMarshaller.JSON)) {
+			marshaller = new JsonMarshaller<M, P>(this.modelClass,
+					this.paramClass);
+		}		 
+		return marshaller;
 	}
 
 	public IQueryBuilder<M, P> createQueryBuilder() throws Exception {
 		QueryBuilderWithJpql<M,P> qb = new QueryBuilderWithJpql<M,P>();
 		qb.setFilterClass(this.getModelClass());
 		qb.setParamClass(this.getParamClass());
-		//qb.setDescriptor(this.descriptor);	 
+		qb.setDescriptor(this.descriptor);	 
 		qb.setEntityManager(this.getTxService().getEntityManager());
+		
+		return qb;	
 		 
-		return qb;	  
+		/*
+		 * QueryBuilderWithJpql<M,P> qb = new QueryBuilderWithJpql<M,P>();
+		qb.setFilterClass(this.getModelClass());
+		qb.setParamClass(this.getParamClass());
+		qb.setDescriptor(this.descriptor);
+		//TODO: correct this
+		qb.setEntityManager(this.getEntityService().getEntityManager());
+		qb.setBaseEql("select e from "+this.getEntityClass().getSimpleName()+" e");
+		qb.setBaseEqlCount("select count(1) from "+this.getEntityClass().getSimpleName()+" e");
+		return qb;	 
+		*/
 	}
  
 	// ====================  getters- setters =====================
@@ -264,8 +287,9 @@ public abstract class AbstractAsgnService<M, P, E> {
 		return modelClass;
 	}
 
-	public void setModelClass(Class<M> modelClass) {
+	public void setModelClass(Class<M> modelClass) throws Exception {
 		this.modelClass = modelClass;
+		this.descriptor = ViewModelDescriptorManager.getAsgnDescriptor(this.modelClass);
 	}
 
 	public Class<P> getParamClass() {
@@ -275,6 +299,14 @@ public abstract class AbstractAsgnService<M, P, E> {
 	public void setParamClass(Class<P> paramClass) {
 		this.paramClass = paramClass;
 	}
+ 
+	public Class<E> getEntityClass() {
+		return entityClass;
+	}
+
+	public void setEntityClass(Class<E> entityClass) {
+		this.entityClass = entityClass;
+	}
 
 	public List<IAsgnTxServiceFactory> getAsgnTxServiceFactories() {
 		return asgnTxServiceFactories;
@@ -283,6 +315,46 @@ public abstract class AbstractAsgnService<M, P, E> {
 	public void setAsgnTxServiceFactories(
 			List<IAsgnTxServiceFactory> asgnTxServiceFactories) {
 		this.asgnTxServiceFactories = asgnTxServiceFactories;
+	}
+
+	public String getLeftTable() {
+		return leftTable;
+	}
+
+	public void setLeftTable(String leftTable) {
+		this.leftTable = leftTable;
+	}
+
+	public String getRightTable() {
+		return rightTable;
+	}
+
+	public void setRightTable(String rightTable) {
+		this.rightTable = rightTable;
+	}
+
+	public String getLeftPkField() {
+		return leftPkField;
+	}
+
+	public void setLeftPkField(String leftPkField) {
+		this.leftPkField = leftPkField;
+	}
+
+	public String getRightObjectIdField() {
+		return rightObjectIdField;
+	}
+
+	public void setRightObjectIdField(String rightObjectIdField) {
+		this.rightObjectIdField = rightObjectIdField;
+	}
+
+	public String getRightItemIdField() {
+		return rightItemIdField;
+	}
+
+	public void setRightItemIdField(String rightItemIdField) {
+		this.rightItemIdField = rightItemIdField;
 	}
 	
 	

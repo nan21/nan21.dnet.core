@@ -16,9 +16,10 @@ public class AsgnServiceFactory implements IAsgnServiceFactory {
 	 
 	private List<IAsgnTxServiceFactory> asgnTxServiceFactories;
 	 
+	@SuppressWarnings("unchecked")
 	@Override
-	public IAsgnService create(String key) {
-		IAsgnService s = (IAsgnService)this.appContext.getBean(key);
+	public <M,P> IAsgnService<M,P> create(String key) {
+		IAsgnService<M,P> s = (IAsgnService<M,P>)this.appContext.getBean(key);
 		s.setAsgnTxServiceFactories(asgnTxServiceFactories);
 		return s; 		 
 	}

@@ -9,7 +9,7 @@ import net.nan21.dnet.core.api.model.IDsParam;
 import net.nan21.dnet.core.api.service.IDsService;
 import net.nan21.dnet.core.api.service.IDsServiceFactory;
 
-public class AbstractDsBaseController<M extends IDsModel<?>, P extends IDsParam>
+public class AbstractDsBaseController<M, P>
 		extends AbstractDataController  {
 	
 	protected Class<M> modelClass;
