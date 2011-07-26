@@ -29,7 +29,7 @@ public class AbstractDsRpcController<M extends IDsModel<?>, P extends IDsParam>
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(method=RequestMethod.POST , params={"action=rpc", "rpcType=data", })
+	@RequestMapping(method=RequestMethod.POST , params={"action=rpc", "rpcType=data" })
 	@ResponseBody	
 	public String rpcData(
 				@PathVariable String resourceName,
@@ -71,7 +71,7 @@ public class AbstractDsRpcController<M extends IDsModel<?>, P extends IDsParam>
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(method=RequestMethod.POST , params={"action=rpc", "rpcType=filter", })
+	@RequestMapping(method=RequestMethod.POST , params={"action=rpc", "rpcType=filter" })
 	@ResponseBody	
 	public String rpcFilter(
 				@PathVariable String resourceName,
