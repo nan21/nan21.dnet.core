@@ -9,6 +9,11 @@
 	<description>DNet Core</description>
 	<packaging>pom</packaging>	
 	
+	<properties>		 
+		<dnet.repository.url>ftp://nan21.net//public_html/dnet/maven2repo</dnet.repository.url>
+		<dnet.snapshotrepository.url>ftp://nan21.net//public_html/dnet/maven2repo_snapshots</dnet.snapshotrepository.url>
+	</properties>
+	
 	<!-- ========================== Modules ========================== -->
 	
 	<modules>
@@ -22,4 +27,18 @@
 		<module>nan21.dnet.core.welcome</module>
 		<module>nan21.dnet.core.security</module>
 	</modules>	
+	
+	<distributionManagement>
+		<repository>
+			<uniqueVersion>false</uniqueVersion>
+			<id>nan21.net</id>
+			<url>${dnet.repository.url}</url>
+		</repository>
+		<snapshotRepository>
+			<uniqueVersion>false</uniqueVersion>
+			<id>nan21.net</id>
+			<url>${dnet.repository.url}</url>
+		</snapshotRepository>		 
+	</distributionManagement>
+	
 </project>	 

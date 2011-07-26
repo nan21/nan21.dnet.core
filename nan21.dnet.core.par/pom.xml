@@ -1,0 +1,62 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>net.nan21.dnet</groupId>
+	<artifactId>nan21.dnet.core.par</artifactId>
+	<version>1.0.0.M1</version>
+	<name>DNet Core - par</name>	
+	<description>DNet Core - par</description>
+	<packaging>par</packaging>	
+	
+	<!-- ===================== Dependencies ===================== -->
+
+	<dependencies>
+		<!-- DNet dependencies -->
+		<dependency>
+			<groupId>net.nan21.dnet</groupId>
+			<artifactId>nan21.dnet.core.db</artifactId>
+			<version>1.0.0.M1</version>
+			<type>jar</type>
+			<scope>provided</scope>
+		</dependency>	
+		<dependency>
+			<groupId>net.nan21.dnet</groupId>
+			<artifactId>nan21.dnet.core.domain</artifactId>
+			<version>1.0.0.M1</version>
+			<type>jar</type>
+			<scope>provided</scope>
+		</dependency>	
+		<dependency>
+			<groupId>net.nan21.dnet</groupId>
+			<artifactId>nan21.dnet.core.presenter</artifactId>
+			<version>1.0.0.M1</version>
+			<type>jar</type>
+			<scope>provided</scope>
+		</dependency>	
+		<dependency>
+			<groupId>net.nan21.dnet</groupId>
+			<artifactId>nan21.dnet.core.ui.extjs</artifactId>
+			<version>1.0.0.M1</version>
+			<type>war</type>
+			<scope>provided</scope>
+		</dependency>	
+		<dependency>
+			<groupId>net.nan21.dnet</groupId>
+			<artifactId>nan21.dnet.core.web</artifactId>
+			<version>1.0.0.M1</version>
+			<type>war</type>
+			<scope>provided</scope>
+		</dependency>	
+		<dependency>
+			<groupId>net.nan21.dnet</groupId>
+			<artifactId>nan21.dnet.core.welcome</artifactId>
+			<version>1.0.0.M1</version>
+			<type>war</type>
+			<scope>provided</scope>
+		</dependency>	
+		 
+		<!-- External libraries -->
+		 
+	</dependencies>
+</project>	 
