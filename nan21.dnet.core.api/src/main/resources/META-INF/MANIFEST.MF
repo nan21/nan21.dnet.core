@@ -12,10 +12,11 @@ Export-Package: net.nan21.dnet.core.api;version="1.0.0.M1",net.nan21.d
  "1.0.0.M1",net.nan21.dnet.core.api.ui.extjs.impl;version="1.0.0.M1";u
  ses:="net.nan21.dnet.core.api.ui.extjs"
 Bundle-Vendor: Nan21 
+Class-Path: 
 Bundle-Version: 1.0.0.M1
 Tool: Bundlor 1.0.0.RELEASE
 Bundle-Name: DNet Core - api
 Bundle-ManifestVersion: 2
 Bundle-SymbolicName: nan21.dnet.core.api
-Import-Package: javax.persistence
+Import-Package: javax.persistence;version="[2.0,2.1)"
 
