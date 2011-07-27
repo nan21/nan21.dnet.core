@@ -59,4 +59,40 @@
 		<!-- External libraries -->
 		 
 	</dependencies>
+	
+	<!-- ===================== Build ===================== -->	
+	
+	<build>
+	<plugins>
+		<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-par-plugin</artifactId>
+				<version>1.0.0.RELEASE</version>
+				<configuration>
+					<applicationSymbolicName>DNet Core PAR</applicationSymbolicName>
+				</configuration> 
+				 
+			</plugin>				
+		<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>2.3</version>
+				  
+				<executions>
+					<execution>
+						<id>copy-dependencies</id>
+						<phase>package</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/par-provided</outputDirectory>
+							<overWriteIfNewer>true</overWriteIfNewer>
+							<excludeGroupIds>com.springsource.dmserver,org.apache.log4j</excludeGroupIds>
+						</configuration>
+					</execution>
+				</executions> 
+			</plugin>				
+ 	</plugins>
+ 	</build>
 </project>	 
