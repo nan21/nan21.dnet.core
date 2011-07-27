@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<com.springsource.server.ide.par:Par xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:com.springsource.server.ide.par="http:///com/springsource/server/ide/par.ecore">
+  <bundle symbolicName="nan21.dnet.core.api"/>
+  <bundle symbolicName="nan21.dnet.core.db"/>
+  <bundle symbolicName="nan21.dnet.core.domain"/>
+  <bundle symbolicName="nan21.dnet.core.presenter"/>
+  <bundle symbolicName="nan21.dnet.core.security"/>
+  <bundle symbolicName="nan21.dnet.core.ui.extjs"/>
+  <bundle symbolicName="nan21.dnet.core.web"/>
+  <bundle symbolicName="nan21.dnet.core.welcome"/>
+</com.springsource.server.ide.par:Par>

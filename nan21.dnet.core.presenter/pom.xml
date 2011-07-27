@@ -23,14 +23,14 @@
 			<artifactId>nan21.dnet.core.api</artifactId>
 			<version>1.0.0.M1</version>
 			<type>jar</type>
-			<scope>provided</scope>
+			<scope>compile</scope>
 		</dependency>	
 		<dependency>
 			<groupId>net.nan21.dnet</groupId>
 			<artifactId>nan21.dnet.core.domain</artifactId>
 			<version>1.0.0.M1</version>
 			<type>jar</type>
-			<scope>provided</scope>
+			<scope>compile</scope>
 		</dependency>	
 		 
 		<!-- External libraries -->
