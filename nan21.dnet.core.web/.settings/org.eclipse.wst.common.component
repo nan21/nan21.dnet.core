@@ -3,15 +3,6 @@
     <wb-module deploy-name="nan21.dnet.core.web">
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
         <wb-resource deploy-path="/" source-path="/src/main/webapp"/>
-        <dependent-module deploy-path="/WEB-INF/lib" handle="module:/resource/nan21.dnet.core.api/nan21.dnet.core.api">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module deploy-path="/WEB-INF/lib" handle="module:/resource/nan21.dnet.core.presenter/nan21.dnet.core.presenter">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module deploy-path="/WEB-INF/lib" handle="module:/resource/nan21.dnet.core.domain/nan21.dnet.core.domain">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
         <property name="context-root" value="nan21.dnet.core.web"/>
         <property name="java-output-path"/>
     </wb-module>
