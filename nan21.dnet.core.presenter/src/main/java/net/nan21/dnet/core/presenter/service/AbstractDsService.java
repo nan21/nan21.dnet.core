@@ -42,11 +42,9 @@ public class AbstractDsService<M, P, E>
 	private IEntityService<E> entityService;
 	//
 	//private List<IEntityServiceFactory> entityServiceFactories;
-	//private Map<String, Class<AbstractDsDelegate<M, P>>> rpcData = new HashMap<String, Class<AbstractDsDelegate<M, P>>>();
-	//private Map<String, Class<AbstractDsDelegate<M, P>>> rpcFilter = new HashMap<String, Class<AbstractDsDelegate<M, P>>>();
-	
-	private Map<String, Class<AbstractDsDelegate<M, P, E>>> rpcData = new HashMap<String, Class<AbstractDsDelegate<M, P, E>>>();
-	private Map<String, Class<AbstractDsDelegate<M, P, E>>> rpcFilter = new HashMap<String, Class<AbstractDsDelegate<M, P, E>>>();
+ 
+	private Map<String, Class<AbstractDsDelegate<M, P>>> rpcData = new HashMap<String, Class<AbstractDsDelegate<M, P>>>();
+	private Map<String, Class<AbstractDsDelegate<M, P>>> rpcFilter = new HashMap<String, Class<AbstractDsDelegate<M, P>>>();
 	 
 	
 	// ======================== Find ===========================
@@ -425,7 +423,7 @@ public class AbstractDsService<M, P, E>
 		if (!rpcData.containsKey(procedureName)) {
 			throw new Exception("No such procedure defined: "+procedureName);
 		}
-		AbstractDsDelegate<M, P, E> delegate = rpcData.get(procedureName).newInstance();
+		AbstractDsDelegate<M, P> delegate = rpcData.get(procedureName).newInstance();
 		delegate.setAppContext(this.appContext);
 		delegate.setEntityServiceFactories(entityServiceFactories);
 		delegate.setDsServiceFactories(dsServiceFactories);
@@ -436,7 +434,7 @@ public class AbstractDsService<M, P, E>
 		if (!rpcFilter.containsKey(procedureName)) {
 			throw new Exception("No such procedure defined: "+procedureName);
 		}
-		AbstractDsDelegate<M, P, E> delegate = rpcFilter.get(procedureName).newInstance();
+		AbstractDsDelegate<M, P> delegate = rpcFilter.get(procedureName).newInstance();
 		delegate.setAppContext(this.appContext);
 		delegate.setEntityServiceFactories(entityServiceFactories);
 		delegate.setDsServiceFactories(dsServiceFactories);
@@ -522,22 +520,22 @@ public class AbstractDsService<M, P, E>
 	
 	// ======================== Helpers ===========================
 	 
-	public Map<String, Class<AbstractDsDelegate<M, P, E>>> getRpcData() {
+	public Map<String, Class<AbstractDsDelegate<M, P>>> getRpcData() {
 		return rpcData;
 	}
 
 	public void setRpcData(
-			Map<String, Class<AbstractDsDelegate<M, P, E>>> rpcData) {
+			Map<String, Class<AbstractDsDelegate<M, P>>> rpcData) {
 		this.rpcData = rpcData;
 	}
 
 	 
-	public Map<String, Class<AbstractDsDelegate<M, P, E>>> getRpcFilter() {
+	public Map<String, Class<AbstractDsDelegate<M, P>>> getRpcFilter() {
 		return rpcFilter;
 	}
 
 	public void setRpcFilter(
-			Map<String, Class<AbstractDsDelegate<M, P, E>>> rpcFilter) {
+			Map<String, Class<AbstractDsDelegate<M, P>>> rpcFilter) {
 		this.rpcFilter = rpcFilter;
 	}
 
