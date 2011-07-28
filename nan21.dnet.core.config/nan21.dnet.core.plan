@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plan name="nan21.dnet.core.plan" version="1.0.0.M1" scoped="false" atomic="true"
+        xmlns="http://www.eclipse.org/virgo/schema/plan"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="
+		        http://www.eclipse.org/virgo/schema/plan 
+		        http://www.eclipse.org/virgo/schema/plan/eclipse-virgo-plan.xsd">
+
+	<artifact type="bundle" name="nan21.dnet.core.api" version="[1.0.0.M1, 1.0.0.M1]"/>
+	<artifact type="bundle" name="nan21.dnet.core.db" version="[1.0.0.M1, 1.0.0.M1]"/>
+	<artifact type="bundle" name="nan21.dnet.core.domain" version="[1.0.0.M1, 1.0.0.M1]"/>
+	<artifact type="bundle" name="nan21.dnet.core.presenter" version="[1.0.0.M1, 1.0.0.M1]"/>
+	<artifact type="bundle" name="nan21.dnet.core.web" version="[1.0.0.M1, 1.0.0.M1]">
+			  <property name="header:Web-ContextPath" value="/nan21.dnet.core.web" />
+	</artifact>
+	<artifact type="bundle" name="nan21.dnet.core.welcome" version="[1.0.0.M1, 1.0.0.M1]">
+			  <property name="header:Web-ContextPath" value="/nan21.dnet.core.welcome" />
+	</artifact>
+ 	<artifact type="bundle" name="net.nan21.osgi.extjs" version="[3.3.0, 3.3.0]" /> 
+	<artifact type="bundle" name="nan21.dnet.core.ui.extjs" version="[1.0.0.M1, 1.0.0.M1]">
+			  <property name="header:Web-ContextPath" value="/nan21.dnet.core.ui.extjs" />
+	</artifact>
+</plan>

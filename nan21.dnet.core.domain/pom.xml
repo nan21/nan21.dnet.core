@@ -1,5 +1,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>net.nan21.dnet</groupId>
@@ -9,11 +10,12 @@
 	</parent>
 	<groupId>net.nan21.dnet</groupId>
 	<artifactId>nan21.dnet.core.domain</artifactId>
-	<name>DNet Core - domain</name>
+	<name>DNet Core - domain</name>	
 	<description>DNet Core - domain. Contains base classes for the domain layer.</description>
-	<packaging>jar</packaging>
-
+	<packaging>jar</packaging>	
+	
 	<!-- ===================== Dependencies ===================== -->
+
 	<dependencies>
 		<!-- DNet dependencies -->
 		<dependency>
@@ -22,8 +24,8 @@
 			<version>1.0.0.M1</version>
 			<type>jar</type>
 			<scope>compile</scope>
-		</dependency>
-
+		</dependency>	
+		 
 		<!-- External libraries -->
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -74,6 +76,7 @@
 			<type>jar</type>
 			<scope>provided</scope>
 		</dependency>
+		 
 		<dependency>
 			<groupId>org.springframework.osgi</groupId>
 			<artifactId>org.springframework.osgi.core</artifactId>
@@ -103,43 +106,49 @@
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>
-
-	<!-- ===================== Build ===================== -->
+	
+	<!-- ===================== Build ===================== -->	
+	
 	<build>
-		<plugins>
-			<plugin>
+	<plugins>
+		<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>2.1</version>
 				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
-				</configuration>
-			</plugin>
-			<plugin>
+				<source>1.6</source>
+				<target>1.6</target>
+			</configuration> 
+				 
+			</plugin>				
+		<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
 				<version>2.1.2</version>
+				 
 				<executions>
-					<execution>
-						<id>attach-sources</id>
-						<phase>verify</phase>
-						<goals>
-							<goal>jar-no-fork</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
+				<execution>
+		    		<id>attach-sources</id>
+		    		<phase>verify</phase>
+		   			<goals>
+		      			<goal>jar-no-fork</goal>
+		    		</goals>
+		  		</execution>
+			</executions> 
+			</plugin>				
+		<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
 				<version>2.3</version>
 				<configuration>
-					<archive>
-						<manifestFile> src/main/resources/META-INF/MANIFEST.MF </manifestFile>
-					</archive>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
-</project>
+		 	<archive>
+				<manifestFile>
+					src/main/resources/META-INF/MANIFEST.MF
+				</manifestFile>
+			</archive>
+		</configuration> 
+				 
+			</plugin>				
+ 	</plugins>
+ 	</build>
+</project>	 

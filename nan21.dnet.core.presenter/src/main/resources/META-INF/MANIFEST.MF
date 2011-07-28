@@ -7,31 +7,32 @@ Export-Package: net.nan21.dnet.core.presenter.action;version="1.0.0.M1
  xception;version="1.0.0.M1",net.nan21.dnet.core.presenter.marshaller;
  version="1.0.0.M1";uses:="net.nan21.dnet.core.api.action,net.nan21.dn
  et.core.api.marshall",net.nan21.dnet.core.presenter.model;version="1.
- 0.0.M1";uses:="net.nan21.dnet.core.api.descriptor,net.nan21.dnet.core
- .api.model,org.springframework.beans.factory.annotation,org.springfra
- mework.context",net.nan21.dnet.core.presenter.propertyeditors;version
- ="1.0.0.M1",net.nan21.dnet.core.presenter.service;version="1.0.0.M1";
- uses:="net.nan21.dnet.core.api.action,net.nan21.dnet.core.api.convert
- er,net.nan21.dnet.core.api.marshall,net.nan21.dnet.core.api.service,n
- et.nan21.dnet.core.presenter.model,org.springframework.beans.factory.
- annotation,org.springframework.context,org.springframework.transactio
- n.annotation"
-Import-Bundle: nan21.dnet.core.domain;version="[1.0.0.M1,1.0.0.M1]",ne
- t.nan21.osgi.opencsv;version="[2.0,3.0)"
+ 0.0.M1";uses:="net.nan21.dnet.core.api.descriptor,org.springframework
+ .beans.factory.annotation,org.springframework.context",net.nan21.dnet
+ .core.presenter.propertyeditors;version="1.0.0.M1",net.nan21.dnet.cor
+ e.presenter.service;version="1.0.0.M1";uses:="net.nan21.dnet.core.api
+ .action,net.nan21.dnet.core.api.converter,net.nan21.dnet.core.api.mar
+ shall,net.nan21.dnet.core.api.service,net.nan21.dnet.core.presenter.m
+ odel,org.springframework.beans.factory.annotation,org.springframework
+ .context,org.springframework.transaction.annotation"
+Import-Bundle: nan21.dnet.core.domain;version="[1.0.0.M1,1.0.0.M1]"
 Bundle-Vendor: Nan21 
 Bundle-Version: 1.0.0.M1
 Tool: Bundlor 1.0.0.RELEASE
 Bundle-Name: DNet Core - presenter
 Bundle-ManifestVersion: 2
 Bundle-SymbolicName: nan21.dnet.core.presenter
-Import-Package: au.com.bytecode.opencsv,au.com.bytecode.opencsv.bean,j
- avax.persistence,net.nan21.dnet.core.api.action,net.nan21.dnet.core.a
- pi.annotation,net.nan21.dnet.core.api.converter,net.nan21.dnet.core.a
- pi.descriptor,net.nan21.dnet.core.api.marshall,net.nan21.dnet.core.ap
- i.model,net.nan21.dnet.core.api.service,net.nan21.dnet.core.domain.se
- ssion,org.codehaus.jackson.map,org.codehaus.jackson.map.type,org.code
- haus.jackson.type,org.springframework.beans,org.springframework.beans
- .factory,org.springframework.beans.factory.annotation,org.springframe
- work.context,org.springframework.context.config,org.springframework.t
- ransaction.annotation,org.springframework.util
+Import-Package: au.com.bytecode.opencsv;version="[2.0,3.0)",au.com.byt
+ ecode.opencsv.bean;version="[2.0,3.0)",javax.persistence;version="[2.
+ 0,2.1)",net.nan21.dnet.core.api.action,net.nan21.dnet.core.api.annota
+ tion,net.nan21.dnet.core.api.converter,net.nan21.dnet.core.api.descri
+ ptor,net.nan21.dnet.core.api.marshall,net.nan21.dnet.core.api.model,n
+ et.nan21.dnet.core.api.service,net.nan21.dnet.core.domain.session,org
+ .codehaus.jackson;version="[1.4,2.0)",org.codehaus.jackson.map;versio
+ n="[1.4,2.0)",org.codehaus.jackson.map.type;version="[1.4,2.0)",org.c
+ odehaus.jackson.type,org.eclipse.persistence.jpa;version="[2.1,2.4)",
+ org.springframework.beans,org.springframework.beans.factory,org.sprin
+ gframework.beans.factory.annotation,org.springframework.context,org.s
+ pringframework.context.config;version="[3.0,3.1)",org.springframework
+ .transaction.annotation,org.springframework.util
 

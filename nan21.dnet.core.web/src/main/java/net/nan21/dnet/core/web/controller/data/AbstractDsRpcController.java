@@ -5,8 +5,6 @@ import javax.servlet.http.HttpServletResponse;
 import net.nan21.dnet.core.api.action.IActionResultRpcData;
 import net.nan21.dnet.core.api.action.IActionResultRpcFilter;
 import net.nan21.dnet.core.api.marshall.IDsMarshaller;
-import net.nan21.dnet.core.api.model.IDsModel;
-import net.nan21.dnet.core.api.model.IDsParam;
 import net.nan21.dnet.core.api.service.IDsService;
 import net.nan21.dnet.core.web.result.ActionResultRpcData;
 import net.nan21.dnet.core.web.result.ActionResultRpcFilter;
@@ -17,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-public class AbstractDsRpcController<M extends IDsModel<?>, P extends IDsParam>
+public class AbstractDsRpcController<M, P>
 		extends AbstractDsReadController<M, P> {
 
 	/**

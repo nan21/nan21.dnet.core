@@ -11,12 +11,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import net.nan21.dnet.core.api.action.IActionResultSave;
 import net.nan21.dnet.core.api.marshall.IDsMarshaller;
-import net.nan21.dnet.core.api.model.IDsModel;
-import net.nan21.dnet.core.api.model.IDsParam;
 import net.nan21.dnet.core.api.service.IDsService;
 import net.nan21.dnet.core.web.result.ActionResultSave;
 
-public class AbstractDsWriteController<M extends IDsModel<?>, P extends IDsParam>
+public class AbstractDsWriteController<M, P>
 	extends AbstractDsRpcController<M, P>{
 
 	/**

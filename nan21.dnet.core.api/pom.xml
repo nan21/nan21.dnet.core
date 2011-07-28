@@ -1,5 +1,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>net.nan21.dnet</groupId>
@@ -9,14 +10,15 @@
 	</parent>
 	<groupId>net.nan21.dnet</groupId>
 	<artifactId>nan21.dnet.core.api</artifactId>
-	<name>DNet Core - api</name>
+	<name>DNet Core - api</name>	
 	<description>DNet Core - api. Interfaces </description>
-	<packaging>jar</packaging>
-
+	<packaging>jar</packaging>	
+	
 	<!-- ===================== Dependencies ===================== -->
+
 	<dependencies>
 		<!-- DNet dependencies -->
-
+		 
 		<!-- External libraries -->
 		<dependency>
 			<groupId>org.eclipse.persistence</groupId>
@@ -25,12 +27,14 @@
 			<type>jar</type>
 			<scope>provided</scope>
 		</dependency>
+		 
 	</dependencies>
-
-	<!-- ===================== Build ===================== -->
+	
+	<!-- ===================== Build ===================== -->	
+	
 	<build>
-		<plugins>
-			<plugin>
+	<plugins>
+		<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>2.1</version>
@@ -38,32 +42,37 @@
 					<source>1.6</source>
 					<target>1.6</target>
 					<encoding>UTF-8</encoding>
-				</configuration>
-			</plugin>
-			<plugin>
+				</configuration> 
+				 
+			</plugin>				
+		<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
 				<version>2.1.2</version>
+				 
 				<executions>
 					<execution>
-						<id>attach-sources</id>
-						<phase>verify</phase>
-						<goals>
-							<goal>jar-no-fork</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
+	            		<id>attach-sources</id>
+	            		<phase>verify</phase>
+	           			<goals>
+	              			<goal>jar-no-fork</goal>
+	            		</goals>
+	          		</execution>
+          		</executions> 
+			</plugin>				
+		<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
 				<version>2.3</version>
 				<configuration>
-					<archive>
-						<manifestFile> src/main/resources/META-INF/MANIFEST.MF </manifestFile>
-					</archive>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
-</project>
+			 	<archive>
+					<manifestFile>
+						src/main/resources/META-INF/MANIFEST.MF
+					</manifestFile>
+				</archive>
+			</configuration> 
+				 
+			</plugin>				
+ 	</plugins>
+ 	</build>
+</project>	 

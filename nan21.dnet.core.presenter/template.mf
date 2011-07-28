@@ -6,8 +6,16 @@ Bundle-Vendor: Nan21
 Bundle-Version: 1.0.0.M1
 Import-Template: 
 Import-Package: 
- org.springframework.context.config;version="[3.0,3.1)"
+ org.springframework.context;version="[3.0,3.1)",
+ org.springframework.context.config;version="[3.0,3.1)",
+ au.com.bytecode.opencsv;version="[2.0,3.0)",
+ au.com.bytecode.opencsv.bean;version="[2.0,3.0)",
+ javax.persistence;version="[2.0,2.1)",
+ org.eclipse.persistence.jpa;version="[2.1,2.4)",
+ org.eclipse.persistence.jpa;version="[2.1,2.4)",
+ org.codehaus.jackson;version="[1.4,2.0)",
+ org.codehaus.jackson.map;version="[1.4,2.0)",
+ org.codehaus.jackson.map.type;version="[1.4,2.0)"
 Import-Bundle:  
- nan21.dnet.core.domain;version="[1.0.0.M1,1.0.0.M1]", 
- net.nan21.osgi.opencsv;version="[2.0,3.0)"
+ nan21.dnet.core.domain;version="[1.0.0.M1,1.0.0.M1]"
 
