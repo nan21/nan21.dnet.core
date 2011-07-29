@@ -13,4 +13,22 @@
 	<name>DNet Core - ui extjs</name>	
 	<description>DNet Core - extjs user interface.</description>
 	<packaging>war</packaging>	
+	
+	<!-- ===================== Build ===================== -->	
+	
+	<build>
+	<plugins>
+		<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.1.1</version>
+				<configuration>
+				 	<archive>
+						<manifestFile>src/main/webapp/META-INF/MANIFEST.MF</manifestFile>
+					</archive>
+				</configuration> 
+				 
+			</plugin>				
+ 	</plugins>
+ 	</build>
 </project>	 
