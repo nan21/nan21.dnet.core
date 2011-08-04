@@ -7,7 +7,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.AbstractController;
 
 public class HomeController extends AbstractController {
-
+ 
 	private String productName;
 	private String productVersion;
 	private String jspName;

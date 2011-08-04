@@ -41,6 +41,13 @@
 			<type>jar</type>
 			<scope>provided</scope>
 		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>com.springsource.javax.servlet.jsp.jstl</artifactId>
+			<version>1.2.0.v20110728</version>
+			<type>jar</type>
+			<scope>provided</scope>
+		</dependency>
 		 
 	</dependencies>
 	
