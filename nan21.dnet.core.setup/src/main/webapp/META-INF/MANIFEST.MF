@@ -5,7 +5,6 @@ Export-Package: net.nan21.dnet.core.setup;version="1.0.0.M1";uses:="ja
  pringframework.web.context,org.springframework.web.servlet"
 Bundle-Vendor: Nan21 
 Bundle-ClassPath: WEB-INF/classes
-Require-TldBundle: org.apache.taglibs.standard.glassfish
 Bundle-Version: 1.0.0.M1
 Tool: Bundlor 1.0.0.RELEASE
 Bundle-Name: DNet Core - setup

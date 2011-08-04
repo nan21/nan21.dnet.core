@@ -77,25 +77,7 @@
 			</td>
 			
 		  </tr>
-		   <tr>
-		   	   <td class='label' colspan=2 >&nbsp;</td>		   	    
-		   </tr>	
-		  <tr>
-		    <td>
-				<b><u>Next steps</u></b> 
-			</td>
-			<td >
-				<b><u>Target</u></b> 
-			</td>
-		  </tr>
-		   <tr>
-			<td class="text" >
-				${current_title}
-			</td> 
-			<td class="text">
-				  ${current_bundle}
-			</td> 
-		  </tr>
+		   
 		</table>
 	</td>
 </tr>

@@ -21,13 +21,14 @@
 	<td style='border-top:1px solid gray;' colspan=2> &nbsp;</td>
 </tr>
 <tr>
+	<td colspan=2 class="text" align="center"> Please sign-in to configure application components.<br><br></td>
+</tr>
+<tr>
 	<td colspan=2 style='padding:10px;'>
 		<table width='100%'  >
             <tr>
 			<td align=center class="text">
-
-		       	 <p class="title">Setup application components.</p>
-		       	 Please sign-in to proceed.
+					<img alt="" src="../resources/images/key.gif">	 
 			</td> 
 			<td style='padding-left:20px;font-family:arial,verdana;font-size:11px;'>
 				 <form name="login" action="doLogin" method="post">

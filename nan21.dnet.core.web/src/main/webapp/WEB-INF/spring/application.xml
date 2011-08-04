@@ -43,10 +43,10 @@
 	<osgi:list id="osgiEntityManagerFactory" cardinality="0..N"
 		interface="javax.persistence.EntityManagerFactory"></osgi:list>
 		
-	<osgi:list id="extensionProviders" cardinality="0..N"
+	<osgi:list id="osgiExtensionProviders" cardinality="0..N"
 		interface="net.nan21.dnet.core.api.ui.extjs.IExtensionProvider" />
 		
-	<osgi:list id="extensionProvidersFrame" cardinality="0..N"
+	<osgi:list id="osgiExtensionProvidersFrame" cardinality="0..N"
 		interface="net.nan21.dnet.core.api.ui.extjs.IExtensionProviderFrame" />
 		
 	<osgi:list id="osgiDsServiceFactories" cardinality="0..N"
@@ -55,6 +55,9 @@
 	<osgi:list id="osgiAsgnServiceFactories" cardinality="0..N"
 		interface="net.nan21.dnet.core.api.service.IAsgnServiceFactory"/>
 	
+	<osgi:list id="osgiSetupParticipants" cardinality="0..N"
+		interface="net.nan21.dnet.core.api.setup.ISetupParticipant"/>
+		
 	<!-- Configures global application security --> 
 	<import resource="security.xml" />
 	 

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import net.nan21.dnet.core.api.session.Session;
 import net.nan21.dnet.core.api.session.User;
@@ -38,7 +39,11 @@ public class SetupController {
 			if(this.isAuthenticated()) {			 
 				Map<String, Object> model = new HashMap<String, Object>();
 				prepareListModel(model);
-				return new ModelAndView("main", model);
+				if (model.containsKey("currentTask")) {
+					return new ModelAndView("main", model);
+				} else {
+					return new ModelAndView("notasks", model);
+				}				
 			} else {
 				return new ModelAndView("login");
 			}
@@ -52,12 +57,30 @@ public class SetupController {
 		try {
 			this.request = request;
 			if(this.isAuthenticated()) {
-				return new ModelAndView("main");
+				Map<String, Object> model = new HashMap<String, Object>();
+				if (model.containsKey("currentTask")) {
+					return new ModelAndView("main", model);
+				} else {
+					return new ModelAndView("notasks", model);
+				}
 			} else {
 				return new ModelAndView("login");
 			}
 		} finally {
 			Session.user.set(null);
+		}	
+	}
+	 
+	@RequestMapping(value="/doLogout" )
+	protected ModelAndView doLogout(
+			HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		try {
+			request.getSession().removeAttribute("setupUser");
+			response.sendRedirect("/nan21.dnet.core.welcome");
+			return null;
+		} finally {
+			 
 		}	
 	}
 	
@@ -73,7 +96,11 @@ public class SetupController {
 			if (success) {
 				Map<String, Object> model = new HashMap<String, Object>();
 				prepareListModel(model);
-				return new ModelAndView("main", model);
+				if (model.containsKey("currentTask")) {
+					return new ModelAndView("main", model);
+				} else {
+					return new ModelAndView("notasks", model);
+				}	
 			} else {
 				Map<String, String> model = new HashMap<String, String>();
 				model.put("error", "Invalid credentials. Authentication failed.");
@@ -107,7 +134,11 @@ public class SetupController {
 				Map<String, Object> model = new HashMap<String, Object>();
 				prepareListModel(model);
 				
-				return new ModelAndView("main", model);
+				if (model.containsKey("currentTask")) {
+					return new ModelAndView("main", model);
+				} else {
+					return new ModelAndView("notasks", model);
+				}	
 			} else {
 				return new ModelAndView("login");
 			} 
