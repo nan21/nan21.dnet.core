@@ -4,4 +4,5 @@ Bundle-Name: DNet Core - security
 Bundle-SymbolicName: nan21.dnet.core.security
 Bundle-Vendor: Nan21 
 Bundle-Version: 1.0.0.M1
+Export-Package: net.nan21.dnet.core.security
 

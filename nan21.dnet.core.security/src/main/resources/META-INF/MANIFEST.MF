@@ -1,8 +1,24 @@
 Manifest-Version: 1.0
+Export-Package: net.nan21.dnet.core.security;version="1.0.0.M1";uses:=
+ "javax.servlet,javax.servlet.http,net.nan21.dnet.core.api.session,org
+ .springframework.dao,org.springframework.jdbc.core,org.springframewor
+ k.jdbc.core.support,org.springframework.security.access,org.springfra
+ mework.security.core,org.springframework.security.core.userdetails,or
+ g.springframework.security.core.userdetails.jdbc,org.springframework.
+ security.web,org.springframework.security.web.access"
 Bundle-Vendor: Nan21 
 Bundle-Version: 1.0.0.M1
 Tool: Bundlor 1.0.0.RELEASE
 Bundle-Name: DNet Core - security
 Bundle-ManifestVersion: 2
 Bundle-SymbolicName: nan21.dnet.core.security
+Import-Package: javax.servlet,javax.servlet.http,net.nan21.dnet.core.a
+ pi.session,org.apache.commons.logging,org.springframework.context.sup
+ port,org.springframework.dao,org.springframework.jdbc.core,org.spring
+ framework.jdbc.core.support,org.springframework.security.access,org.s
+ pringframework.security.core,org.springframework.security.core.author
+ ity,org.springframework.security.core.context,org.springframework.sec
+ urity.core.userdetails,org.springframework.security.core.userdetails.
+ jdbc,org.springframework.security.web,org.springframework.security.we
+ b.access,org.springframework.util
 

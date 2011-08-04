@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <faceted-project>
+  <runtime name="virgo-tomcat-server-3.0.0.M06"/>
+  <secondary-runtime name="virgo-tomcat-server-3.0.0.M05"/>
+  <secondary-runtime name="virgo-tomcat-server-3.0.0.RC1"/>
   <installed facet="com.springsource.server.bundle" version="1.0"/>
 </faceted-project>
