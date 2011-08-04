@@ -15,7 +15,6 @@ Export-Package: net.nan21.dnet.core.presenter.action;version="1.0.0.M1
  shall,net.nan21.dnet.core.api.service,net.nan21.dnet.core.presenter.m
  odel,org.springframework.beans.factory.annotation,org.springframework
  .context,org.springframework.transaction.annotation"
-Import-Bundle: nan21.dnet.core.domain;version="[1.0.0.M1,1.0.0.M1]"
 Bundle-Vendor: Nan21 
 Bundle-Version: 1.0.0.M1
 Tool: Bundlor 1.0.0.RELEASE
@@ -24,15 +23,20 @@ Bundle-ManifestVersion: 2
 Bundle-SymbolicName: nan21.dnet.core.presenter
 Import-Package: au.com.bytecode.opencsv;version="[2.0,3.0)",au.com.byt
  ecode.opencsv.bean;version="[2.0,3.0)",javax.persistence;version="[2.
- 0,2.1)",net.nan21.dnet.core.api.action,net.nan21.dnet.core.api.annota
- tion,net.nan21.dnet.core.api.converter,net.nan21.dnet.core.api.descri
- ptor,net.nan21.dnet.core.api.marshall,net.nan21.dnet.core.api.model,n
- et.nan21.dnet.core.api.service,net.nan21.dnet.core.domain.session,org
- .codehaus.jackson;version="[1.4,2.0)",org.codehaus.jackson.map;versio
- n="[1.4,2.0)",org.codehaus.jackson.map.type;version="[1.4,2.0)",org.c
- odehaus.jackson.type,org.eclipse.persistence.jpa;version="[2.1,2.4)",
- org.springframework.beans,org.springframework.beans.factory,org.sprin
- gframework.beans.factory.annotation,org.springframework.context,org.s
- pringframework.context.config;version="[3.0,3.1)",org.springframework
- .transaction.annotation,org.springframework.util
+ 0,2.1)",net.nan21.dnet.core.api.action;version="[1.0.0.M1,1.0.0.M1]",
+ net.nan21.dnet.core.api.annotation;version="[1.0.0.M1,1.0.0.M1]",net.
+ nan21.dnet.core.api.converter;version="[1.0.0.M1,1.0.0.M1]",net.nan21
+ .dnet.core.api.descriptor;version="[1.0.0.M1,1.0.0.M1]",net.nan21.dne
+ t.core.api.marshall;version="[1.0.0.M1,1.0.0.M1]",net.nan21.dnet.core
+ .api.model;version="[1.0.0.M1,1.0.0.M1]",net.nan21.dnet.core.api.serv
+ ice;version="[1.0.0.M1,1.0.0.M1]",net.nan21.dnet.core.api.session;ver
+ sion="[1.0.0.M1,1.0.0.M1]",org.codehaus.jackson;version="[1.4,2.0)",o
+ rg.codehaus.jackson.map;version="[1.4,2.0)",org.codehaus.jackson.map.
+ type;version="[1.4,2.0)",org.codehaus.jackson.type;version="[1.4,2.0)
+ ",org.eclipse.persistence.jpa;version="[2.1,2.4)",org.springframework
+ .beans;version="[3.0,3.1)",org.springframework.beans.factory;version=
+ "[3.0,3.1)",org.springframework.beans.factory.annotation;version="[3.
+ 0,3.1)",org.springframework.context;version="[3.0,3.1)",org.springfra
+ mework.context.config;version="[3.0,3.1)",org.springframework.transac
+ tion.annotation;version="[3.0,3.1)",org.springframework.util
 

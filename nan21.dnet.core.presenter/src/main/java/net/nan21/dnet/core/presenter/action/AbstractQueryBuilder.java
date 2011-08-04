@@ -37,7 +37,7 @@ public abstract class AbstractQueryBuilder<F, P> implements IQueryBuilder<F,P> {
 
 	 
 	public IQueryBuilder<F,P> addSortInfo(String columns, String sense) {
-		if (columns != null && sense != null) {
+		if (columns != null && !"".equals(columns) && sense != null && !"".equals(sense) ) {
 			this.sortColumnNames = columns.split(",");
 			this.sortColumnSense = sense.split(",");
 			if (this.sortColumnNames.length != this.sortColumnSense.length) {

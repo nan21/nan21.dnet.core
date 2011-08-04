@@ -14,7 +14,7 @@ import net.nan21.dnet.core.api.marshall.IDsMarshaller;
 import net.nan21.dnet.core.api.model.IModelWithClientId;
 import net.nan21.dnet.core.api.model.IModelWithId;
 import net.nan21.dnet.core.api.service.IEntityService;
-import net.nan21.dnet.core.domain.session.Session;
+import net.nan21.dnet.core.api.session.Session;
 import net.nan21.dnet.core.presenter.action.DsCsvLoader;
 import net.nan21.dnet.core.presenter.action.QueryBuilderWithJpql;
 import net.nan21.dnet.core.presenter.converter.BaseDsConverter;

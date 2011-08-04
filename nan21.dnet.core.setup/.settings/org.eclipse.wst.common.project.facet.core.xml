@@ -4,7 +4,7 @@
   <secondary-runtime name="virgo-tomcat-server-3.0.0.M05"/>
   <secondary-runtime name="virgo-tomcat-server-3.0.0.M04"/>
   <secondary-runtime name="virgo-tomcat-server-3.0.0.RC1"/>
-  <installed facet="com.springsource.server.bundle" version="1.0"/>
   <installed facet="jst.java" version="6.0"/>
-  <installed facet="jst.utility" version="1.0"/>
+  <installed facet="com.springsource.server.bundle" version="1.0"/>
+  <installed facet="jst.web" version="2.5"/>
 </faceted-project>

@@ -12,7 +12,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import net.nan21.dnet.core.domain.session.Session;
+import net.nan21.dnet.core.api.session.Session;
  
 
 public class DateEditor  extends PropertyEditorSupport{
