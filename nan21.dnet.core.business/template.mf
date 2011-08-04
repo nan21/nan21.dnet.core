@@ -1,0 +1,21 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: DNet Core - business
+Bundle-SymbolicName: nan21.dnet.core.business
+Bundle-Vendor: Nan21 
+Bundle-Version: 1.0.0.M1
+Import-Template: 
+ javax.persistence.*;version="[2.0,2.1)",
+ org.eclipse.persistence.jpa.*;version="[2.1,2.4)"
+Import-Package: 
+ net.nan21.dnet.core.api.service;version="[1.0.0.M1,1.0.0.M1]",
+ net.nan21.dnet.core.api.session;version="[1.0.0.M1,1.0.0.M1]",
+ net.nan21.dnet.core.api.model;version="[1.0.0.M1,1.0.0.M1]",
+ net.nan21.dnet.core.api.setup;version="[1.0.0.M1,1.0.0.M1]",
+ org.springframework.beans.factory.annotation;version="[3.0,3.1)",
+ org.springframework.context;version="[3.0,3.1)",
+ org.springframework.context.config;version="[3.0,3.1)",
+ org.springframework.orm.jpa;version="[3.0,3.1)",
+ org.springframework.orm.jpa.persistenceunit;version="[3.0,3.1)"
+Export-Package: net.nan21.dnet.core.business.service,net.nan21.dnet.core.business.pu
+

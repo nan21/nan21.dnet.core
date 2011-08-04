@@ -1,23 +1,14 @@
 Manifest-Version: 1.0
 Export-Package: net.nan21.dnet.core.domain.eventhandler;version="1.0.0
  .M1";uses:="org.eclipse.persistence.config,org.eclipse.persistence.de
- scriptors",net.nan21.dnet.core.domain.persistenceunit;version="1.0.0.
- M1";uses:="javax.sql,org.springframework.orm.jpa.persistenceunit",net
- .nan21.dnet.core.domain.service;version="1.0.0.M1";uses:="javax.persi
- stence,net.nan21.dnet.core.api.service,org.springframework.beans.fact
- ory.annotation,org.springframework.context",net.nan21.dnet.core.domai
- n.session;version="1.0.0.M1",net.nan21.dnet.core.domain.validation;ve
- rsion="1.0.0.M1"
+ scriptors",net.nan21.dnet.core.domain.validation;version="1.0.0.M1"
 Bundle-Vendor: Nan21 
 Bundle-Version: 1.0.0.M1
 Tool: Bundlor 1.0.0.RELEASE
 Bundle-Name: DNet Core - domain
 Bundle-ManifestVersion: 2
 Bundle-SymbolicName: nan21.dnet.core.domain
-Import-Package: javax.persistence,javax.sql,net.nan21.dnet.core.api.se
- rvice,org.eclipse.persistence.config,org.eclipse.persistence.descript
- ors,org.springframework.beans.factory.annotation,org.springframework.
- context,org.springframework.context.config;version="[3.0,3.1)",org.sp
- ringframework.orm.jpa;version="[3.0,3.1)",org.springframework.orm.jpa
- .persistenceunit
+Import-Package: org.eclipse.persistence.config,org.eclipse.persistence
+ .descriptors,org.springframework.context.config;version="[3.0,3.1)",o
+ rg.springframework.orm.jpa;version="[3.0,3.1)"
 

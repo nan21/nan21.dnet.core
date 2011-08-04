@@ -1,4 +1,4 @@
-package net.nan21.dnet.core.domain.service;
+package net.nan21.dnet.core.business.service;
 
 import java.util.List;
 import java.util.UUID;

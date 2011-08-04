@@ -5,7 +5,7 @@
  * http://dnet.nan21.net
  * Use is subject to license terms.
  */
-package net.nan21.dnet.core.domain.persistenceunit;
+package net.nan21.dnet.core.business.persistenceunit;
 
 import java.util.ArrayList;
 import java.util.HashMap;

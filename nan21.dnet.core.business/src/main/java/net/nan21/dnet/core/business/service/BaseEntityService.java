@@ -1,4 +1,4 @@
-package net.nan21.dnet.core.domain.service;
+package net.nan21.dnet.core.business.service;
 
 import net.nan21.dnet.core.api.service.IEntityService;
  

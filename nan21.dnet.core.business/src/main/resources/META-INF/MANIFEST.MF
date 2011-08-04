@@ -1,0 +1,23 @@
+Manifest-Version: 1.0
+Export-Package: net.nan21.dnet.core.business.persistenceunit;version="
+ 1.0.0.M1";uses:="javax.sql,org.springframework.orm.jpa.persistenceuni
+ t",net.nan21.dnet.core.business.pu;version="1.0.0.M1",net.nan21.dnet.
+ core.business.service;version="1.0.0.M1";uses:="javax.persistence,net
+ .nan21.dnet.core.api.service,net.nan21.dnet.core.api.setup,org.spring
+ framework.beans.factory.annotation,org.springframework.context"
+Bundle-Vendor: Nan21 
+Bundle-Version: 1.0.0.M1
+Tool: Bundlor 1.0.0.RELEASE
+Bundle-Name: DNet Core - business
+Bundle-ManifestVersion: 2
+Bundle-SymbolicName: nan21.dnet.core.business
+Import-Package: javax.persistence;version="[2.0,2.1)",javax.sql,net.na
+ n21.dnet.core.api.model;version="[1.0.0.M1,1.0.0.M1]",net.nan21.dnet.
+ core.api.service;version="[1.0.0.M1,1.0.0.M1]",net.nan21.dnet.core.ap
+ i.session;version="[1.0.0.M1,1.0.0.M1]",net.nan21.dnet.core.api.setup
+ ;version="[1.0.0.M1,1.0.0.M1]",org.springframework.beans.factory.anno
+ tation;version="[3.0,3.1)",org.springframework.context;version="[3.0,
+ 3.1)",org.springframework.context.config;version="[3.0,3.1)",org.spri
+ ngframework.orm.jpa;version="[3.0,3.1)",org.springframework.orm.jpa.p
+ ersistenceunit;version="[3.0,3.1)"
+
