@@ -12,7 +12,7 @@
 		Dnet.rpcUrl = "${deploymentUrl}/tx/java/rpc";
 		Dnet.asgnUrl = "${deploymentUrl}/tx/java/asgn";
 		Dnet.uiUrl = "${uiUrl}";  
-		Dnet.sessionUrl = "${deploymentUrl}/session/java/security/Session.json";
+		Dnet.sessionUrl = "${deploymentUrl}/security/session";
 		Dnet.staticResourceUrl = "${urlUiExtjs}";
 		Dnet.staticResourceUrlCore = "${urlUiExtjsCore}";
 </script>		

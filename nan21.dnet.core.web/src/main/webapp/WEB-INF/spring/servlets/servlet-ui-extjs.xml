@@ -13,8 +13,8 @@
 				http://www.springframework.org/schema/osgi/spring-osgi.xsd	
 			http://www.springframework.org/schema/osgi-compendium 
     			http://www.springframework.org/schema/osgi-compendium/spring-osgi-compendium.xsd">
-   
-   	
+    
+     
     <bean name="uiExtjsMainController" scope="request"
     		class="net.nan21.dnet.core.web.controller.ui.UiExtjsMainController" >
     	<property name="productInfo" ref="productInfo"/>    	 
@@ -45,13 +45,13 @@
         <property name="suffix" value=".jsp" />
     </bean>
 
-    <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+   <!--  <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
         <property name="exceptionMappings">
             <props>
                 <prop key="java.lang.Exception">error</prop>
             </props>
         </property>
-    </bean>
+    </bean> -->
  
 
 </beans>

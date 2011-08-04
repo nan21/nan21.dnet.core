@@ -4,45 +4,46 @@ import java.io.IOException;
 
 import javax.servlet.http.HttpServletResponse;
 
-import net.nan21.dnet.core.domain.session.Session;
-import net.nan21.dnet.core.domain.session.User;
-import net.nan21.dnet.core.domain.session.UserPreferences;
+import net.nan21.dnet.core.api.session.Params;
+import net.nan21.dnet.core.api.session.Session;
+import net.nan21.dnet.core.api.session.User;
+import net.nan21.dnet.core.security.SessionUser;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.context.WebApplicationContext;
 
 @Controller
 public class AbstractDataController {
-
+  
 	protected String resourceName;
 	protected String dataFormat;
 	@Autowired
 	protected WebApplicationContext webappContext;
 
-	protected void prepareRequest() {
-		String username = "admin";
-		String displayName = "Administrator";
-		String password = "";
-		boolean accountExpired = false;
-		boolean accountLocked = false;
-		boolean credentialsExpired = false;
-		boolean enabled = true;
-		String clientCode = "SYS";
-		Long clientId = 1L;
-		UserPreferences preferences = new UserPreferences();
-		String employeeCode = null;
-		Long employeeId = null;
-
-		User u = new User(username, displayName, password, accountExpired,
-				accountLocked, credentialsExpired, enabled, clientCode,
-				clientId, preferences, employeeCode, employeeId);
-
-		Session.user.set(u);
+	protected void prepareRequest() throws Exception  {
+		SessionUser su;		
+		User user;
+		Params params;
+		try {
+            su = (SessionUser) SecurityContextHolder.getContext()
+                    .getAuthentication().getPrincipal();
+            user = (User)su.getUser();
+            params = (Params)su.getParams();                          
+             
+        } catch (ClassCastException e) {
+            throw new Exception(
+                    "<b>Session expired.</b>"
+                            + "<br> Logout from application and login again.");
+        }
+        Session.user.set(user);
+        Session.params.set(params);   
 	}
 
 	protected void finishRequest() {
-
+		Session.user.set(null);
+        Session.params.set(null); 
 	}
 
 	public String getResourceName() {

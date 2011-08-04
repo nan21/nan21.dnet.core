@@ -39,6 +39,13 @@
 			<type>jar</type>
 			<scope>provided</scope>
 		</dependency>	
+		<dependency>
+			<groupId>net.nan21.dnet</groupId>
+			<artifactId>nan21.dnet.core.security</artifactId>
+			<version>1.0.0.M1</version>
+			<type>jar</type>
+			<scope>provided</scope>
+		</dependency>	
 		 
 		<!-- External libraries -->
 		<dependency>
@@ -57,8 +64,36 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
+			<artifactId>org.springframework.web</artifactId>
+			<version>3.0.5.RELEASE</version>
+			<type>jar</type>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
 			<artifactId>org.springframework.web.servlet</artifactId>
 			<version>3.0.5.RELEASE</version>
+			<type>jar</type>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>org.springframework.security.config</artifactId>
+			<version>3.0.4.RELEASE</version>
+			<type>jar</type>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>org.springframework.security.core</artifactId>
+			<version>3.0.4.RELEASE</version>
+			<type>jar</type>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>org.springframework.security.web</artifactId>
+			<version>3.0.4.RELEASE</version>
 			<type>jar</type>
 			<scope>provided</scope>
 		</dependency>

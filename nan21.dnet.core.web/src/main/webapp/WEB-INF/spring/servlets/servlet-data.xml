@@ -22,7 +22,7 @@
     	<property name="serviceFactories" ref="osgiAsgnServiceFactories"></property>
     </bean> 
  
-    <!-- enable classpath scanning -->
+    <!-- enable classpath scanning 
 	<context:component-scan base-package="net.nan21.dnet.core.web.controller.data"  />
- 
+ 	-->
 </beans>

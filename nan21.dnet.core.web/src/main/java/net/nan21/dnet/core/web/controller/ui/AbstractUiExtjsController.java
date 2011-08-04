@@ -8,8 +8,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.nan21.dnet.core.api.IProductInfo;
+import net.nan21.dnet.core.api.session.Params;
+import net.nan21.dnet.core.api.session.User;
+import net.nan21.dnet.core.security.SessionUser;
 import net.nan21.dnet.core.web.settings.UiExtjsSettings;
 
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.servlet.mvc.AbstractController;
 
 public abstract class AbstractUiExtjsController  extends AbstractController  {
@@ -28,13 +32,30 @@ public abstract class AbstractUiExtjsController  extends AbstractController  {
 	protected UiExtjsSettings uiExtjsSettings;
 	  
 	protected void _prepare(HttpServletRequest request,
-			HttpServletResponse response) {
+			HttpServletResponse response) throws Exception {
 		
 		String server = request.getServerName();
 		int port = request.getServerPort();
 		String contextPath = request.getContextPath();
 		String path = request.getServletPath();
-		 
+ 
+		String userUsername = "";
+		String userDisplayName = "";
+		String userClientCode = "";
+		String userClientId = "";
+		
+		try {
+			SessionUser su = (SessionUser) SecurityContextHolder.getContext()
+                    .getAuthentication().getPrincipal();
+			User user = (User)su.getUser();
+			Params params = (Params)su.getParams();                          
+			userUsername = user.getUsername();
+			userDisplayName = user.getDisplayName();
+			userClientCode = user.getClientCode();
+			userClientId = user.getClientId().toString(); 
+        } catch (ClassCastException e) {
+            // not authenticated 
+        }
 		this.deploymentUrl = ((request.isSecure())? "https" : "http" ) + "://" +server +  ((port!=80)?(":"+port):"" ) + contextPath;
 		this.uiUrl = deploymentUrl + path;
 		
@@ -43,6 +64,11 @@ public abstract class AbstractUiExtjsController  extends AbstractController  {
 		this.model.put("deploymentUrl", this.deploymentUrl);
 		this.model.put("uiUrl", this.uiUrl);
 		this.model.put("product", this.productInfo);
+		
+		this.model.put("userUsername", userUsername);
+		this.model.put("userDisplayName", userDisplayName);
+		this.model.put("userClientCode", userClientCode);
+		this.model.put("userClientId", userClientId);
 		  
 		this.model.put("urlUiExtjs", uiExtjsSettings.getUrlUiExtjs() );
 		this.model.put("urlUiExtjsCore", uiExtjsSettings.getUrlUiExtjsCore() );
@@ -95,12 +121,14 @@ public abstract class AbstractUiExtjsController  extends AbstractController  {
 	
 	
 	private Cookie getCookie(Cookie[] cookies, String name) {
-		for(int i=0; i<cookies.length; i++) {
-			Cookie cookie = cookies[i];
-			if (name.equals(cookie.getName())) {
-				return cookie;
-			}					
-		}
+		if (cookies != null) {
+			for(int i=0; i<cookies.length; i++) {
+				Cookie cookie = cookies[i];
+				if (name.equals(cookie.getName())) {
+					return cookie;
+				}					
+			}
+		}		
 		return null;
 	}
 	

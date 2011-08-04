@@ -8,29 +8,32 @@
 			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
 			http://www.springframework.org/schema/osgi http://www.springframework.org/schema/osgi/spring-osgi.xsd
 			http://www.springframework.org/schema/osgi-compendium http://www.springframework.org/schema/osgi-compendium/spring-osgi-compendium.xsd">
+	 
+	 
+	<context:property-placeholder  properties-ref="dnetProperties" />
 	
-	<context:property-placeholder properties-ref="net.nan21.dnet.properties" />
-	
-	<osgi-compendium:cm-properties id="net.nan21.dnet.properties"
-		persistent-id="net.nan21.dnet" >
-		<prop key="emf.persistenceUnitName">net.nan21.dnet</prop>
+	<osgi-compendium:cm-properties  id="dnetProperties"
+		persistent-id="net.nan21.dnet" >		 
+		 
 	</osgi-compendium:cm-properties>	
-	
-	<context:annotation-config />
-	
+	  
 	<!--  Local  -->
-	
-	<bean id="productInfo" class="net.nan21.dnet.core.web.settings.ProductInfo">
+	   	
+   	<bean id="productInfo" class="net.nan21.dnet.core.web.settings.ProductInfo" scope="request">
 		<property name="name" value="DNet eBusiness Suite" />
 		<property name="version" value="1.0.0.M1" />
 	</bean>
 	
 	<bean id="application_uiExtjsSettings" class="net.nan21.dnet.core.web.settings.UiExtjsSettings"
-		scope="singleton">
+		scope="request">
 		<property name="urlUiExtjs" value="${url.ui.extjs}" />
 		<property name="urlUiExtjsCore" value="${url.ui.extjs.core}" />
 		<property name="urlUiExtjsLibExtjs" value="${url.ui.extjs.lib.extjs}" />
 	</bean>
+	
+	 
+	
+	<context:annotation-config />
 	
 	<!--  Osgi  -->
 	
@@ -50,5 +53,9 @@
 		interface="net.nan21.dnet.core.api.service.IDsServiceFactory"/>
 		
 	<osgi:list id="osgiAsgnServiceFactories" cardinality="0..N"
-		interface="net.nan21.dnet.core.api.service.IAsgnServiceFactory"/>	
+		interface="net.nan21.dnet.core.api.service.IAsgnServiceFactory"/>
+	
+	<!-- Configures global application security --> 
+	<import resource="security.xml" />
+	 
 </beans>

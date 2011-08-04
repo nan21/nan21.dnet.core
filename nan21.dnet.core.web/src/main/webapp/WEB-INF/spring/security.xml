@@ -1,0 +1,71 @@
+<beans xmlns:security="http://www.springframework.org/schema/security"
+	xmlns="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:osgi="http://www.springframework.org/schema/osgi"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/security
+           http://www.springframework.org/schema/security/spring-security.xsd
+           http://www.springframework.org/schema/osgi 
+		http://www.springframework.org/schema/osgi/spring-osgi.xsd">
+ <!-- 
+  
+	<http once-per-request="true" 
+		path-type="ant" 
+		auto-config="true" entry-point-ref="defaultAuthenticationEntryPoint">
+		<access-denied-handler ref="accessDeniedHandler" />
+		<intercept-url pattern="/*" requires-channel="any"/>		
+	</http>
+		<authentication-manager alias="security_authenticationManager">
+		 <authentication-provider user-service-ref="defaultAuthenticationDbUserService"> </authentication-provider>		 
+	</authentication-manager>
+	
+ 
+	<security:authentication-manager  alias="authenticationManager" >
+		 <security:authentication-provider  > 
+		 	<security:user-service >   
+		 	 <security:user name="adminu" password="0cc175b9c0f1b6a831c399e269772661" =a  authorities="ADMINROLE,DNET_USER"/>
+		 	</security:user-service>
+		 </security:authentication-provider>		 
+	</security:authentication-manager>
+ -->
+  
+	<security:http auto-config="true" entry-point-ref="defaultAuthenticationEntryPoint" >
+		<security:access-denied-handler ref="accessDeniedHandler" />
+		
+		<security:intercept-url pattern="/tx/**" access="ROLE_DNET_USER" />
+		<security:intercept-url pattern="/security/*" filters="none" />
+		 			
+	</security:http>
+ 
+	<security:authentication-manager  alias="authenticationManager" >
+		 <security:authentication-provider user-service-ref="defaultAuthenticationDbUserService" /> 		 	 	 
+	</security:authentication-manager>
+ 	 
+ 	<bean name="accessDeniedHandler"
+		class="net.nan21.dnet.core.security.DefaultAccessDeniedHandler" />
+	<bean name="defaultAuthenticationEntryPoint"
+		class="net.nan21.dnet.core.security.DefaultNotAuthenticatedEntryPoint" />
+  
+ 	<bean name="defaultAuthenticationDbUserService"
+		class="net.nan21.dnet.core.security.DbUserService">
+		<property name="usersByUsernameQuery"
+			value="select u.code, u.name, u.password, u.active, 0 accountExpired, 0 credentialsExpired,0 accountLocked, u.clientid clientId, c.code clientCode, c.defaultDsAccessRule, c.defaultImportPath, c.adminRole, '', 0  
+				  from ad_users u join ad_client c on u.clientid = c.id  
+				where u.code = ? and c.code = ?" />
+		<property name="authoritiesByUsernameQuery"
+			value="select u.code , r.name 
+				  from ad_users_roles ur, ad_roles r, ad_users u, ad_client c 
+				where ur.users_id = u.id and ur.roles_id = r.id and u.clientid = c.id and u.code = ? and c.code = ?" />
+		<property name="dataSource" ref="osgiDataSource" />
+	</bean>
+ 
+  	<osgi:reference id="osgiDataSource" cardinality="0..1"
+		interface="javax.sql.DataSource" />
+	
+	
+	<bean class="net.nan21.dnet.core.security.ChangeDbPasswordService" scope="request">  
+		<property name="dataSource" ref="osgiDataSource"></property>
+		<property name="sql" value="update ad_users set password = ? where code = ? and clientid = ?"></property>
+	</bean>	
+</beans>

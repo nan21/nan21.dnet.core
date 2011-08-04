@@ -4,18 +4,46 @@ Bundle-Name: DNet Core - web
 Bundle-SymbolicName: nan21.dnet.core.web
 Bundle-Vendor: Nan21 
 Bundle-Version: 1.0.0.M1
-Import-Template: ,
+Import-Template: 
+ org.springframework.security.web.*;version="[3.0,3.1)",
+ org.springframework.security.core.*;version="[3.0,3.1)",
+ org.springframework.security.config.*;version="[3.0,3.1)",
  org.eclipse.persistence.jpa.*;version="[2.1,2.4)"
 Import-Package: 
- javax.servlet;version="[2.0,3.0)",
- javax.servlet.http;version="[2.0,3.0)",
+ net.nan21.dnet.core.api;version="[1.0.0.M1,1.0.0.M1]",
+ net.nan21.dnet.core.api.action;version="[1.0.0.M1,1.0.0.M1]",
+ net.nan21.dnet.core.api.ui.extjs;version="[1.0.0.M1,1.0.0.M1]",
+ net.nan21.dnet.core.api.session;version="[1.0.0.M1,1.0.0.M1]",
+ net.nan21.dnet.core.api.service;version="[1.0.0.M1,1.0.0.M1]",
+ net.nan21.dnet.core.api.marshall;version="[1.0.0.M1,1.0.0.M1]",
+ net.nan21.dnet.core.security;version="[1.0.0.M1,1.0.0.M1]",
+ org.springframework.security.config;version="[3.0,3.1)",
+ org.springframework.security.core;version="[3.0,3.1)",
+ org.springframework.security.web;version="[3.0,3.1)",
+ org.springframework.security.core.userdetails.memory;version="[3.0,3.1)",
+ org.springframework.security.authentication.dao;version="[3.0,3.1)",
+ org.springframework.security.web.authentication;version="[3.0,3.1)",
+ org.springframework.security.web.context;version="[3.0,3.1)",
+ org.springframework.security.web.authentication.logout;version="[3.0,3.1)",
+ org.springframework.security.web.authentication.ui;version="[3.0,3.1)",
+ org.springframework.security.web.authentication.www;version="[3.0,3.1)",
+ org.springframework.security.web.savedrequest;version="[3.0,3.1)",
+ org.springframework.security.web.servletapi;version="[3.0,3.1)",
+ org.springframework.security.web.session;version="[3.0,3.1)",
+ org.springframework.security.web.access;version="[3.0,3.1)",
+ org.springframework.security.web.access.intercept;version="[3.0,3.1)",
+ org.springframework.web.filter;version="[3.0,3.1)",
  org.springframework.web.servlet;version="[3.0,3.1)",
  org.springframework.web.servlet.handler;version="[3.0,3.1)",
  org.springframework.web.servlet.mvc;version="[3.0,3.1)",
  org.springframework.web.servlet.view;version="[3.0,3.1)",
+ org.springframework.web.bind.annotation;version="[3.0,3.1)",
  org.springframework.web.context;version="[3.0,3.1)",
  org.springframework.context.config;version="[3.0,3.1)",
  org.springframework.orm.jpa;version="[3.0,3.1)",
+ org.springframework.beans.factory;version="[3.0,3.1)",
+ org.springframework.beans.factory.annotation;version="[3.0,3.1)",
+ org.springframework.context.annotation;version="[3.0,3.1)",
  org.springframework.osgi;version="[1.2.1,1.2.1]",
  org.springframework.osgi.config;version="[1.2.1,1.2.1]",
  org.springframework.osgi.context;version="[1.2.1,1.2.1]",
@@ -24,4 +52,6 @@ Import-Package:
  org.codehaus.jackson.map;version="[1.4,2.0)",
  javax.persistence;version="[2.0,2.1)",
  javax.persistence.criteria;version="[2.0,2.1)"
-
+Export-Package: 
+ net.nan21.dnet.core.web.settings,net.nan21.dnet.core.web.controller.session,net.nan21.dnet.core.web.result,net.nan21.dnet.core.web.controller.data,net.nan21.dnet.core.web.controller.ui
+Bundle-ClassPath: WEB-INF/classes

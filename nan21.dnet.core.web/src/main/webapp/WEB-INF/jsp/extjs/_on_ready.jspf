@@ -1,7 +1,8 @@
 		Ext.BLANK_IMAGE_URL = "${urlUiExtjsCore}/resources/images/s.gif";
 		Ext.QuickTips.init();
  		 
-		dnet.base.Session.user.code = 'admin';
-		dnet.base.Session.user.name = 'Administrator';
-		dnet.base.Session.client.code = 'SYS';
+		dnet.base.Session.user.code = '${userUsername}';
+		dnet.base.Session.user.name = '${userDisplayName}';
+		dnet.base.Session.client.code = '${userClientCode}';
+		dnet.base.Session.client.id = '${userClientId}';
 		dnet.base.Session.locked = false;
