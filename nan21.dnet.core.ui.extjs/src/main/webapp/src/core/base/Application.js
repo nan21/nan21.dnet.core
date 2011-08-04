@@ -136,7 +136,12 @@ dnet.base.Application = Ext.apply({}, {
 	}
 	
 	,doLogout: function() {
-		// close all tabs 
+		Ext.Ajax.request({
+            method:"POST"
+           //,params:{}
+           ,scope:this
+           ,url: Dnet.sessionAPI("json").logout
+       });
 		this.loginWindow.applyState_Logout();
 		this.showLoginView();
 		this.loginWindow.getUserField().focus(false,200);

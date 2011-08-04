@@ -73,7 +73,7 @@ Dnet = {
              ,logout : this.sessionUrl +'?action=logout'
              ,lock : this.sessionUrl +'?action=lock'
              ,unlock : this.sessionUrl +'?action=unlock'
-             ,changePassword : this.sessionUrl +'?action=changepassword'
+             ,changePassword : this.sessionUrl +'?action=changePassword'
         }
 	}
 

@@ -18,7 +18,11 @@ dnet.base.ChangePasswordWindow = Ext.extend(Ext.Window , {
 					,modal:true
 					,items: [
 					
-							{xtype:"textfield", name:"pswd1", fieldLabel:Dnet.translate("msg", "chpswd_pswd1"), width:150, selectOnFocus: true, allowBlank: false
+							{xtype:"textfield", name:"opswd", fieldLabel:"Password", width:150, selectOnFocus: true, allowBlank: false
+								,autoCreate: {tag: "input", type: "password", autocomplete: "off", size: "20" }
+							 	,listeners: {change: {scope:this, fn:this.enableAction }}   }
+
+							,{xtype:"textfield", name:"pswd1", fieldLabel:Dnet.translate("msg", "chpswd_pswd1"), width:150, selectOnFocus: true, allowBlank: false
 						    	,autoCreate: {tag: "input", type: "password", autocomplete: "off", size: "20" }
 						     	,listeners: {change: {scope:this, fn:this.enableAction }}   }
 					     	
@@ -40,12 +44,14 @@ dnet.base.ChangePasswordWindow = Ext.extend(Ext.Window , {
 		dnet.base.ChangePasswordWindow.superclass.initComponent.call(this);
 
  	}
-
-	,getPasswordField: function() {
+	,getCurrentPasswordField: function() {
 		return this.items.get(0);
 	}
-	,getConfirmPasswordField: function() {
+	,getPasswordField: function() {
 		return this.items.get(1);
+	}
+	,getConfirmPasswordField: function() {
+		return this.items.get(2);
 	}
 
 	,doOnFailure: function(response , options) {
@@ -87,7 +93,8 @@ dnet.base.ChangePasswordWindow = Ext.extend(Ext.Window , {
 		var p = {};
 
 	//	p["user"] = this.getUserField().getValue();
-		p["pswd"] = Ext.util.MD5(this.getPasswordField().getValue() );
+		p["npswd"] = Ext.util.MD5(this.getPasswordField().getValue() );
+		p["opswd"] = Ext.util.MD5(this.getCurrentPasswordField().getValue() );
 	//	p["client"] = this.getClientField().getValue();
 	//	p["lang"] = this.getLanguageField().getValue();
 

@@ -64,10 +64,11 @@ dnet.base.ApplicationMenu$Items = [
 				,menu: new Ext.menu.Menu({
 				        items: [					        	 
 					        {text: Dnet.translate("appmenuitem", "logout__lbl") , handler:function() { getApplication().doLogout();} }
-					       , {text: Dnet.translate("appmenuitem", "lock__lbl"), iconCls:"icon-lock " , handler:function() { getApplication().doLockSession();} }
+					      // , {text: Dnet.translate("appmenuitem", "lock__lbl"), iconCls:"icon-lock " , handler:function() { getApplication().doLockSession();} }
 				        ]
 				   	})
 			}
+			/*
 			,{xtype:"splitbutton" , text:Dnet.translate("appmenuitem", "bookmark__lbl")
 				,menu: new Ext.menu.Menu({
 				        items: [
@@ -86,8 +87,8 @@ dnet.base.ApplicationMenu$Items = [
 				        ]
 				   	})
 
-			 }
-			, "-"
+			 }*/
+			, "-" 
 			,{xtype:"splitbutton" , text:Dnet.translate("appmenuitem", "theme__lbl")
 				,menu: new Ext.menu.Menu({
 				        items: [
