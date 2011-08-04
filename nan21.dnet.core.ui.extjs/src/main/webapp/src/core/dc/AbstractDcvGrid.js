@@ -17,8 +17,8 @@ dnet.base.AbstractDcvGrid = Ext.extend( Ext.grid.GridPanel, {
         this._elems_ =  new Ext.util.MixedCollection();
         this._columns_ =  new Ext.util.MixedCollection();
         //this._controller_ = null;
-        this._noExport_= false;
-        this._noImport_= false;
+        //this._noExport_= false;
+        //this._noImport_= false;
     	
 		this._startDefine_();
 		/* define columns */

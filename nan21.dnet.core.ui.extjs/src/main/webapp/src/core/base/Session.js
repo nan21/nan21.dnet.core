@@ -20,6 +20,12 @@ dnet.base.Session = Ext.apply({}, {
 	,getClient: function() {
 		return this.client;
 	}
+	,getClientId: function() {
+		return this.client.id*1;
+	}
+	,getClientCode: function() {
+		return this.client.code;
+	}
 	,isAuthenticated: function() {  
 		return (!Ext.isEmpty(this.user.name));
 	} 
