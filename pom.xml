@@ -15,12 +15,13 @@
 		<module>nan21.dnet.core.parent</module>
 		<module>nan21.dnet.core.db</module>
 		<module>nan21.dnet.core.domain</module>
+		<module>nan21.dnet.core.business</module>
 		<module>nan21.dnet.core.api</module>
 		<module>nan21.dnet.core.presenter</module>
 		<module>nan21.dnet.core.ui.extjs</module>
+		<module>nan21.dnet.core.setup</module>
 		<module>nan21.dnet.core.web</module>
 		<module>nan21.dnet.core.welcome</module>
 		<module>nan21.dnet.core.security</module>
-		<module>nan21.dnet.core.par</module>
 	</modules>	
 </project>	 
