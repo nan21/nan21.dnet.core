@@ -331,13 +331,14 @@ dnet.Translation = Ext.apply({},{
 
 
 	    //SD
-	    ,SD_BaseData_UI : "Definiţii (comenzi, facturi)"
+	    ,SalesOrderBaseData_UI : "Definiţii ( facturi)"
         //,SalesOrderStatus_UI : "Stări comenzi"
         //,SalesOrderType_UI : "Tipuri comenzi"
         ,SalesOrder_UI : "Comenzi"
 
 		//,SalesInvoiceStatus_UI : "Stări factura"
         //,SalesInvoiceType_UI : "Tipuri factura"
+        ,SalesInvoiceBaseData_UI : "Definiţii (comenzi)"
         ,SalesInvoice_UI: "Facturi"
 
 

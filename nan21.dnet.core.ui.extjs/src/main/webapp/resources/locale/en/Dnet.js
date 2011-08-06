@@ -330,12 +330,13 @@ dnet.Translation = Ext.apply({},{
         ,ProductAccountGroup_UI : "Product account groups"
         
           //SD
-        ,SD_BaseData_UI : "Definitions (orders, invoices)"
+        ,SalesOrderBaseData_UI : "Base data(Sales orders)"
         //,SalesOrderType_UI : "Order type"
         ,SalesOrder_UI : "Orders"
 
         //,SalesInvoiceStatus_UI : "Invoice status"
         //,SalesInvoiceType_UI : "Invoice type"
+        ,SalesInvoiceBaseData_UI : "Base data(Sales invoice)"	
         ,SalesInvoice_UI: "Invoices"
         
         
