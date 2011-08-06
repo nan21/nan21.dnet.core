@@ -110,8 +110,12 @@ Ext.extend(dnet.base.AbstractDc, Ext.util.Observable, {
 				this.actions.doNew.setDisabled(false);
 				this.actions.doPrevRec.setDisabled(false);
 				this.actions.doNextRec.setDisabled(false);
+				this.actions.doLeaveEditor.setDisabled(false);
 				this.fireEvent("cleanRecord",this);
 				this.fireEvent("recordChanged", { dc: this, record: this.record, state: 'clean', status:this.getRecordStatus(), oldRecord: null }); 
+			}
+			if(!this.isAnyChildDirty()) {
+				this.onCleanDc();
 			}
 		},this);
         this.actions = dnet.base.DcActionsFactory.createActions(this);
@@ -211,12 +215,14 @@ Ext.extend(dnet.base.AbstractDc, Ext.util.Observable, {
 		if (this.multiEdit) {
 			this.actions.doNew.setDisabled(false);
 			this.actions.doPrevRec.setDisabled(false);
-			this.actions.doNextRec.setDisabled(false);			
+			this.actions.doNextRec.setDisabled(false);	
+			this.actions.doLeaveEditor.setDisabled(false);
 		} else {
 			if(!this.isRecordChangeAllowed()) {
 				this.actions.doNew.setDisabled(true);
 				this.actions.doPrevRec.setDisabled(true);
-				this.actions.doNextRec.setDisabled(true);			
+				this.actions.doNextRec.setDisabled(true);
+				this.actions.doLeaveEditor.setDisabled(true);
 			}
 		}		 
 		this.fireEvent("dirtyRecord",this); /* to be removed in favor of recordStateChanged  */
@@ -263,7 +269,7 @@ Ext.extend(dnet.base.AbstractDc, Ext.util.Observable, {
 	,doSave: function(){ this.doSaveImpl();}
 		,beforeDoSave: function() {this.fireEvent("beforeDoSave",this);}	
 		,afterDoSave: function() {this.fireEvent("afterDoSave",this);}
-        	,afterDoSaveSuccess: function() {this.fireEvent("afterDoSaveSuccess",this);this.actions.doQuery.setDisabled(false);}
+        	,afterDoSaveSuccess: function() {this.fireEvent("afterDoSaveSuccess",this); }
 			,afterDoSaveFailure: function() {this.fireEvent("afterDoSaveFailure",this);}
 
 	,doDelete: function(){ this.doDeleteImpl(); }
@@ -689,16 +695,7 @@ Ext.extend(dnet.base.AbstractDc, Ext.util.Observable, {
 	,discardChanges: function () {
 		this.discardChildrenChanges();
 		this.discardRecordChanges();
-		this.actions.doQuery.setDisabled(false);
-		this.actions.doCancel.setDisabled(true);
-		this.actions.doSave.setDisabled(true);
-		
-		this.actions.doNew.setDisabled(false);
-		if (this.isRecordChangeAllowed() && this.store.getCount() > 0) {
-			this.actions.doPrevRec.setDisabled(false);
-			this.actions.doNextRec.setDisabled(false);
-		}
-		this.actions.doCopy.setDisabled(false);		 
+		this.onCleanDc();
 	}
 
 	,setPreviousAsCurrent:
@@ -763,6 +760,28 @@ Ext.extend(dnet.base.AbstractDc, Ext.util.Observable, {
 	,isRecordChangeAllowed: function() {
 		return (!( this.isAnyChildDirty() || ( (!this.multiEdit) && this.isCurrentRecordDirty()) ));
 	}
+	,onCleanDc: function() {
+		this.actions.doQuery.setDisabled(false);
+		this.actions.doCancel.setDisabled(true);
+		this.actions.doSave.setDisabled(true);
+		
+		this.actions.doNew.setDisabled(false);
+		if (this.isRecordChangeAllowed() && this.store.getCount() > 0) {
+			this.actions.doPrevRec.setDisabled(false);
+			this.actions.doNextRec.setDisabled(false);
+		}
+		this.actions.doCopy.setDisabled(false);	
+		this.actions.doLeaveEditor.setDisabled(false);
+		if (this.dcContext != null) {
+			this.dcContext._onChildCleaned_();
+		}		 
+	}
+	,onChildCleaned: function() {
+		if(!this.isStoreDirty() && !this.isAnyChildDirty() ) {
+			this.onCleanDc();
+		}
+	}
+	
 	/*********************************************************************************/
     /**************************      QUERY           *********************************/
     /*********************************************************************************/
@@ -1059,7 +1078,12 @@ Ext.extend(dnet.base.AbstractDc, Ext.util.Observable, {
         if(type=="response") {
           this.onAjaxRequestFailure(response , options);
         } else {
-           alert(response.message.substr(0,1500));
+        	if(!Ext.isEmpty(response.message)) {
+        		alert(response.message.substr(0,1500));
+        	} else {
+        		alert("Exception returned by server with no message.");
+        	}
+          
         }
 	  }
 	

@@ -135,12 +135,7 @@ dnet.base.ActionBuilder.prototype =  {
 	} 
 	
 	,addBack: function(config) {
-		var cfg = config||{};
-		Ext.applyIf(cfg,{
-			 name:"doBack",iconCls: "icon-action-back", disabled: false, id:Ext.id()
-       		,text: Dnet.translate("tlbitem", "back__lbl")
-   			,tooltip: Dnet.translate("tlbitem", "back__tlp")    			
-		});			
+		var cfg = config||{};						  
 		var fn = function() {
 			try {					
 				var ct = (cfg.inContainer )? this._getElement_(cfg.inContainer):this._getElement_("main");				
@@ -153,13 +148,12 @@ dnet.base.ActionBuilder.prototype =  {
 			} catch(e) { 
 				dnet.base.DcExceptions.showMessage(e);
 			}
-		}
-		cfg.handler = fn;
-		cfg.scope=this.frame;
-		//Ext.applyIf(cfg, { dc: this.dc });	
-		var a = new Ext.Action(cfg) ;
-		this.frame._tlbitms_.add(this.name+"__"+a.initialConfig.name, a);    
-		return this;	
+		}		 
+		Ext.applyIf(cfg, { dc: this.dc, handler: fn, scope:this.frame });
+		var a = this.frame._getDc_(cfg.dc).actions.doLeaveEditor;		 
+		a.setHandler(cfg.handler, cfg.scope);
+		this.frame._tlbitms_.add(this.name+"__"+a.initialConfig.name, a);  //new Ext.Action(cfg)	
+		return this;		 
 	}
  
 	

@@ -46,6 +46,11 @@ dnet.base.DcActionsFactory = function() {
 		   			,tooltip: Dnet.translate("tlbitem", "next_rec__tlp")   			
 		   			,scope:dc, handler: function() { try { dc.setNextAsCurrent();  } catch(e) { dnet.base.DcExceptions.showMessage(e); }}
 		       	})
+				,doLeaveEditor : new Ext.Action({ name:"doLeaveEditor",iconCls: "icon-action-back", disabled: false
+		       		,text: Dnet.translate("tlbitem", "back__lbl")
+		   			,tooltip: Dnet.translate("tlbitem", "back__tlp")   			
+		   			,scope:dc, handler: function() {}
+		       	})
 			}		
 		}	
 	}	

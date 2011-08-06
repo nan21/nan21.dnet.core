@@ -144,7 +144,7 @@ public class AbstractDsWriteController<M, P>
 			service.deleteByIds(list);
 
 			//IActionResultSave result = this.packResult(list, params); 
-			return "{'success':'true'}"; // marshaller.writeResultToString(result);
+			return "{'success':true}"; // marshaller.writeResultToString(result);
 		} catch(Exception e) {
 			 this.handleException(e, response);
 			 return null;

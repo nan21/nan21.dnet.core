@@ -115,5 +115,8 @@ Ext.extend(dnet.base.DcContext, Ext.util.Observable, {
 	,_onChildModified_: function() {
 		this.parentDc.dataModified();
 	}
+	,_onChildCleaned_: function() {
+		this.parentDc.onChildCleaned();
+	}
 });
 

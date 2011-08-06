@@ -253,6 +253,7 @@ dnet.Translation = Ext.apply({},{
 	   ,Calendar_UI : "Calendare"
 	   ,Users_UI :"Utilizatori"
 	   ,UserGroups_UI : "Grupuri utilizator"
+		,UserTypes_UI : "Tipuri utilizator"
 	   ,Role_UI : "Roluri"
        ,AclDs_UI : "Drepturi de acces"
        ,MyBookmark_UI : "Marcajele mele"
