@@ -6,8 +6,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+
+import org.eclipse.persistence.config.HintValues;
+import org.eclipse.persistence.config.QueryHints;
+import org.eclipse.persistence.jpa.JpaQuery;
+import org.eclipse.persistence.queries.Cursor;
  
-import net.nan21.dnet.core.api.action.IExportWriter;
+import net.nan21.dnet.core.api.action.IDsExport;
 import net.nan21.dnet.core.api.action.IQueryBuilder;
 import net.nan21.dnet.core.api.converter.IDsConverter;
 import net.nan21.dnet.core.api.marshall.IDsMarshaller;
@@ -413,8 +421,44 @@ public class AbstractDsService<M, P, E>
 	}
 	
 	public void doExport(M filter, P params,
-			IQueryBuilder<M, P> builder, IExportWriter writer) throws Exception {
-
+			IQueryBuilder<M, P> builder, IDsExport<M> writer) throws Exception {
+		
+		QueryBuilderWithJpql<M, P> bld = (QueryBuilderWithJpql<M, P>) builder;
+		
+		EntityManager lem = bld.getEntityManager().getEntityManagerFactory().createEntityManager();
+		bld.setEntityManager(lem);
+		
+		try {
+			bld.setFilter(filter);
+			bld.setParams(params);
+			 
+			List<M> result = new ArrayList<M>(); 
+			
+			Query q = bld.createQuery()
+				.setHint(QueryHints.CURSOR, true)
+				.setHint(QueryHints.CURSOR_INITIAL_SIZE, 30)
+				.setHint(QueryHints.CURSOR_PAGE_SIZE, 30)
+				.setHint(QueryHints.READ_ONLY, HintValues.TRUE)
+				.setFirstResult(bld.getResultStart())
+				.setMaxResults(bld.getResultSize());
+			
+			Cursor c = q.unwrap(JpaQuery.class).getResultCursor();		
+			 
+			M ds ;
+			writer.begin();
+			boolean isFirst = true;
+			while (c.hasMoreElements()) {
+				ds = getModelClass().newInstance();
+				this.getConverter().entityToModel((E)c.nextElement(), ds);
+				writer.write(ds, isFirst);
+				isFirst = false;
+			}
+			writer.end();
+			c.close();
+		}finally {
+			lem.close();
+		}
+		 
 	}
 	
 	// ======================== RPC ===========================

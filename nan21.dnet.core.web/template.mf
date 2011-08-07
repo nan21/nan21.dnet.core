@@ -4,10 +4,8 @@ Bundle-Name: DNet Core - web
 Bundle-SymbolicName: nan21.dnet.core.web
 Bundle-Vendor: Nan21 
 Bundle-Version: 1.0.0.M1
+Bundle-ClassPath: WEB-INF/classes
 Import-Template: 
- org.springframework.security.web.*;version="[3.0,3.1)",
- org.springframework.security.core.*;version="[3.0,3.1)",
- org.springframework.security.config.*;version="[3.0,3.1)",
  org.eclipse.persistence.jpa.*;version="[2.1,2.4)"
 Import-Package: 
  net.nan21.dnet.core.api;version="[1.0.0.M1,1.0.0.M1]",
@@ -20,18 +18,7 @@ Import-Package:
  org.springframework.security.config;version="[3.0,3.1)",
  org.springframework.security.core;version="[3.0,3.1)",
  org.springframework.security.web;version="[3.0,3.1)",
- org.springframework.security.core.userdetails.memory;version="[3.0,3.1)",
- org.springframework.security.authentication.dao;version="[3.0,3.1)",
  org.springframework.security.web.authentication;version="[3.0,3.1)",
- org.springframework.security.web.context;version="[3.0,3.1)",
- org.springframework.security.web.authentication.logout;version="[3.0,3.1)",
- org.springframework.security.web.authentication.ui;version="[3.0,3.1)",
- org.springframework.security.web.authentication.www;version="[3.0,3.1)",
- org.springframework.security.web.savedrequest;version="[3.0,3.1)",
- org.springframework.security.web.servletapi;version="[3.0,3.1)",
- org.springframework.security.web.session;version="[3.0,3.1)",
- org.springframework.security.web.access;version="[3.0,3.1)",
- org.springframework.security.web.access.intercept;version="[3.0,3.1)",
  org.springframework.web.filter;version="[3.0,3.1)",
  org.springframework.web.servlet;version="[3.0,3.1)",
  org.springframework.web.servlet.handler;version="[3.0,3.1)",
@@ -52,6 +39,5 @@ Import-Package:
  org.codehaus.jackson.map;version="[1.4,2.0)",
  javax.persistence;version="[2.0,2.1)",
  javax.persistence.criteria;version="[2.0,2.1)"
-Export-Package: 
- net.nan21.dnet.core.web.settings,net.nan21.dnet.core.web.controller.session,net.nan21.dnet.core.web.result,net.nan21.dnet.core.web.controller.data,net.nan21.dnet.core.web.controller.ui
-Bundle-ClassPath: WEB-INF/classes
+Export-Package: net.nan21.dnet.core.web,net.nan21.dnet.core.web.controller,net.nan21.dnet.core.web.controller.data,net.nan21.dnet.core.web.controller.session,net.nan21.dnet.core.web.controller.ui,net.nan21.dnet.core.web.result,net.nan21.dnet.core.web.settings
+

@@ -1,7 +1,12 @@
 package net.nan21.dnet.core.web.controller.data;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
 import net.nan21.dnet.core.api.session.Params;
@@ -22,6 +27,8 @@ public class AbstractDataController {
 	@Autowired
 	protected WebApplicationContext webappContext;
 
+	protected final static int FILE_TRANSFER_BUFFER_SIZE = 4 * 1024;
+	
 	protected void prepareRequest() throws Exception  {
 		SessionUser su;		
 		User user;
@@ -76,4 +83,19 @@ public class AbstractDataController {
 		return e.getLocalizedMessage();
 	}
 
+	protected void sendFile(File file, ServletOutputStream stream) throws IOException {  
+        InputStream in = null;
+        try {
+            in = new BufferedInputStream(new FileInputStream(file));
+            byte[] buf = new byte[FILE_TRANSFER_BUFFER_SIZE];
+            int bytesRead;
+            while ((bytesRead = in.read(buf)) != -1) {
+            	stream.write(buf, 0, bytesRead);
+            }
+        } finally {
+            if (in != null)
+                in.close();
+        }
+        stream.flush();
+    }
 }

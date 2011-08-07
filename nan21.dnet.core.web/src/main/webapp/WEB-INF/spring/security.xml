@@ -50,7 +50,8 @@
  	<bean name="defaultAuthenticationDbUserService"
 		class="net.nan21.dnet.core.security.DbUserService">
 		<property name="usersByUsernameQuery"
-			value="select u.code, u.name, u.password, u.active, 0 accountExpired, 0 credentialsExpired,0 accountLocked, u.clientid clientId, c.code clientCode, c.defaultDsAccessRule, c.defaultImportPath, c.adminRole, '', 0  
+			value="select u.code, u.name, u.password, u.active, 0 accountExpired, 0 credentialsExpired,0 accountLocked, u.clientid clientId, c.code clientCode, 
+			c.defaultDsAccessRule, c.defaultImportPath, c.defaultExportPath, c.tempPath, c.adminRole, '', 0  
 				  from ad_users u join ad_client c on u.clientid = c.id  
 				where u.code = ? and c.code = ?" />
 		<property name="authoritiesByUsernameQuery"

@@ -4,6 +4,7 @@ Bundle-Name: DNet Core - welcome
 Bundle-SymbolicName: nan21.dnet.core.welcome
 Bundle-Vendor: Nan21 
 Bundle-Version: 1.0.0.M1
+Bundle-ClassPath: WEB-INF/classes
 Import-Package: 
  javax.servlet.jsp.jstl.core;version="[1.2,2.0)",
  org.apache.taglibs.standard;version="[1.1.2,2.0)",
@@ -34,4 +35,4 @@ Import-Package:
  org.springframework.web.servlet.handler;version="[3.0,3.1)",
  org.springframework.web.servlet.mvc;version="[3.0,3.1)",
  org.springframework.web.servlet.view;version="[3.0,3.1)"
-Bundle-ClassPath: WEB-INF/classes
+

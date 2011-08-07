@@ -5,6 +5,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
+
+import org.eclipse.persistence.internal.jpa.EJBQueryImpl;
+import org.eclipse.persistence.internal.jpa.EntityManagerImpl;
+import org.eclipse.persistence.internal.jpa.JPAQuery;
+import org.eclipse.persistence.jpa.JpaQuery;
 import org.springframework.util.StringUtils;
  
 public class QueryBuilderWithJpql<F, P> extends AbstractQueryBuilder<F, P> {
@@ -163,12 +169,13 @@ public class QueryBuilderWithJpql<F, P> extends AbstractQueryBuilder<F, P> {
         }        
     }
 	
-	
 	public Query createQuery() throws Exception {
-		Query q = this.em.createQuery(this.buildQueryStatement());
-		bindFilterParams(q);
+		String jpql = this.buildQueryStatement();
+		Query q =  this.em.createQuery(jpql);		 
+		bindFilterParams(q);		 		
 		return q;
 	}
+	
 	public Query createQueryCount() throws Exception {
 		Query q = this.em.createQuery(this.buildCountStatement());
 		bindFilterParams(q);

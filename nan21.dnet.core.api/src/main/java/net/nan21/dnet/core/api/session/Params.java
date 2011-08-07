@@ -12,14 +12,14 @@ import java.text.SimpleDateFormat;
 public class Params {
 
     private boolean defaultAccessAllow;
-    private String defaultImportRootPath;
+    private String defaultImportPath;
+    private String defaultExportPath;
+    private String tempPath;
     private String adminRole;
     
     private String serverDateFormatMask;
     private SimpleDateFormat serverDateFormat;
-    
      
-    
     public Params() {
         super();
         this.serverDateFormatMask = "yyyy-MM-dd kk:mm";
@@ -40,21 +40,33 @@ public class Params {
         return this.serverDateFormat;
     }
 
-    /**
-     * @return the defaultImportRootPath
-     */
-    public String getDefaultImportRootPath() {
-        return this.defaultImportRootPath;
-    }
+     
 
-    /**
-     * @param defaultImportRootPath the defaultImportRootPath to set
-     */
-    public void setDefaultImportRootPath(String defaultImportRootPath) {
-        this.defaultImportRootPath = defaultImportRootPath;
-    }
+    public String getDefaultImportPath() {
+		return defaultImportPath;
+	}
 
-    /**
+	public void setDefaultImportPath(String defaultImportPath) {
+		this.defaultImportPath = defaultImportPath;
+	}
+
+	public String getDefaultExportPath() {
+		return defaultExportPath;
+	}
+
+	public void setDefaultExportPath(String defaultExportPath) {
+		this.defaultExportPath = defaultExportPath;
+	}
+
+	public String getTempPath() {
+		return tempPath;
+	}
+
+	public void setTempPath(String tempPath) {
+		this.tempPath = tempPath;
+	}
+
+	/**
      * @return the defaultAccessAllow
      */
     public boolean isDefaultAccessAllow() {
@@ -81,6 +93,10 @@ public class Params {
     public void setAdminRole(String adminRole) {
         this.adminRole = adminRole;
     }
+
+	public void setServerDateFormat(SimpleDateFormat serverDateFormat) {
+		this.serverDateFormat = serverDateFormat;
+	}
     
     
 }

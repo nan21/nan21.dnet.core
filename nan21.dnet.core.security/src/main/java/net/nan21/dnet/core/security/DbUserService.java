@@ -111,12 +111,13 @@ public class DbUserService extends JdbcDaoImpl {
                             String clientCode = rs.getString(9);
 
                             String defaultAccessAllow = rs.getString(10);
-                            String defaultImportRootPath = rs.getString(11);
-                            String adminRole = rs.getString(12); 
-                            
-                            
-                            String employeeCode = rs.getString(13);
-                            Long employeeId = rs.getLong(14);
+                            String defaultImportPath = rs.getString(11);
+                            String defaultExportPath = rs.getString(12);
+                            String tempPath = rs.getString(13);
+                            String adminRole = rs.getString(14); 
+      
+                            String employeeCode = rs.getString(15);
+                            Long employeeId = rs.getLong(16);
                             
                             // build the objects
                             UserPreferences preferences = new UserPreferences();
@@ -130,7 +131,9 @@ public class DbUserService extends JdbcDaoImpl {
                                     && defaultAccessAllow.equals("allow")) {
                                 params.setDefaultAccessAllow(true);
                             }
-                            params.setDefaultImportRootPath(defaultImportRootPath);
+                            params.setDefaultImportPath(defaultImportPath);
+                            params.setDefaultImportPath(defaultExportPath);
+                            params.setTempPath(tempPath);
                             params.setAdminRole(adminRole);    
                             // pack
                             SessionUser su = new SessionUser(user, params );

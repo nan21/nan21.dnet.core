@@ -2,6 +2,7 @@ package net.nan21.dnet.core.api.service;
 
 import java.util.List;
 
+import net.nan21.dnet.core.api.action.IDsExport;
 import net.nan21.dnet.core.api.action.IQueryBuilder;
 import net.nan21.dnet.core.api.marshall.IDsMarshaller;
 /**
@@ -35,10 +36,15 @@ public interface IDsService<M, P> {
 	public void doImport(String absoluteFileName) throws Exception ;
 	public void doImport(String relativeFileName, String path) throws Exception ;
 
+	public void doExport(M filter, P params,
+			IQueryBuilder<M, P> builder, IDsExport<M> writer) throws Exception;
+			 
 	public IQueryBuilder<M, P> createQueryBuilder() throws Exception;
 	public IDsMarshaller<M, P> createMarshaller(String dataFormat) throws Exception;
 
 	public Class<?> getEntityClass(); 
+	public Class<M> getModelClass();
+	public Class<P> getParamClass();
 	
 	public List<IEntityServiceFactory> getEntityServiceFactories();
 	public void setEntityServiceFactories(

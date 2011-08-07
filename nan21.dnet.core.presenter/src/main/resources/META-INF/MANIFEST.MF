@@ -33,10 +33,11 @@ Import-Package: au.com.bytecode.opencsv;version="[2.0,3.0)",au.com.byt
  sion="[1.0.0.M1,1.0.0.M1]",org.codehaus.jackson;version="[1.4,2.0)",o
  rg.codehaus.jackson.map;version="[1.4,2.0)",org.codehaus.jackson.map.
  type;version="[1.4,2.0)",org.codehaus.jackson.type;version="[1.4,2.0)
- ",org.eclipse.persistence.jpa;version="[2.1,2.4)",org.springframework
- .beans;version="[3.0,3.1)",org.springframework.beans.factory;version=
- "[3.0,3.1)",org.springframework.beans.factory.annotation;version="[3.
- 0,3.1)",org.springframework.context;version="[3.0,3.1)",org.springfra
- mework.context.config;version="[3.0,3.1)",org.springframework.transac
- tion.annotation;version="[3.0,3.1)",org.springframework.util
+ ",org.eclipse.persistence.jpa;version="[2.1,2.4)",org.eclipse.persist
+ ence.queries,org.springframework.beans;version="[3.0,3.1)",org.spring
+ framework.beans.factory;version="[3.0,3.1)",org.springframework.beans
+ .factory.annotation;version="[3.0,3.1)",org.springframework.context;v
+ ersion="[3.0,3.1)",org.springframework.context.config;version="[3.0,3
+ .1)",org.springframework.transaction.annotation;version="[3.0,3.1)",o
+ rg.springframework.util
 

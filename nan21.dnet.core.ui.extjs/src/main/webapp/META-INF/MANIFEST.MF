@@ -1,5 +1,6 @@
 Manifest-Version: 1.0
 Bundle-Vendor: Nan21 
+Bundle-ClassPath: WEB-INF/classes
 Class-Path: 
 Bundle-Version: 1.0.0.M1
 Tool: Bundlor 1.0.0.RELEASE

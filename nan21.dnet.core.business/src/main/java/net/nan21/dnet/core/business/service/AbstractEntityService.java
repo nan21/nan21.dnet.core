@@ -6,8 +6,14 @@ import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
+import org.eclipse.persistence.config.HintValues;
+import org.eclipse.persistence.config.QueryHints;
+import org.eclipse.persistence.internal.jpa.EntityManagerImpl;
+import org.eclipse.persistence.jpa.JpaQuery;
+import org.eclipse.persistence.queries.Cursor;
 import org.springframework.beans.factory.annotation.Autowired;
  
 
@@ -146,15 +152,15 @@ public abstract class AbstractEntityService <E>  {
 	 * Update (merge) one entity.  
 	 */
 	 
-	public void update(E e) throws Exception {
+	public void update(E e) throws Exception {		
 		this.em.merge(e);
 	}
 
 	/**
 	 * Update (merge) a list of entities.
 	 */
- 
-	public void update(List<E> list) throws Exception {
+  
+	public void update(List<E> list) throws Exception {		
 		for(E e: list) {
 			this.em.merge(e);
 		}	
