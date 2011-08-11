@@ -4,6 +4,7 @@ Bundle-Name: DNet Core - web
 Bundle-SymbolicName: nan21.dnet.core.web
 Bundle-Vendor: Nan21 
 Bundle-Version: 1.0.0.M1
+Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.html
 Bundle-ClassPath: WEB-INF/classes
 Import-Template: 
  org.eclipse.persistence.jpa.*;version="[2.1,2.4)"

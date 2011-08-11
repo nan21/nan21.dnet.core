@@ -10,6 +10,7 @@ Bundle-Version: 1.0.0.M1
 Tool: Bundlor 1.0.0.RELEASE
 Bundle-Name: DNet Core - business
 Bundle-ManifestVersion: 2
+Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.html
 Bundle-SymbolicName: nan21.dnet.core.business
 Import-Package: javax.persistence;version="[2.0,2.1)",javax.sql,net.na
  n21.dnet.core.api.model;version="[1.0.0.M1,1.0.0.M1]",net.nan21.dnet.

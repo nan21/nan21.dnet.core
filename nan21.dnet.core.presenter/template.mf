@@ -4,6 +4,7 @@ Bundle-Name: DNet Core - presenter
 Bundle-SymbolicName: nan21.dnet.core.presenter
 Bundle-Vendor: Nan21 
 Bundle-Version: 1.0.0.M1
+Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.html
 Import-Package: 
  net.nan21.dnet.core.api.action;version="[1.0.0.M1,1.0.0.M1]",
  net.nan21.dnet.core.api.annotation;version="[1.0.0.M1,1.0.0.M1]",

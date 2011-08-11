@@ -11,6 +11,7 @@ Bundle-Version: 1.0.0.M1
 Tool: Bundlor 1.0.0.RELEASE
 Bundle-Name: DNet Core - security
 Bundle-ManifestVersion: 2
+Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.html
 Bundle-SymbolicName: nan21.dnet.core.security
 Import-Package: javax.servlet,javax.servlet.http,net.nan21.dnet.core.a
  pi.session,org.apache.commons.logging,org.springframework.context.sup

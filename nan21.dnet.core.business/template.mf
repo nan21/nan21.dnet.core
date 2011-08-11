@@ -4,6 +4,7 @@ Bundle-Name: DNet Core - business
 Bundle-SymbolicName: nan21.dnet.core.business
 Bundle-Vendor: Nan21 
 Bundle-Version: 1.0.0.M1
+Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.html
 Import-Template: 
  javax.persistence.*;version="[2.0,2.1)",
  org.eclipse.persistence.jpa.*;version="[2.1,2.4)"

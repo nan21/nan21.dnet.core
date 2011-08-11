@@ -4,6 +4,7 @@ Bundle-Name: DNet Core - welcome
 Bundle-SymbolicName: nan21.dnet.core.welcome
 Bundle-Vendor: Nan21 
 Bundle-Version: 1.0.0.M1
+Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.html
 Bundle-ClassPath: WEB-INF/classes
 Import-Package: 
  javax.servlet.jsp.jstl.core;version="[1.2,2.0)",

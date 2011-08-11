@@ -8,6 +8,7 @@ Bundle-Version: 1.0.0.M1
 Tool: Bundlor 1.0.0.RELEASE
 Bundle-Name: DNet Core - welcome
 Bundle-ManifestVersion: 2
+Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.html
 Bundle-SymbolicName: nan21.dnet.core.welcome
 Import-Package: javax.servlet.http,javax.servlet.jsp.jstl.core;version
  ="[1.2,2.0)",org.apache.taglibs.standard;version="[1.1.2,2.0)",org.ap
