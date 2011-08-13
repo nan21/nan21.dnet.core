@@ -5,12 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.persistence.Query;
-import javax.persistence.TypedQuery;
 
-import org.eclipse.persistence.internal.jpa.EJBQueryImpl;
-import org.eclipse.persistence.internal.jpa.EntityManagerImpl;
-import org.eclipse.persistence.internal.jpa.JPAQuery;
-import org.eclipse.persistence.jpa.JpaQuery;
 import org.springframework.util.StringUtils;
  
 public class QueryBuilderWithJpql<F, P> extends AbstractQueryBuilder<F, P> {
@@ -181,4 +176,22 @@ public class QueryBuilderWithJpql<F, P> extends AbstractQueryBuilder<F, P> {
 		bindFilterParams(q);
 		return q;
 	}
+
+	public String getDefaultWhere() {
+		return defaultWhere;
+	}
+
+	public void setDefaultWhere(String defaultWhere) {
+		this.defaultWhere = defaultWhere;
+	}
+
+	public String getDefaultSort() {
+		return defaultSort;
+	}
+
+	public void setDefaultSort(String defaultSort) {
+		this.defaultSort = defaultSort;
+	}
+	
+	
 }

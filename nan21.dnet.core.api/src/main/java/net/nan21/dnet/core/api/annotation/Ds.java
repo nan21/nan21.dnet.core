@@ -28,9 +28,24 @@ public @interface Ds {
 	boolean userIsOwner() default false;
 	
 	/**
-	 * Sort criteria. Array of {@link SortField}
+	 * Defines the default sort to be applied as an array of {@link SortField}.
 	 * @return
 	 */
 	SortField[] sort() default {};
+	
+	/**
+	 * Specifies a default where clause to be appended to the select statement as JPQL fragment.
+	 * It is ignored if an expression based query is configured. 
+	 * @return
+	 */
+	String jpqlWhere() default "";
+	
+	/**
+	 * Defines the default sort to be applied. It is an alternative to the {@link SortField} array approach if you prefer to a more compact jpql sort fragment.
+	 * It is ignored if the sort property is set. 
+	 * It is also ignored if an expression based query is configured. 
+	 * 
+	 */
+	String jpqlSort() default "";
 }
  

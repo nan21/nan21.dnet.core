@@ -604,6 +604,10 @@ public class AbstractDsService<M, P, E>
 		qb.setEntityManager(this.getEntityService().getEntityManager());
 		qb.setBaseEql("select e from "+this.getEntityClass().getSimpleName()+" e");
 		qb.setBaseEqlCount("select count(1) from "+this.getEntityClass().getSimpleName()+" e");
+		if(this.getDescriptor().isWorksWithJpql()) {
+			qb.setDefaultWhere(this.descriptor.getJpqlDefaultWhere() );
+			qb.setDefaultSort(this.descriptor.getJpqlDefaultSort());
+		}
 		return qb;	 
 	}
 
