@@ -5,7 +5,7 @@
   xmlns:activiti="http://activiti.org/bpmn"
   targetNamespace="Examples">
   
-  <process id="a">
+  <process id="dummyTest" >
   
     <startEvent id="start" />
     <sequenceFlow id="flow1" sourceRef="start" targetRef="end" />

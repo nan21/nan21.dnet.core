@@ -5,7 +5,8 @@ Export-Package: org.activiti.spring;version="1.0.0.M1";uses:="javax.sq
  ceptor,org.activiti.engine.impl.javax.el,org.springframework.beans,or
  g.springframework.beans.factory,org.springframework.context,org.sprin
  gframework.core.io,org.springframework.transaction,org.springframewor
- k.transaction.support"
+ k.transaction.support",org.activiti.spring.test.autodeployment;versio
+ n="1.0.0.M1"
 Bundle-Vendor: Nan21 
 Bundle-Version: 1.0.0.M1
 Tool: Bundlor 1.0.0.RELEASE
