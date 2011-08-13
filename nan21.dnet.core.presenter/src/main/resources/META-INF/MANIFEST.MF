@@ -13,8 +13,9 @@ Export-Package: net.nan21.dnet.core.presenter.action;version="1.0.0.M1
  e.presenter.service;version="1.0.0.M1";uses:="net.nan21.dnet.core.api
  .action,net.nan21.dnet.core.api.converter,net.nan21.dnet.core.api.mar
  shall,net.nan21.dnet.core.api.service,net.nan21.dnet.core.presenter.m
- odel,org.springframework.beans.factory.annotation,org.springframework
- .context,org.springframework.transaction.annotation"
+ odel,org.activiti.engine,org.springframework.beans.factory.annotation
+ ,org.springframework.context,org.springframework.transaction.annotati
+ on"
 Bundle-Vendor: Nan21 
 Bundle-Version: 1.0.0.M1
 Tool: Bundlor 1.0.0.RELEASE
@@ -31,7 +32,9 @@ Import-Package: au.com.bytecode.opencsv;version="[2.0,3.0)",au.com.byt
  .nan21.dnet.core.api.marshall;version="[1.0.0.M1,1.0.0.M1]",net.nan21
  .dnet.core.api.model;version="[1.0.0.M1,1.0.0.M1]",net.nan21.dnet.cor
  e.api.service;version="[1.0.0.M1,1.0.0.M1]",net.nan21.dnet.core.api.s
- ession;version="[1.0.0.M1,1.0.0.M1]",org.codehaus.jackson;version="[1
+ ession;version="[1.0.0.M1,1.0.0.M1]",org.activiti.engine;version="[5.
+ 6,6.0)",org.activiti.engine.impl.el;version="[5.6,6.0)",org.activiti.
+ spring;version="[1.0.0.M1,1.0.0.M1]",org.codehaus.jackson;version="[1
  .4,2.0)",org.codehaus.jackson.map;version="[1.4,2.0)",org.codehaus.ja
  ckson.map.type;version="[1.4,2.0)",org.codehaus.jackson.type;version=
  "[1.4,2.0)",org.eclipse.persistence.jpa;version="[2.1,2.4)",org.eclip
@@ -39,6 +42,6 @@ Import-Package: au.com.bytecode.opencsv;version="[2.0,3.0)",au.com.byt
  org.springframework.beans.factory;version="[3.0,3.1)",org.springframe
  work.beans.factory.annotation;version="[3.0,3.1)",org.springframework
  .context;version="[3.0,3.1)",org.springframework.context.config;versi
- on="[3.0,3.1)",org.springframework.transaction.annotation;version="[3
- .0,3.1)",org.springframework.util
+ on="[3.0,3.1)",org.springframework.jdbc.datasource,org.springframewor
+ k.transaction.annotation;version="[3.0,3.1)",org.springframework.util
 

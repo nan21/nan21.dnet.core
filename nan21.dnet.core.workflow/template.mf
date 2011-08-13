@@ -1,0 +1,18 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: DNet Core - workflow
+Bundle-SymbolicName: nan21.dnet.core.workflow
+Bundle-Vendor: Nan21 
+Bundle-Version: 1.0.0.M1
+Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.html
+Import-Package: 
+ org.springframework.context;version="[3.0,3.1)",
+ org.springframework.context.config;version="[3.0,3.1)",
+ org.springframework.beans;version="[3.0,3.1)",
+ org.springframework.beans.factory;version="[3.0,3.1)",
+ org.springframework.beans.factory.annotation;version="[3.0,3.1)",
+ org.springframework.transaction.annotation;version="[3.0,3.1)",
+ org.activiti.engine;version="[5.6,6.0)",
+ org.activiti.engine.impl.el;version="[5.6,6.0)"
+Export-Package: org.activiti.spring
+

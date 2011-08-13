@@ -9,12 +9,28 @@
 				http://www.springframework.org/schema/context/spring-context.xsd
 			http://www.springframework.org/schema/osgi-compendium
     			http://www.springframework.org/schema/osgi-compendium/spring-osgi-compendium.xsd">
-	 
-	  <bean id="baseDsService" scope="request" 
-	  		class="net.nan21.dnet.core.presenter.service.BaseDsService" />
-	  <bean id="serviceProvider" 
-	  		class="net.nan21.dnet.core.presenter.service.DsServiceFactory" >
-	  		<property name="entityServiceFactories" ref="osgiEntityServiceFactories" />
-	  </bean>				
-	 
+	
+	
+	<bean id="baseDsService" scope="request"
+		class="net.nan21.dnet.core.presenter.service.BaseDsService" />
+	<bean id="serviceProvider" class="net.nan21.dnet.core.presenter.service.DsServiceFactory">
+		<property name="entityServiceFactories" ref="osgiEntityServiceFactories" />
+	</bean>
+	
+	
+	
+	<bean id="processEngineConfiguration" class="org.activiti.spring.SpringProcessEngineConfiguration">
+		<property name="dataSource" ref="osgiDataSource" />
+		<property name="transactionManager">
+			<bean id="transactionManager"
+				class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+				<property name="dataSource" ref="osgiDataSource" />
+			</bean>
+		</property>
+		<property name="databaseSchemaUpdate" value="false" />
+		<property name="jobExecutorActivate" value="false" />
+	</bean>
+	<bean id="activitiProcessEngine" class="org.activiti.spring.ProcessEngineFactoryBean">
+		<property name="processEngineConfiguration" ref="processEngineConfiguration" />
+	</bean>
 </beans>

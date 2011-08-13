@@ -30,6 +30,7 @@ import net.nan21.dnet.core.presenter.exception.ActionNotSupportedException;
 import net.nan21.dnet.core.presenter.marshaller.JsonMarshaller;
 import net.nan21.dnet.core.presenter.model.AbstractDsModel;
 import net.nan21.dnet.core.presenter.model.DsDescriptor;
+import net.nan21.dnet.core.presenter.model.RpcDefinition;
 import net.nan21.dnet.core.presenter.model.ViewModelDescriptorManager;
 
 public class AbstractDsService<M, P, E> 
@@ -51,8 +52,8 @@ public class AbstractDsService<M, P, E>
 	//
 	//private List<IEntityServiceFactory> entityServiceFactories;
  
-	private Map<String, Class<AbstractDsDelegate<M, P>>> rpcData = new HashMap<String, Class<AbstractDsDelegate<M, P>>>();
-	private Map<String, Class<AbstractDsDelegate<M, P>>> rpcFilter = new HashMap<String, Class<AbstractDsDelegate<M, P>>>();
+	private Map<String, RpcDefinition> rpcData = new HashMap<String, RpcDefinition>();
+	private Map<String, RpcDefinition> rpcFilter = new HashMap<String, RpcDefinition>();
 	 
 	
 	// ======================== Find ===========================
@@ -467,30 +468,35 @@ public class AbstractDsService<M, P, E>
 		if (!rpcData.containsKey(procedureName)) {
 			throw new Exception("No such procedure defined: "+procedureName);
 		}
-		AbstractDsDelegate<M, P> delegate = rpcData.get(procedureName).newInstance();
+		RpcDefinition def =  rpcData.get(procedureName);
+		AbstractDsDelegate<M, P> delegate = def.getDelegateClass().newInstance();
 		delegate.setAppContext(this.appContext);
 		delegate.setEntityServiceFactories(entityServiceFactories);
 		delegate.setDsServiceFactories(dsServiceFactories);
-		delegate.execute(ds);		
+		
+		Method m = def.getDelegateClass().getMethod(def.getMethodName() ,getModelClass() );
+		m.invoke(delegate, ds);
+		//delegate.execute(ds);		
 	}
 
 	public void rpcFilter(String procedureName, M filter, P params) throws Exception {
 		if (!rpcFilter.containsKey(procedureName)) {
 			throw new Exception("No such procedure defined: "+procedureName);
 		}
-		AbstractDsDelegate<M, P> delegate = rpcFilter.get(procedureName).newInstance();
+		RpcDefinition def =  rpcFilter.get(procedureName);
+		AbstractDsDelegate<M, P> delegate = def.getDelegateClass().newInstance();
 		delegate.setAppContext(this.appContext);
 		delegate.setEntityServiceFactories(entityServiceFactories);
 		delegate.setDsServiceFactories(dsServiceFactories);
-		delegate.execute(filter);		
+		Method m = def.getDelegateClass().getMethod(def.getMethodName() ,getModelClass() );
+		m.invoke(delegate, filter);
+		//delegate.execute(filter);		
 	}
-	
+	 
 	public void rpcData(String procedureName, List<M> list, P params) throws Exception {
-		Method m = this.getClass().getMethod("execute" + procedureName,
-				List.class);
-		m.invoke(this, list);
+		throw new Exception("Not implemented yet");
 	}
-	
+	 
 
 	// ======================== Getters-setters ===========================
  
@@ -564,25 +570,7 @@ public class AbstractDsService<M, P, E>
 	
 	// ======================== Helpers ===========================
 	 
-	public Map<String, Class<AbstractDsDelegate<M, P>>> getRpcData() {
-		return rpcData;
-	}
-
-	public void setRpcData(
-			Map<String, Class<AbstractDsDelegate<M, P>>> rpcData) {
-		this.rpcData = rpcData;
-	}
-
 	 
-	public Map<String, Class<AbstractDsDelegate<M, P>>> getRpcFilter() {
-		return rpcFilter;
-	}
-
-	public void setRpcFilter(
-			Map<String, Class<AbstractDsDelegate<M, P>>> rpcFilter) {
-		this.rpcFilter = rpcFilter;
-	}
-
 	protected List<Object> collectIds(List<M> list) {
 		List<Object> ids = new ArrayList<Object>();
 		for (M ds: list) {
@@ -591,6 +579,22 @@ public class AbstractDsService<M, P, E>
 		return ids;
 	}
  
+	public Map<String, RpcDefinition> getRpcData() {
+		return rpcData;
+	}
+
+	public void setRpcData(Map<String, RpcDefinition> rpcData) {
+		this.rpcData = rpcData;
+	}
+
+	public Map<String, RpcDefinition> getRpcFilter() {
+		return rpcFilter;
+	}
+
+	public void setRpcFilter(Map<String, RpcDefinition> rpcFilter) {
+		this.rpcFilter = rpcFilter;
+	}
+
 	public IQueryBuilder<M,P> createQueryBuilder() throws Exception {
 		QueryBuilderWithJpql<M,P> qb = new QueryBuilderWithJpql<M,P>();
 		qb.setFilterClass(this.getModelClass());

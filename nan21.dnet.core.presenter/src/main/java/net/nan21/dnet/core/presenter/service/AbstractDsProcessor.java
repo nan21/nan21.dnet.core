@@ -2,6 +2,11 @@ package net.nan21.dnet.core.presenter.service;
 
 import java.util.List;
 
+import org.activiti.engine.HistoryService;
+import org.activiti.engine.ProcessEngine;
+import org.activiti.engine.RepositoryService;
+import org.activiti.engine.RuntimeService;
+import org.activiti.engine.TaskService;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -18,6 +23,7 @@ public class AbstractDsProcessor<M, P> {
 	
 	protected List<IEntityServiceFactory> entityServiceFactories;	 
 	protected List<IDsServiceFactory> dsServiceFactories;
+	private ProcessEngine workflowEngine;
 	
 	public IDsService<M,P> findDsService(String dsName) throws Exception {
 		IDsService<M,P> srv = null;
@@ -49,6 +55,31 @@ public class AbstractDsProcessor<M, P> {
 		throw new Exception (entityClass.getSimpleName() + "Service" + " not found "); 
 	}
 
+	
+
+	public ProcessEngine getWorkflowEngine() {
+		//if (this.workflowEngine == null ) {
+			return (ProcessEngine)this.getAppContext().getBean("osgiActivitiProcessEngine");
+		//}
+    	//return this.workflowEngine ;			 
+    }
+	
+    public RuntimeService getWorkflowRuntimeService() {
+    	return this.getWorkflowEngine().getRuntimeService();
+    }
+    
+    public TaskService getWorkflowTaskService() {
+    	return this.getWorkflowEngine().getTaskService();
+    }
+     
+    public RepositoryService getWorkflowRepositoryService() {
+    	return this.getWorkflowEngine().getRepositoryService();
+    }
+    
+    public HistoryService getWorkflowHistoryService() {
+    	return this.getWorkflowEngine().getHistoryService();
+    }
+    
 	public List<IEntityServiceFactory> getEntityServiceFactories() {
 		return entityServiceFactories;
 	}

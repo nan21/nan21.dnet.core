@@ -11,4 +11,7 @@
  	<osgi:list id="osgiEntityServiceFactories" cardinality="0..N"
  		interface="net.nan21.dnet.core.api.service.IEntityServiceFactory">
  	</osgi:list>
+ 	 	 
+ 	<osgi:reference id="osgiDataSource" cardinality="0..1"
+		interface="javax.sql.DataSource" />
 </beans>
