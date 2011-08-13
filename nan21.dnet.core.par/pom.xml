@@ -29,6 +29,13 @@
 		</dependency>	
 		<dependency>
 			<groupId>net.nan21.dnet</groupId>
+			<artifactId>nan21.dnet.core.business</artifactId>
+			<version>1.0.0.M1</version>
+			<type>jar</type>
+			<scope>provided</scope>
+		</dependency>	
+		<dependency>
+			<groupId>net.nan21.dnet</groupId>
 			<artifactId>nan21.dnet.core.presenter</artifactId>
 			<version>1.0.0.M1</version>
 			<type>jar</type>
