@@ -37,7 +37,7 @@
 			<artifactId>nan21.dnet.core.workflow</artifactId>
 			<version>1.0.0.M1</version>
 			<type>jar</type>
-			<scope>provided</scope>
+			<scope>compile</scope>
 		</dependency>	
 		 
 		<!-- External libraries -->
