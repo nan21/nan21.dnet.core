@@ -5,7 +5,8 @@ dnet.base.AbstractDc = function(config) {
 	this.dcContext = null;
 	this.multiEdit = false;
 	this.afterStoreLoadDoDefaultSelection = true;
-	this.bindedViews = null;
+	this.bindedFormViews = null;
+	this.bindedFilterViews = null;
 	/**
 	 *  External control to actions. 
 	 *  Actions can be blocked from outside bootstrapping the standard check-flow.
@@ -43,7 +44,7 @@ dnet.base.AbstractDc = function(config) {
 
       Ext.apply(this,config);
     	this.addEvents(
-
+    			"cleanDc",
 			"beforeDoQuery", "afterDoQuery"
 			,"afterDoQuerySuccess","afterDoQueryFailure"
 			,"beforeDoNew" ,  "afterDoNew"
@@ -104,13 +105,6 @@ Ext.extend(dnet.base.AbstractDc, Ext.util.Observable, {
                this.afterDoSaveSuccess();
 			}
 			if(!this.isCurrentRecordDirty())  {
-				this.actions.doQuery.setDisabled(false);
-				this.actions.doCancel.setDisabled(true);
-				this.actions.doSave.setDisabled(true);
-				this.actions.doNew.setDisabled(false);
-				this.actions.doPrevRec.setDisabled(false);
-				this.actions.doNextRec.setDisabled(false);
-				this.actions.doLeaveEditor.setDisabled(false);
 				this.fireEvent("cleanRecord",this);
 				this.fireEvent("recordChanged", { dc: this, record: this.record, state: 'clean', status:this.getRecordStatus(), oldRecord: null }); 
 			}
@@ -119,6 +113,9 @@ Ext.extend(dnet.base.AbstractDc, Ext.util.Observable, {
 			}
 		},this);
         this.actions = dnet.base.DcActionsFactory.createActions(this);
+        this.on("recordChanged" , function(evnt) {dnet.base.DcActionsStateManager.applyStatesOnRecordChange(evnt);}, this);
+        this.on("cleanDc", function(evnt) {dnet.base.DcActionsStateManager.onCleanDc(evnt);});	
+        
 	}
 
 	,addChild: function (dc) {
@@ -126,12 +123,20 @@ Ext.extend(dnet.base.AbstractDc, Ext.util.Observable, {
 		dc.on("dirtyRecord", this.dataModified, this);
 		dc.on("cleanRecord", function() {  if(!this.isCurrentRecordDirty())  {this.fireEvent("cleanRecord",this);}  }, this);
 	}
-	,addBindedView: function(id) {
-		if (this.bindedViews == null) {
-			this.bindedViews=[];
+	,addBindedView: function(id, type) {
+		 if (type == "edit-form") {
+			 this.addBindedFormView(id);
+		 }
+		 if (type == "filter-form") {
+			 this.addBindedFilterView(id);
+		 }
+	}
+	,addBindedFormView: function(id) {
+		if (this.bindedFormViews == null) {
+			this.bindedFormViews=[];
 		}
-		this.bindedViews[this.bindedViews.length]=id;
-		
+		this.bindedFormViews[this.bindedFormViews.length]=id;
+		 
 		this.on('afterCurrentRecordChange', 
 				function(evnt) { 
 					var newRecord = evnt.newRecord; 
@@ -139,12 +144,28 @@ Ext.extend(dnet.base.AbstractDc, Ext.util.Observable, {
 					var newIdx = evnt.newIdx;
 					if(newRecord) {								 
 						Ext.BindMgr.unbind(oldRecord);    						
-						Ext.BindMgr.bind(newRecord, this.bindedViews);								 
+						Ext.BindMgr.bind(newRecord, this.bindedFormViews);								 
 					} else {								 
 						Ext.BindMgr.unbind(oldRecord);								 
 					} }, this );
-	   
-	
+	    
+	}
+	,addBindedFilterView: function(id) {
+		if (this.bindedFilterViews == null) {
+			this.bindedFilterViews=[];
+		}
+		this.bindedFilterViews[this.bindedFilterViews.length]=id;
+		 
+		this.on('filterChanged', 
+				function(evnt) { 
+					var newFilter = evnt.newFilter; 
+					var oldFilter = evnt.oldFilter; 					 
+					if(newFilter) {								 
+						Ext.BindMgr.unbind(oldFilter);    						
+						Ext.BindMgr.bind(newFilter, this.bindedFilterViews);								 
+					} else {								 
+						Ext.BindMgr.unbind(oldFilter);								 
+					} }, this );	    
 	}
 	,emptyRecordData: function(fd) {
        var r = {};
@@ -206,29 +227,11 @@ Ext.extend(dnet.base.AbstractDc, Ext.util.Observable, {
 		else 
 			return null;
 	}
-	,dataModified: function() {
-		this.actions.doQuery.setDisabled(true);
-		this.actions.doCancel.setDisabled(false);
-		this.actions.doSave.setDisabled(false);
-		this.actions.doCopy.setDisabled(true);
-		
-		if (this.multiEdit) {
-			this.actions.doNew.setDisabled(false);
-			this.actions.doPrevRec.setDisabled(false);
-			this.actions.doNextRec.setDisabled(false);	
-			this.actions.doLeaveEditor.setDisabled(false);
-		} else {
-			if(!this.isRecordChangeAllowed()) {
-				this.actions.doNew.setDisabled(true);
-				this.actions.doPrevRec.setDisabled(true);
-				this.actions.doNextRec.setDisabled(true);
-				this.actions.doLeaveEditor.setDisabled(true);
-			}
-		}		 
-		this.fireEvent("dirtyRecord",this); /* to be removed in favor of recordStateChanged  */
-		this.fireEvent("recordChanged" , { dc: this, record: this.record, state: 'dirty', status:this.getRecordStatus(), oldRecord: null } );		 
+	,dataModified: function() {		 
+		this.fireEvent("dirtyRecord",this); /* to be removed in favor of recordChanged  */
+		this.fireEvent("recordChanged" , { dc: this, record: this.record, state: this.getRecordState(), status:this.getRecordStatus(), oldRecord: null } );		 
 	}
-
+ 
 	/****************************************************************************/
 	/*************************  Public API   *******************************/
 	/****************************************************************************/
@@ -303,6 +306,7 @@ Ext.extend(dnet.base.AbstractDc, Ext.util.Observable, {
 	 * 		<li> modal: Boolean flag to show a progress bar during the execution of the request to block user interaction. 
 	 * 		<li> context: object with variables you may need in your callbacks
 	 * 		<li> callbacks: Object specifying callback functions to be invoked 
+	 * 		<li> stream: It is a stream type call  
 	 * 	Attributes of callbacks :  
 	 * 		<li>successFn: Callback to execute on successful execution</li>
 	 * 		<li>successScope: scope of the successFn</li>
@@ -329,7 +333,7 @@ Ext.extend(dnet.base.AbstractDc, Ext.util.Observable, {
 			Ext.Msg.progress('Working...');
 	    }
 		Ext.Ajax.request({
-			url: Dnet.dsAPI(this.dsName, "json").service, method:"POST", params: p
+			url: Dnet.dsAPI(this.dsName, ((specs.stream)?"stream":"json")).service, method:"POST", params: p
 			,success :this.onAjaxRequestSuccess
 			,failure: this.onAjaxRequestFailure	
 			,scope: this
@@ -337,7 +341,22 @@ Ext.extend(dnet.base.AbstractDc, Ext.util.Observable, {
 		});
 		this.afterDoService(serviceName, specs);    	    
     }
-  
+    ,doServiceUrl: function(serviceName, specs){     	 
+    	if (Ext.isEmpty(this.record)) {
+ 	       throw(dnet.base.DcExceptions.NO_CURRENT_RECORD );
+ 		}    	
+    	var s = specs || {};
+    	if (this.beforeDoService(serviceName, s) === false) {
+    		return;
+    	}    	
+    	var p = {data: Ext.encode(this.record.data ) };
+		p[Dnet.requestParam.SERVICE_NAME_PARAM]= serviceName;
+		p["rpcType"]= "data";
+		if (s.modal) {
+			Ext.Msg.progress('Working...');
+	    }
+		return Dnet.dsAPI(this.dsName, "stream").service + "&"+ Ext.urlEncode(p);//+  method:"POST", params: p   	    
+    } 
     /**
      * Template method invoked before a service is executed, meant to be overwritten. 
      * Execution can be canceled with a <code>return false</code>. 
@@ -532,7 +551,7 @@ Ext.extend(dnet.base.AbstractDc, Ext.util.Observable, {
 		var msg, withDetails=false;
 		if (response.responseText) {
 			if (response.responseText.length > 2000) {
-				response.responseText.substr(0,2000);
+				msg = response.responseText.substr(0,2000);
 				withDetails = true;
 			} else {
 				msg = response.responseText ;
@@ -603,17 +622,30 @@ Ext.extend(dnet.base.AbstractDc, Ext.util.Observable, {
 	,setCurrentRecord: function(p) {this.setCurrentRecordImpl(p);}
 	
 	,getFilter: function()  { 	return this.filter ;  	}
-	,setFilter:	function(v)  { this.filter = v;  }
+	,setFilter:	function(v)  { var of = this.filter;  this.filter = v; this.fireEvent("filterChanged", {dc:this, newFilter:this.filter,oldFilter:of});  }
 
+	,getFilterValue: function(n)  { 	return this.filter.get(n) ;  	}
+	,setFilterValue:	function(n,v,silent)  {
+	  var ov = this.filter.get(n);
+	  if (ov != v ) {
+	  	 this.filter.set(n,v);
+	  	 if(!(silent===true)) {
+	  		this.fireEvent("filterValueChanged", this, name, ov,v);
+	  	 }	  	 
+ 	  }
+    }
+	
 	,getParams: function()  { 	return this.params ;  	}
 	,setParams:	function(v)  { this.params = v;  }
 
     ,getParamValue: function(n)  { 	return this.params.get(n) ;  	}
-	,setParamValue:	function(n,v)  {
+	,setParamValue:	function(n,v,silent)  {
 	  var ov = this.params.get(n);
 	  if (ov != v ) {
 	  	 this.params.set(n,v);
-	  	 this.fireEvent("parameterValueChanged", this, name, ov,v);
+	  	 if(!(silent===true)) {
+	  		this.fireEvent("parameterValueChanged", this, name, ov,v);
+	  	 }	  	 
  	  }
     }
 
@@ -625,27 +657,16 @@ Ext.extend(dnet.base.AbstractDc, Ext.util.Observable, {
 	,setDcContext: function(dcCtx) {
 		this.dcContext = dcCtx;
         this.dcContext.on("dataContextChanged", function(dctx) { 
-        	if ( dctx.parentDc.getRecord() == null ) {
-        		this.actions.doQuery.setDisabled(true);
-				this.actions.doCancel.setDisabled(true);
-				this.actions.doSave.setDisabled(true);
-				this.actions.doNew.setDisabled(true);
-				this.actions.doDeleteSelected.setDisabled(true);  
-				return true;
-        	}
+//        	if ( dctx.parentDc.getRecord() == null ) {        		
+//				return true;
+//        	}
+        	 
+        	dnet.base.DcActionsStateManager.applyStatesOnDataContextChanged({dc:this,ctx: dctx});
 			if (dctx.parentDc.getRecord() && dctx.parentDc.getRecord().phantom) { 
-				this.fireEvent("inContextOfNewRecord", this);
 				
-				this.actions.doQuery.setDisabled(true);
-				this.actions.doCancel.setDisabled(true);
-				this.actions.doSave.setDisabled(true);
-				this.actions.doNew.setDisabled(true);
-				this.actions.doDeleteSelected.setDisabled(true);
-				  
+				this.fireEvent("inContextOfNewRecord", this); /* is this still useful ? */
 			}  else {
-                this.fireEvent("inContextOfEditRecord", this);
-                this.actions.doQuery.setDisabled(false);
-                this.actions.doNew.setDisabled(false);
+                this.fireEvent("inContextOfEditRecord", this);/* is this still useful ? */
 			}
 		}  , this);
 	}
@@ -687,10 +708,6 @@ Ext.extend(dnet.base.AbstractDc, Ext.util.Observable, {
 				this.children[i].discardChanges();
 			}
 		}
-		/* to be removed the cleanRecord event */ 
-		//this.fireEvent("cleanRecord" , this); 
-		//this.fireEvent("recordStateChanged" , { dc: this, record: this.record, state: 'clean' } );
-		//this.fireEvent("recordChanged" , { dc: this, record: this.record, state: this.getRecordState(), status:this.getRecordStatus(), oldRecord: null  } );		
 	}
 	,discardChanges: function () {
 		this.discardChildrenChanges();
@@ -747,31 +764,22 @@ Ext.extend(dnet.base.AbstractDc, Ext.util.Observable, {
 	}
 	,isCurrentRecordDirty:function() {
 		if (this.record && this.record.dirty) { return true;}		
-		return this.isAnyChildDirty();
+		return false;
 	}
 
 	,isStoreDirty: function() {
-		return this.store.getModifiedRecords().length>0;
+		return this.store.getModifiedRecords().length>0 || this.store.removed.length>0;
 	}
 	
 	,isDirty: function() {
-		return this.isStoreDirty() || this.isCurrentRecordDirty();
+		return this.isCurrentRecordDirty() || this.isStoreDirty() || this.isAnyChildDirty();
 	}
 	,isRecordChangeAllowed: function() {
-		return (!( this.isAnyChildDirty() || ( (!this.multiEdit) && this.isCurrentRecordDirty()) ));
+		return  (!( this.isAnyChildDirty() || ( (!this.multiEdit) && this.isCurrentRecordDirty()) ));
 	}
+	 
 	,onCleanDc: function() {
-		this.actions.doQuery.setDisabled(false);
-		this.actions.doCancel.setDisabled(true);
-		this.actions.doSave.setDisabled(true);
-		
-		this.actions.doNew.setDisabled(false);
-		if (this.isRecordChangeAllowed() && this.store.getCount() > 0) {
-			this.actions.doPrevRec.setDisabled(false);
-			this.actions.doNextRec.setDisabled(false);
-		}
-		this.actions.doCopy.setDisabled(false);	
-		this.actions.doLeaveEditor.setDisabled(false);
+		this.fireEvent('cleanDc',{dc:this});	
 		if (this.dcContext != null) {
 			this.dcContext._onChildCleaned_();
 		}		 
@@ -903,8 +911,7 @@ Ext.extend(dnet.base.AbstractDc, Ext.util.Observable, {
 		r.data.id=null;  
 		if (this.dcContext) {this.dcContext._applyContextData_(r); }					
 		this.store.add(r);
-		this.setRecord(r);
-		
+		this.setRecord(r);		
 		this.setSelectedRecords([this.record]);
 		this.dataModified();
 //		var r = this.record.copy();    r.id=null; r.id = null; 		
@@ -927,9 +934,11 @@ Ext.extend(dnet.base.AbstractDc, Ext.util.Observable, {
 	   if (this.beforeDoSave() === false) return false;
 	   if (!this.multiEdit) {	   	 
            if ( this.isRecordValid() ) {
+        	 this.store.baseParams.params = Ext.encode(this.params.data);
 	         this.store.save();
 		   }
 	   } else {
+		   this.store.baseParams.params = Ext.encode(this.params.data);
 		   this.store.save(); 
 	   }
 		this.afterDoSave();
@@ -965,6 +974,7 @@ Ext.extend(dnet.base.AbstractDc, Ext.util.Observable, {
 		if (this.beforeDoDeleteSelection() === false) return false;				
 		this.store.remove(this.getSelectedRecords());
 		if (!this.multiEdit) {
+			this.store.baseParams.params = Ext.encode(this.params.data);
 			this.store.save();
 		} else {
 			this.dataModified();
@@ -987,12 +997,7 @@ Ext.extend(dnet.base.AbstractDc, Ext.util.Observable, {
 		this._doDefaultSelection_(); 	
 		this.afterDoDelete();
  	}
-
  
-    
-	/*********************************************************************************/
-    /**************************   GETTER-SETTER      *********************************/
-    /*********************************************************************************/
    ,allSelectedRecordsArePersisted: function() {
    	  var l= this.selectedRecords.length;
 		  for( var i=0;i<l;i++) {
@@ -1002,9 +1007,7 @@ Ext.extend(dnet.base.AbstractDc, Ext.util.Observable, {
 		  }
 		  return true;
 	} 
-  /** sm a selection model from a grid which triggered this call 
-   *  It is useful when there are several grids displayed to synchronize selections
-   */  
+  
   ,setSelectedRecords: function (recArray) {  		 
   		if (this.selectedRecords != recArray) { 
   			this.selectedRecords = recArray;
@@ -1035,8 +1038,7 @@ Ext.extend(dnet.base.AbstractDc, Ext.util.Observable, {
 	  }
 	   
   }
-  ,setCurrentRecordImpl:
-  	function(p)  {
+  ,setCurrentRecordImpl:function(p)  {
 	   this._checkCanChangeCurrentRecord_();
   		p = (p!=undefined)?p:null;
   		if (this.beforeCurrentRecordChange()==false) {return false;}
@@ -1072,8 +1074,7 @@ Ext.extend(dnet.base.AbstractDc, Ext.util.Observable, {
   	/*********************************************************************************/
     /**************************   MISCELLANEOUS HELPERS  *****************************/
     /*********************************************************************************/
- 
-	 
+  
 	, proxyException: function(dataProxy, type, action , options , response , arg ) {
         if(type=="response") {
           this.onAjaxRequestFailure(response , options);
@@ -1085,16 +1086,11 @@ Ext.extend(dnet.base.AbstractDc, Ext.util.Observable, {
         	}
           
         }
-	  }
-	
+	  }	
 	,log:function(m) {try {if (console) {console.log("Data-control `"+this.dsName+"`: "+m);}}catch(e){}}
 });
 
-
-
-
  
-
 /*****************************************************************************/
 /****************************  DC: filter - view   ***************************/
 /*****************************************************************************/
@@ -1103,10 +1099,7 @@ Ext.extend(dnet.base.AbstractDc, Ext.util.Observable, {
 function filter_view____change (field, oldVal, newVal) {
 		this._controller_.getFilter().set(field.dataIndex, field.getValue());
 	}
-
-
-
-
+ 
 /*****************************************************************************/
 /****************************  DC: form - view   ***************************/
 /*****************************************************************************/
@@ -1126,24 +1119,4 @@ function form_view____alertDirty () {
          ,icon: Ext.MessageBox.WARNING
     	});
 	}
- 	
-/*****************************************************************************/
-/****************************  DC: grid view   *******************************/
-/*****************************************************************************/
-
-// executed in te context of a grid-view 	
-function grid_view__sm__rowselect(sm, idx, rec) {  //console.log("grid_view__sm__rowselect: "+idx+" rec: "+rec );
- 		if(this._controller_.getRecord() != rec) {this._controller_.setCurrentRecord(idx);}
- 	}
-
-function grid_view__sm__rowdeselect(sm, idx, rec) {  //console.log("grid_view__sm__rowdeselect: "+idx+" rec: "+rec );
- 		if(this._controller_.getRecord() == rec) {
- 		  if (sm.getSelections().length > 0 ) {
- 		    this._controller_.setCurrentRecord(sm.getSelections()[0]);
- 		  } else {
- 		    this._controller_.setCurrentRecord(null);
- 		  }
- 		}
- 	}
- 
- 
+ 	 

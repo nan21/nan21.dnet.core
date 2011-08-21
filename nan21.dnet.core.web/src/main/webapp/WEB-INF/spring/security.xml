@@ -34,6 +34,7 @@
 		<security:access-denied-handler ref="accessDeniedHandler" />
 		
 		<security:intercept-url pattern="/tx/**" access="ROLE_DNET_USER" />
+		<security:intercept-url pattern="/upload/**" access="ROLE_DNET_USER" />
 		<security:intercept-url pattern="/security/*" filters="none" />
 		 			
 	</security:http>

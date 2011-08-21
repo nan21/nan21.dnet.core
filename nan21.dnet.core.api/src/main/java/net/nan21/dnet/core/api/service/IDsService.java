@@ -1,5 +1,6 @@
 package net.nan21.dnet.core.api.service;
 
+import java.io.InputStream;
 import java.util.List;
 
 import net.nan21.dnet.core.api.action.IDsExport;
@@ -56,4 +57,9 @@ public interface IDsService<M, P> {
 	public void rpcFilter(String procedureName, M filter, P params) throws Exception;
 	public void rpcData(String procedureName, M ds, P params) throws Exception;	
 	public void rpcData(String procedureName, List<M> list, P params) throws Exception;
+	
+	public InputStream rpcFilterStream(String procedureName, M filter, P params) throws Exception;
+	public InputStream rpcDataStream(String procedureName, M ds, P params) throws Exception;	
+	public InputStream rpcDataStream(String procedureName, List<M> list, P params) throws Exception;
+	
 }

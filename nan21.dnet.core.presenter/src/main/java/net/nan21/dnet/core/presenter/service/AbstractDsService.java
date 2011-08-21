@@ -1,6 +1,7 @@
 package net.nan21.dnet.core.presenter.service;
 
 import java.io.File;
+import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,6 +31,7 @@ import net.nan21.dnet.core.presenter.exception.ActionNotSupportedException;
 import net.nan21.dnet.core.presenter.marshaller.JsonMarshaller;
 import net.nan21.dnet.core.presenter.model.AbstractDsModel;
 import net.nan21.dnet.core.presenter.model.DsDescriptor;
+import net.nan21.dnet.core.presenter.model.EmptyParam;
 import net.nan21.dnet.core.presenter.model.RpcDefinition;
 import net.nan21.dnet.core.presenter.model.ViewModelDescriptorManager;
 
@@ -44,6 +46,7 @@ public class AbstractDsService<M, P, E>
 	protected Class<P> paramClass;
 	protected Class<E> entityClass;
 	protected Class<?> converterClass; //? extends AbstractDsConverter<M, E>
+	protected Class<?> queryBuilderClass;
 	protected IDsConverter<M, E> converter;
 	
 	protected DsDescriptor<M> descriptor;
@@ -479,6 +482,25 @@ public class AbstractDsService<M, P, E>
 		//delegate.execute(ds);		
 	}
 
+	public InputStream rpcDataStream(String procedureName, M ds, P params) throws Exception {
+		if (!rpcData.containsKey(procedureName)) {
+			throw new Exception("No such procedure defined: "+procedureName);
+		}
+		RpcDefinition def =  rpcData.get(procedureName);
+		AbstractDsDelegate<M, P> delegate = def.getDelegateClass().newInstance();
+		delegate.setAppContext(this.appContext);
+		delegate.setEntityServiceFactories(entityServiceFactories);
+		delegate.setDsServiceFactories(dsServiceFactories);
+		
+		Method m = def.getDelegateClass().getMethod(def.getMethodName() ,getModelClass() );
+		InputStream result = (InputStream)m.invoke(delegate, ds);
+		//delegate.execute(ds);
+		return result;
+	}
+	 
+	
+	
+	
 	public void rpcFilter(String procedureName, M filter, P params) throws Exception {
 		if (!rpcFilter.containsKey(procedureName)) {
 			throw new Exception("No such procedure defined: "+procedureName);
@@ -492,11 +514,26 @@ public class AbstractDsService<M, P, E>
 		m.invoke(delegate, filter);
 		//delegate.execute(filter);		
 	}
-	 
+	public InputStream rpcFilterStream(String procedureName, M filter, P params) throws Exception {
+		if (!rpcFilter.containsKey(procedureName)) {
+			throw new Exception("No such procedure defined: "+procedureName);
+		}
+		RpcDefinition def =  rpcFilter.get(procedureName);
+		AbstractDsDelegate<M, P> delegate = def.getDelegateClass().newInstance();
+		delegate.setAppContext(this.appContext);
+		delegate.setEntityServiceFactories(entityServiceFactories);
+		delegate.setDsServiceFactories(dsServiceFactories);
+		Method m = def.getDelegateClass().getMethod(def.getMethodName() ,getModelClass() );
+		InputStream result = (InputStream)m.invoke(delegate, filter);
+		//delegate.execute(ds);
+		return result;	
+	} 
 	public void rpcData(String procedureName, List<M> list, P params) throws Exception {
 		throw new Exception("Not implemented yet");
 	}
-	 
+	public InputStream rpcDataStream(String procedureName, List<M> list, P params) throws Exception {
+		throw new Exception("Not implemented yet");
+	}
 
 	// ======================== Getters-setters ===========================
  
@@ -519,13 +556,21 @@ public class AbstractDsService<M, P, E>
 
 	public Class<P> getParamClass() {
 		if (this.paramClass == null) {
-			//this.paramClass = EmptyParam.class;
+			this.paramClass =( Class<P> )EmptyParam.class;
 		}
 		return paramClass;
 	}
 
 	public void setParamClass(Class<P> paramClass) {
 		this.paramClass = paramClass;
+	}
+ 
+	public Class<?> getQueryBuilderClass() {
+		return queryBuilderClass;
+	}
+
+	public void setQueryBuilderClass(Class<?> queryBuilderClass) {
+		this.queryBuilderClass = queryBuilderClass;
 	}
 
 	public Class<?> getConverterClass() {
@@ -596,27 +641,36 @@ public class AbstractDsService<M, P, E>
 	}
 
 	public IQueryBuilder<M,P> createQueryBuilder() throws Exception {
-		QueryBuilderWithJpql<M,P> qb = new QueryBuilderWithJpql<M,P>();
+		IQueryBuilder<M,P> qb = null;
+		if (this.queryBuilderClass == null) {
+			qb = new QueryBuilderWithJpql<M,P>();			 
+		} else {								 
+			qb = (IQueryBuilder<M,P>)this.queryBuilderClass.newInstance();			 
+		}
+		this._prepareQueryBuilder(qb);
+		return qb;	 
+	}
+	private void _prepareQueryBuilder(IQueryBuilder<M,P> qb) throws Exception {
 		qb.setFilterClass(this.getModelClass());
 		qb.setParamClass(this.getParamClass());
 		qb.setDescriptor(this.descriptor);
-		//TODO: correct this
-		qb.setEntityManager(this.getEntityService().getEntityManager());
-		qb.setBaseEql("select e from "+this.getEntityClass().getSimpleName()+" e");
-		qb.setBaseEqlCount("select count(1) from "+this.getEntityClass().getSimpleName()+" e");
-		if(this.getDescriptor().isWorksWithJpql()) {
-			qb.setDefaultWhere(this.descriptor.getJpqlDefaultWhere() );
-			qb.setDefaultSort(this.descriptor.getJpqlDefaultSort());
+		if(qb instanceof QueryBuilderWithJpql) {
+			QueryBuilderWithJpql jqb = (QueryBuilderWithJpql)qb;
+			jqb.setEntityManager(this.getEntityService().getEntityManager());
+			jqb.setBaseEql("select e from "+this.getEntityClass().getSimpleName()+" e");
+			jqb.setBaseEqlCount("select count(1) from "+this.getEntityClass().getSimpleName()+" e");
+			if(this.getDescriptor().isWorksWithJpql()) {
+				jqb.setDefaultWhere(this.descriptor.getJpqlDefaultWhere() );
+				jqb.setDefaultSort(this.descriptor.getJpqlDefaultSort());
+			}
 		}
-		return qb;	 
 	}
-
 	public IDsMarshaller<M, P> createMarshaller(
 			String dataFormat) throws Exception {
 		IDsMarshaller<M, P>  marshaller = null;
 		if (dataFormat.equals(IDsMarshaller.JSON)) {
-			marshaller = new JsonMarshaller<M, P>(this.modelClass,
-					this.paramClass);
+			marshaller = new JsonMarshaller<M, P>(this.getModelClass(),
+					this.getParamClass());
 		}		 
 		return marshaller;
 	}

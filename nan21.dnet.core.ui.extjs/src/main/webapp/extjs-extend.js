@@ -61,7 +61,7 @@ Ext.data.Store.prototype.paramNames =   {
 Ext.override(Ext.form.Field, {
     //  Add functionality to Field's initComponent to enable the change event to bubble
     initComponent : Ext.form.Field.prototype.initComponent.createSequence(function() {
-        this.enableBubble('change');this.enableBubble('check');
+       // this.enableBubble('change');this.enableBubble('check');
     })
 	,_controller_: null
 	,_getController_: function() {

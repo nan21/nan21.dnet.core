@@ -76,6 +76,38 @@
 		<url-pattern>/security/*</url-pattern>
 	</servlet-mapping>
 	
+	
+	<servlet>
+		<servlet-name>upload</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet
+		</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>/WEB-INF/spring/servlets/servlet-upload.xml
+			</param-value>
+		</init-param>
+	</servlet>		
+	<servlet-mapping>
+		<servlet-name>upload</servlet-name>
+		<url-pattern>/upload/*</url-pattern>
+	</servlet-mapping>
+	
+	
+	<servlet>
+		<servlet-name>workflow</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet
+		</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>/WEB-INF/spring/servlets/servlet-workflow.xml
+			</param-value>
+		</init-param>
+	</servlet>		
+	<servlet-mapping>
+		<servlet-name>workflow</servlet-name>
+		<url-pattern>/workflow/*</url-pattern>
+	</servlet-mapping>
+	
 	<!-- ============== Others ================ -->
 	<welcome-file-list>
 		<welcome-file>index.jsp</welcome-file>

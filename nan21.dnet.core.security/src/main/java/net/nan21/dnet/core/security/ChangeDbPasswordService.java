@@ -7,6 +7,8 @@
  */
 package net.nan21.dnet.core.security;
 
+import java.sql.SQLException;
+
 import net.nan21.dnet.core.api.session.IChangePasswordService;
 
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
@@ -20,7 +22,17 @@ public class ChangeDbPasswordService extends JdbcDaoSupport implements IChangePa
     	if (this.sql==null) {
     		throw new Exception("Invalid configuration of change password service. Sql statement not specified in bean definition.");
     	}
-        int i = this.getJdbcTemplate().update(this.sql, newPassword, userName, clientId);
+        int i;
+		try {
+			i = this.getJdbcTemplate().update(this.sql, newPassword, userName, clientId);
+		 } finally {
+            try {
+                this.getConnection().close();
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
         if (i==0) {
             throw new Exception("Password could not be changed. Please contact system administrator.");
         }

@@ -54,17 +54,14 @@ dnet.base.AbstractDcvForm = Ext.extend( Ext.form.FormPanel, {
 		Ext.apply(cfg,config);
         Ext.apply(this,cfg);
 		dnet.base.AbstractDcvForm.superclass.initComponent.call(this);
-		// On field value change
-		this.on({  scope: this ,change: this._onChange_  });
-		// On checkbox check
-		this.on({  scope: this ,check: this._onCheck_  });
+
 		this._controller_.store.on("write", function(store, action, result, txResult, rs) {
 				this.updateBound(this._controller_.getRecord());
 			} , this);
 		this.on({  scope: this ,afterrender: function() { 
 			this.updateBound(this._controller_.getRecord()); 
 		}   });
-		this._controller_.addBindedView(this.id);
+		this._controller_.addBindedView(this.id,this._dcViewType_);	 
 	}
 
     ,_startDefine_: function () {}
@@ -159,18 +156,33 @@ dnet.base.AbstractDcvForm = Ext.extend( Ext.form.FormPanel, {
 		}
 	}
 
-	,_onChange_: function (field, newVal, oldVal) {
-		if (newVal != oldVal) {
-			this._controller_.getRecord().set(field.dataIndex, field.getValue());
-			this._controller_.dataModified();
+	/*
+	 *,_onChange_: function (field, newVal, oldVal) {	
+		if(field.initialConfig._isParam_===true) {
+			if (newVal != oldVal) {
+				this._controller_.setParamValue(field.dataIndex, field.getValue(),true);			 
+			}
+		} else {
+			if (newVal != oldVal) {
+				this._controller_.getRecord().set(field.dataIndex, field.getValue());
+				//this._controller_.dataModified();
+			}
 		}
 	}
 	,_onCheck_: function ( field, isChecked) {// alert(this._controller_.getRecord().get(field.dataIndex));
-		if (this._controller_.getRecord().get(field.dataIndex) != isChecked) {
-            this._controller_.getRecord().set(field.dataIndex, isChecked );
-			this._controller_.dataModified();
+		if(field.initialConfig._isParam_===true) {
+			//if (newVal != oldVal) {
+				//this._controller_.setParamValue(field.dataIndex, field.getValue(),true);	
+				this._controller_.setParamValue(field.dataIndex, isChecked, true );
+			//}
+		} else {
+			//if (this._controller_.getRecord().get(field.dataIndex) != isChecked) {
+	            this._controller_.getRecord().set(field.dataIndex, isChecked );
+				//this._controller_.dataModified();
+			//}
 		}
-	}
+		
+	}*/
 	,_isValid_: function() { 
 
 		if (this.getForm().isValid()) {

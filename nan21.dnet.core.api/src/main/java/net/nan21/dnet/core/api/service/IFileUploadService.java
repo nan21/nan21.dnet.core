@@ -1,0 +1,10 @@
+package net.nan21.dnet.core.api.service;
+
+import net.nan21.dnet.core.api.action.IFileUploadResult;
+import org.springframework.web.multipart.MultipartFile;
+
+public interface IFileUploadService {
+	
+	public IFileUploadResult execute(String name, MultipartFile file, String p1, String p2)
+		throws Exception;
+}

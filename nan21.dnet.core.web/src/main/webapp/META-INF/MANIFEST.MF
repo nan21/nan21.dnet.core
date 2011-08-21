@@ -13,9 +13,19 @@ Export-Package: net.nan21.dnet.core.web;version="1.0.0.M1",net.nan21.d
  framework.web.context",net.nan21.dnet.core.web.controller.ui;version=
  "1.0.0.M1";uses:="javax.servlet.http,net.nan21.dnet.core.api,net.nan2
  1.dnet.core.web.settings,org.springframework.web.servlet,org.springfr
- amework.web.servlet.mvc",net.nan21.dnet.core.web.result;version="1.0.
- 0.M1";uses:="net.nan21.dnet.core.api.action",net.nan21.dnet.core.web.
- settings;version="1.0.0.M1";uses:="net.nan21.dnet.core.api"
+ amework.web.servlet.mvc",net.nan21.dnet.core.web.controller.upload;ve
+ rsion="1.0.0.M1";uses:="javax.servlet.http,net.nan21.dnet.core.api.se
+ rvice,org.springframework.beans.factory.annotation,org.springframewor
+ k.context.annotation,org.springframework.stereotype,org.springframewo
+ rk.web.bind.annotation,org.springframework.web.context,org.springfram
+ ework.web.multipart",net.nan21.dnet.core.web.controller.workflow;vers
+ ion="1.0.0.M1";uses:="javax.servlet,javax.servlet.http,org.activiti.e
+ ngine,org.codehaus.jackson.map,org.springframework.beans.factory.anno
+ tation,org.springframework.context.annotation,org.springframework.ste
+ reotype,org.springframework.web.bind.annotation,org.springframework.w
+ eb.context",net.nan21.dnet.core.web.result;version="1.0.0.M1";uses:="
+ net.nan21.dnet.core.api.action",net.nan21.dnet.core.web.settings;vers
+ ion="1.0.0.M1";uses:="net.nan21.dnet.core.api"
 Bundle-Vendor: Nan21 
 Bundle-ClassPath: WEB-INF/classes
 Bundle-Version: 1.0.0.M1
@@ -33,24 +43,30 @@ Import-Package: javax.persistence;version="[2.0,2.1)",javax.persistenc
  ;version="[1.0.0.M1,1.0.0.M1]",net.nan21.dnet.core.api.setup,net.nan2
  1.dnet.core.api.ui.extjs;version="[1.0.0.M1,1.0.0.M1]",net.nan21.dnet
  .core.presenter.action,net.nan21.dnet.core.security;version="[1.0.0.M
- 1,1.0.0.M1]",org.codehaus.jackson.map;version="[1.4,2.0)",org.eclipse
- .virgo.web.dm;version="[2.0,4.0]",org.springframework.beans.factory;v
- ersion="[3.0,3.1)",org.springframework.beans.factory.annotation;versi
- on="[3.0,3.1)",org.springframework.context.annotation;version="[3.0,3
- .1)",org.springframework.context.config;version="[3.0,3.1)",org.sprin
- gframework.orm.jpa;version="[3.0,3.1)",org.springframework.osgi;versi
- on="[1.2.1,1.2.1]",org.springframework.osgi.compendium.config;version
- ="[1.2.1,1.2.1]",org.springframework.osgi.config;version="[1.2.1,1.2.
- 1]",org.springframework.osgi.context;version="[1.2.1,1.2.1]",org.spri
- ngframework.security.authentication,org.springframework.security.conf
- ig;version="[3.0,3.1)",org.springframework.security.core;version="[3.
- 0,3.1)",org.springframework.security.core.context,org.springframework
- .security.web;version="[3.0,3.1)",org.springframework.security.web.au
- thentication;version="[3.0,3.1)",org.springframework.stereotype,org.s
- pringframework.web.bind.annotation;version="[3.0,3.1)",org.springfram
- ework.web.context;version="[3.0,3.1)",org.springframework.web.filter;
- version="[3.0,3.1)",org.springframework.web.servlet;version="[3.0,3.1
- )",org.springframework.web.servlet.handler;version="[3.0,3.1)",org.sp
- ringframework.web.servlet.mvc;version="[3.0,3.1)",org.springframework
- .web.servlet.view;version="[3.0,3.1)"
+ 1,1.0.0.M1]",org.activiti.engine,org.activiti.engine.form,org.activit
+ i.engine.impl,org.activiti.engine.impl.bpmn.diagram,org.activiti.engi
+ ne.impl.persistence.entity,org.activiti.engine.impl.pvm,org.activiti.
+ engine.impl.util,org.activiti.engine.impl.util.json,org.activiti.engi
+ ne.repository,org.activiti.engine.runtime,org.codehaus.jackson.map;ve
+ rsion="[1.4,2.0)",org.eclipse.virgo.web.dm;version="[2.0,4.0]",org.sp
+ ringframework.beans.factory;version="[3.0,3.1)",org.springframework.b
+ eans.factory.annotation;version="[3.0,3.1)",org.springframework.conte
+ xt.annotation;version="[3.0,3.1)",org.springframework.context.config;
+ version="[3.0,3.1)",org.springframework.orm.jpa;version="[3.0,3.1)",o
+ rg.springframework.osgi;version="[1.2.1,1.2.1]",org.springframework.o
+ sgi.compendium.config;version="[1.2.1,1.2.1]",org.springframework.osg
+ i.config;version="[1.2.1,1.2.1]",org.springframework.osgi.context;ver
+ sion="[1.2.1,1.2.1]",org.springframework.security.authentication,org.
+ springframework.security.config;version="[3.0,3.1)",org.springframewo
+ rk.security.core;version="[3.0,3.1)",org.springframework.security.cor
+ e.context,org.springframework.security.web;version="[3.0,3.1)",org.sp
+ ringframework.security.web.authentication;version="[3.0,3.1)",org.spr
+ ingframework.stereotype,org.springframework.web.bind.annotation;versi
+ on="[3.0,3.1)",org.springframework.web.context;version="[3.0,3.1)",or
+ g.springframework.web.filter;version="[3.0,3.1)",org.springframework.
+ web.multipart,org.springframework.web.multipart.commons,org.springfra
+ mework.web.servlet;version="[3.0,3.1)",org.springframework.web.servle
+ t.handler;version="[3.0,3.1)",org.springframework.web.servlet.mvc;ver
+ sion="[3.0,3.1)",org.springframework.web.servlet.view;version="[3.0,3
+ .1)"
 

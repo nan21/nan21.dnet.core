@@ -9,11 +9,17 @@ public final class ViewModelDescriptorManager {
 	
 	public static <M> DsDescriptor<M> getDsDescriptor(Class<M> modelClass) throws Exception {
 	 
-		String key = modelClass.getCanonicalName();
-		if ( !store.containsKey(key)) {
-			store.put(key, new DsDescriptor<M>(modelClass));			
+		boolean useCache = false;
+		if (useCache) {
+			String key = modelClass.getCanonicalName();
+			if ( !store.containsKey(key)) {
+				store.put(key, new DsDescriptor<M>(modelClass));			
+			}
+			return (DsDescriptor<M>)store.get(key);
+		} else {
+			return new DsDescriptor<M>(modelClass);
 		}
-		return (DsDescriptor<M>)store.get(key);		 
+				 
 	}
 	
 	public static <M> AsgnDescriptor<M> getAsgnDescriptor(Class<M> modelClass) throws Exception {

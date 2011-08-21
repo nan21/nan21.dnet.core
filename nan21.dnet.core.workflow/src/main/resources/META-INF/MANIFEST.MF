@@ -1,12 +1,6 @@
 Manifest-Version: 1.0
-Export-Package: org.activiti.spring;version="1.0.0.M1";uses:="javax.sq
- l,org.activiti.engine,org.activiti.engine.delegate,org.activiti.engin
- e.impl.cfg,org.activiti.engine.impl.el,org.activiti.engine.impl.inter
- ceptor,org.activiti.engine.impl.javax.el,org.springframework.beans,or
- g.springframework.beans.factory,org.springframework.context,org.sprin
- gframework.core.io,org.springframework.transaction,org.springframewor
- k.transaction.support",org.activiti.spring.test.autodeployment;versio
- n="1.0.0.M1"
+Export-Package: net.nan21.dnet.core.workflow;version="1.0.0.M1";uses:=
+ "org.activiti.engine"
 Bundle-Vendor: Nan21 
 Bundle-Version: 1.0.0.M1
 Tool: Bundlor 1.0.0.RELEASE
@@ -14,17 +8,13 @@ Bundle-Name: DNet Core - workflow
 Bundle-ManifestVersion: 2
 Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.html
 Bundle-SymbolicName: nan21.dnet.core.workflow
-Import-Package: javax.persistence,javax.sql,org.activiti.engine;versio
- n="[5.6,6.0)",org.activiti.engine.delegate,org.activiti.engine.impl,o
- rg.activiti.engine.impl.cfg,org.activiti.engine.impl.el;version="[5.6
- ,6.0)",org.activiti.engine.impl.interceptor,org.activiti.engine.impl.
- javax.el,org.activiti.engine.impl.variable,org.activiti.engine.reposi
- tory,org.springframework.beans;version="[3.0,3.1)",org.springframewor
- k.beans.factory;version="[3.0,3.1)",org.springframework.beans.factory
- .annotation;version="[3.0,3.1)",org.springframework.context;version="
- [3.0,3.1)",org.springframework.context.config;version="[3.0,3.1)",org
- .springframework.context.support,org.springframework.core.io,org.spri
- ngframework.jdbc.datasource,org.springframework.orm.jpa,org.springfra
- mework.transaction,org.springframework.transaction.annotation;version
- ="[3.0,3.1)",org.springframework.transaction.support
+Import-Package: javax.script,javax.sql,org.activiti.engine;version="[5
+ .6,6.0)",org.activiti.engine.impl.cfg,org.activiti.engine.impl.el;ver
+ sion="[5.6,6.0)",org.activiti.engine.impl.scripting,org.activiti.spri
+ ng;version="[5.6,6.0)",org.springframework.beans;version="[3.0,3.1)",
+ org.springframework.beans.factory;version="[3.0,3.1)",org.springframe
+ work.beans.factory.annotation;version="[3.0,3.1)",org.springframework
+ .context;version="[3.0,3.1)",org.springframework.context.config;versi
+ on="[3.0,3.1)",org.springframework.jdbc.datasource,org.springframewor
+ k.transaction.annotation;version="[3.0,3.1)"
 

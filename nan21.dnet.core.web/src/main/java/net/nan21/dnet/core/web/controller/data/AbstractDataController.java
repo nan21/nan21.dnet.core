@@ -80,7 +80,7 @@ public class AbstractDataController {
 	protected String handleException(Exception e, HttpServletResponse response)  throws IOException {
 		response.setStatus(500);
 		response.getOutputStream().print(e.getLocalizedMessage());		 
-		return e.getLocalizedMessage();
+		return ""; //e.getLocalizedMessage();
 	}
 
 	protected void sendFile(File file, ServletOutputStream stream) throws IOException {  
@@ -98,4 +98,19 @@ public class AbstractDataController {
         }
         stream.flush();
     }
+	
+	protected void sendFile(InputStream inputStream, ServletOutputStream stream) throws IOException {           
+        try {             
+            byte[] buf = new byte[FILE_TRANSFER_BUFFER_SIZE];
+            int bytesRead;
+            while ((bytesRead = inputStream.read(buf)) != -1) {
+            	stream.write(buf, 0, bytesRead);
+            }
+        } finally {
+            if (inputStream != null)
+            	inputStream.close();
+        }
+        stream.flush();
+    }
+	
 }

@@ -7,6 +7,8 @@
  */
 package net.nan21.dnet.core.security;
 
+import java.sql.SQLException;
+
 import net.nan21.dnet.core.security.NotAuthorizedRequestException;
  
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
@@ -21,6 +23,13 @@ public class AuthorizeDsActionService  extends JdbcDaoSupport {
             i = this.getJdbcTemplate().queryForInt(this.buildSql(dsName, action, defaultIsAllow));
         } catch (org.springframework.dao.EmptyResultDataAccessException e) {
             // catch it to handle it below
+        } finally {
+            try {
+                this.getConnection().close();
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
         }
                 
         if ( (defaultIsAllow && i==1)

@@ -145,6 +145,11 @@ dnet.Translation = Ext.apply({},{
 	  ,login_lang : "Language"
       ,login_btn : "Login"
       
+	  ,upload_title : "Upload file"
+	  ,upload_name : "Name"
+	  ,upload_file : "File"	 
+	  ,upload_btn : "Upload"
+    	   
       ,chpswd_title : "Change password"
       ,chpswd_pswd1 : "New password"
       ,chpswd_pswd2 : "Confirm password"
@@ -259,7 +264,7 @@ dnet.Translation = Ext.apply({},{
 	   ,Role_UI : "Roles"
        ,AclDs_UI : "Access rights"
 	   ,MyBookmark_UI : "My bookmarks"
-	   ,Workflow_UI: "Workflow admin console"
+	   ,WorkflowAdmin_UI: "Workflow admin console"
 	   ,WorkflowDef_UI : "Workflow definition"
        //CRM
        ,CalendarEventPriority_UI : "Event priorities"
@@ -310,7 +315,7 @@ dnet.Translation = Ext.apply({},{
 	   // MY 
 	   ,MyAbsenceRequests_UI : "My absences"
 	   ,MyTimeSheets_UI : "My timesheets"
-	   ,Todo_UI:"Tasks"
+	   ,WorkflowTodo_UI:"Tasks"
 
        	// BP
        	,BPartner_UI : "Business partners"

@@ -26,15 +26,66 @@ dnet.base.FrameBuilder.prototype =  {
 	}
 
 
+	,addDcFormView: function(dc, config) {	
+		this.addDcView(dc, config);	
+		this.frame._dcs_.get(dc).addBindedView(config.id, "edit-form");
+		return this;
+	}
+	,addDcFilterFormView: function(dc, config) {	
+		this.addDcView(dc, config);	
+		this.frame._dcs_.get(dc).addBindedView(config.id, "filter-form");
+		return this;
+	} 
+	,addDcListView: function(dc, config) {	
+		return this.addDcView(dc, config);
+	} 
 	,addDcView: function(dc, config) {	
 		Ext.apply(config, {
 			_controller_:this.frame._dcs_.get(dc)
 			,listeners:{ activate:{scope:this,fn:function(p){p.doLayout(false,true);} } }
 		});
-		this.applyViewSharedConfig(config);		
+		this.applyViewSharedConfig(config);				
+		return this;
+	} 
+	/*
+	,createFilterBinding: function(dc, views) {
+		this.frame._dcs_.get(dc).on('afterCurrentRecordChange', 
+				function(evnt) { 
+					var newRecord = evnt.newRecord; 
+					var oldRecord = evnt.oldRecord; 
+					var newIdx = evnt.newIdx;
+					if(newRecord) {								 
+						Ext.BindMgr.unbind(oldRecord);
+						var vids = [];
+						for(var i=0;i<views.length;i++){
+							vids[i] = this._elems_.get(views[i]).id;
+						}
+						Ext.BindMgr.bind(newRecord, vids);								 
+					} else {								 
+						Ext.BindMgr.unbind(oldRecord);								 
+					} }, this.frame );	
 		return this;
 	}
-
+	
+	,createFormBinding: function(dc, views) {
+		this.frame._dcs_.get(dc).on('afterCurrentRecordChange', 
+				function(evnt) { 
+					var newRecord = evnt.newRecord; 
+					var oldRecord = evnt.oldRecord; 
+					var newIdx = evnt.newIdx;
+					if(newRecord) {								 
+						Ext.BindMgr.unbind(oldRecord);
+						var vids = [];
+						for(var i=0;i<views.length;i++){
+							vids[i] = this._elems_.get(views[i]).id;
+						}
+						Ext.BindMgr.bind(newRecord, vids);								 
+					} else {								 
+						Ext.BindMgr.unbind(oldRecord);								 
+					} }, this.frame );	
+		return this;
+	}
+	*/
 	,addPanel:function(config) {
 		config.listeners = config.listeners || {};
 		Ext.applyIf(config.listeners, {			 
@@ -83,24 +134,7 @@ dnet.base.FrameBuilder.prototype =  {
 	}
 	
 	
-	,createBinding: function(dc, views) {
-		this.frame._dcs_.get(dc).on('afterCurrentRecordChange', 
-				function(evnt) { 
-					var newRecord = evnt.newRecord; 
-					var oldRecord = evnt.oldRecord; 
-					var newIdx = evnt.newIdx;
-					if(newRecord) {								 
-						Ext.BindMgr.unbind(oldRecord);
-						var vids = [];
-						for(var i=0;i<views.length;i++){
-							vids[i] = this._elems_.get(views[i]).id;
-						}
-						Ext.BindMgr.bind(newRecord, vids);								 
-					} else {								 
-						Ext.BindMgr.unbind(oldRecord);								 
-					} }, this.frame );	
-		return this;
-	}
+	
 	,addButton: function(config) {		
 		Ext.applyIf(config , {id:Ext.id(), xtype:"button"} );
 		this.frame._elems_.add(config.name, config);

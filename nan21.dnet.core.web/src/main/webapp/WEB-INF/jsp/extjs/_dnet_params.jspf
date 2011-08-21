@@ -11,6 +11,7 @@
 		Dnet.dsUrl = "${deploymentUrl}/tx/java/ds";
 		Dnet.rpcUrl = "${deploymentUrl}/tx/java/rpc";
 		Dnet.asgnUrl = "${deploymentUrl}/tx/java/asgn";
+		Dnet.wfUrl = "${deploymentUrl}/workflow";
 		Dnet.uiUrl = "${uiUrl}";  
 		Dnet.sessionUrl = "${deploymentUrl}/security/session";
 		Dnet.staticResourceUrl = "${urlUiExtjs}";

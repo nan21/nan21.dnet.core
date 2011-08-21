@@ -34,8 +34,12 @@ public interface IQueryBuilder<F,P> {
 	public IQueryBuilder<F,P> addSortInfo(String[] sortTokens);
 	 
 	public Class<F> getFilterClass();
+	public void setFilterClass(Class<F> filterClass);
+	
 	public Class<P> getParamClass();
+	public void setParamClass(Class<P> paramClass);
  
+	
 	public F getFilter();
 	public void setFilter(F filter);
 
@@ -44,4 +48,6 @@ public interface IQueryBuilder<F,P> {
 
 	public IViewModelDescriptor<F> getDescriptor();
 	public void setDescriptor(IViewModelDescriptor<F> descriptor);
+	
+ 
 }

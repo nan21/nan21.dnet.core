@@ -1,5 +1,7 @@
 package net.nan21.dnet.core.web.controller.data;
 
+import java.io.InputStream;
+
 import javax.servlet.http.HttpServletResponse;
 
 import net.nan21.dnet.core.api.action.IActionResultRpcData;
@@ -27,7 +29,7 @@ public class AbstractDsRpcController<M, P>
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(method=RequestMethod.POST , params={"action=rpc", "rpcType=data" })
+	@RequestMapping( params={"action=rpc", "rpcType=data" })
 	@ResponseBody	
 	public String rpcData(
 				@PathVariable String resourceName,
@@ -43,16 +45,28 @@ public class AbstractDsRpcController<M, P>
 			this.resourceName = resourceName;		
 			this.dataFormat = dataFormat;
 	 
-			IDsService<M, P> service = getDsService(this.resourceName);
-			IDsMarshaller<M, P> marshaller = service.createMarshaller(dataFormat);
+			if (this.dataFormat.equals("stream")) {
+				IDsService<M, P> service = getDsService(this.resourceName);
+				IDsMarshaller<M, P> marshaller = service.createMarshaller("json");
+				
+				M data = marshaller.readDataFromString(dataString);
+				P params = marshaller.readParamsFromString(paramString); 	
+				
+				InputStream s = service.rpcDataStream(rpcName, data, params);
+				this.sendFile(s, response.getOutputStream() );
+				return "";
+			} else {
+				IDsService<M, P> service = getDsService(this.resourceName);
+				IDsMarshaller<M, P> marshaller = service.createMarshaller(dataFormat);
+				
+				M data = marshaller.readDataFromString(dataString);
+				P params = marshaller.readParamsFromString(paramString); 	
+				
+				service.rpcData(rpcName, data, params);
+				IActionResultRpcData result = this.packRpcDataResult(data, params); 
+				return marshaller.writeResultToString(result);
+			}
 			
-			M data = marshaller.readDataFromString(dataString);
-			P params = marshaller.readParamsFromString(paramString); 	
-			
-			service.rpcData(rpcName, data, params);
-
-			IActionResultRpcData result = this.packRpcDataResult(data, params); 
-			return marshaller.writeResultToString(result);
 		} catch(Exception e) {
 			 this.handleException(e, response);
 			 return null;

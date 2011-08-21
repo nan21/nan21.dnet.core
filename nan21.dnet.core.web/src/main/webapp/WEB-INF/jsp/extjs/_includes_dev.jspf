@@ -1,7 +1,7 @@
 
     <!-- Extjs  --> 
     <script type="text/javascript" src="${urlUiExtjsLibExtjs}/js/extjs/adapter/ext/ext-base.js"> </script>
-    <script type="text/javascript" src="${urlUiExtjsLibExtjs}/js/extjs/ext-all.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsLibExtjs}/js/extjs/ext-all-debug.js"></script>
     <script type="text/javascript" src="${urlUiExtjsLibExtjs}/js/extjs/examples/ux/ux-all.js"></script>
     
     <script type="text/javascript" src="${urlUiExtjsCore}/src/core/Dnet.js" ></script>    
@@ -35,6 +35,11 @@
     <script type="text/javascript" src="${urlUiExtjsCore}/src/core/base/UiHeader.js"></script>
     <script type="text/javascript" src="${urlUiExtjsCore}/src/core/base/FrameNavigatorWithIframe.js"></script>
     <script type="text/javascript" src="${urlUiExtjsCore}/src/core/base/FrameNavigator.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/src/core/base/FileUploadWindow.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/src/core/base/WorkflowFormWithHtmlWindow.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/src/core/base/WorkflowFormWithExtjsWindow.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/src/core/base/WorkflowFormFactory.js"></script>
+    
     <script type="text/javascript" src="${urlUiExtjsCore}/src/core/base/Rpc.js"></script>
  	<script type="text/javascript" src="${urlUiExtjsCore}/src/core/ds/AbstractDs.js"></script>
     <script type="text/javascript" src="${urlUiExtjsCore}/src/core/dc/AbstractDc.js"></script>
@@ -47,14 +52,15 @@
     <script type="text/javascript" src="${urlUiExtjsCore}/src/core/dc/DcvFormBuilder.js"></script>
     <script type="text/javascript" src="${urlUiExtjsCore}/src/core/dc/DcvGridBuilder.js"></script>
     <script type="text/javascript" src="${urlUiExtjsCore}/src/core/dc/DcvEditableGridBuilder.js"></script>
+    
     <script type="text/javascript" src="${urlUiExtjsCore}/src/core/ui/FrameBuilder.js"></script>
     <script type="text/javascript" src="${urlUiExtjsCore}/src/core/ui/ActionBuilder.js"></script>
     <script type="text/javascript" src="${urlUiExtjsCore}/src/core/ui/FrameButtonStateManager.js"></script>
     
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/core/dc/DcActionsFactory.js"></script>    
+    <script type="text/javascript" src="${urlUiExtjsCore}/src/core/dc/DcActionsFactory.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/src/core/dc/DcActionsStateManager.js"></script>     
     <script type="text/javascript" src="${urlUiExtjsCore}/src/core/dc/DcContext.js"></script>
     <script type="text/javascript" src="${urlUiExtjsCore}/src/core/dc/DcExceptions.js"></script>
-
     <script type="text/javascript" src="${urlUiExtjsCore}/src/core/dc/DataExportWindow.js"></script>  
     <script type="text/javascript" src="${urlUiExtjsCore}/src/core/dc/DataImportWindow.js"></script>  
     <script type="text/javascript" src="${urlUiExtjsCore}/src/core/dc/GridLayoutManager.js"></script>     

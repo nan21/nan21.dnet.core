@@ -15,6 +15,7 @@ Dnet = {
 	,dsUrl:null     //  tx/java/ds
 	,rpcUrl: null   //  tx/java/rpc
 	,asgnUrl:null   //  tx/java/asgn
+	,wfUrl:null     //  workflow
 	,uiUrl:null
 	,sessionUrl : null
 	,staticResourceUrl:null
@@ -76,7 +77,29 @@ Dnet = {
              ,changePassword : this.sessionUrl +'?action=changePassword'
         }
 	}
-
+   	,wfProcessDefinitionAPI: function(processDefinitionId) {
+   		return {
+   			 form : this.wfUrl + '/process-definition/'+processDefinitionId+'/form'
+   			,diagram : this.wfUrl + '/process-definition/'+processDefinitionId+'/diagram'   			 
+   		}
+   	}
+	,wfProcessInstanceAPI: function(processInstanceId) {
+   		return {
+   			 start : this.wfUrl + '/process-instance/start'
+   			,diagram : this.wfUrl + '/process-instance/'+processInstanceId+'/diagram'
+   		}
+   	}
+	,wfTaskAPI: function(taskId) {
+   		return {
+   			form : this.wfUrl + '/task/'+taskId+'/form'   
+   			,complete : this.wfUrl + '/task/'+taskId+'/complete'   
+   		}
+   	}
+	,wfDeploymentAPI: function(deploymentId) {
+   		return {
+   			destroy : this.wfUrl + '/deployment/delete'   			 
+   		}
+   	}
     ,dsAPI: function (resource, format) {
 	   return {
              read : this.dsUrl +'/'+resource+'.'+format+'?action=find'

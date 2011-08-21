@@ -42,7 +42,11 @@ dnet.base.AbstractDcvFilterForm = Ext.extend( Ext.form.FormPanel, {
         Ext.apply(this,cfg);
 		dnet.base.AbstractDcvFilterForm.superclass.initComponent.call(this);
 		
-		this.on({ scope: this  ,change: filter_view____change });
+		this.on({ scope: this ,afterrender: function() { 
+			this.updateBound(this._controller_.getFilter()); 
+		}   });
+		this._controller_.addBindedView(this.id, this._dcViewType_ );	
+  
 	}
 
     ,_startDefine_: function () {}
@@ -79,6 +83,26 @@ dnet.base.AbstractDcvFilterForm = Ext.extend( Ext.form.FormPanel, {
 			Dnet.translateField(this._trl_, this._controller_.ds._trl_,item);
 		} 
 	}
+	/*,_onChange_: function (field, newVal, oldVal) {		
+		if(field.initialConfig._isParam_===true) {
+			if (newVal != oldVal) {
+				this._controller_.setParamValue(field.dataIndex, field.getValue(),true);			 
+			}
+		} else {
+			if (newVal != oldVal) {
+				this._controller_.setFilterValue(field.dataIndex, field.getValue(),true);			 
+			}
+		}
+		
+	}
+	,_onCheck_: function ( field, isChecked) {
+		if(field.initialConfig._isParam_===true) {
+			if (!(this._controller_.getParamValue(field.dataIndex) === isChecked)) {
+	            this._controller_.setParamValue(field.dataIndex, isChecked, true);
+			}			
+		}  	
+	}*/
+	
 	/* get value from resource bundle for the specified key*/
 	,_getRBValue_: function(k) {
 		if (this._trl_ != null && this._trl_[k]) { return this._trl_[k]; }

@@ -219,7 +219,24 @@ dnet.base.AbstractCombo = Ext.extend(Ext.form.ComboBox, {
         }
 	  }
     , afterAjaxFailure: function(response , options) {
-      	dc____ajaxfailure(response , options);
+    	Ext.MessageBox.hide();
+		var msg, withDetails=false;
+		if (response.responseText) {
+			if (response.responseText.length > 2000) {
+				msg = response.responseText.substr(0,2000);
+				withDetails = true;
+			} else {
+				msg = response.responseText ;
+			}
+		} else {
+			msg = "No response received from server.";
+		}
+		var alertCfg = { msg: msg, scope:this, icon: Ext.MessageBox.ERROR, buttons: {ok:'OK'} }  
+		if (withDetails) {
+			alertCfg.buttons['cancel'] = 'Details';
+			alertCfg['detailedMessage'] = response.responseText;
+		}		  
+      	Ext.Msg.show(alertCfg);
 
 	  }
 

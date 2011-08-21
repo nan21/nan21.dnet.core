@@ -32,4 +32,12 @@ public @interface DsField {
 	 * @return
 	 */
 	String join() default ""; // left
+	
+	/**
+	 * Specifies a filter rule to be used when the JPQL where clause is built.
+	 * The fragment is appended only when this filter field is not null.
+	 * It is ignored if an expression based query is configured. 
+	 * @return
+	 */
+	String jpqlFilter() default "";
 }

@@ -13,6 +13,11 @@ public class AbstractViewModelDescriptor<M> implements IViewModelDescriptor<M> {
 	
 	private Class<M> modelClass;	 
 	private Map<String, String> refPaths;
+	private Map<String, String> jpqlFieldFilterRules;
+	
+	private Map<String, String> fetchJoins;
+	private Map<String, String> nestedFetchJoins;
+	
 	
 	private boolean worksWithJpql = true;
 	private String jpqlDefaultWhere; 
@@ -23,7 +28,7 @@ public class AbstractViewModelDescriptor<M> implements IViewModelDescriptor<M> {
 	
 	public AbstractViewModelDescriptor(Class<M> modelClass) {
 		this.modelClass = modelClass;
-		this.buildRefPaths();
+		this.buildElements();
 		this.buildHeaders();
 	}
 	protected void buildHeaders () {
@@ -40,15 +45,15 @@ public class AbstractViewModelDescriptor<M> implements IViewModelDescriptor<M> {
 				this.jpqlDefaultSort = sb.toString();
 			} else {
 				this.jpqlDefaultSort = this.modelClass.getAnnotation(Ds.class).jpqlSort();
-			}
-			
-			
+			}			 
 		}
 	}
 	
-	protected void buildRefPaths() {
+	protected void buildElements() {
 		if (this.refPaths == null) {
 			this.refPaths = new HashMap<String, String>();
+			this.jpqlFieldFilterRules = new HashMap<String, String>();
+			this.fetchJoins = new HashMap<String, String>();
 			Field[] fields = this.modelClass.getDeclaredFields();
 			for (Field field : fields) {
 				if(field.isAnnotationPresent(DsField.class)) {					 
@@ -56,7 +61,20 @@ public class AbstractViewModelDescriptor<M> implements IViewModelDescriptor<M> {
 					if (path.equals("")) {
 						path = field.getName();
 					}
-					this.refPaths.put(field.getName(), path);					 			
+					this.refPaths.put(field.getName(), path);
+					int firstDot = path.indexOf(".");
+					if (firstDot > 0) {
+						if (firstDot == path.lastIndexOf(".")) {
+							this.fetchJoins.put("e."+path.substring(0, path.lastIndexOf(".")), field.getAnnotation(DsField.class).join());
+						} else {
+							this.nestedFetchJoins.put("e."+path.substring(0, path.lastIndexOf(".")), field.getAnnotation(DsField.class).join());
+						}						
+					}
+					String jpqlFieldFilterRule = field.getAnnotation(DsField.class).jpqlFilter();
+					if(jpqlFieldFilterRule!=null && !"".equals(jpqlFieldFilterRule)) {
+						this.jpqlFieldFilterRules.put(field.getName(), jpqlFieldFilterRule);
+					}
+					 
 				}
 			}		 
 		}
@@ -88,8 +106,18 @@ public class AbstractViewModelDescriptor<M> implements IViewModelDescriptor<M> {
 	public String getJpqlDefaultSort() {
 		return jpqlDefaultSort;
 	}
-	
+
+	public Map<String, String> getJpqlFieldFilterRules() {
+		return jpqlFieldFilterRules;
+	}
+
+	public Map<String, String> getFetchJoins() {
+		return fetchJoins;
+	}
+
+	public Map<String, String> getNestedFetchJoins() {
+		return nestedFetchJoins;
+	}
 	 
-	
 	
 }

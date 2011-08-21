@@ -13,6 +13,6 @@ Import-Package:
  org.springframework.beans.factory.annotation;version="[3.0,3.1)",
  org.springframework.transaction.annotation;version="[3.0,3.1)",
  org.activiti.engine;version="[5.6,6.0)",
- org.activiti.engine.impl.el;version="[5.6,6.0)"
-Export-Package: org.activiti.spring
+ org.activiti.engine.impl.el;version="[5.6,6.0)",
+ org.activiti.spring;version="[5.6,6.0)"
 

@@ -145,6 +145,11 @@ dnet.Translation = Ext.apply({},{
 	  ,login_lang : "Limbă"
       ,login_btn : "Conectare"
 
+	  ,upload_title : "Upload fisier"
+	  ,upload_name : "Nume"
+	  ,upload_file : "Fisier"	 
+	  ,upload_btn : "Trimite"
+	  
       ,chpswd_title : "Schimbare parolă"
       ,chpswd_pswd1 : "Parola nouă"
       ,chpswd_pswd2 : "Confirmare parolă"
@@ -257,7 +262,7 @@ dnet.Translation = Ext.apply({},{
 	   ,Role_UI : "Roluri"
        ,AclDs_UI : "Drepturi de acces"
        ,MyBookmark_UI : "Marcajele mele"
-       ,Workflow_UI: "Administrare Workflow"
+       ,WorkflowAdmin_UI: "Administrare Workflow"
         ,WorkflowDef_UI : "Definire Workflow"
 
 	   //CRM
@@ -309,7 +314,7 @@ dnet.Translation = Ext.apply({},{
         // MY
 	   ,MyAbsenceRequests_UI : "Absentele mele"
 	   ,MyTimeSheets_UI : "Pontajele mele"
-	   ,Todo_UI:"Activităţi"
+	   ,WorkflowTodo_UI:"Activităţi"
 
      	// BP
        	,BPartner_UI : "Terţi"

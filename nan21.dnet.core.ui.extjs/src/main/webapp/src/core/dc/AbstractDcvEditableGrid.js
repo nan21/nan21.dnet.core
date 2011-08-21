@@ -49,11 +49,21 @@ dnet.base.AbstractDcvEditableGrid = Ext.extend( Ext.grid.EditorGridPanel, {
 		   ,bbar:{xtype:"paging", store: this._controller_.store, displayInfo:true, pageSize:this._controller_.tuning.fetchSize }
 			,sm: new Ext.grid.RowSelectionModel({singleSelect: false
 				,listeners: {
-		             "rowselect": {scope: this,fn: grid_view__sm__rowselect, buffer:100 }
-		            ,"rowdeselect": {scope: this,fn: grid_view__sm__rowdeselect, buffer:100 }
-		            ,"selectionchange": {scope: this,fn:function(sm) { this._controller_.setSelectedRecords( sm.getSelections() );} , buffer:200 }
-
-
+		             "rowselect": {scope: this,fn: function (sm, idx, rec) { 
+					 		if(this._controller_.getRecord() != rec) {this._controller_.setCurrentRecord(idx);}
+					 	}, buffer:200 }
+		            ,"rowdeselect": {scope: this,fn: function (sm, idx, rec) {  
+			         		if(this._controller_.getRecord() == rec) {
+			         		  if (sm.getSelections().length > 0 ) {
+			         		    this._controller_.setCurrentRecord(sm.getSelections()[0]);
+			         		  } else {
+			         		    this._controller_.setCurrentRecord(null);
+			         		  }
+			         		}
+			         	}, buffer:200 }
+		            ,"selectionchange": {scope: this,fn:function(sm) { 
+		            		this._controller_.setSelectedRecords( sm.getSelections() );
+		            	} , buffer:200 }
 				  }
 			 })
 			,store: this._controller_.store
@@ -89,6 +99,14 @@ dnet.base.AbstractDcvEditableGrid = Ext.extend( Ext.grid.EditorGridPanel, {
 			this.getView().focusRow(this.store.getCount() );
             this.getSelectionModel().resumeEvents();
 		}, this);
+		this._controller_.on("selectionChanged",function(evnt) {
+			var s = evnt.dc.getSelectedRecords();
+			if (s != this.getSelectionModel().getSelections() ) {
+				this.getSelectionModel().suspendEvents();
+				this.getSelectionModel().selectRecords(s,false);
+				this.getSelectionModel().resumeEvents();
+			}
+		} , this);
 		 
 	}
 

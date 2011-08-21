@@ -2,6 +2,7 @@ package net.nan21.dnet.core.presenter.service;
 
 import java.util.List;
 
+import org.activiti.engine.FormService;
 import org.activiti.engine.HistoryService;
 import org.activiti.engine.ProcessEngine;
 import org.activiti.engine.RepositoryService;
@@ -23,7 +24,7 @@ public class AbstractDsProcessor<M, P> {
 	
 	protected List<IEntityServiceFactory> entityServiceFactories;	 
 	protected List<IDsServiceFactory> dsServiceFactories;
-	private ProcessEngine workflowEngine;
+	//private ProcessEngine workflowEngine;
 	
 	public IDsService<M,P> findDsService(String dsName) throws Exception {
 		IDsService<M,P> srv = null;
@@ -80,6 +81,10 @@ public class AbstractDsProcessor<M, P> {
     	return this.getWorkflowEngine().getHistoryService();
     }
     
+    public FormService getWorkflowFormService() {
+    	return this.getWorkflowEngine().getFormService();
+    }
+    
 	public List<IEntityServiceFactory> getEntityServiceFactories() {
 		return entityServiceFactories;
 	}
@@ -89,14 +94,7 @@ public class AbstractDsProcessor<M, P> {
 		this.entityServiceFactories = entityServiceFactories;
 	}
 	
-	/*public IEntityService<E> getEntityService() throws Exception {	
-		return entityService;
-	}
-	
-	public void setEntityService(IEntityService<E> entityService) {
-		this.entityService = entityService;
-	}*/
-
+ 
 	public ApplicationContext getAppContext() {
 		return appContext;
 	}

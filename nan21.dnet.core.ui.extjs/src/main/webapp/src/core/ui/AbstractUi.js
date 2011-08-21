@@ -190,7 +190,19 @@ dnet.base.AbstractUi = Ext.extend( Ext.Panel, {
     	,_beforeLinkElements_: function () {return true;}
     	,_afterLinkElements_: function () {}
 
-    ,_defineBindings_: function () {}
+    ,_defineBindings_: function () {
+    	/*this._dcs_.eachKey(function(dcName,dc) {
+    		var dcvs = this._elems_.filterBy( function(e) {
+    				return (e._dcViewType_ == "edit-form" && e._controller_  && e._controller_ == this._dcs_.get(dcName) );
+    			}, this );
+    		var views = [];
+    		dcvs.eachKey(function(dcvName, dcv) {
+    			views[views.length]=dcvName;
+    		},this);
+    		this._getBuilder_().createBinding(dcName,views);
+    	},this);
+    	*/
+    }
     	,_beforeDefineBindings_: function () {return true;}
     	,_afterDefineBindings_: function () {}
 

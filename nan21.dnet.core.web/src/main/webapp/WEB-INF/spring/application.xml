@@ -51,13 +51,19 @@
 		
 	<osgi:list id="osgiDsServiceFactories" cardinality="0..N"
 		interface="net.nan21.dnet.core.api.service.IDsServiceFactory"/>
-		
+	
+	<osgi:list id="osgiFileUploadServiceFactories" cardinality="0..N"
+		interface="net.nan21.dnet.core.api.service.IFileUploadServiceFactory"/>
+			
 	<osgi:list id="osgiAsgnServiceFactories" cardinality="0..N"
 		interface="net.nan21.dnet.core.api.service.IAsgnServiceFactory"/>
 	
 	<osgi:list id="osgiSetupParticipants" cardinality="0..N"
 		interface="net.nan21.dnet.core.api.setup.ISetupParticipant"/>
-		
+	
+	<osgi:reference id="osgiActivitiProcessEngine" cardinality="0..1"
+			interface="org.activiti.engine.ProcessEngine" /> 
+					
 	<!-- Configures global application security --> 
 	<import resource="security.xml" />
 	 

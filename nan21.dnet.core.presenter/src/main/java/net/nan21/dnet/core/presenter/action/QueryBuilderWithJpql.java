@@ -2,10 +2,12 @@ package net.nan21.dnet.core.presenter.action;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import javax.persistence.Query;
 
+import org.eclipse.persistence.config.QueryHints;
 import org.springframework.util.StringUtils;
  
 public class QueryBuilderWithJpql<F, P> extends AbstractQueryBuilder<F, P> {
@@ -43,7 +45,7 @@ public class QueryBuilderWithJpql<F, P> extends AbstractQueryBuilder<F, P> {
 	public String buildQueryStatement() throws Exception {
 		 
 		StringBuffer eql = new StringBuffer(this.baseEql);
-		
+		this.addFetchJoins(eql);
 		this.buildJpqlWhere(this.filter);
 		this.attachWhereClause(eql);
 		
@@ -56,11 +58,24 @@ public class QueryBuilderWithJpql<F, P> extends AbstractQueryBuilder<F, P> {
 	public String buildCountStatement() throws Exception {
 		 
 		StringBuffer eql = new StringBuffer(this.baseEqlCount);
-		this.attachWhereClause(eql);
-		
+		this.addFetchJoins(eql);
+		this.attachWhereClause(eql);		
 		return eql.toString();
 	}
-	
+	private void addFetchJoins(StringBuffer eql ) {
+		if (this.descriptor.getFetchJoins() != null) {
+			Iterator<String> it = this.descriptor.getFetchJoins().keySet().iterator();
+			while(it.hasNext()) {
+				String p = it.next();
+				String type = this.descriptor.getFetchJoins().get(p);
+				if (type != null && type.equals("left")) {
+					eql.append(" left join fetch "+p );
+				} else {
+					eql.append(" join fetch "+p );
+				}			
+			}
+		}		
+	}
 	private void attachWhereClause(StringBuffer eql) {
 		if ((this.where != null && !this.where.equals(""))
 				|| 
@@ -102,6 +117,8 @@ public class QueryBuilderWithJpql<F, P> extends AbstractQueryBuilder<F, P> {
 		  
         Method[] methods = this.getFilterClass().getDeclaredMethods();
         Map<String, String> refpaths = this.descriptor.getRefPaths();
+        Map<String, String> jpqlFilterRules = this.descriptor.getJpqlFieldFilterRules();
+        
         this.defaultFilterItems = new HashMap<String, Object>();
         for (Method m : methods) {
             if (m.getName().startsWith("get")) {
@@ -115,10 +132,18 @@ public class QueryBuilderWithJpql<F, P> extends AbstractQueryBuilder<F, P> {
                     Object fv = m.invoke(filter);
                     if (fv != null) {
                         if (m.getReturnType() == java.lang.String.class) {
-                            addFilterCondition( entityAlias+ "."+refpaths.get(fn) + " like :" + fn);
+                        	if (jpqlFilterRules.containsKey(fn)) {
+                        		addFilterCondition( jpqlFilterRules.get(fn));
+                        	} else {
+                        		addFilterCondition( entityAlias+ "."+refpaths.get(fn) + " like :" + fn);
+                        	}                            
                             this.defaultFilterItems.put(fn, (String) fv);
                         } else {
-                            this.addFilterCondition( entityAlias+ "."+refpaths.get(fn) + " = :" + fn);
+                        	if (jpqlFilterRules.containsKey(fn)) {
+                        		addFilterCondition( jpqlFilterRules.get(fn));
+                        	} else {
+                        		this.addFilterCondition( entityAlias+ "."+refpaths.get(fn) + " = :" + fn);
+                        	}                              
                             this.defaultFilterItems.put(fn, fv);
                         }
                        // addAnd = true;
@@ -166,7 +191,19 @@ public class QueryBuilderWithJpql<F, P> extends AbstractQueryBuilder<F, P> {
 	
 	public Query createQuery() throws Exception {
 		String jpql = this.buildQueryStatement();
-		Query q =  this.em.createQuery(jpql);		 
+		Query q =  this.em.createQuery(jpql);
+		if (this.descriptor.getNestedFetchJoins() != null) {
+			Iterator<String> it = this.descriptor.getNestedFetchJoins().keySet().iterator();
+			while(it.hasNext()) {
+				String p = it.next();
+				String type = this.descriptor.getNestedFetchJoins().get(p);
+				if (type != null && type.equals("left")) {
+					q.setHint(QueryHints.LEFT_FETCH, p);
+				} else {
+					q.setHint(QueryHints.FETCH, p);
+				}			
+			}
+		}		
 		bindFilterParams(q);		 		
 		return q;
 	}
