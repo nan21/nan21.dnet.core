@@ -8,8 +8,8 @@
 	http://www.springframework.org/schema/osgi 
 		http://www.springframework.org/schema/osgi/spring-osgi.xsd"	>
   
- 	<osgi:reference id="osgiDataSource" cardinality="0..1"
-		interface="javax.sql.DataSource" />
+ 	<osgi:reference id="osgiDataSource" cardinality="1..1"
+		interface="javax.sql.DataSource"  />
 	
 	<osgi:service ref="activitiProcessEngine"
 			interface="org.activiti.engine.ProcessEngine" /> 
