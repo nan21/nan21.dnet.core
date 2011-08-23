@@ -139,7 +139,8 @@ dnet.base.FrameBuilder.prototype =  {
 		Ext.applyIf(config , {id:Ext.id(), xtype:"button"} );
 		this.frame._elems_.add(config.name, config);
 		if (config.stateManager ) {
-			dnet.base.FrameButtonStateManager.register(config.name, config.stateManager.name, config.stateManager.dc, this.frame );
+			var options = {and:config.stateManager.and };
+			dnet.base.FrameButtonStateManager.register(config.name, config.stateManager.name, config.stateManager.dc, this.frame, options );
 		}
 		return this;
 	} 

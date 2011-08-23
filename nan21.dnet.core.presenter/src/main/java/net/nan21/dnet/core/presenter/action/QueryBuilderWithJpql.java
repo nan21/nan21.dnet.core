@@ -26,6 +26,7 @@ public class QueryBuilderWithJpql<F, P> extends AbstractQueryBuilder<F, P> {
     protected List<String> noFilterItems;
      
     private String entityAlias = "e";
+    
 	public String getBaseEql() {
 		return baseEql;
 	}
@@ -42,26 +43,77 @@ public class QueryBuilderWithJpql<F, P> extends AbstractQueryBuilder<F, P> {
 		this.baseEqlCount = baseEqlCount;
 	}
 
+	/**
+	 * Create the query statement to fetch the result data which match the filter criteria.<br>
+	 * Can be customized through the <code>before</code>, <code>on</code> and <code>after</code> methods.
+	 * @return
+	 * @throws Exception
+	 */
 	public String buildQueryStatement() throws Exception {
-		 
+		beforeBuildQueryStatement();
+		String qs = onBuildQueryStatement();
+		afterBuildQueryStatement(qs);
+		return qs;
+	}
+	/**
+	 * Template method to override with custom implementation.
+	 * Fragments used in onBuildQueryStatement can be overriden.
+	 * @throws Exception
+	 */
+	protected void beforeBuildQueryStatement() throws Exception {		 
+	}
+	 
+	/**
+	 * Creates the JPQL query statement used to fetch the result data. 
+	 * It adds to <code>baseEql</code> the jpql fragments according to filter criteria, sort information and meta information provided by the model class.
+	 * Customize it with the <code>before</code> and <code>after</code> methods or you can entirely override.
+	 * @return
+	 * @throws Exception
+	 */
+	protected String onBuildQueryStatement() throws Exception {
 		StringBuffer eql = new StringBuffer(this.baseEql);
 		this.addFetchJoins(eql);
-		this.buildJpqlWhere(this.filter);
-		this.attachWhereClause(eql);
-		
+		this.buildWhere();
+		this.attachWhereClause(eql);		
 		this.buildSort();		
 		this.attachSortClause(eql);
 		
 		return eql.toString();
 	}
+	/**
+	 * Post query string creation code. 
+	 * @param builtQueryStatement: The query statement which has been built.
+	 * @throws Exception
+	 */
+	protected void afterBuildQueryStatement(String builtQueryStatement) throws Exception {
+		
+	}
 	
+	/**
+	 * Create the count query statement to count the total number of results which match the filter criteria.<br>
+	 * Can be customized through the <code>before</code>, <code>on</code> and <code>after</code> methods.
+	 * @return
+	 * @throws Exception
+	 */
 	public String buildCountStatement() throws Exception {
-		 
+		beforeBuildCountStatement();
+		String qs = onBuildCountStatement();
+		afterBuildCountStatement(qs);
+		return qs;		
+	}
+	protected void beforeBuildCountStatement() throws Exception {
+		
+	}
+	protected String onBuildCountStatement() throws Exception {
 		StringBuffer eql = new StringBuffer(this.baseEqlCount);
 		this.addFetchJoins(eql);
 		this.attachWhereClause(eql);		
 		return eql.toString();
 	}
+	protected void afterBuildCountStatement(String builtQueryStatement) throws Exception {
+		
+	}
+	
 	private void addFetchJoins(StringBuffer eql ) {
 		if (this.descriptor.getFetchJoins() != null) {
 			Iterator<String> it = this.descriptor.getFetchJoins().keySet().iterator();
@@ -113,7 +165,19 @@ public class QueryBuilderWithJpql<F, P> extends AbstractQueryBuilder<F, P> {
 			}			 
 		}  
 	}
-	private void buildJpqlWhere (Object filter) throws Exception {
+	
+	
+	
+	private void buildWhere () throws Exception {
+		beforeBuildWhere();
+		onBuildWhere();
+		afterBuildWhere();		 	
+	}
+	protected void beforeBuildWhere() throws Exception {
+		
+	}
+	
+	protected void onBuildWhere() throws Exception {
 		  
         Method[] methods = this.getFilterClass().getDeclaredMethods();
         Map<String, String> refpaths = this.descriptor.getRefPaths();
@@ -122,9 +186,7 @@ public class QueryBuilderWithJpql<F, P> extends AbstractQueryBuilder<F, P> {
         this.defaultFilterItems = new HashMap<String, Object>();
         for (Method m : methods) {
             if (m.getName().startsWith("get")) {
-                String fn = StringUtils.uncapitalize(m.getName().substring(3));
-                fn = fn.substring(0, 1).toLowerCase() + fn.substring(1);
-
+                String fn = StringUtils.uncapitalize(m.getName().substring(3));                
                 if (!( this.noFilterItems != null && this.noFilterItems.contains(fn) ) 
                 			&& 
                 	!( this.customFilterItems !=null && this.customFilterItems.containsKey(fn))) {
@@ -145,15 +207,16 @@ public class QueryBuilderWithJpql<F, P> extends AbstractQueryBuilder<F, P> {
                         		this.addFilterCondition( entityAlias+ "."+refpaths.get(fn) + " = :" + fn);
                         	}                              
                             this.defaultFilterItems.put(fn, fv);
-                        }
-                       // addAnd = true;
+                        }                      
                     }
                 }
             }
         }
-	    
+ 
     }
-	 
+	protected void afterBuildWhere() throws Exception {
+		
+	} 
 	public void addFilterCondition(String filter) {
 		if (this.where == null ) {
 			this.where = new StringBuffer();
@@ -165,7 +228,14 @@ public class QueryBuilderWithJpql<F, P> extends AbstractQueryBuilder<F, P> {
 	}
 
 	
-	private void bindFilterParams(Query q) {
+	
+	protected void addCustomFilterItem(String key, Object value) {
+		if (this.customFilterItems == null) {
+			this.customFilterItems = new HashMap<String, Object>();			
+		}
+		this.customFilterItems.put(key, value);
+	}
+	private void bindFilterParams(Query q) throws Exception {
 
 		if (this.defaultFilterItems != null) {
 			for (String key : this.defaultFilterItems.keySet()) {
@@ -186,7 +256,17 @@ public class QueryBuilderWithJpql<F, P> extends AbstractQueryBuilder<F, P> {
                     q.setParameter(key, value);
                 }
             }
-        }        
+        }   
+        
+        /*Method[] methods = this.getParamClass().getDeclaredMethods();
+        for (Method m : methods) {
+        	if (m.getName().startsWith("get")) {
+                String fn = StringUtils.uncapitalize(m.getName().substring(3));
+                //fn = fn.substring(0, 1).toLowerCase() + fn.substring(1);
+                Object fv = m.invoke(params);
+                q.setParameter(fn, fv);
+            }
+        }*/
     }
 	
 	public Query createQuery() throws Exception {

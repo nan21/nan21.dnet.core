@@ -4,8 +4,7 @@ dnet.base.WorkflowFormFactory = Ext.apply({}, {
 	createStartForm: function(processDefinitionId) {
 		 
 		var succesFn = function(response , options) {			
-			try{
-				
+			try{				
 				// try to decode to see if it is a valid extjs formpanel definition 
 				//var theForm = null;	
 				//jsonForm = Ext.
@@ -20,8 +19,7 @@ dnet.base.WorkflowFormFactory = Ext.apply({}, {
 						,processDefinitionId:processDefinitionId
 					} 
 				});
-			w.show();
-			 
+			w.show();			 
 		};		 
 		
 		Ext.Ajax.request({
@@ -38,8 +36,7 @@ dnet.base.WorkflowFormFactory = Ext.apply({}, {
 	,createTaskForm: function(taskId) {
 		 
 		var succesFn = function(response , options) {			
-			try{
-				
+			try{				
 				// try to decode to see if it is a valid extjs formpanel definition 
 				//var theForm = null;	
 				//jsonForm = Ext.
@@ -54,8 +51,7 @@ dnet.base.WorkflowFormFactory = Ext.apply({}, {
 						,taskId:taskId
 					} 
 				});
-			w.show();
-			 
+			w.show();			 
 		};		 
 		
 		Ext.Ajax.request({
@@ -65,11 +61,8 @@ dnet.base.WorkflowFormFactory = Ext.apply({}, {
 			,failure: function() {alert('error');}	
 			,scope: this
 			//,options: { action: "doService", serviceName: serviceName, specs: s }
-		});
-	 
-	}
-	
-	
+		});	 
+	}	 
 });
 
 /*
