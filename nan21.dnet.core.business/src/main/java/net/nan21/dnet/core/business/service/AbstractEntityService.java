@@ -3,17 +3,13 @@ package net.nan21.dnet.core.business.service;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Map.Entry;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
-import org.eclipse.persistence.config.HintValues;
-import org.eclipse.persistence.config.QueryHints;
-import org.eclipse.persistence.internal.jpa.EntityManagerImpl;
-import org.eclipse.persistence.jpa.JpaQuery;
-import org.eclipse.persistence.queries.Cursor;
 import org.springframework.beans.factory.annotation.Autowired;
  
 
@@ -83,45 +79,93 @@ public abstract class AbstractEntityService <E>  {
 	
 	/**
 	 * Delete all.
-	 */
+	 
 	public void deleteAll() {
 	    this.em.createQuery("delete from "+getEntityClass().getSimpleName()+" e")
 				.executeUpdate();
 	}
+	*/
+	/**
+	 * Pre-delete template method for a given id.
+	 * @param list
+	 */
+	protected void preDeleteById(Object id) throws Exception {		
+	}
 	
+	/**
+	 * On-delete method for a given id, it actually does the work.
+	 * @param list
+	 */
+	protected void onDeleteById(Object id) throws Exception {
+		this.em.createQuery("delete from "+getEntityClass().getSimpleName()+" e where e.id = :pId")
+			.setParameter("pId", id).executeUpdate();
+	}
 	/**
 	 * Delete entity by id.
 	 */
-	public void deleteById(Object id) {
-	    this.em.createQuery("delete from "+getEntityClass().getSimpleName()+" e where e.id = :pId")
-				.setParameter("pId", id).executeUpdate();
+	public void deleteById(Object id) throws Exception {
+		this.preDeleteById(id);
+		this.onDeleteById(id);
+		this.postDeleteById(id);
 	}
 
 	/**
-	 * Delete entities by ids.
+	 * Post-delete template method for a given id.
+	 * @param list
 	 */
-	public void deleteByIds(List<Object> ids) {
-	    this.em.createQuery("delete from "+getEntityClass().getSimpleName()+" e where e.id in :pIds")
-				.setParameter("pIds", ids).executeUpdate();
+	protected void postDeleteById(Object id) throws Exception{		
+	}
+	
+	
+	
+	/**
+	 * Pre-delete template method for a list of IDs.
+	 * @param list
+	 */
+	protected void preDeleteByIds(List<Object> ids) throws Exception{		
+	}
+	
+	/**
+	 * On-delete template method for a list of IDs, it actually does the work.
+	 * @param list
+	 */
+	protected void onDeleteByIds(List<Object> ids) throws Exception{	
+		this.em.createQuery("delete from "+getEntityClass().getSimpleName()+" e where e.id in :pIds")
+			.setParameter("pIds", ids).executeUpdate();
+	}
+	/**
+	 * Delete entities by a list of IDs.
+	 */
+	public void deleteByIds(List<Object> ids) throws Exception{
+		this.preDeleteByIds(ids);
+		this.onDeleteByIds(ids);
+		this.postDeleteByIds(ids);
 	}
 
+	/**
+	 * Post-delete template method for a list of IDs.
+	 * @param list
+	 */
+	protected void postDeleteByIds(List<Object> ids) throws Exception {		
+	}
+	
 	/**
 	 * Remove entity.
-	 */
+	 
 	public void remove(E e) throws Exception {
 		this.em.remove(e);		
-	}
+	}*/
 
 	/**
 	 * Remove entities.
 	 * @param list
 	 * @throws Exception
-	 */
+	 
 	public void remove(List<E> list) throws Exception {
 		for(E e: list) {
 			this.em.remove(e);
 		}		
-	}
+	}*/
 
 	/**
 	 * Create a new entity instance
@@ -132,22 +176,43 @@ public abstract class AbstractEntityService <E>  {
 	
 	/**
 	 * Insert (persist) one entity.
-	 */
- 
+	 */ 
 	public void insert(E e) throws Exception {		 
 		this.em.persist(e); 
 	}
 
 	/**
-	 * Insert (persist) a list of entities.
+	 * Pre-insert template method for a collection of entities.
+	 * @param list
 	 */
-	 
-	public void insert(List<E> list) throws Exception {
+	protected void preInsert(List<E> list) throws Exception {		
+	}
+	
+	/**
+	 * On-insert template method for a collection of entities, it actually does the work.
+	 * @param list
+	 */
+	protected void onInsert(List<E> list) throws Exception {	
 		for(E e: list) {
 			this.em.persist(e);
-		}			
+		}
+	}
+	
+	/**
+	 * Insert (persist) a list of entities.
+	 */	 
+	public void insert(List<E> list) throws Exception {
+		this.preInsert(list);
+		this.onInsert(list);
+		this.postInsert(list);
 	}
 
+	/**
+	 * Post-insert template method for a collection of entities.
+	 * @param list
+	 */
+	protected void postInsert(List<E> list) throws Exception {		
+	}
 	/**
 	 * Update (merge) one entity.  
 	 */
@@ -156,15 +221,49 @@ public abstract class AbstractEntityService <E>  {
 		this.em.merge(e);
 	}
 
+	
+	/**
+	 * Pre-update template method for a collection of entities.
+	 * @param list
+	 */
+	protected void preUpdate(List<E> list) throws Exception {		
+	}
+	
+	/**
+	 * On-update template method for a collection of entities, it actually does the work.
+	 * @param list
+	 */
+	protected void onUpdate(List<E> list) throws Exception {	
+		for(E e: list) {
+			this.em.merge(e);
+		}
+	}
 	/**
 	 * Update (merge) a list of entities.
 	 */
   
 	public void update(List<E> list) throws Exception {		
-		for(E e: list) {
-			this.em.merge(e);
-		}	
+		this.preUpdate(list);
+		this.onUpdate(list);
+		this.postUpdate(list);
 	}
  
+	/**
+	 * Post-update template method for a collection of entities.
+	 * @param list
+	 */
+	protected void postUpdate(List<E> list) throws Exception {		
+	}
 	
+	
+	
+	public int executeUpdate(String jpqlStatement, Map<String, Object> parameters) throws Exception {
+		Query q = this.getEntityManager()
+			.createQuery(jpqlStatement);
+		
+		for (Map.Entry<String, Object> p : parameters.entrySet()) {
+			q.setParameter(p.getKey(), p.getValue());
+		}
+		return q.executeUpdate();	
+	}
 }

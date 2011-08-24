@@ -54,8 +54,12 @@ public class FileUploadController {
     @ExceptionHandler(value=Exception.class) 
     protected String handleException(Exception e, HttpServletResponse response)  throws IOException {
 		response.setStatus(500);
-		response.getOutputStream().print(e.getLocalizedMessage());		 
-		return null; //e.getLocalizedMessage();
+		if (e.getCause() != null ) {
+			response.getOutputStream().print(e.getCause().getLocalizedMessage());	
+		} else {
+			response.getOutputStream().print(e.getLocalizedMessage());		
+		}			 
+		return null;
 	}
     
 	public WebApplicationContext getWebappContext() {

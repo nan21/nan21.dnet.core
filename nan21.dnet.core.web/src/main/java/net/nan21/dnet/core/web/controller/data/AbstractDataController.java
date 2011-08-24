@@ -17,6 +17,7 @@ import net.nan21.dnet.core.security.SessionUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.WebApplicationContext;
 
 @Controller
@@ -77,10 +78,15 @@ public class AbstractDataController {
 		this.webappContext = webappContext;
 	}
 
+	@ExceptionHandler(value=Exception.class) 
 	protected String handleException(Exception e, HttpServletResponse response)  throws IOException {
 		response.setStatus(500);
-		response.getOutputStream().print(e.getLocalizedMessage());		 
-		return ""; //e.getLocalizedMessage();
+		if (e.getCause() != null ) {
+			response.getOutputStream().print(e.getCause().getLocalizedMessage());	
+		} else {
+			response.getOutputStream().print(e.getLocalizedMessage());		
+		}		 
+		return null; //e.getLocalizedMessage();
 	}
 
 	protected void sendFile(File file, ServletOutputStream stream) throws IOException {  

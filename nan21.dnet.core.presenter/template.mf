@@ -28,6 +28,7 @@ Import-Package:
  javax.persistence;version="[2.0,2.1)",
  org.eclipse.persistence.jpa;version="[2.1,2.4)",
  org.eclipse.persistence.jpa;version="[2.1,2.4)",
+ org.slf4j;version="[1.0,2.0]",
  org.codehaus.jackson;version="[1.4,2.0)",
  org.codehaus.jackson.type;version="[1.4,2.0)",
  org.codehaus.jackson.map;version="[1.4,2.0)",

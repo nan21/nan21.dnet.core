@@ -8,10 +8,16 @@ import java.util.Map;
 import javax.persistence.Query;
 
 import org.eclipse.persistence.config.QueryHints;
+import org.eclipse.persistence.queries.FetchGroup;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
  
 public class QueryBuilderWithJpql<F, P> extends AbstractQueryBuilder<F, P> {
 
+	final static Logger logger = LoggerFactory.getLogger(QueryBuilderWithJpql.class);
+
+	
 	protected String defaultWhere;
 	protected StringBuffer where;
 	
@@ -53,6 +59,7 @@ public class QueryBuilderWithJpql<F, P> extends AbstractQueryBuilder<F, P> {
 		beforeBuildQueryStatement();
 		String qs = onBuildQueryStatement();
 		afterBuildQueryStatement(qs);
+		logger.info("JQPL data: {}",qs);
 		return qs;
 	}
 	/**
@@ -99,6 +106,7 @@ public class QueryBuilderWithJpql<F, P> extends AbstractQueryBuilder<F, P> {
 		beforeBuildCountStatement();
 		String qs = onBuildCountStatement();
 		afterBuildCountStatement(qs);
+		logger.info("JQPL count: {}",qs);
 		return qs;		
 	}
 	protected void beforeBuildCountStatement() throws Exception {
@@ -236,10 +244,10 @@ public class QueryBuilderWithJpql<F, P> extends AbstractQueryBuilder<F, P> {
 		this.customFilterItems.put(key, value);
 	}
 	private void bindFilterParams(Query q) throws Exception {
-
+		logger.debug("Binding filter params..." );
 		if (this.defaultFilterItems != null) {
 			for (String key : this.defaultFilterItems.keySet()) {
-	            Object value = this.defaultFilterItems.get(key);
+	            Object value = this.defaultFilterItems.get(key);	            
 	            if (value instanceof java.lang.String) {
 	                q.setParameter(key, ((String) value).replace('*', '%'));
 	            } else {
@@ -257,33 +265,43 @@ public class QueryBuilderWithJpql<F, P> extends AbstractQueryBuilder<F, P> {
                 }
             }
         }   
-        
-        /*Method[] methods = this.getParamClass().getDeclaredMethods();
-        for (Method m : methods) {
-        	if (m.getName().startsWith("get")) {
-                String fn = StringUtils.uncapitalize(m.getName().substring(3));
-                //fn = fn.substring(0, 1).toLowerCase() + fn.substring(1);
-                Object fv = m.invoke(params);
-                q.setParameter(fn, fv);
-            }
-        }*/
+  
     }
+	
+	protected void addFetchGroup(Query q) {
+		logger.debug("Adding fetchGroup..." );
+		FetchGroup fg = new FetchGroup("default");
+		fg.setShouldLoad(true);
+		
+		if (this.descriptor.getRefPaths() != null) {
+			Map<String, String> refPaths = this.descriptor.getRefPaths();
+			Iterator<String> it = refPaths.keySet().iterator();
+			while(it.hasNext()) {
+				String p = it.next();
+				fg.addAttribute(refPaths.get(p));	
+			}
+			q.setHint(QueryHints.FETCH_GROUP, fg);
+		}
+		
+	}
 	
 	public Query createQuery() throws Exception {
 		String jpql = this.buildQueryStatement();
 		Query q =  this.em.createQuery(jpql);
 		if (this.descriptor.getNestedFetchJoins() != null) {
-			Iterator<String> it = this.descriptor.getNestedFetchJoins().keySet().iterator();
+			Map<String, String> nestedFetchJoins = this.descriptor.getNestedFetchJoins();
+			Iterator<String> it = nestedFetchJoins.keySet().iterator();
 			while(it.hasNext()) {
 				String p = it.next();
-				String type = this.descriptor.getNestedFetchJoins().get(p);
+				String type = nestedFetchJoins.get(p);
 				if (type != null && type.equals("left")) {
 					q.setHint(QueryHints.LEFT_FETCH, p);
 				} else {
 					q.setHint(QueryHints.FETCH, p);
 				}			
 			}
-		}		
+		}
+		addFetchGroup(q);
 		bindFilterParams(q);		 		
 		return q;
 	}

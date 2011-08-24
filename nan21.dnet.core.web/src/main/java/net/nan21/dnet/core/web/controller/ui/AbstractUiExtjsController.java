@@ -13,6 +13,8 @@ import net.nan21.dnet.core.api.session.User;
 import net.nan21.dnet.core.security.SessionUser;
 import net.nan21.dnet.core.web.settings.UiExtjsSettings;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.servlet.mvc.AbstractController;
 
@@ -23,6 +25,7 @@ public abstract class AbstractUiExtjsController  extends AbstractController  {
 	private final static String COOKIE_NAME_LANG = "dnet-lang";
 	private final static String DEFAULT_LANG = "en";
 	
+	final static Logger logger = LoggerFactory.getLogger(AbstractUiExtjsController.class);
 	
 	protected IProductInfo productInfo;	 
 	protected String jspName;
@@ -33,12 +36,14 @@ public abstract class AbstractUiExtjsController  extends AbstractController  {
 	  
 	protected void _prepare(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
-		
+		 
 		String server = request.getServerName();
 		int port = request.getServerPort();
 		String contextPath = request.getContextPath();
 		String path = request.getServletPath();
  
+		logger.info("Handling request for ui.extjs: {}", request.getPathInfo());
+		
 		String userUsername = "";
 		String userDisplayName = "";
 		String userClientCode = "";

@@ -2,7 +2,6 @@ package net.nan21.dnet.core.web.controller.workflow;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -77,7 +76,11 @@ public class AbstractWorkflowController {
 	@ExceptionHandler(value=Exception.class) 
     protected String handleException(Exception e, HttpServletResponse response)  throws IOException {
 		response.setStatus(500);
-		response.getOutputStream().print(e.getLocalizedMessage());		 
+		if (e.getCause() != null ) {
+			response.getOutputStream().print(e.getCause().getLocalizedMessage());	
+		} else {
+			response.getOutputStream().print(e.getLocalizedMessage());		
+		}			 
 		return null; //e.getLocalizedMessage();
 	}
 	protected void sendFile(InputStream inputStream, ServletOutputStream stream) throws IOException {           

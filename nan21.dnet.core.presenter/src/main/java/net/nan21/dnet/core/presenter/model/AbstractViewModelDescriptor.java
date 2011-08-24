@@ -39,8 +39,9 @@ public class AbstractViewModelDescriptor<M> implements IViewModelDescriptor<M> {
 				StringBuffer sb = new StringBuffer();
 				for (int i=0; i<sf.length; i++) {
 					if (i>0) {
-						sb.append( sf[i].field() + "" + ((sf[i].desc())? " desc": ""  ));
+						sb.append(",");
 					}
+					sb.append("e."+this.refPaths.get( sf[i].field()) + "" + ((sf[i].desc())? " desc": ""  ));
 				}
 				this.jpqlDefaultSort = sb.toString();
 			} else {
@@ -61,20 +62,21 @@ public class AbstractViewModelDescriptor<M> implements IViewModelDescriptor<M> {
 					if (path.equals("")) {
 						path = field.getName();
 					}
-					this.refPaths.put(field.getName(), path);
-					int firstDot = path.indexOf(".");
-					if (firstDot > 0) {
-						if (firstDot == path.lastIndexOf(".")) {
-							this.fetchJoins.put("e."+path.substring(0, path.lastIndexOf(".")), field.getAnnotation(DsField.class).join());
-						} else {
-							this.nestedFetchJoins.put("e."+path.substring(0, path.lastIndexOf(".")), field.getAnnotation(DsField.class).join());
-						}						
-					}
+					if (field.getAnnotation(DsField.class).fetch()) {
+						this.refPaths.put(field.getName(), path);
+						int firstDot = path.indexOf(".");
+						if (firstDot > 0) {
+							if (firstDot == path.lastIndexOf(".")) {
+								this.fetchJoins.put("e."+path.substring(0, path.lastIndexOf(".")), field.getAnnotation(DsField.class).join());
+							} else {
+								this.nestedFetchJoins.put("e."+path.substring(0, path.lastIndexOf(".")), field.getAnnotation(DsField.class).join());
+							}						
+						}
+					}					
 					String jpqlFieldFilterRule = field.getAnnotation(DsField.class).jpqlFilter();
 					if(jpqlFieldFilterRule!=null && !"".equals(jpqlFieldFilterRule)) {
 						this.jpqlFieldFilterRules.put(field.getName(), jpqlFieldFilterRule);
-					}
-					 
+					}					 
 				}
 			}		 
 		}

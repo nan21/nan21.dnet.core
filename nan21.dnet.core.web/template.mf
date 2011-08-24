@@ -16,6 +16,14 @@ Import-Package:
  net.nan21.dnet.core.api.service;version="[1.0.0.M1,1.0.0.M1]",
  net.nan21.dnet.core.api.marshall;version="[1.0.0.M1,1.0.0.M1]",
  net.nan21.dnet.core.security;version="[1.0.0.M1,1.0.0.M1]",
+ org.activiti.engine;version="[5.6,6.0)",
+ org.activiti.engine.impl;version="[5.6,6.0)",
+ org.activiti.engine.impl.pvm;version="[5.6,6.0)",
+ org.activiti.engine.impl.util;version="[5.6,6.0)",
+ org.activiti.engine.impl.util.json;version="[5.6,6.0)",
+ org.activiti.engine.repository;version="[5.6,6.0)",
+ org.activiti.engine.runtime;version="[5.6,6.0)",
+ org.activiti.engine.impl.bpmn.diagram;version="[5.6,6.0)",
  org.springframework.security.config;version="[3.0,3.1)",
  org.springframework.security.core;version="[3.0,3.1)",
  org.springframework.security.web;version="[3.0,3.1)",
@@ -38,6 +46,7 @@ Import-Package:
  org.springframework.osgi.compendium.config;version="[1.2.1,1.2.1]",
  org.eclipse.virgo.web.dm;version="[2.0,4.0]",
  org.codehaus.jackson.map;version="[1.4,2.0)",
+ org.slf4j;version="[1.0,2.0]",
  javax.persistence;version="[2.0,2.1)",
  javax.persistence.criteria;version="[2.0,2.1)"
 Export-Package: net.nan21.dnet.core.web,net.nan21.dnet.core.web.controller,net.nan21.dnet.core.web.controller.data,net.nan21.dnet.core.web.controller.workflow,net.nan21.dnet.core.web.controller.upload,net.nan21.dnet.core.web.controller.session,net.nan21.dnet.core.web.controller.ui,net.nan21.dnet.core.web.result,net.nan21.dnet.core.web.settings

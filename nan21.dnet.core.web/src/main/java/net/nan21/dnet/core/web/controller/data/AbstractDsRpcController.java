@@ -68,8 +68,7 @@ public class AbstractDsRpcController<M, P>
 			}
 			
 		} catch(Exception e) {
-			 this.handleException(e, response);
-			 return null;
+			return this.handleException(e, response);
 		} finally {
 			this.finishRequest();
 		}
@@ -107,10 +106,7 @@ public class AbstractDsRpcController<M, P>
 			
 			service.rpcFilter(rpcName, filter, params);
 			IActionResultRpcFilter result = this.packRpcFilterResult(filter, params); 
-			return marshaller.writeResultToString(result);
-		} catch(Exception e) {
-			 this.handleException(e, response);
-			 return null;
+			return marshaller.writeResultToString(result);		
 		} finally {
 			this.finishRequest();
 		}
