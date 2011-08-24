@@ -28,16 +28,19 @@ import org.springframework.web.context.WebApplicationContext;
 public class AbstractWorkflowController {
 
 	@Autowired
+	protected ProcessEngine processEngine;
+	@Autowired
 	protected WebApplicationContext webappContext;
 	protected final static int FILE_TRANSFER_BUFFER_SIZE = 4 * 1024;
 	
 	public ProcessEngine getProcessEngine() {
-		//if (this.workflowEngine == null ) {
-			return (ProcessEngine)this.getWebappContext().getBean("osgiActivitiProcessEngine");
-		//}
-    	//return this.workflowEngine ;			 
+		return this.processEngine;		 
     }
 	
+	public void setProcessEngine(ProcessEngine processEngine) {
+		this.processEngine = processEngine;
+	}
+
 	protected void init() {
 		// getIdentityService().setAuthenticatedUserId(ar.getCurrentUserId());
 	}
