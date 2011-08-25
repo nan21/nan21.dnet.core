@@ -679,7 +679,9 @@ Ext.extend(dnet.base.AbstractDc, Ext.util.Observable, {
 			this.setCurrentRecord(this.store.getAt(0));
 			this.setSelectedRecords([this.record]);
 		} else {
-			this.setCurrentRecord(null);
+			if (this.getRecord()) {
+				this.setCurrentRecord(null);
+			}			
 		}		
 	}
 	
@@ -1057,12 +1059,7 @@ Ext.extend(dnet.base.AbstractDc, Ext.util.Observable, {
   				 this.record = rec;
   				 changed=(oldrec!=null);
   			}  		
-  		if(changed) { 
-  			if ( this.isCurrentRecordDirty() ) {
-  				this.actions.doCopy.setDisabled(true);
-  			} else {
-  				this.actions.doCopy.setDisabled(false);
-  			}
+  		if(changed) {   			 
   			this.fireEvent('afterCurrentRecordChange', { dc: this, newRecord: rec, oldRecord:oldrec, newIdx:idx , status: this.getRecordStatus() });
   			this.fireEvent("recordChanged" , { dc: this, record: this.record, state: this.getRecordState(), status:this.getRecordStatus(), oldRecord: oldrec, newIdx:idx } );
   			//this.fireEvent('recordStatusChanged', { dc: this, record: rec, status: this.getRecordStatus() });  			
