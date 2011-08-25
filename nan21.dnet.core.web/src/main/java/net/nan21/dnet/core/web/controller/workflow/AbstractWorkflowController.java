@@ -10,6 +10,8 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.nan21.dnet.core.web.controller.ui.AbstractUiExtjsController;
+
 import org.activiti.engine.FormService;
 import org.activiti.engine.HistoryService;
 import org.activiti.engine.IdentityService;
@@ -21,6 +23,8 @@ import org.activiti.engine.impl.util.json.JSONObject;
 import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.SerializationConfig;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.WebApplicationContext;
@@ -32,6 +36,8 @@ public class AbstractWorkflowController {
 	@Autowired
 	protected WebApplicationContext webappContext;
 	protected final static int FILE_TRANSFER_BUFFER_SIZE = 4 * 1024;
+	
+	final static Logger logger = LoggerFactory.getLogger(AbstractWorkflowController.class);
 	
 	public ProcessEngine getProcessEngine() {
 		return this.processEngine;		 
@@ -78,12 +84,13 @@ public class AbstractWorkflowController {
 	
 	@ExceptionHandler(value=Exception.class) 
     protected String handleException(Exception e, HttpServletResponse response)  throws IOException {
+		logger.error("Exception during workflow execution: ", e.getStackTrace());
 		response.setStatus(500);
 		if (e.getCause() != null ) {
-			response.getOutputStream().print(e.getCause().getLocalizedMessage());	
+			response.getOutputStream().print(e.getCause().getMessage());			
 		} else {
-			response.getOutputStream().print(e.getLocalizedMessage());		
-		}			 
+			response.getOutputStream().print(e.getMessage());		
+		}			 		
 		return null; //e.getLocalizedMessage();
 	}
 	protected void sendFile(InputStream inputStream, ServletOutputStream stream) throws IOException {           
