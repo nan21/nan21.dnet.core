@@ -84,7 +84,8 @@ public class AbstractDataController {
 
 	@ExceptionHandler(value=Exception.class) 
 	protected String handleException(Exception e, HttpServletResponse response)  throws IOException {
-		logger.error("Exception occured during transactional request execution: ", e.getStackTrace());
+		logger.error("Exception occured during transactional request execution: ", e.getCause());
+		e.printStackTrace();
 		response.setStatus(500);		
 		if (e.getCause() != null ) {
 			response.getOutputStream().print(e.getCause().getMessage());	
