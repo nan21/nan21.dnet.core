@@ -13,7 +13,10 @@ import net.nan21.dnet.core.api.session.Params;
 import net.nan21.dnet.core.api.session.Session;
 import net.nan21.dnet.core.api.session.User;
 import net.nan21.dnet.core.security.SessionUser;
+import net.nan21.dnet.core.web.controller.workflow.AbstractWorkflowController;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -28,6 +31,7 @@ public class AbstractDataController {
 	@Autowired
 	protected WebApplicationContext webappContext;
 
+	final static Logger logger = LoggerFactory.getLogger(AbstractDataController.class);
 	protected final static int FILE_TRANSFER_BUFFER_SIZE = 4 * 1024;
 	
 	protected void prepareRequest() throws Exception  {
@@ -80,11 +84,12 @@ public class AbstractDataController {
 
 	@ExceptionHandler(value=Exception.class) 
 	protected String handleException(Exception e, HttpServletResponse response)  throws IOException {
-		response.setStatus(500);
+		logger.error("Exception occured during transactional request execution: ", e.getStackTrace());
+		response.setStatus(500);		
 		if (e.getCause() != null ) {
-			response.getOutputStream().print(e.getCause().getLocalizedMessage());	
+			response.getOutputStream().print(e.getCause().getMessage());	
 		} else {
-			response.getOutputStream().print(e.getLocalizedMessage());		
+			response.getOutputStream().print(e.getMessage());		
 		}		 
 		return null; //e.getLocalizedMessage();
 	}

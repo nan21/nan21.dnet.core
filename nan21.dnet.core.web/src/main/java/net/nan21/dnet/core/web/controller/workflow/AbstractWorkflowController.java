@@ -84,7 +84,7 @@ public class AbstractWorkflowController {
 	
 	@ExceptionHandler(value=Exception.class) 
     protected String handleException(Exception e, HttpServletResponse response)  throws IOException {
-		logger.error("Exception during workflow execution: ", e.getStackTrace());
+		logger.error("Exception occured during workflow execution: ", e.getStackTrace());
 		response.setStatus(500);
 		if (e.getCause() != null ) {
 			response.getOutputStream().print(e.getCause().getMessage());			
