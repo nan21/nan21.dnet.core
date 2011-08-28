@@ -3,12 +3,19 @@ Ext.ns("dnet.base");
 dnet.base.DcCancelCommand = Ext.extend(dnet.base.AbstractDcSyncCommand, {
 
 	onExecute : function() {
-		this.discardChildrenChanges();
-		this.discardRecordChanges();
-		//this.dc.onCleanDc();
+		var dc = this.dc;
+		
+		if (dc.store.getCount() == 0 ) {
+			 
+			this.discardChanges();
+		} else {
+			this.discardChildrenChanges();
+			this.discardChanges();
+		} 
+		dc.updateActionsState();  
 	},
 
-	discardRecordChanges : function() {
+	discardChanges : function() {
 		var dc = this.dc;
 //		if (dc.record.phantom) {
 //			dc.store.remove(dc.record);

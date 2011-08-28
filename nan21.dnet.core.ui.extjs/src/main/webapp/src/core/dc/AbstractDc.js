@@ -127,8 +127,8 @@ dnet.base.AbstractDc = function(config) {
 	/**
 	 * Data-control status status changed: record state change: clean / dirty
 	 * record status change: new record / persisted
-	 */
-	"statusChange",
+	 
+	"statusChange",*/
 
 	/**
 	 * Selected records changed
@@ -201,40 +201,48 @@ Ext.extend(dnet.base.AbstractDc, Ext.util.Observable, {
 		}, this);
 
 		this.store.on("update", function() {
-			dnet.base.Logger.debug("dnet.base.AbstractDc -> store.on.update event handler");
-			this.fireEvent("statusChange", {
-				dc : this
-			})
+			dnet.base.Logger.debug("dnet.base.AbstractDc ("+this.dsName+") -> store.on.update event handler");
+			this.updateActionsState();
 		}, this);
 
 		this.store.on("add", function(store, records, index) {
-			dnet.base.Logger.debug("dnet.base.AbstractDc -> store.on.add event handler");
-			this.setSelectedRecords(records);
+			dnet.base.Logger.debug("dnet.base.AbstractDc ("+this.dsName+") -> store.on.add event handler");
+			//this.setSelectedRecords(records);
+			//this.updateActionsState();
 		}, this);
 
 		this.store.on("remove", function(store, records, index) {
-			dnet.base.Logger.debug("dnet.base.AbstractDc -> store.on.remove event handler");
-			this.doDefaultSelection();
+			dnet.base.Logger.debug("dnet.base.AbstractDc ("+this.dsName+") -> store.on.remove event handler");
+			//this.updateActionsState(); 
+			//this.doDefaultSelection();
+			
 		}, this);
-
-		// this.store.on("save", this.onStoreDataChange, this);
-		// this.store.on("datachanged", this.onStoreDataChange, this);
-
+		this.store.on("save", function(store, batch, data) {
+			dnet.base.Logger.debug("dnet.base.AbstractDc ("+this.dsName+") -> store.on.remove event handler");
+			//this.updateActionsState(); 
+			//this.doDefaultSelection();
+			
+		}, this);
+		this.store.on("clear", function(store, records) {
+			dnet.base.Logger.debug("dnet.base.AbstractDc ("+this.dsName+") -> store.on.remove event handler");
+			//this.updateActionsState(); 
+			//this.doDefaultSelection();
+			
+		}, this);
 		// after the store is loaded apply an initial selection
 		if (this.afterStoreLoadDoDefaultSelection) {
 			this.store.on("load", function(store, records, options) {
-				if (this.afterStoreLoadDoDefaultSelection)
-					this.doDefaultSelection();
+				if (this.afterStoreLoadDoDefaultSelection) {
+					//this.doDefaultSelection();
+				}					
 			}, this);
 		}
 
 		// invoke the action state update whenever necessary
 		this.on("recordChange", this.updateActionsState, this );
+		this.on("selectionChange", this.updateActionsState, this );
 
-		this.on("statusChange", this.updateActionsState, this );
-
-		//this.enableBubble('updateActionsState');
-		//this.enableBubble('statusChange');
+ 
 		
 		// ************************************************
 		// to be reviewd
@@ -250,19 +258,13 @@ Ext.extend(dnet.base.AbstractDc, Ext.util.Observable, {
 			if (action == Ext.data.Api.actions.destroy) {
 				this.afterDoSaveSuccess();
 			}
-
+			this.updateActionsState(); 
 			//this.onStoreDataChange();
 
 		}, this);
 
 	},
-
-//	getBubbleTarget : function() { 
-//        if (this.dcContext ) {
-//            return this.dcContext.parentDc;
-//        }
-//        return null;
-//    },
+ 
 	
 	/** ************************************************************************* */
 	/** *********************** Public API ****************************** */
@@ -476,11 +478,11 @@ Ext.extend(dnet.base.AbstractDc, Ext.util.Observable, {
 	 */
 	doDefaultSelection : function() {
 		if (this.store.getCount() > 0) {
-			this.setRecord(this.store.getAt(0));
-			this.setSelectedRecords( [ this.record ]);
+			//this.setRecord(this.store.getAt(0));			
+			this.setSelectedRecords( [ this.store.getAt(0) ]);
 		} else {
 			// force reset
-			this.setRecord(null);
+			//this.setRecord(null);
 			this.setSelectedRecords( []);
 		}
 	},
@@ -500,10 +502,17 @@ Ext.extend(dnet.base.AbstractDc, Ext.util.Observable, {
 	setSelectedRecords : function(recArray) {
 		if (this.selectedRecords != recArray) {
 			this.selectedRecords = recArray;
+			if (recArray.length == 0 ) {
+				this.setRecord(null);				
+			} else {
+				if (this.record != recArray[0]) {
+					this.setRecord(recArray[0]);		
+				}
+			}			
 			this.fireEvent('selectionChange', {
 				dc : this
 			});
-		}
+		} 
 	},
 
 	/**

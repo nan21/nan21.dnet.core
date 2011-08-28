@@ -53,22 +53,22 @@ dnet.base.AbstractDcvGrid = Ext.extend(Ext.grid.GridPanel, {
 					"rowselect" : {
 						scope : this,
 						fn : function(sm, idx, rec) {
-							if (this._controller_.getRecord() != rec) {
-								this._controller_.setRecord(idx);
-							}
+//							if (this._controller_.getRecord() != rec) {
+//								this._controller_.setRecord(idx);
+//							}
 						}
 					},
 					"rowdeselect" : {
 						scope : this,
 						fn : function(sm, idx, rec) {
-							if (this._controller_.getRecord() == rec) {
-								if (sm.getSelections().length > 0) {
-									this._controller_.setRecord(sm
-											.getSelections()[0]);
-								} else {
-									this._controller_.setRecord(null);
-								}
-							}
+//							if (this._controller_.getRecord() == rec) {
+//								if (sm.getSelections().length > 0) {
+//									this._controller_.setRecord(sm
+//											.getSelections()[0]);
+//								} else {
+//									this._controller_.setRecord(null);
+//								}
+//							}
 						}
 					},
 					"selectionchange" : {
@@ -247,7 +247,7 @@ dnet.base.AbstractDcvGrid = Ext.extend(Ext.grid.GridPanel, {
 			if (this.selModel.getCount() == 0) {
 				this.selModel.selectFirstRow();
 			} else {
-				this._controller_.setRecord(this.selModel.getSelected());
+				//this._controller_.setRecord(this.selModel.getSelected());
 				this._controller_.setSelectedRecords(this.selModel
 						.getSelections());
 			}

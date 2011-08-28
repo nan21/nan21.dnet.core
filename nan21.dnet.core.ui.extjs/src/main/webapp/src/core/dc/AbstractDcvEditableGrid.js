@@ -50,16 +50,16 @@ dnet.base.AbstractDcvEditableGrid = Ext.extend( Ext.grid.EditorGridPanel, {
 			,sm: new Ext.grid.RowSelectionModel({singleSelect: false
 				,listeners: {
 		             "rowselect": {scope: this,fn: function (sm, idx, rec) { 
-					 		if(this._controller_.getRecord() != rec) {this._controller_.setRecord(idx);}
+					 		//if(this._controller_.getRecord() != rec) {this._controller_.setRecord(idx);}
 					 	} } //, buffer:100
 		            ,"rowdeselect": {scope: this,fn: function (sm, idx, rec) {  
-			         		if(this._controller_.getRecord() == rec) {
-			         		  if (sm.getSelections().length > 0 ) {
-			         		    this._controller_.setRecord(sm.getSelections()[0]);
-			         		  } else {
-			         		    this._controller_.setRecord(null);
-			         		  }
-			         		}
+//			         		if(this._controller_.getRecord() == rec) {
+//			         		  if (sm.getSelections().length > 0 ) {
+//			         		    this._controller_.setRecord(sm.getSelections()[0]);
+//			         		  } else {
+//			         		    this._controller_.setRecord(null);
+//			         		  }
+//			         		}
 			         	}  }// , buffer:100
 		            ,"selectionchange": {scope: this,fn:function(sm) { 
 		            		this._controller_.setSelectedRecords( sm.getSelections() );
@@ -176,7 +176,7 @@ dnet.base.AbstractDcvEditableGrid = Ext.extend( Ext.grid.EditorGridPanel, {
         	 if (this.selModel.getCount() == 0 ) {
             	 this.selModel.selectFirstRow();
              } else {
-            	 this._controller_.setRecord(this.selModel.getSelected());
+            	 //this._controller_.setRecord(this.selModel.getSelected());
             	 this._controller_.setSelectedRecords(this.selModel.getSelections());
              }
          }
