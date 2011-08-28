@@ -1,1119 +1,998 @@
 Ext.ns("dnet.base");
 dnet.base.AbstractDc = function(config) {
+
+	// properties
+
 	this.ds = null;
 	this.dsName = "";
-	this.dcContext = null;
-	this.multiEdit = false;
-	this.afterStoreLoadDoDefaultSelection = true;
-	this.bindedFormViews = null;
-	this.bindedFilterViews = null;
+
 	/**
-	 *  External control to actions. 
-	 *  Actions can be blocked from outside bootstrapping the standard check-flow.
-	 *  */
-	this.semaphors = {
-		 canDoQuery: true
-		,canDoSave:true, canDoNew:true, canDoCopy:true, canDoEdit:true
-		,canDoDeleteCurrent:true, canDoDeleteSelection:true 				
+	 * List with action names implemented
+	 */
+	this.actionNames = null;
+
+	/**
+	 * Action instances. Used to create control widgets in UI to be triggered by
+	 * user, mainly toolbar items.
+	 */
+	this.actions = null;
+
+	/**
+	 * Executable functions. Implements workers for API methods of a
+	 * data-control.
+	 */
+	this.commands = null;
+
+	/**
+	 * Allow to edit more than one record at once.
+	 */
+	this.multiEdit = false;
+
+	/**
+	 * Filter model instance. Has the same signature as the data model instance
+	 */
+	this.filter = null;
+
+	/**
+	 * Data model instance.
+	 */
+	this.record = null;
+
+	/**
+	 * Data model signature - fields definition.
+	 */
+	this.recordFields = null;
+
+	/**
+	 * Data model signature - record constructor.
+	 */
+	this.RecordModel = null;
+
+	/**
+	 * Parameters model instance
+	 */
+	this.params = null;
+
+	/**
+	 * Parameters model signature - fields definition.
+	 */
+	this.paramFields = null;
+
+	/**
+	 * Parameters model signature - record constructor.
+	 */
+	this.ParamModel = null;
+
+	/**
+	 * Keep track of the selected records
+	 */
+	this.selectedRecords = [];
+
+	/**
+	 * Various runtime configuration properties.
+	 */
+	this.tuning = {
+
+		/**
+		 * Number of milliseconds before execute the query. Used if value>0
+		 */
+		queryDelay : 150
+
+		/**
+		 * Page-size for a query
+		 */
+		,
+		fetchSize : 30
 	};
-	
+
+	/**
+	 * Children data-controls, similar to a `HasMany` association.
+	 */
+	this.children = [];
+
+	/**
+	 * Parent data-control, similar to a `BelongsTo` association.
+	 */
+	this.parent = null;
+
+	/**
+	 * Array with form-views registered to data-binding.
+	 */
+	this.bindedFormViews = null;
+
+	/**
+	 * Array with filter-views registered to data-binding.
+	 */
+	this.bindedFilterViews = null;
+
+	/**
+	 * Should apply a default selection on store load ?
+	 */
+	this.afterStoreLoadDoDefaultSelection = true;
+
+	/**
+	 * Local reference to the data-source store.
+	 */
 	this.store = null;
 
-	this.filter = null;
-	//this.filterFields = null;
-	//this.FilterModel = null;
+	Ext.apply(this, config);
 
-    this.record = null;
-	this.recordFields = null;
-	this.RecordModel = null;
-	
-    this.params = null;
-	this.paramFields = null;
-	this.paramModel = null;
+	this.addEvents(
 
-	this.actions = null;
-	
-    this._trl_ = null;
-	this.selectedRecords = [];
-	this.children = [];
-	this.tuning = {
-			 queryDelay: 150 // nr of milliseconds before execute the query. Used if value>0	
-			,fetchSize: 30
-		};
-	
+	/**
+	 * Record instance changed
+	 */
+	"recordChange",
 
-      Ext.apply(this,config);
-    	this.addEvents(
-    			"cleanDc",
-			"beforeDoQuery", "afterDoQuery"
-			,"afterDoQuerySuccess","afterDoQueryFailure"
-			,"beforeDoNew" ,  "afterDoNew"
-			,"beforeDoCopy" ,  "afterDoCopy"
-			,"beforeDoSave", "afterDoSave"
-			,"afterDoSaveSuccess","afterDoSaveFailure"
-				
-			,"beforeDoDelete", "afterDoDelete"
-			,"beforeDoDeleteSelection", "afterDoDeleteSelection"
-	
-			,"semaphorChanged"
-			,"onEdit", "dirtyRecord"
+	/**
+	 * Data-control status status changed: record state change: clean / dirty
+	 * record status change: new record / persisted
+	 */
+	"statusChange",
 
-			,"discardChanges"	
-	             ,'beforeCurrentRecordChange','afterCurrentRecordChange'
-	             ,'initComplete', 'afterSelectedRecordsChanged'
-                 ,'inContextOfNewRecord'    ,'inContextOfEditRecord'
-              ,'propertyChange' ,'parameterValueChanged'    );
-    this.recordFields = this.ds.recordFields;
-    this.paramFields = this.ds.paramFields;
-    this.store = new Ext.data.Store({			        
-        remoteSort:true,pruneModifiedRecords:true
-	       ,proxy: new Ext.data.HttpProxy({
-			        api: Dnet.dsAPI(this.ds.dsName,"json")
-			    })
-			,reader: new Ext.data.JsonReader(
-			   		 {totalProperty: 'totalCount',idProperty: 'id',root: 'data',messageProperty: 'message'}
-					,Ext.data.Record.create(this.recordFields))
-	       , writer: new Ext.data.JsonWriter({ encode: true, writeAllFields: true })  
-	       , autoSave: false 
-	       , listeners: { "exception":{ fn:  this.proxyException, scope:this }}
-	    })
-      dnet.base.AbstractDc.superclass.constructor.call(this, config);
-      this._setup_();
+	/**
+	 * Selected records changed
+	 */
+	"selectionChange"
+
+	);
+	this.recordFields = this.ds.recordFields;
+	this.paramFields = this.ds.paramFields;
+
+	this.dcContext = null;
+	this._trl_ = null;
+
+	this.store = new Ext.data.Store( {
+		remoteSort : true,
+		pruneModifiedRecords : true,
+		proxy : new Ext.data.HttpProxy( {
+			api : Dnet.dsAPI(this.ds.dsName, "json")
+		}),
+		reader : new Ext.data.JsonReader( {
+			totalProperty : 'totalCount',
+			idProperty : 'id',
+			root : 'data',
+			messageProperty : 'message'
+		}, Ext.data.Record.create(this.recordFields)),
+		writer : new Ext.data.JsonWriter( {
+			encode : true,
+			writeAllFields : true
+		}),
+		autoSave : false,
+		listeners : {
+			"exception" : {
+				fn : this.proxyException,
+				scope : this
+			}
+		}
+	});
+	dnet.base.AbstractDc.superclass.constructor.call(this, config);
+	this._setup_();
 };
 
 Ext.extend(dnet.base.AbstractDc, Ext.util.Observable, {
 
-	 _setup_: function () {
-		this.dsName=this.ds.dsName;
-	 	//this.FilterModel = Ext.data.Record.create( this.recordFields );
-	 	this.RecordModel = Ext.data.Record.create( this.recordFields );
-	 	this.ParamModel = Ext.data.Record.create( this.paramFields );
-        this.setFilter(new this.RecordModel(this.emptyFilterData(this.recordFields ) ));
-        this.setParams(new this.RecordModel(this.emptyParamData(this.paramFields ) ));
-        if (this.afterStoreLoadDoDefaultSelection) {
-        	this.store.on("load",function(store, records, options) {if (this.afterStoreLoadDoDefaultSelection) this._doDefaultSelection_();},this);
-        }   
-        this.store.on("beforeload", function(store, options) {if(this.isDirty()) {return false;} } , this);
-        this.store.on("write",function(store, action, result, tx, records) {
-			if (action == Ext.data.Api.actions.update ) {
-               this.afterDoSaveSuccess();
-			}
-			if (action == Ext.data.Api.actions.create ) {
-               this.afterDoSaveSuccess();
-			}
-			if (action == Ext.data.Api.actions.destroy ) {
-               this.afterDoSaveSuccess();
-			}
-			if(!this.isCurrentRecordDirty())  {
-				this.fireEvent("cleanRecord",this);
-				this.fireEvent("recordChanged", { dc: this, record: this.record, state: 'clean', status:this.getRecordStatus(), oldRecord: null }); 
-			}
-			if(!this.isAnyChildDirty()) {
-				this.onCleanDc();
-			}
-		},this);
-        this.actions = dnet.base.DcActionsFactory.createActions(this);
-        this.on("recordChanged" , function(evnt) {dnet.base.DcActionsStateManager.applyStatesOnRecordChange(evnt);}, this);
-        this.on("cleanDc", function(evnt) {dnet.base.DcActionsStateManager.onCleanDc(evnt);});	
-        
-	}
+	_setup_ : function() {
 
-	,addChild: function (dc) {
-		this.children[this.children.length] = dc;
-		dc.on("dirtyRecord", this.dataModified, this);
-		dc.on("cleanRecord", function() {  if(!this.isCurrentRecordDirty())  {this.fireEvent("cleanRecord",this);}  }, this);
-	}
-	,addBindedView: function(id, type) {
-		 if (type == "edit-form") {
-			 this.addBindedFormView(id);
-		 }
-		 if (type == "filter-form") {
-			 this.addBindedFilterView(id);
-		 }
-	}
-	,addBindedFormView: function(id) {
-		if (this.bindedFormViews == null) {
-			this.bindedFormViews=[];
-		}
-		this.bindedFormViews[this.bindedFormViews.length]=id;
+		this.dsName = this.ds.dsName;
+
+		this.RecordModel = Ext.data.Record.create(this.recordFields);
+		this.ParamModel = Ext.data.Record.create(this.paramFields);
+		this.setFilter(new this.RecordModel(this
+				.emptyFilterData(this.recordFields)));
+		this.setParams(new this.ParamModel(this
+				.emptyParamData(this.paramFields)));
+
+		this.actionNames = dnet.base.DcActionsFactory.actionNames();
+		this.commandNames = dnet.base.DcCommandFactory.commandNames();
+		
+		this.actions = dnet.base.DcActionsFactory.createActions(this,
+				this.actionNames);
+		this.commands = dnet.base.DcCommandFactory.createCommands(this,
+				this.commandNames.concat(this.actionNames));
 		 
-		this.on('afterCurrentRecordChange', 
-				function(evnt) { 
-					var newRecord = evnt.newRecord; 
-					var oldRecord = evnt.oldRecord; 
-					var newIdx = evnt.newIdx;
-					if(newRecord) {								 
-						Ext.BindMgr.unbind(oldRecord);    						
-						Ext.BindMgr.bind(newRecord, this.bindedFormViews);								 
-					} else {								 
-						Ext.BindMgr.unbind(oldRecord);								 
-					} }, this );
-	    
-	}
-	,addBindedFilterView: function(id) {
-		if (this.bindedFilterViews == null) {
-			this.bindedFilterViews=[];
+		// register listeners
+
+		// if Query action is disabled do not execute it.
+		this.store.on("beforeload", function(store, options) {
+			if (dnet.base.DcActionsStateManager.isQueryDisabled(this)) {
+				return false;
+			}
+		}, this);
+
+		this.store.on("update", function() {
+			dnet.base.Logger.debug("dnet.base.AbstractDc -> store.on.update event handler");
+			this.fireEvent("statusChange", {
+				dc : this
+			})
+		}, this);
+
+		this.store.on("add", function(store, records, index) {
+			dnet.base.Logger.debug("dnet.base.AbstractDc -> store.on.add event handler");
+			this.setSelectedRecords(records);
+		}, this);
+
+		this.store.on("remove", function(store, records, index) {
+			dnet.base.Logger.debug("dnet.base.AbstractDc -> store.on.remove event handler");
+			this.doDefaultSelection();
+		}, this);
+
+		// this.store.on("save", this.onStoreDataChange, this);
+		// this.store.on("datachanged", this.onStoreDataChange, this);
+
+		// after the store is loaded apply an initial selection
+		if (this.afterStoreLoadDoDefaultSelection) {
+			this.store.on("load", function(store, records, options) {
+				if (this.afterStoreLoadDoDefaultSelection)
+					this.doDefaultSelection();
+			}, this);
 		}
-		this.bindedFilterViews[this.bindedFilterViews.length]=id;
-		 
-		this.on('filterChanged', 
-				function(evnt) { 
-					var newFilter = evnt.newFilter; 
-					var oldFilter = evnt.oldFilter; 					 
-					if(newFilter) {								 
-						Ext.BindMgr.unbind(oldFilter);    						
-						Ext.BindMgr.bind(newFilter, this.bindedFilterViews);								 
-					} else {								 
-						Ext.BindMgr.unbind(oldFilter);								 
-					} }, this );	    
-	}
-	,emptyRecordData: function(fd) {
-       var r = {};
-       r["clientId"] = getApplication().getSession().client.id;
-	   for(var i=0;i<fd.length; i++) {
-	   	 if (fd[i]["name"] != "clientId") {
-	         if (fd[i]["type"]=="string") {
-	          	r[fd[i]["name"]] = "";
-			  } else {
-			  	if (fd[i]["type"]=="boolean") {
-					r[fd[i]["name"]] = false;
+
+		// invoke the action state update whenever necessary
+		this.on("recordChange", this.updateActionsState, this );
+
+		this.on("statusChange", this.updateActionsState, this );
+
+		//this.enableBubble('updateActionsState');
+		//this.enableBubble('statusChange');
+		
+		// ************************************************
+		// to be reviewd
+		// ************************************************
+
+		this.store.on("write", function(store, action, result, tx, records) {
+			if (action == Ext.data.Api.actions.update) {
+				this.afterDoSaveSuccess();
+			}
+			if (action == Ext.data.Api.actions.create) {
+				this.afterDoSaveSuccess();
+			}
+			if (action == Ext.data.Api.actions.destroy) {
+				this.afterDoSaveSuccess();
+			}
+
+			//this.onStoreDataChange();
+
+		}, this);
+
+	},
+
+//	getBubbleTarget : function() { 
+//        if (this.dcContext ) {
+//            return this.dcContext.parentDc;
+//        }
+//        return null;
+//    },
+	
+	/** ************************************************************************* */
+	/** *********************** Public API ****************************** */
+	/** ************************************************************************* */
+
+	/**
+	 * Execute query to fetch data.
+	 */
+
+	doQuery : function() {
+		this.commands.doQuery.execute();
+	},
+
+	/**
+	 * Clear query criteria -> reset filter to its initial state
+	 */
+	doClearQuery : function() {
+		this.commands.doClearQuery();
+	},
+
+	/**
+	 * Create a new record.
+	 */
+	doNew : function() {
+		this.commands.doNew.execute();
+	},
+
+	/**
+	 * Copy the current record reset its ID and make it current record ready to
+	 * be edited.
+	 */
+	doCopy : function() {
+		this.commands.doCopy.execute();
+	},
+
+	/**
+	 * Save changes.
+	 */
+	doSave : function() {
+		this.commands.doSave.execute();
+	},
+
+	/**
+	 * Discard changes to the last clean state.
+	 */
+	doCancel : function() {
+		this.commands.doCancel.execute();
+	},
+
+	/**
+	 * Delete current record.
+	 */
+	doDelete : function() {
+		this.commands.doDelete.execute();
+	},
+
+	/**
+	 * Delete selected records.
+	 */
+	doDeleteSelection : function() {
+		this.commands.doDelete.execute();
+	},
+
+	/**
+	 * Reload the current record data from server
+	 */
+	doReloadRecord : function() {
+		this.commands.doReloadRec.execute();
+	},
+
+	/**
+	 * Deprecated: Alias for doReloadRecord Shall be removed
+	 */
+	doRefreshCurrent : function() {
+		this.doReloadRecord();
+	},
+
+	/**
+	 * Call a server side RPC with the filter instance
+	 */
+	doRpcFilter : function(options) {
+		this.commands.doRpcFilter.execute(options);
+	},
+	/**
+	 * Deprecated: Alias for doRpcFilter Shall be removed
+	 */
+	doServiceFilter : function(serviceName, specs) {
+		this.doRpcFilter(Ext.apply(specs||{}, {name:serviceName}));
+	},
+	
+	
+	/**
+	 * Call a server side RPC with the model instance
+	 */
+	doRpcData : function(options) {
+		this.commands.doRpcData.execute(options);
+	},
+	/**
+	 * Deprecated: Alias for doRpcData Shall be removed
+	 */
+	doService: function(options) {
+		this.doRpcData(Ext.apply(specs, {name:serviceName}));
+	},
+	
+	
+	/**
+	 * Set the previous available record as current record.
+	 */
+	setPreviousAsCurrent : function() {
+		this.commands.doPrevRec.execute();
+	},
+
+	/**
+	 * Set the next available record as current record.
+	 */
+	setNextAsCurrent : function() {
+		this.commands.doNextRec.execute();
+	},
+
+	// --------------- other ---------------
+
+	/**
+	 * Filter validator. It should get interceptor functions chain injected by
+	 * the filter forms.
+	 */
+	isFilterValid : function() {
+		return true;
+	},
+
+	/**
+	 * Record validator. It should get interceptor functions chain injected by
+	 * the editor forms.
+	 */
+	isRecordValid : function() {
+		return true;
+	},
+
+	/**
+	 * Get current record state: dirty/clean
+	 */
+	getRecordState : function() {
+		if (this.record)
+			return (this.isCurrentRecordDirty()) ? 'dirty' : 'clean';
+		else
+			return null;
+	},
+
+	/**
+	 * Get current record status: insert/update
+	 */
+	getRecordStatus : function() {
+		if (this.record)
+			return (this.record.phantom) ? 'insert' : 'update';
+		else
+			return null;
+	},
+
+	/**
+	 * Update the enabled/disabled states of the actions. Delegate the work to
+	 * the states manager.
+	 */
+	updateActionsState : function() {		
+		dnet.base.DcActionsStateManager.applyStates(this);
+		this.fireEvent("updateActionsState", {dc:this});
+	},
+
+	/**
+	 * Returns true if any of the child data-controls is dirty
+	 */
+	isAnyChildDirty : function() {
+		var dirty = false, l = this.children.length;
+		for ( var i = 0; i < l; i++) {
+			if (this.children[i].isDirty()) {
+				dirty = true;
+				i = l;
+			}
+		}
+		return dirty;
+	},
+
+	/**
+	 * Returns true if the current record instance is dirty
+	 */
+	isCurrentRecordDirty : function() {
+		if (this.record && this.record.dirty) {
+			return true;
+		}
+		return false;
+	},
+
+	/**
+	 * Returns true if the store is dirty. Is relevant only if
+	 * <code>multiEdit=true</code>
+	 */
+	isStoreDirty : function() {
+		return this.store.getModifiedRecords().length > 0
+				|| this.store.removed.length > 0;
+	},
+
+	/**
+	 * Returns true if the data-control is dirty i.e either some the own records
+	 * or any child
+	 */
+	isDirty : function() {
+		return this.isCurrentRecordDirty() || this.isStoreDirty()
+				|| this.isAnyChildDirty();
+	},
+
+	/**
+	 * Default initial selection
+	 */
+	doDefaultSelection : function() {
+		if (this.store.getCount() > 0) {
+			this.setRecord(this.store.getAt(0));
+			this.setSelectedRecords( [ this.record ]);
+		} else {
+			// force reset
+			this.setRecord(null);
+			this.setSelectedRecords( []);
+		}
+	},
+
+	// --------------------- getters / setters ----------------------
+
+	/**
+	 * Returns the selected records
+	 */
+	getSelectedRecords : function() {
+		return this.selectedRecords;
+	},
+
+	/**
+	 * Set the selected records
+	 */
+	setSelectedRecords : function(recArray) {
+		if (this.selectedRecords != recArray) {
+			this.selectedRecords = recArray;
+			this.fireEvent('selectionChange', {
+				dc : this
+			});
+		}
+	},
+
+	/**
+	 * Returns the filter instance
+	 */
+	getFilter : function() {
+		return this.filter;
+	},
+
+	/**
+	 * Set the filter instance
+	 */
+	setFilter : function(v) {
+		var of = this.filter;
+		this.filter = v;
+		this.fireEvent("filterChanged", {
+			dc : this,
+			newFilter : this.filter,
+			oldFilter : of
+		});
+	},
+
+	/**
+	 * Get filter property value
+	 */
+	getFilterValue : function(n) {
+		return this.filter.get(n);
+	},
+
+	/**
+	 * Set filter property value
+	 */
+	setFilterValue : function(n, v, silent) {
+		var ov = this.filter.get(n);
+		if (ov != v) {
+			this.filter.set(n, v);
+			if (!(silent === true)) {
+				this.fireEvent("filterValueChanged", this, name, ov, v);
+			}
+		}
+	},
+
+	/**
+	 * Get the parameters instance
+	 */
+	getParams : function() {
+		return this.params;
+	},
+
+	/**
+	 * Set the parametr instance
+	 */
+	setParams : function(v) {
+		this.params = v;
+	},
+
+	/**
+	 * Get parameter property value
+	 */
+	getParamValue : function(n) {
+		return this.params.get(n);
+	},
+
+	/**
+	 * Set parameter property value
+	 */
+	setParamValue : function(n, v, silent) {
+		var ov = this.params.get(n);
+		if (ov != v) {
+			this.params.set(n, v);
+			if (!(silent === true)) {
+				this.fireEvent("parameterValueChanged", this, name, ov, v);
+			}
+		}
+	},
+
+	/**
+	 * Returns the current record
+	 */
+	getRecord : function() {
+		return this.record;
+	},
+
+	/**
+	 * Template method to override with instance specific logic in case is
+	 * necessary
+	 */
+	beforeSetRecord : function() {
+		return true;
+	},
+
+	/**
+	 * Set current record
+	 */
+	setRecord : function(p) {
+		if (!this.multiEdit) {
+			if (this.isCurrentRecordDirty()) {
+				throw (dnet.base.DcExceptions.DIRTY_DATA_FOUND);
+			}
+		}
+		p = (p != undefined) ? p : null;
+		if (this.beforeSetRecord() == false) {
+			return false;
+		}
+		var rec, idx, changed = false, oldrec;
+		if (p != null) {
+			if (Ext.isNumber(p)) {
+				idx = p;
+				rec = this.store.getAt(p);
+				if (rec && (this.record != rec)) {
+					oldrec = this.record;
+					this.record = rec;
+					changed = true;
+				}
+			} else {
+				rec = p;
+				idx = this.store.indexOf(p);
+				if (rec && (this.record != rec)) {
+					oldrec = this.record;
+					this.record = rec;
+					changed = true;
+				}
+			}
+		} else {
+			oldrec = this.record;
+			this.record = rec;
+			changed = (oldrec != null);
+
+		}
+		if (changed) {
+			// this.addToSelectedRecords(rec);
+			this.fireEvent('recordChange', {
+				dc : this,
+				newRecord : rec,
+				oldRecord : oldrec,
+				newIdx : idx,
+				status : this.getRecordStatus()
+			});
+		}
+	},
+
+	/**
+	 * Return parent data-control
+	 */
+	getParent : function() {
+		return (this.dcContext)?this.dcContext.parentDc:null;
+	},
+
+	/**
+	 * Return children data-controls list
+	 */
+	getChildren : function() {
+		return this.children;
+	},
+
+	/** ************************************************************************* */
+	/** *********************** Internal API ****************************** */
+	/** ************************************************************************* */
+
+	/**
+	 * Initialize a new record instance with empty data. TODO: needs to be
+	 * reviewed
+	 */
+	emptyRecordData : function(fd) {
+		var r = {};
+		r["clientId"] = getApplication().getSession().client.id;
+		for ( var i = 0; i < fd.length; i++) {
+			if (fd[i]["name"] != "clientId") {
+				if (fd[i]["type"] == "string") {
+					r[fd[i]["name"]] = "";
+				} else {
+					if (fd[i]["type"] == "boolean") {
+						r[fd[i]["name"]] = false;
+					} else {
+						r[fd[i]["name"]] = null;
+					}
+				}
+			}
+		}
+		return r;
+	},
+
+	/**
+	 * Initialize a new filter instance with empty data. TODO: needs to be
+	 * reviewed
+	 */
+	emptyFilterData : function(fd) {
+		var r = {};
+		r["clientId"] = getApplication().getSession().client.id;
+		for ( var i = 0; i < fd.length; i++) {
+			if (fd[i]["name"] != "clientId") {
+				if (fd[i]["type"] == "string") {
+					r[fd[i]["name"]] = "";
 				} else {
 					r[fd[i]["name"]] = null;
 				}
-			  }
-		 }
-	   }
-	   return r;
-	}
-    ,emptyFilterData: function(fd) {
-       var r = {};
-       r["clientId"] = getApplication().getSession().client.id;
-	   for(var i=0;i<fd.length; i++) {
-		  if (fd[i]["name"] != "clientId") {
-		  	if (fd[i]["type"]=="string") {
-	        	r[fd[i]["name"]] = "";
-		  	} else {
+			}
+		}
+		return r;
+	},
+
+	/**
+	 * Initialize a new parameters instance with empty data. TODO: needs to be
+	 * reviewed
+	 */
+	emptyParamData : function(fd) {
+		var r = {};
+		for ( var i = 0; i < fd.length; i++) {
+			if (fd[i]["type"] == "string") {
+				r[fd[i]["name"]] = "";
+			} else {
 				r[fd[i]["name"]] = null;
-		  	}
-		  }
-	   }
-	   return r;
-	}
-	,emptyParamData: function(fd) {
-       var r = {};
-	   for(var i=0;i<fd.length; i++) {
-		  	if (fd[i]["type"]=="string") {
-	        	r[fd[i]["name"]] = "";
-		  	} else {
-				r[fd[i]["name"]] = null;
-		  	}
-	   }
-	   return r;
-	}
-	,beforeCurrentRecordChange: function() {return true;}  
-	,isFilterValid: function() { return true;}  
-	,isRecordValid: function() {
-		return true;
-	}
-	,getRecordState: function() {
-		if(this.record) 
-			return (this.isCurrentRecordDirty() )?'dirty':'clean';
-		else 
-			return null;
-	}
-	,getRecordStatus: function() {
-		if(this.record) 
-			return (this.record.phantom)?'insert':'update';
-		else 
-			return null;
-	}
-	,dataModified: function() {		 
-		this.fireEvent("dirtyRecord",this); /* to be removed in favor of recordChanged  */
-		this.fireEvent("recordChanged" , { dc: this, record: this.record, state: this.getRecordState(), status:this.getRecordStatus(), oldRecord: null } );		 
-	}
- 
-	/****************************************************************************/
-	/*************************  Public API   *******************************/
-	/****************************************************************************/
-		 
-	/*************************  actions  *******************************/
-	  
-	,doClearQuery: function(){ this.doClearQueryImpl(); }	  
-		,beforeDoClearQuery: function() {this.fireEvent("beforeDoClearQuery",this); return true;}	
-		,afterDoClearQuery: function() {this.fireEvent("afterDoClearQuery",this);}
-		
-	,doQuery: function(){ this.doQueryImpl();  }
-		,beforeDoQuery: function() {this.fireEvent("beforeDoQuery",this); return true;}	
-		,afterDoQuery: function() {this.fireEvent("afterDoQuery",this);}		
-			,afterDoQuerySuccess: function() {this.fireEvent("afterDoQuerySuccess",this);}
-			,afterDoQueryFailure: function() {this.fireEvent("afterDoQueryFailure",this);}
+			}
+		}
+		return r;
+	},
 
-    ,doRefreshCurrent: function(){ this.doRefreshCurrentImpl();  }
-		,beforeDoRefreshCurrent: function() {this.fireEvent("beforeDoRefreshCurrent",this); return true;}
-		,afterDoRefreshCurrent: function() {this.fireEvent("afterDoRefreshCurrent",this);}
-
-	/*
-	,doGetSummaries: function(){ this.doGetSummariesImpl(); }	
-		,beforeDoGetSummaries: function() {this.fireEvent("beforeDoGetSummaries",this); return true;}	
-		,afterDoGetSummaries: function() {this.fireEvent("afterDoGetSummaries",this);}
-			,afterDoGetSummariesSuccess: function() {this.fireEvent("afterDoGetSummariesSuccess",this);}
-			,afterDoGetSummariesFailure: function() {this.fireEvent("afterDoGetSummariesFailure",this);}
-		*/
-
-	,doNew: function(){ this.doNewImpl();}	  
-		,beforeDoNew: function() {this.fireEvent("beforeDoNew",this);}	
-		,afterDoNew: function() {this.fireEvent("afterDoNew",this); }
-
-	,doCopy: function(){ this.doCopyImpl(); }	  
-		,beforeDoCopy: function() {this.fireEvent("beforeDoCopy",this);}	
-		,afterDoCopy: function() {this.fireEvent("afterDoCopy",this); }			
-		 
-		
-	,doSave: function(){ this.doSaveImpl();}
-		,beforeDoSave: function() {this.fireEvent("beforeDoSave",this);}	
-		,afterDoSave: function() {this.fireEvent("afterDoSave",this);}
-        	,afterDoSaveSuccess: function() {this.fireEvent("afterDoSaveSuccess",this); }
-			,afterDoSaveFailure: function() {this.fireEvent("afterDoSaveFailure",this);}
-
-	,doDelete: function(){ this.doDeleteImpl(); }
-		,beforeDoDelete: function() {this.fireEvent("beforeDoDelete", this);}
-		,afterDoDelete: function() {this.fireEvent("afterDoDelete",this);}
-
-		
-	,doDeleteSelection: function(){ this.doDeleteSelectionImpl(); }
-		,beforeDoDeleteSelection: function() {this.fireEvent("beforeDoDeleteSelection", this);}
-		,afterDoDeleteSelection: function() {this.fireEvent("afterDoDeleteSelection",this);}	
-
-	,doInitNewRecordLocal: function(){  }
-	,doInitNewRecordRemote: function(){  }		
-		,afterDoInitNewRecordRemoteSuccess: function() {this.fireEvent("afterDoInitNewRecordRemoteSuccess",this);}
-		,afterDoInitNewRecordRemoteFailure: function() {this.fireEvent("afterDoInitNewRecordRemoteFailure",this);}
-
-
-	,doInitNewFilterLocal: function(){  }
-	,doInitNewFilterRemote: function(){  }		
-		,afterDoInitNewFilterRemoteSuccess: function() {this.fireEvent("afterDoInitNewFilterRemoteSuccess",this);}
-		,afterDoInitNewFilterRemoteFailure: function() {this.fireEvent("afterDoInitNewFilterRemoteFailure",this);}
-	
-
-	/*************************************  SERVICE DATA  ******************************************************/
-			
 	/**
-	 * Call a service on the data-source. 
-	 * @param serviceName: The name of the data-source service to be executed.
-	 * @param specs: Specifications regarding the execution of this task.
-	 *  Attributes of specs:
-	 * 		<li> modal: Boolean flag to show a progress bar during the execution of the request to block user interaction. 
-	 * 		<li> context: object with variables you may need in your callbacks
-	 * 		<li> callbacks: Object specifying callback functions to be invoked 
-	 * 		<li> stream: It is a stream type call  
-	 * 	Attributes of callbacks :  
-	 * 		<li>successFn: Callback to execute on successful execution</li>
-	 * 		<li>successScope: scope of the successFn</li>
-	 * 		<li>silentSuccess: do not fire the afterDoServiceSuccess event</li>
-	 * 		<li>failureFn: callback to execute on failure</li>
-	 * 		<li>failureScope: scope of the failureFn</li>
-	 * 		<li>silentFailure: do not fire the <code>afterDoServiceFailure</code> event</li>
-	 * 	The arguments passed to these functions are described in the afterDoServiceSuccess() 
-	 * and afterDoServiceFailure() methods which actually invoke them. 
-	 *  
+	 * Default proxy-exception handler
 	 */
-    ,doService: function(serviceName, specs){     	 
-    	if (Ext.isEmpty(this.record)) {
- 	       throw(dnet.base.DcExceptions.NO_CURRENT_RECORD );
- 		}    	
-    	var s = specs || {};
-    	if (this.beforeDoService(serviceName, s) === false) {
-    		return;
-    	}    	
-    	var p = {data: Ext.encode(this.record.data ) };
-		p[Dnet.requestParam.SERVICE_NAME_PARAM]= serviceName;
-		p["rpcType"]= "data";
-		if (s.modal) {
-			Ext.Msg.progress('Working...');
-	    }
-		Ext.Ajax.request({
-			url: Dnet.dsAPI(this.dsName, ((specs.stream)?"stream":"json")).service, method:"POST", params: p
-			,success :this.onAjaxRequestSuccess
-			,failure: this.onAjaxRequestFailure	
-			,scope: this
-			,options: { action: "doService", serviceName: serviceName, specs: s }
-		});
-		this.afterDoService(serviceName, specs);    	    
-    }
-    ,doServiceUrl: function(serviceName, specs){     	 
-    	if (Ext.isEmpty(this.record)) {
- 	       throw(dnet.base.DcExceptions.NO_CURRENT_RECORD );
- 		}    	
-    	var s = specs || {};
-    	if (this.beforeDoService(serviceName, s) === false) {
-    		return;
-    	}    	
-    	var p = {data: Ext.encode(this.record.data ) };
-		p[Dnet.requestParam.SERVICE_NAME_PARAM]= serviceName;
-		p["rpcType"]= "data";
-		if (s.modal) {
-			Ext.Msg.progress('Working...');
-	    }
-		return Dnet.dsAPI(this.dsName, "stream").service + "&"+ Ext.urlEncode(p);//+  method:"POST", params: p   	    
-    } 
-    /**
-     * Template method invoked before a service is executed, meant to be overwritten. 
-     * Execution can be canceled with a <code>return false</code>. 
-     * Parameters are the same as in <code>doService</code>.
-     */
-	,beforeDoService: function(serviceName, specs) {
-		return true;
-	}
-	
-	/**
-	 * Template method invoked after a service call is sent to server, meant to be overwritten.
-	 * ATTENTION! The result is not available yet, the AJAX request has just been sent to server.
-	 * Parameters are the same as in <code>doService</code>.
-	 */
-	,afterDoService: function(serviceName, specs) {}
-    
-	/**
-     * Method called after a successful execution of the service. 
-     * Successful means that server returns a 200 status code and the success attribute in the returning json is set to true.
-     * It first invokes the task specific callback then fires the associated event. 
-     * Both type of callback methods ( the one specified in callbacks and the handler of the fired event)
-	 * will be passed the data-control instance (this) followed by the arguments of this method.
-     * If you need a certain callback to be executed each time, attach an event listener to the fired event. 
-     * @param response: the server response object as received from the ajax request
-     * @param serviceName: the name of service which has been executed.
-	 * @param specs: Specifications regarding the execution of this task. @See doService() 
-	 * 
-     */
-	,afterDoServiceSuccess: function(response, serviceName, specs) {
-		Ext.Msg.hide();
-		var s=specs||{};
-		if (s.callbacks && s.callbacks.successFn) {
-			s.callbacks.successFn.call(s.callbacks.successScope||this, this, response, serviceName, specs);
-		}		
-		if (!(s.callbacks && s.callbacks.silentSuccess === true)) {
-			this.fireEvent("afterDoServiceSuccess", this, response, serviceName, s);
-		}			
-	}
-	/**
-     * Method called when execution of the service fails. 
-     * Failure means that server returns anything except a 200 class status code or the success attribute in the returning json is set to false.
-     * It first invokes the task specific callback then fires the associated event. 
-     * Both type of callback methods ( the one specified in callbacks and the handler of the fired event)
-	 * will be passed the data-control instance (this) followed by the arguments of this method.
-     * If you need a certain callback to be executed each time, attach an event listener to the fired event. 
-     * @param response: the server response object as received from the ajax request
-     * @param serviceName: the name of service which has been executed.
-	 * @param specs: Specifications regarding the execution of this task. @See doService() 
-     */
-	,afterDoServiceFailure: function(response, serviceName, specs) {
-		var s=specs||{};
-		if (s.callbacks && s.callbacks.failureFn) {
-			s.callbacks.failureFn.call(s.callbacks.failureScope||this, this, response, serviceName, specs);
-		}		
-		if (!(specs.callbacks && specs.callbacks.silentFailure === true)) {
-			this.fireEvent("afterDoServiceFailure", this, response, serviceName, specs);
-		}				
-	}
+	proxyException : function(dataProxy, type, action, options, response, arg) {
+		if (type == "response") {
+			this.showAjaxErrors(response, options);
+		} else {
+			if (!Ext.isEmpty(response.message)) {
+				alert(response.message.substr(0, 1500));
+			} else {
+				alert("Exception returned by server with no message.");
+			}
+		}
+	},
 
-	
-	/*************************************  SERVICE FILTER  ******************************************************/
-	
-	
 	/**
-	 * Call a service on the data-source filter. 
-	 * @param serviceName: The name of the data-source service to be executed.
-	 * @param specs: Specifications regarding the execution of this task.
-	 *  Attributes of specs:
-	 * 		<li> modal: Boolean flag to show a progress bar during the execution of the request to block user interaction. 
-	 * 		<li> context: object with variables you may need in your callbacks
-	 * 		<li> callbacks: Object specifying callback functions to be invoked 
-	 * 	Attributes of callbacks :  
-	 * 		<li>successFn: Callback to execute on successful execution</li>
-	 * 		<li>successScope: scope of the successFn</li>
-	 * 		<li>silentSuccess: do not fire the afterDoServiceFilterSuccess event</li>
-	 * 		<li>failureFn: callback to execute on failure</li>
-	 * 		<li>failureScope: scope of the failureFn</li>
-	 * 		<li>silentFailure: do not fire the <code>afterDoServiceFailure</code> event</li>
-	 * 	The arguments passed to these functions are described in the afterDoServiceFilterSuccess() 
-	 * and afterDoServiceFilterFailure() methods which actually invoke them. 
-	 *  
+	 * Show errors to user. TODO: Externalize it as command.
 	 */
-    ,doServiceFilter: function(serviceName, specs){     	     	    
-    	var s = specs || {};
-    	if (this.beforeDoServiceFilter(serviceName, s) === false) {
-    		return;
-    	}    	
-    	var p = {data: Ext.encode(this.filter.data ) };
-		p[Dnet.requestParam.SERVICE_NAME_PARAM]= serviceName;
-		p["rpcType"]= "filter";
-		if (s.modal) {
-			Ext.Msg.progress('Working...');
-	    }
-		Ext.Ajax.request({
-			url: Dnet.dsAPI(this.dsName, "json").service, method:"POST", params: p
-			,success :this.onAjaxRequestSuccess
-			,failure: this.onAjaxRequestFailure	
-			,scope: this
-			,options: { action: "doServiceFilter", serviceName: serviceName, specs: s }
-		});
-		this.afterDoServiceFilter(serviceName, specs);    	    
-    }
-  
-    /**
-     * Template method invoked before a service is executed, meant to be overwritten. 
-     * Execution can be canceled with a <code>return false</code>. 
-     * Parameters are the same as in <code>doService</code>.
-     */
-	,beforeDoServiceFilter: function(serviceName, specs) {
-		return true;
-	}
-	
-	/**
-	 * Template method invoked after a service call is sent to server, meant to be overwritten.
-	 * ATTENTION! The result is not available yet, the AJAX request has just been sent to server.
-	 * Parameters are the same as in <code>doService</code>.
-	 */
-	,afterDoServiceFilter: function(serviceName, specs) {}
-    
-	/**
-     * Method called after a successful execution of the service. 
-     * Successful means that server returns a 200 status code and the success attribute in the returning json is set to true.
-     * It first invokes the task specific callback then fires the associated event. 
-     * Both type of callback methods ( the one specified in callbacks and the handler of the fired event)
-	 * will be passed the data-control instance (this) followed by the arguments of this method.
-     * If you need a certain callback to be executed each time, attach an event listener to the fired event. 
-     * @param response: the server response object as received from the ajax request
-     * @param serviceName: the name of service which has been executed.
-	 * @param specs: Specifications regarding the execution of this task. @See doService() 
-	 * 
-     */
-	,afterDoServiceFilterSuccess: function(response, serviceName, specs) {
-		Ext.Msg.hide();
-		var s=specs||{};
-		if (s.callbacks && s.callbacks.successFn) {
-			s.callbacks.successFn.call(s.callbacks.successScope||this, this, response, serviceName, specs);
-		}		
-		if (!(s.callbacks && s.callbacks.silentSuccess === true)) {
-			this.fireEvent("afterDoServiceFilterSuccess", this, response, serviceName, s);
-		}			
-	}
-	/**
-     * Method called when execution of the service fails. 
-     * Failure means that server returns anything except a 200 class status code or the success attribute in the returning json is set to false.
-     * It first invokes the task specific callback then fires the associated event. 
-     * Both type of callback methods ( the one specified in callbacks and the handler of the fired event)
-	 * will be passed the data-control instance (this) followed by the arguments of this method.
-     * If you need a certain callback to be executed each time, attach an event listener to the fired event. 
-     * @param response: the server response object as received from the ajax request
-     * @param serviceName: the name of service which has been executed.
-	 * @param specs: Specifications regarding the execution of this task. @See doService() 
-     */
-	,afterDoServiceFilterFailure: function(response, serviceName, specs) {
-		var s=specs||{};
-		if (s.callbacks && s.callbacks.failureFn) {
-			s.callbacks.failureFn.call(s.callbacks.failureScope||this, this, response, serviceName, specs);
-		}		
-		if (!(specs.callbacks && specs.callbacks.silentFailure === true)) {
-			this.fireEvent("afterDoServiceFilterFailure", this, response, serviceName, specs);
-		}				
-	}
-	
-	
-	
-	 /**
-	  * Default AJAX request failure handler. 
-	  */
-	,onAjaxRequestSuccess: function(response , options) {
-		Ext.MessageBox.hide(); var o = options.options || {};
-     	if (o.action) {
-     		if (o.action == "doQuery") {      			
-     			this.afterDoQueryFailure();
-     		}
-     		if (o.action == "doSave") {      			
-     			this.afterDoSaveFailure();
-     		}
-     		if (o.action == "doService") {
-     			this.afterDoServiceSuccess(response, o.serviceName, o.specs );
-     		}
-     		if (o.action == "doServiceFilter") {
-     			this.afterDoServiceFilterSuccess(response, o.serviceName, o.specs );
-     		}
-     	}      	
-	  }
-	
-	
-	 /**
-	  * Default AJAX request failure handler. 
-	  */
-	,onAjaxRequestFailure: function(response , options) {
+	showAjaxErrors : function(response, options) {
 		Ext.MessageBox.hide();
-		var msg, withDetails=false;
+		var msg, withDetails = false;
 		if (response.responseText) {
 			if (response.responseText.length > 2000) {
-				msg = response.responseText.substr(0,2000);
+				msg = response.responseText.substr(0, 2000);
 				withDetails = true;
 			} else {
-				msg = response.responseText ;
+				msg = response.responseText;
 			}
 		} else {
 			msg = "No response received from server.";
 		}
-		var alertCfg = { msg: msg, scope:this, icon: Ext.MessageBox.ERROR, buttons: {ok:'OK'} }  
+		var alertCfg = {
+			msg : msg,
+			scope : this,
+			icon : Ext.MessageBox.ERROR,
+			buttons : {
+				ok : 'OK'
+			}
+		}
 		if (withDetails) {
 			alertCfg.buttons['cancel'] = 'Details';
 			alertCfg['detailedMessage'] = response.responseText;
-		}		  
-      	Ext.Msg.show(alertCfg);
-      	var o = options.options || {};
-      	if (o.action) {
-      		if (o.action == "doQuery") {      			
-      			this.afterDoQueryFailure();
-      		}
-      		if (o.action == "doSave") {      			
-      			this.afterDoSaveFailure();
-      		}
-      		if (o.action == "doService") {
-      			this.afterDoServiceFailure(response, o.serviceName, o.specs );
-      		}
-      		if (o.action == "doServiceFilter") {
-      			this.afterDoServiceFilterFailure(response, o.serviceName, o.specs );
-      		}
-      	}      	
-	  }
-	   
-	
-	
-	
-	,_checkCanDoEdit_: function() {
-    	if (!this.semaphors.canDoEdit) return false;
-    	if (!this.multiEdit && !this.record ) {
-    		throw(dnet.base.DcExceptions.NO_CURRENT_RECORD );    		 
-    	}    	 
-    }
-	
-	,doEdit: function() {
-		this.onEdit();
-	}
-	,onEdit: function() {
-		this._checkCanDoEdit_();
-		this.fireEvent("onEdit",this);
-	}
+		}
+		Ext.Msg.show(alertCfg);
 
+	},
 
-	  /****************************************************************************/
-	  /*************************  API => getters-setters  *************************/
-	  /****************************************************************************/
-	
-	,setPreviousAsCurrent:
-		function(){this.setPreviousAsCurrentImpl();}			
-
-	,setNextAsCurrent:
-		function(){ this.setNextAsCurrentImpl(); }
-			
-
- 
-	,getSelectedRecords : 
-		function() { return this.selectedRecords; }
-	
-	,getRecord: function() { return this.record; }
-	,setRecord: function(p) {this.setCurrentRecordImpl(p);}
-	,getCurrentRecord: function() { return this.record; }
-	,setCurrentRecord: function(p) {this.setCurrentRecordImpl(p);}
-	
-	,getFilter: function()  { 	return this.filter ;  	}
-	,setFilter:	function(v)  { var of = this.filter;  this.filter = v; this.fireEvent("filterChanged", {dc:this, newFilter:this.filter,oldFilter:of});  }
-
-	,getFilterValue: function(n)  { 	return this.filter.get(n) ;  	}
-	,setFilterValue:	function(n,v,silent)  {
-	  var ov = this.filter.get(n);
-	  if (ov != v ) {
-	  	 this.filter.set(n,v);
-	  	 if(!(silent===true)) {
-	  		this.fireEvent("filterValueChanged", this, name, ov,v);
-	  	 }	  	 
- 	  }
-    }
-	
-	,getParams: function()  { 	return this.params ;  	}
-	,setParams:	function(v)  { this.params = v;  }
-
-    ,getParamValue: function(n)  { 	return this.params.get(n) ;  	}
-	,setParamValue:	function(n,v,silent)  {
-	  var ov = this.params.get(n);
-	  if (ov != v ) {
-	  	 this.params.set(n,v);
-	  	 if(!(silent===true)) {
-	  		this.fireEvent("parameterValueChanged", this, name, ov,v);
-	  	 }	  	 
- 	  }
-    }
-
-	,setSemaphor: function(name, value) {
-		this.semaphors[name] = value;
-		this.fireEvent("semaphorChanged", this, name, value);
-	}
-	  	
-	,setDcContext: function(dcCtx) {
-		this.dcContext = dcCtx;
-        this.dcContext.on("dataContextChanged", function(dctx) { 
-//        	if ( dctx.parentDc.getRecord() == null ) {        		
-//				return true;
-//        	}
-        	 
-        	dnet.base.DcActionsStateManager.applyStatesOnDataContextChanged({dc:this,ctx: dctx});
-			if (dctx.parentDc.getRecord() && dctx.parentDc.getRecord().phantom) { 
-				
-				this.fireEvent("inContextOfNewRecord", this); /* is this still useful ? */
-			}  else {
-                this.fireEvent("inContextOfEditRecord", this);/* is this still useful ? */
-			}
-		}  , this);
-	}
-  /****************************************************************************/
-  /*************************  IMPLEMENTATION => private functions *************/
-  /****************************************************************************/
-
-	,_doDefaultSelection_: function() {
-		if (this.store.getCount()>0) {
-			this.setCurrentRecord(this.store.getAt(0));
-			this.setSelectedRecords([this.record]);
-		} else {
-			if (this.getRecord()) {
-				this.setCurrentRecord(null);
-			}			
-		}		
-	}
-	
- 
 	/**
-	 * If new record delete it, otherwise undo changes from last commit 
+	 * Fire a "recordChange" event
+	 * 
+	 * dataModified : function() { // this.fireEvent("dirtyRecord", this);
+	 * this.fireEvent("recordChange", { dc : this, record : this.record, state :
+	 * this.getRecordState(), status : this.getRecordStatus(), oldRecord : null
+	 * }); },
 	 */
-	,discardRecordChanges: function () {
-		if (this.multiEdit) {
-			var s =this.store; s.rejectChanges(); s.each(function(r) {if(r.phantom){s.remove(r);}},s );
-		} else {
-			if(this.record) {this.record.reject();}
-			  if (this.record.phantom ) {
-			      this.store.remove(this.record);
-			      this.setCurrentRecord(null);
-			   }
-		}
-		/*TODO: remove the cleanRecord in favor of recordChanged */ 
-		this.fireEvent("cleanRecord" , this); 
-		this.fireEvent("recordChanged" , { dc: this, record: this.record, state: this.getRecordState(), status:this.getRecordStatus(), oldRecord: null  } );
-	}
-	,discardChildrenChanges: function () {
-		var dirty = false, l = this.children.length;
-		for(var i=0; i< l; i++) {
-			if (this.children[i].isStoreDirty()) {
-				this.children[i].discardChanges();
-			}
-		}
-	}
-	,discardChanges: function () {
-		this.discardChildrenChanges();
-		this.discardRecordChanges();
-		this.onCleanDc();
-	}
+	/**
+	 * Register a child data-control
+	 */
+	addChild : function(dc) {
+		this.children[this.children.length] = dc;
+		//dc.on("recordChange", this.updateActionsState, this);
+	},
 
-	,setPreviousAsCurrent:
-		function(){
-			if (this.selectedRecords.length<=1) {
-				var crtIdx = this.store.indexOf(this.record);
-				if( --crtIdx < 0) {
-					throw(dnet.base.DcExceptions.NAVIGATE_BEFORE_FIRST);
-				} else {
-					this.setRecord( this.store.getAt(crtIdx));						   
-				}
+	/**
+	 * Register a data-control view for data binding management
+	 */
+	addBindedView : function(id, type) {
+		if (type == "edit-form") {
+			this.addBindedFormView(id);
+		}
+		if (type == "filter-form") {
+			this.addBindedFilterView(id);
+		}
+	},
+
+	/**
+	 * Register a data-control form-view for data binding.
+	 */
+	addBindedFormView : function(id) {
+		if (this.bindedFormViews == null) {
+			this.bindedFormViews = [];
+		}
+		this.bindedFormViews[this.bindedFormViews.length] = id;
+
+		this.on('recordChange', function(evnt) {
+			var newRecord = evnt.newRecord;
+			var oldRecord = evnt.oldRecord;
+			var newIdx = evnt.newIdx;
+			if (newRecord) {
+				Ext.BindMgr.unbind(oldRecord);
+				Ext.BindMgr.bind(newRecord, this.bindedFormViews);
 			} else {
-				var crtIdx = this.selectedRecords.indexOf(this.record);
-				if( --crtIdx < 0) {
-					throw(dnet.base.DcExceptions.NAVIGATE_BEFORE_FIRST);
-				} else {
-					this.setRecord( this.selectedRecords[crtIdx]);						   
-				}
+				Ext.BindMgr.unbind(oldRecord);
 			}
-		}
+		}, this);
 
-	,setNextAsCurrentImpl:
-		function(){
-			if (this.selectedRecords.length<=1) {
-				var crtIdx = this.store.indexOf(this.record);
-				if( ++crtIdx >= this.store.getCount() ) {
-					throw(dnet.base.DcExceptions.NAVIGATE_AFTER_LAST);
-				} else {
-					this.setRecord( this.store.getAt(crtIdx));						   
-				}
+	},
+
+	/**
+	 * Register a data-control filter-form view for data binding.
+	 */
+	addBindedFilterView : function(id) {
+		if (this.bindedFilterViews == null) {
+			this.bindedFilterViews = [];
+		}
+		this.bindedFilterViews[this.bindedFilterViews.length] = id;
+
+		this.on('filterChanged', function(evnt) {
+			var newFilter = evnt.newFilter;
+			var oldFilter = evnt.oldFilter;
+			if (newFilter) {
+				Ext.BindMgr.unbind(oldFilter);
+				Ext.BindMgr.bind(newFilter, this.bindedFilterViews);
 			} else {
-				var crtIdx = this.selectedRecords.indexOf(this.record); 			 
-				if(++crtIdx >= this.selectedRecords.length) {
-				    throw(dnet.base.DcExceptions.NAVIGATE_AFTER_LAST);
-				} else {
-					this.setRecord( this.selectedRecords[crtIdx]);
-				 }
-			}			
-		}
-
-	,isAnyChildDirty: function() {
-		var dirty = false, l = this.children.length;		 
-		for(var i=0; i< l; i++) {
-			if (this.children[i].isCurrentRecordDirty()) {
-				dirty=true; i=l;
+				Ext.BindMgr.unbind(oldFilter);
 			}
-		} 
-		return dirty;
-	}
-	,isCurrentRecordDirty:function() {
-		if (this.record && this.record.dirty) { return true;}		
-		return false;
+		}, this);
+	},
+
+	// ************************************************
+	// to be reviewd
+	// ************************************************
+
+	afterDoQuerySuccess : function() {
+		this.fireEvent("afterDoQuerySuccess", this);
+	},
+	afterDoQueryFailure : function() {
+		this.fireEvent("afterDoQueryFailure", this);
 	}
 
-	,isStoreDirty: function() {
-		return this.store.getModifiedRecords().length>0 || this.store.removed.length>0;
+	,
+	beforeDoSave : function() {
+		this.fireEvent("beforeDoSave", this);
+	},
+	afterDoSave : function() {
+		this.fireEvent("afterDoSave", this);
+	},
+	afterDoSaveSuccess : function() {
+		this.fireEvent("afterDoSaveSuccess", this);
+	},
+	afterDoSaveFailure : function() {
+		this.fireEvent("afterDoSaveFailure", this);
 	}
-	
-	,isDirty: function() {
-		return this.isCurrentRecordDirty() || this.isStoreDirty() || this.isAnyChildDirty();
+
+	,
+	doEdit : function() {
+		this.onEdit();
+	},
+	onEdit : function() {
+
+		this.fireEvent("onEdit", this);
 	}
-	,isRecordChangeAllowed: function() {
-		return  (!( this.isAnyChildDirty() || ( (!this.multiEdit) && this.isCurrentRecordDirty()) ));
+
+	/**
+	 * ************ SERVICE DATA *********************
+	 */
+
+	,
+	doServiceUrl : function(serviceName, specs) {
+		if (Ext.isEmpty(this.record)) {
+			throw (dnet.base.DcExceptions.NO_CURRENT_RECORD);
+		}
+		var s = specs || {};
+		if (this.beforeDoService(serviceName, s) === false) {
+			return;
+		}
+		var p = {
+			data : Ext.encode(this.record.data)
+		};
+		p[Dnet.requestParam.SERVICE_NAME_PARAM] = serviceName;
+		p["rpcType"] = "data";
+		if (s.modal) {
+			Ext.Msg.progress('Working...');
+		}
+		return Dnet.dsAPI(this.dsName, "stream").service + "&"
+				+ Ext.urlEncode(p);// + method:"POST", params: p
 	}
-	 
-	,onCleanDc: function() {
-		this.fireEvent('cleanDc',{dc:this});	
+
+	/**
+	 * Default AJAX request failure handler.
+	 */
+	,
+	onAjaxRequestSuccess : function(response, options) {
+		Ext.MessageBox.hide();
+		var o = options.options || {};
+		if (o.action) {
+			if (o.action == "doQuery") {
+				this.afterDoQueryFailure();
+			}
+			if (o.action == "doSave") {
+				this.afterDoSaveFailure();
+			}
+			if (o.action == "doService") {
+				this.afterDoServiceSuccess(response, o.serviceName, o.specs);
+			}
+			if (o.action == "doServiceFilter") {
+				this.afterDoServiceFilterSuccess(response, o.serviceName,
+						o.specs);
+			}
+		}
+	}
+
+	/**
+	 * Default AJAX request failure handler.
+	 */
+	,
+	onAjaxRequestFailure : function(response, options) {
+
+		var o = options.options || {};
+		if (o.action) {
+			if (o.action == "doQuery") {
+				this.afterDoQueryFailure();
+			}
+			if (o.action == "doSave") {
+				this.afterDoSaveFailure();
+			}
+			if (o.action == "doService") {
+				this.afterDoServiceFailure(response, o.serviceName, o.specs);
+			}
+			if (o.action == "doServiceFilter") {
+				this.afterDoServiceFilterFailure(response, o.serviceName,
+						o.specs);
+			}
+		}
+	}
+
+	,
+	setDcContext : function(dcCtx) {
+		this.dcContext = dcCtx;
+		this.dcContext.on("dataContextChanged",
+				function(dctx) {
+
+					dnet.base.DcActionsStateManager.applyStates(this);
+					if (dctx.parentDc.getRecord()
+							&& dctx.parentDc.getRecord().phantom) {
+
+						this.fireEvent("inContextOfNewRecord", this); /*
+																		 * is
+																		 * this
+																		 * still
+																		 * useful ?
+																		 */
+					} else {
+						this.fireEvent("inContextOfEditRecord", this);/*
+																		 * is
+																		 * this
+																		 * still
+																		 * useful ?
+																		 */
+					}
+				}, this);
+	}
+
+	,
+	isRecordChangeAllowed : function() {
+		return (!(this.isAnyChildDirty() || ((!this.multiEdit) && this
+				.isCurrentRecordDirty())));
+	}
+
+	,
+	onCleanDc : function() {
+		this.fireEvent('cleanDc', {
+			dc : this
+		});
 		if (this.dcContext != null) {
 			this.dcContext._onChildCleaned_();
-		}		 
-	}
-	,onChildCleaned: function() {
-		if(!this.isStoreDirty() && !this.isAnyChildDirty() ) {
+		}
+	},
+	onChildCleaned : function() {
+		if (!this.isStoreDirty() && !this.isAnyChildDirty()) {
 			this.onCleanDc();
 		}
 	}
-	
-	/*********************************************************************************/
-    /**************************      QUERY           *********************************/
-    /*********************************************************************************/
 
-	/**
-	 * Reset all filter fields to null 
-	 * If this data-control is a child (is in the context of a parent data-control)
-	 * and the relation does not allow records outside of the context, then apply the 
-	 * context data as defined in the child-parent relation. 
-	 */
-	,doClearQueryImpl: function(){		
-        for(var p in this.filter.data ) {
-			this.filter.set(p, null);
-		}
-        if (this.dcContext) {
-        	this.dcContext._updateChildFilter_();
-        }
-	}
-
-	 ,_checkCanDoQuery_: function() {
-	    	if ( this.isDirty() ) {
-	    		throw(dnet.base.DcExceptions.DIRTY_DATA_FOUND);
-	    	}
-	    }
-
-    ,doQueryImpl: function() {
-    	this._checkCanDoQuery_();
-	    var request = dnet.base.RequestParamFactory.findRequest(this.filter.data);
-        for(var p in request.data ) {  if(request.data[p] === "") {request.data[p] = null ;} }
-	    var data = Ext.encode(request.data);
-		request.data = data;
-		request.params = Ext.encode(this.params.data);
-        this.store.load({ params:request,scope:this });
-        this.store.baseParams = {data:data};
-        this.setCurrentRecord(null);
-		//this.store.removeAll(true);  //  why is this necessary ?
-    }
-
-
-	,doRefreshCurrentImpl: function() {
-		if (this.beforeDoRefreshCurrent() === false) return false;
-        this.store.proxy.doRequest("read", null, {data: Ext.encode({id:this.record.get("id")}) } , this.store.reader , 
-		  function(response,options,success) {
-		  	        if (success) {
-                        this.record.beginEdit();
-						for(var p in this.record.data) {
-                           this.record.set(p, response.records[0].data[p]);
-						}
-						this.record.endEdit();
-						this.record.commit();
-						this.fireEvent("afterDoRefreshCurrentSuccess",this);
-					} else {
-                        this.fireEvent("afterDoRefreshCurrentFailure",this);
-					}
-			  } , this);
-	}
-
-	
-
-  	/*********************************************************************************/
-    /**************************   NEW   **********************************************/
-    /*********************************************************************************/
-
-    ,_checkCanDoNew_: function() {
-    	if (!this.semaphors.canDoNew) return false;
-    	if ( this.multiEdit ) {
-    		if (this.isAnyChildDirty()) {
-    			throw(dnet.base.DcExceptions.DIRTY_DATA_FOUND); 
-	   		}
-    	} else {    		 
-    		 if ( this.isDirty()) {    		
-         		throw(dnet.base.DcExceptions.DIRTY_DATA_FOUND); 
-         	}
-    	}
-
-    	if (this.dcContext){ 
-    		this.dcContext._checkCanDoNew_();
-    	}
-    }
-    
-	,doNewImpl: function() {		
-		this._checkCanDoNew_();
-		if (this.beforeDoNew() === false) return false;	
-		var r = new this.RecordModel(this.emptyRecordData(this.recordFields ) );
-		//TODO: First level init: Initialize with local static values 
-		if (this.dcContext) {this.dcContext._applyContextData_(r); }		
-		this.store.add(r);
-		this.setRecord(r);
-		this.setSelectedRecords([this.record]);
-		//TODO: Second level init: Call remote service to initialize
-		this.dataModified();
-		this.afterDoNew();
-	}
-
-	,_checkCanDoCopy_: function() {
-		if (!this.semaphors.canDoCopy) return false;
-		if (!this.record) {    		    		 
-    		throw(dnet.base.DcExceptions.NO_CURRENT_RECORD);
-    	}
-    	if ( this.multiEdit ) {
-    		if (this.isAnyChildDirty()) {
-    			throw(dnet.base.DcExceptions.DIRTY_DATA_FOUND); 
-	   		}
-    	} else {    		 
-    		 if ( this.isDirty()) {    		
-         		throw(dnet.base.DcExceptions.DIRTY_DATA_FOUND); 
-         	}
-    	}
-    	
-    	if (this.dcContext){ 
-    		this.dcContext._checkCanDoCopy_();
-    	}
-    }
-	,doCopyImpl: function() {		
-		this._checkCanDoCopy_();
-		if (this.beforeDoCopy() === false) return false;	 
-		var r = new this.RecordModel(this.emptyRecordData(this.recordFields ) );
-		Ext.apply(r.data, this.record.data);
-		r.data.id=null;  
-		if (this.dcContext) {this.dcContext._applyContextData_(r); }					
-		this.store.add(r);
-		this.setRecord(r);		
-		this.setSelectedRecords([this.record]);
-		this.dataModified();
-//		var r = this.record.copy();    r.id=null; r.id = null; 		
-//		this.store.add(r);
-//		if (this.dcContext) {this.dcContext._applyContextData_(r); }		
-//		this.setRecord(r);
-//		this.setSelectedRecords([this.record]);
-		 
-	}
-	
-  	/*********************************************************************************/
-    /**************************   SAVE  **********************************************/
-    /*********************************************************************************/
-
-	,_checkCanDoSave_: function() {
-    	if (!this.semaphors.canDoSave) return false;    	 
-    }
-   ,doSaveImpl: function() {
-	   this._checkCanDoSave_();
-	   if (this.beforeDoSave() === false) return false;
-	   if (!this.multiEdit) {	   	 
-           if ( this.isRecordValid() ) {
-        	 this.store.baseParams.params = Ext.encode(this.params.data);
-	         this.store.save();
-		   }
-	   } else {
-		   this.store.baseParams.params = Ext.encode(this.params.data);
-		   this.store.save(); 
-	   }
-		this.afterDoSave();
-    }
-
-    /*********************************************************************************/
-    /**************************   DELETE         *********************************/
-    /*********************************************************************************/
-
-	,confirmDelete: function (btn) {
-		this._checkCanDoDelete_();
-		if (!btn) {
-        	Ext.Msg.confirm(Dnet.translate("msg", "dc_confirm_action"), Dnet.translate("msg", "dc_confirm_delete_selection")
-		         ,this.confirmDelete,this );
-		} else { if (btn == "yes" || btn == "ok" ) {this.doDeleteImpl(); }}
-	}
-	,confirmDeleteSelection: function (btn) {
-		this._checkCanDoDeleteSelection_();
-		if (!btn) {
-        	Ext.Msg.confirm(Dnet.translate("msg", "dc_confirm_action"), Dnet.translate("msg", "dc_confirm_delete_selection")
-		         ,this.confirmDeleteSelection,this );
-		} else {if (btn == "yes" || btn == "ok" ) {this.doDeleteSelection(); }}
-	}
-
-	,_checkCanDoDeleteSelection_: function() {
-    	if (!this.semaphors.canDoDeleteSelection) return false;
-    	if (!this.selectedRecords || this.selectedRecords.length == 0 ) {    		    		 
-    		throw(dnet.base.DcExceptions.NO_SELECTED_RECORDS );
-    	}
-    }
-    ,doDeleteSelectionImpl: function() {
-    	this._checkCanDoDeleteSelection_();
-		if (this.beforeDoDeleteSelection() === false) return false;				
-		this.store.remove(this.getSelectedRecords());
-		if (!this.multiEdit) {
-			this.store.baseParams.params = Ext.encode(this.params.data);
-			this.store.save();
-		} else {
-			this.dataModified();
-		}
-		this._doDefaultSelection_();
-		 
-		this.afterDoDeleteSelection();
-      }
-
-    ,_checkCanDoDelete_: function() {
-    	if (!this.semaphors.canDoDeleteCurrent) return false;
-    	if (!this.record) {    		    		 
-    		throw(dnet.base.DcExceptions.NO_CURRENT_RECORD );
-    	}
-    }
-     ,doDeleteImpl: function() {
-    	this._checkCanDoDelete_(); 
-		if ( this.beforeDoDelete()  === false ) return false;		 
-		this.store.remove(this.record );
-		this._doDefaultSelection_(); 	
-		this.afterDoDelete();
- 	}
- 
-   ,allSelectedRecordsArePersisted: function() {
-   	  var l= this.selectedRecords.length;
-		  for( var i=0;i<l;i++) {
-			  if (this.selectedRecords[i].phantom) {
-			  	 return false;
-			  }
-		  }
-		  return true;
-	} 
-  
-  ,setSelectedRecords: function (recArray) {  		 
-  		if (this.selectedRecords != recArray) { 
-  			this.selectedRecords = recArray;
-  			if (Ext.isArray(this.selectedRecords) && this.selectedRecords.length > 0) {
-  				this.actions.doDeleteSelected.setDisabled(false);
-  	  			this.actions.doEdit.setDisabled(false);
-  	  			if( this.selectedRecords.length == 1 && !this.isCurrentRecordDirty() ) {
-  	  				this.actions.doCopy.setDisabled(false);
-  	  			} else {
-  	  				this.actions.doCopy.setDisabled(true);
-  	  			}
-  			} else {
-  				this.actions.doDeleteSelected.setDisabled(true);
-  	  			this.actions.doEdit.setDisabled(true);
-  	  			this.actions.doCopy.setDisabled(true);
-  			}
-  			
-  			this.fireEvent('afterSelectedRecordsChanged', this ); /* to be removed in favor of the below one*/
-  			this.fireEvent('selectionChanged', { dc: this, record: this.record  } );  			
-  		};  		
-  	}    			
-  
-  ,_checkCanChangeCurrentRecord_: function() {
-	  if (!this.multiEdit) {
-		  if (this.isCurrentRecordDirty()) {
-			  throw(dnet.base.DcExceptions.DIRTY_DATA_FOUND);
-		  }
-	  }
-	   
-  }
-  ,setCurrentRecordImpl:function(p)  {
-	   this._checkCanChangeCurrentRecord_();
-  		p = (p!=undefined)?p:null;
-  		if (this.beforeCurrentRecordChange()==false) {return false;}
-  		var rec,idx,changed=false,oldrec;
-  		if (p!=null) {
-  				if (Ext.isNumber(p)) {
-		  			idx = p; rec = this.store.getAt(p);
-		  			//dont
-		  			if(rec && (this.record != rec)) {oldrec=this.record;this.record = rec;changed=true;}  			
-		  		} else {
-		  			rec = p; idx = this.store.indexOf(p);  	
-		  			if(rec && (this.record != rec)) {oldrec=this.record;this.record = rec;changed=true;}  			  		   			
-		  		} 
-  			} else {
-  				 oldrec=this.record;
-  				 this.record = rec;
-  				 changed=(oldrec!=null);
-  			}  		
-  		if(changed) {   			 
-  			this.fireEvent('afterCurrentRecordChange', { dc: this, newRecord: rec, oldRecord:oldrec, newIdx:idx , status: this.getRecordStatus() });
-  			this.fireEvent("recordChanged" , { dc: this, record: this.record, state: this.getRecordState(), status:this.getRecordStatus(), oldRecord: oldrec, newIdx:idx } );
-  			//this.fireEvent('recordStatusChanged', { dc: this, record: rec, status: this.getRecordStatus() });  			
-  		}
-  		return true;
-  	}
-
-  	 
-  	/*********************************************************************************/
-    /**************************   MISCELLANEOUS HELPERS  *****************************/
-    /*********************************************************************************/
-  
-	, proxyException: function(dataProxy, type, action , options , response , arg ) {
-        if(type=="response") {
-          this.onAjaxRequestFailure(response , options);
-        } else {
-        	if(!Ext.isEmpty(response.message)) {
-        		alert(response.message.substr(0,1500));
-        	} else {
-        		alert("Exception returned by server with no message.");
-        	}
-          
-        }
-	  }	
-	,log:function(m) {try {if (console) {console.log("Data-control `"+this.dsName+"`: "+m);}}catch(e){}}
 });
-
- 
-/*****************************************************************************/
-/****************************  DC: filter - view   ***************************/
-/*****************************************************************************/
-
-// executed in te context of a filter-view
-function filter_view____change (field, oldVal, newVal) {
-		this._controller_.getFilter().set(field.dataIndex, field.getValue());
-	}
- 
-/*****************************************************************************/
-/****************************  DC: form - view   ***************************/
-/*****************************************************************************/
-
-// executed in te context of a form-view 	
-/*
-function form_view____change (field, newVal, oldVal) {
-		this._controller_.getRecord().set(field.dataIndex, field.getValue());
-		this._controller_.dataModified();
-	}
-*/
-function form_view____alertDirty () {
-		Ext.Msg.show({
-    	   title: 'Warning'
-				 ,msg: 'Form data has been changed. <br/>Save your changes or discard them.'
-         ,buttons: Ext.Msg.OK
-         ,icon: Ext.MessageBox.WARNING
-    	});
-	}
- 	 

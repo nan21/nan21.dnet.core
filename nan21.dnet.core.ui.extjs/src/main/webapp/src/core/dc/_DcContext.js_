@@ -17,12 +17,8 @@ dnet.base.DcContext = function(config) {
 	this.parentDc = null;
 	this.childDc = null;
 	this.relation = null; 
-	this.doQueryTask = null;	
+		
 	this.ctxData = null;
-	this.autoFetchDelay = 600;
-	this.reloadChildrenOnParentInsert = true;
-	this.reloadChildrenOnParentUpdate = false;
-	
 	
 	if (!config || !config.relation || !config.parentDc ) {
 		throw(dnet.base.DcExceptions.DCCONTEXT_INVALID_SETUP);
@@ -44,50 +40,34 @@ Ext.extend(dnet.base.DcContext, Ext.util.Observable, {
 		
 		this._updateCtxData_();	
 		
-		this.doQueryTask = new Ext.util.DelayedTask(function(){
-			this.childDc.doQuery();
-		},this);
+		this.parentDc.on("recordChange", function() { this._updateCtxData_("afterCurrentRecordChange"); }, this);
+		this.parentDc.on("afterDoSaveSuccess", function() { this._updateCtxData_("afterDoSaveSuccess"); }, this);
+		this.parentDc.on("afterDoNew", function() { this._updateCtxData_("afterDoNew"); }, this);
+		//this.childDc.on("beforeDoNew", this._checkParentIsNew_, this);
+		//this.childDc.on("beforeDoCopy", this._checkParentIsNew_, this);
+		//this.childDc.on("afterDoNew", this._onChildModified_,  this);
 		
-		this.parentDc.on("recordChange", function() { this._updateCtxData_("recordChange"); }, this);		 
-		this.childDc.on("updateActionsState", function() {
-			this.parentDc.updateActionsState();
-		}, this );  
-		  
-		this.parentDc.store.on("write", function(store, action, result, tx, records) {
-			 
-			if (this.reloadChildrenOnParentInsert && action == Ext.data.Api.actions.create) {
-				this._updateCtxData_("parent_store_write"); 
-			}
-			if (this.reloadChildrenOnParentUpdate && action == Ext.data.Api.actions.update) {
-				this._updateCtxData_("parent_store_write"); 
-			}			
-		}, this);
 		
+		this.childDc.store.on("beforeload", this._checkParentIsNew_, this);
+		this.parentDc.store.on("write", function(store, action, result, tx, recs) {			 
+				this._updateCtxData_("afterDoSave");
+		} , this);
 	}	
  
 	/**
 	 * @param eventName  
 	 */ 
 	,_updateCtxData_: function(eventName) {
-		dnet.base.Logger.debug("dnet.base.DcContext._updateCtxData_ eventName="+eventName);
 		this.ctxData = {};		
 		var f = this.relation.fields, l=f.length, r=this.parentDc.record, changed=false, nv=null,ov=null;
-		
 		for(var i=0; i<l; i++) {
 			ov = this.ctxData[f[i]["childField"]];
 			nv = (r)?r.get(f[i]["parentField"]):null;
 			this.ctxData[f[i]["childField"]] = nv;
-			 
 			if (nv !== ov) changed = true; 
 		}
-		 
 		if ( !eventName ) return;
-		
-		if (changed) {	
-			dnet.base.Logger.debug("dnet.base.DcContext._updateCtxData_ context data is changed ");
-			
-			
-			dnet.base.DcActionsStateManager.applyStates(this.childDc);
+		if (changed) {			
 			this._updateChildFilter_();
 			this.fireEvent("dataContextChanged", this);
 			
@@ -95,13 +75,11 @@ Ext.extend(dnet.base.DcContext, Ext.util.Observable, {
 			
 			this.childDc.store.removeAll(true);
 			this.childDc.store.loadData({data:[],totalCount:0}, false);
-
+//			this.childDc.store.commitChanges();
 			
 			if (this.relation.fetchMode == "auto" && this.parentDc.getRecord() && !this.parentDc.getRecord().phantom) {
-				//this.childDc.doQuery();
-				
-				this.doQueryTask.delay(this.autoFetchDelay);
-				 
+				//this.childDc.doQuery();	
+				this.childDc.doQuery.defer(500, this.childDc);
 				//this.doQueryImpl.defer(this.tuning.queryDelay, this);
 			}			
 		}		
@@ -115,15 +93,30 @@ Ext.extend(dnet.base.DcContext, Ext.util.Observable, {
 		}
 		this.childDc.filter.endEdit();
 	}
-	 
+	
+	,_checkParentIsNew_: function(store, options) {
+		if (!this.parentDc.getRecord() || this.parentDc.getRecord().phantom) {return false;}
+		return true;
+	}
+	
+	,_checkCanDoNew_ : function() {
+		if (this.relation.strict && (!this.parentDc.getRecord() || this.parentDc.getRecord().phantom  ) ) {
+			throw(dnet.base.DcExceptions.PARENT_RECORD_NEW);
+		}
+	}
+	,_checkCanDoCopy_ : function() {
+		if (this.relation.strict && (!this.parentDc.getRecord() || this.parentDc.getRecord().phantom  ) ) {
+			throw(dnet.base.DcExceptions.PARENT_RECORD_NEW);
+		}
+	}
 	,_applyContextData_: function(record) {
 		Ext.apply(record.data, this.ctxData);
 	}
-//	,_onChildModified_: function() {
-//		this.parentDc.dataModified();
-//	}
-//	,_onChildCleaned_: function() {
-//		this.parentDc.onChildCleaned();
-//	}
+	,_onChildModified_: function() {
+		this.parentDc.dataModified();
+	}
+	,_onChildCleaned_: function() {
+		this.parentDc.onChildCleaned();
+	}
 });
 

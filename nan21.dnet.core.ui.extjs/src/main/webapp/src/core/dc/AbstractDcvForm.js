@@ -77,23 +77,35 @@ dnet.base.AbstractDcvForm = Ext.extend( Ext.form.FormPanel, {
     ,_get_: function(name) { return this._getElement_(name);} 
     ,_getConfig_: function(name) {  return this._elems_.get(name); }
     
-	,onBind:function(record) { this.updateBound(record); this._afterBindRecord_(record);}
-	,onUnbind:function(record) { this.updateBound(); }
+	,onBind:function(record) {
+		this.form.items.each(function(f){
+			f.enable();
+		});
+		this._applyContextRules_(record);
+		this.updateBound(record); 
+	}
+	,onUnbind:function(record) { 
+		this.form.items.each(function(f){
+			f.disable();
+		}); 
+		this.updateBound(); 
+	}
 	,afterEdit:function(record) { this.updateBound(record); }
 	,afterReject:function(record) { this.updateBound(record);  }
-	,_afterBindRecord_:function(record) {}
+	 
 	,updateBound:function(record) {
+		dnet.base.Logger.debug("dnet.base.AbstractDcvForm.updateBound");
 		if (!record) {
-				this.disable();
+				dnet.base.Logger.debug("dnet.base.AbstractDcvForm.updateBound record is null");
+				//this.disable();
 				 this.form.items.each(function(f){
 			            f.setRawValue(null);
 			        });
 				//this.form.reset();
 				}
 		else {
-			if(this.disabled) {this.enable();}
-			this.form.loadRecord(record);
-			this._applyContextRules_(record);
+			//dnet.base.Logger.debug("dnet.base.AbstractDcvForm.updateBound record is not null");			 
+			this.form.loadRecord(record);			
 		}
 	}
 
@@ -155,34 +167,7 @@ dnet.base.AbstractDcvForm = Ext.extend( Ext.form.FormPanel, {
 			return k; 
 		}
 	}
-
-	/*
-	 *,_onChange_: function (field, newVal, oldVal) {	
-		if(field.initialConfig._isParam_===true) {
-			if (newVal != oldVal) {
-				this._controller_.setParamValue(field.dataIndex, field.getValue(),true);			 
-			}
-		} else {
-			if (newVal != oldVal) {
-				this._controller_.getRecord().set(field.dataIndex, field.getValue());
-				//this._controller_.dataModified();
-			}
-		}
-	}
-	,_onCheck_: function ( field, isChecked) {// alert(this._controller_.getRecord().get(field.dataIndex));
-		if(field.initialConfig._isParam_===true) {
-			//if (newVal != oldVal) {
-				//this._controller_.setParamValue(field.dataIndex, field.getValue(),true);	
-				this._controller_.setParamValue(field.dataIndex, isChecked, true );
-			//}
-		} else {
-			//if (this._controller_.getRecord().get(field.dataIndex) != isChecked) {
-	            this._controller_.getRecord().set(field.dataIndex, isChecked );
-				//this._controller_.dataModified();
-			//}
-		}
-		
-	}*/
+ 
 	,_isValid_: function() { 
 
 		if (this.getForm().isValid()) {

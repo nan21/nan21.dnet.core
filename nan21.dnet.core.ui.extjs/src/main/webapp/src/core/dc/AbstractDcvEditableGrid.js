@@ -50,25 +50,32 @@ dnet.base.AbstractDcvEditableGrid = Ext.extend( Ext.grid.EditorGridPanel, {
 			,sm: new Ext.grid.RowSelectionModel({singleSelect: false
 				,listeners: {
 		             "rowselect": {scope: this,fn: function (sm, idx, rec) { 
-					 		if(this._controller_.getRecord() != rec) {this._controller_.setCurrentRecord(idx);}
-					 	}, buffer:200 }
+					 		if(this._controller_.getRecord() != rec) {this._controller_.setRecord(idx);}
+					 	} } //, buffer:100
 		            ,"rowdeselect": {scope: this,fn: function (sm, idx, rec) {  
 			         		if(this._controller_.getRecord() == rec) {
 			         		  if (sm.getSelections().length > 0 ) {
-			         		    this._controller_.setCurrentRecord(sm.getSelections()[0]);
+			         		    this._controller_.setRecord(sm.getSelections()[0]);
 			         		  } else {
-			         		    this._controller_.setCurrentRecord(null);
+			         		    this._controller_.setRecord(null);
 			         		  }
 			         		}
-			         	}, buffer:200 }
+			         	}  }// , buffer:100
 		            ,"selectionchange": {scope: this,fn:function(sm) { 
 		            		this._controller_.setSelectedRecords( sm.getSelections() );
-		            	} , buffer:200 }
+		            	} }//, buffer:100 
+//		            ,"beforerowselect": {scope: this,fn:function(sm) { 
+//		            	if(dnet.base.DcActionsStateManager.isPrevRecDisabled(this._controller_)) {return false;}   
+//	            	}   }
+		            
+		            
 				  }
 			 })
 			,store: this._controller_.store
 
 		}
+		
+ 
 
 		var bbitems = [];
 		if (!this._noLayoutCfg_) {
@@ -93,13 +100,13 @@ dnet.base.AbstractDcvEditableGrid = Ext.extend( Ext.grid.EditorGridPanel, {
 		dnet.base.AbstractDcvEditableGrid.superclass.initComponent.call(this);
 		this._controller_.store.on("load", this._onStoreLoad_, this);
 		this.on("afteredit", this._afterEdit_, this);
-		this._controller_.on("afterDoNew", function(dc) {
-			this.getSelectionModel().suspendEvents();
-			this.getSelectionModel().selectLastRow(false);
-			this.getView().focusRow(this.store.getCount() );
-            this.getSelectionModel().resumeEvents();
-		}, this);
-		this._controller_.on("selectionChanged",function(evnt) {
+//		this._controller_.on("afterDoNew", function(dc) {
+//			this.getSelectionModel().suspendEvents();
+//			this.getSelectionModel().selectLastRow(false);
+//			this.getView().focusRow(this.store.getCount() );
+//            this.getSelectionModel().resumeEvents();
+//		}, this);
+		this._controller_.on("selectionChange",function(evnt) {
 			var s = evnt.dc.getSelectedRecords();
 			if (s != this.getSelectionModel().getSelections() ) {
 				this.getSelectionModel().suspendEvents();
@@ -169,13 +176,13 @@ dnet.base.AbstractDcvEditableGrid = Ext.extend( Ext.grid.EditorGridPanel, {
         	 if (this.selModel.getCount() == 0 ) {
             	 this.selModel.selectFirstRow();
              } else {
-            	 this._controller_.setCurrentRecord(this.selModel.getSelected());
+            	 this._controller_.setRecord(this.selModel.getSelected());
             	 this._controller_.setSelectedRecords(this.selModel.getSelections());
              }
          }
 	}
 	,_afterEdit_: function(e) {
-        this._controller_.dataModified(); 
+       // this._controller_.dataModified(); 
 		//this._getElement_("_btnSave_").enable();
 	}
 	

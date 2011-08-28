@@ -213,3 +213,29 @@ Dnet = {
 	}
 	
 };
+Ext.ns("dnet.base");
+dnet.base.Logger = function() {
+	return {
+		doLogging : (console)? true: false 
+		,info: function(msg) {
+			if (this.doLogging) {
+				console.info(msg);
+			}
+		}
+		,warn: function(msg) {
+			if (this.doLogging) {
+				console.warn(msg);
+			}
+		}
+		,error: function(msg) {
+			if (this.doLogging) {
+				console.error(msg);
+			}
+		}
+		,debug: function(msg) {
+			if (this.doLogging) {
+				console.debug(msg);
+			}
+		}
+	}
+}();

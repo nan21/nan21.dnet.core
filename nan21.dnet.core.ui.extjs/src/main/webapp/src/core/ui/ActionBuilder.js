@@ -47,7 +47,7 @@ dnet.base.ActionBuilder.prototype =  {
 	,addDeleteSelected: function(config) {
 		var cfg = config||{};		
 		Ext.applyIf(cfg, { dc: this.dc });		  
-		var a = this.frame._getDc_(cfg.dc).actions.doDeleteSelected;
+		var a = this.frame._getDc_(cfg.dc).actions.doDelete;
 		this.frame._tlbitms_.add(this.name+"__"+a.initialConfig.name, a);  //new Ext.Action(cfg)	
 		return this;
 	}
@@ -67,7 +67,7 @@ dnet.base.ActionBuilder.prototype =  {
 				dnet.base.DcExceptions.showMessage(e);
 			}
 		};
-		var a = this.frame._getDc_(cfg.dc).actions.doEdit;
+		var a = this.frame._getDc_(cfg.dc).actions.doEditIn;
 		a.setHandler(fn, this.frame);
 		this.frame._tlbitms_.add(this.name+"__"+a.initialConfig.name, a);
 		
@@ -150,7 +150,7 @@ dnet.base.ActionBuilder.prototype =  {
 			}
 		}		 
 		Ext.applyIf(cfg, { dc: this.dc, handler: fn, scope:this.frame });
-		var a = this.frame._getDc_(cfg.dc).actions.doLeaveEditor;		 
+		var a = this.frame._getDc_(cfg.dc).actions.doEditOut;		 
 		a.setHandler(cfg.handler, cfg.scope);
 		this.frame._tlbitms_.add(this.name+"__"+a.initialConfig.name, a);  //new Ext.Action(cfg)	
 		return this;		 

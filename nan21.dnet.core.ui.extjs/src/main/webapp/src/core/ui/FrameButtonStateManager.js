@@ -8,7 +8,7 @@ dnet.base.FrameButtonStateManager = function() {
 		// record state based 
 		,record_is_clean: function(btnName, state, dcName, frame, options) {
 			var andFn = options.and || function(evnt) {return true;}
-			frame._getDc_(dcName).on("recordChanged", function(evnt) {
+			frame._getDc_(dcName).on("recordChange", function(evnt) {
 				var btn = this._getElement_(btnName); 
 				if(btn){
 					if (evnt.state=='clean'&& andFn(evnt)) {
@@ -22,7 +22,7 @@ dnet.base.FrameButtonStateManager = function() {
 	
 		,record_is_dirty: function(btnName, state, dcName, frame, options) {
 			var andFn = options.and || function(evnt) {return true;}
-			frame._getDc_(dcName).on("recordChanged", function(evnt) {
+			frame._getDc_(dcName).on("recordChange", function(evnt) {
 				var btn = this._getElement_(btnName); 
 				if(btn){
 					if (evnt.state=='dirty'&& andFn(evnt)) {
@@ -37,7 +37,7 @@ dnet.base.FrameButtonStateManager = function() {
 		// record status based 	
 		,record_status_is_new: function(btnName, state, dcName, frame, options) {
 			var andFn = options.and || function(evnt) {return true;}
-			frame._getDc_(dcName).on("recordChanged", function(evnt) {
+			frame._getDc_(dcName).on("recordChange", function(evnt) {
 				var btn = this._getElement_(btnName); 
 				if(btn){
 					if (evnt.status=='insert'&& andFn(evnt)) {
@@ -51,7 +51,7 @@ dnet.base.FrameButtonStateManager = function() {
 	
 		,record_status_is_edit: function(btnName, state, dcName, frame, options) {
 			var andFn = options.and || function(evnt) {return true;}
-			frame._getDc_(dcName).on("recordChanged", function(evnt) {
+			frame._getDc_(dcName).on("recordChange", function(evnt) {
 				var btn = this._getElement_(btnName); 
 				if(btn){
 					if (evnt.status=='update'&& andFn(evnt)) {
@@ -67,7 +67,7 @@ dnet.base.FrameButtonStateManager = function() {
 		// selection based 
 		,selected_zero: function(btnName, state, dcName, frame, options) {
 			var andFn = options.and || function(evnt) {return true;}
-			frame._getDc_(dcName).on("selectionChanged", function(evnt) {
+			frame._getDc_(dcName).on("recordChange", function(evnt) {
 				var btn = this._getElement_(btnName); 
 				if(btn){
 					if (evnt.dc.selectedRecords.length == 0&& andFn(evnt)) {
@@ -80,7 +80,7 @@ dnet.base.FrameButtonStateManager = function() {
 		}
 		,selected_one: function(btnName, state, dcName, frame, options) {
 			var andFn = options.and || function(evnt) {return true;}
-			frame._getDc_(dcName).on("selectionChanged", function(evnt) {
+			frame._getDc_(dcName).on("recordChange", function(evnt) {
 				var btn = this._getElement_(btnName); 
 				if(btn){
 					if (evnt.dc.selectedRecords.length == 1&& andFn(evnt)) {
@@ -103,7 +103,7 @@ dnet.base.FrameButtonStateManager = function() {
 					}					
 				}				 
 			 }, frame );
-			frame._getDc_(dcName).on("recordChanged", function(evnt) {
+			frame._getDc_(dcName).on("recordChange", function(evnt) {
 				var btn = this._getElement_(btnName); 
 				if(btn){
 					if (evnt.state=='clean' && evnt.dc.selectedRecords.length == 1&& andFn(evnt)) {
@@ -126,7 +126,7 @@ dnet.base.FrameButtonStateManager = function() {
 					}					
 				}				 
 			 }, frame );
-			frame._getDc_(dcName).on("recordChanged", function(evnt) {
+			frame._getDc_(dcName).on("recordChange", function(evnt) {
 				var btn = this._getElement_(btnName); 
 				if(btn){
 					if (evnt.state=='dirty' && evnt.dc.selectedRecords.length == 1&& andFn(evnt)) {

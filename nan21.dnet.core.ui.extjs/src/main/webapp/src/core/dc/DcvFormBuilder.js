@@ -108,7 +108,7 @@ Ext.extend(dnet.base.DcvFormBuilder, Ext.util.Observable, {
 		} else {
 			var fn = function(f,nv,ov) {
 				this._dcView_._controller_.getRecord().set(f.dataIndex, f.getValue());
-				f._dcView_._controller_.dataModified();
+				//f._dcView_._controller_.dataModified();
 			}
 		}
 		if (config.listeners[en].fn) {

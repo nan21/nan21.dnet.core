@@ -40,7 +40,7 @@
     <script type="text/javascript" src="${urlUiExtjsCore}/src/core/base/WorkflowFormWithExtjsWindow.js"></script>
     <script type="text/javascript" src="${urlUiExtjsCore}/src/core/base/WorkflowFormFactory.js"></script>
     
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/core/base/Rpc.js"></script>
+ 
  	<script type="text/javascript" src="${urlUiExtjsCore}/src/core/ds/AbstractDs.js"></script>
     <script type="text/javascript" src="${urlUiExtjsCore}/src/core/dc/AbstractDc.js"></script>
     <script type="text/javascript" src="${urlUiExtjsCore}/src/core/dc/AbstractDcvGrid.js"></script>    
@@ -52,6 +52,29 @@
     <script type="text/javascript" src="${urlUiExtjsCore}/src/core/dc/DcvFormBuilder.js"></script>
     <script type="text/javascript" src="${urlUiExtjsCore}/src/core/dc/DcvGridBuilder.js"></script>
     <script type="text/javascript" src="${urlUiExtjsCore}/src/core/dc/DcvEditableGridBuilder.js"></script>
+    
+       
+    <script type="text/javascript" src="${urlUiExtjsCore}/src/core/dc/command/AbstractDcCommand.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/src/core/dc/command/AbstractDcAsyncCommand.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/src/core/dc/command/AbstractDcSyncCommand.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/src/core/dc/command/DcCommandFactory.js"></script>
+    
+    <script type="text/javascript" src="${urlUiExtjsCore}/src/core/dc/command/DcQueryCommand.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/src/core/dc/command/DcNewCommand.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/src/core/dc/command/DcCopyCommand.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/src/core/dc/command/DcSaveCommand.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/src/core/dc/command/DcCancelCommand.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/src/core/dc/command/DcEditInCommand.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/src/core/dc/command/DcEditOutCommand.js"></script>
+    
+    
+    <script type="text/javascript" src="${urlUiExtjsCore}/src/core/dc/command/DcClearQueryCommand.js"></script>    
+    <script type="text/javascript" src="${urlUiExtjsCore}/src/core/dc/command/DcDeleteCommand.js"></script>    
+    <script type="text/javascript" src="${urlUiExtjsCore}/src/core/dc/command/DcReloadRecCommand.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/src/core/dc/command/DcPrevRecCommand.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/src/core/dc/command/DcNextRecCommand.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/src/core/dc/command/DcRpcDataCommand.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/src/core/dc/command/DcRpcFilterCommand.js"></script>
     
     <script type="text/javascript" src="${urlUiExtjsCore}/src/core/ui/FrameBuilder.js"></script>
     <script type="text/javascript" src="${urlUiExtjsCore}/src/core/ui/ActionBuilder.js"></script>
