@@ -24,9 +24,6 @@ dnet.base.DcRpcFilterCommand = Ext.extend(dnet.base.AbstractDcAsyncCommand, {
 	 */
 	 onExecute: function(options) {	
 		var dc = this.dc;
-		/*if (!this.canExecute(dc,serviceName, specs)) {
- 	       throw("Not allowed to execute "+serviceName );
- 		} */   
 		var serviceName = options.name;
 		var s = options || {};			    	  
     	var p = {data: Ext.encode(dc.filter.data ) };
@@ -41,9 +38,7 @@ dnet.base.DcRpcFilterCommand = Ext.extend(dnet.base.AbstractDcAsyncCommand, {
 			,failure: this.onAjaxFailure	
 			,scope: this
 			,options: options
-		});
-		//this.afterExecute(options);
-		
+		}); 
 	}
 	
 	

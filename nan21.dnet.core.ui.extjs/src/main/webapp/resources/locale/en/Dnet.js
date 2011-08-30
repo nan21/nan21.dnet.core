@@ -267,9 +267,8 @@ dnet.Translation = Ext.apply({},{
 	   ,WorkflowAdmin_UI: "Workflow admin console"
 	   ,WorkflowDef_UI : "Workflow definition"
        //CRM
-       ,CalendarEventPriority_UI : "Event priorities"
-       ,CalendarEventStatus_UI : "Event statuses"
-    	,CalendarEventType_UI : "Event types"
+       ,CalendarEventTypeDef_UI : "Calendar event definitions"       
+       ,MyCalendarEvent_UI : "Calendar events"
 
 	   ,Task_UI : "Tasks"
 	   ,Meeting_UI : "Meetings"

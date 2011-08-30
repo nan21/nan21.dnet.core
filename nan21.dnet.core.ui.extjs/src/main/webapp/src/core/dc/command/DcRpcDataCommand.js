@@ -2,10 +2,7 @@ Ext.ns("dnet.base");
 
 dnet.base.DcRpcDataCommand = Ext.extend(dnet.base.AbstractDcAsyncCommand, {
 
-	canExecute: function(dc,serviceName, specs) {
-		return !Ext.isEmpty(dc.record);
-	}
-
+	
 	/**
 	 * Call a service on the data-source. 
 	 * @param serviceName: The name of the data-source service to be executed.
@@ -26,23 +23,10 @@ dnet.base.DcRpcDataCommand = Ext.extend(dnet.base.AbstractDcAsyncCommand, {
 	 * and afterDoServiceFailure() methods which actually invoke them. 
 	 *  
 	 */
-	,execute: function(dc,serviceName, specs) {	
-	//	if (dnet.base.DcActionsStateManager.isSaveDisabled(dc)) {	
-	//		throw("Creating new record is not allowed.");
-	//	}
-		if (this.beforeExecute(dc,serviceName, specs) === false) {
-			return false;
-		}
-		
-		if (this.needsConfirm(dc,serviceName, specs)) {
-			this.confirmExecute(null,dc,serviceName, specs);
-			return;
-		}
-		 
-		if (!this.canExecute(dc,serviceName, specs)) {
-		       throw("Not allowed to execute "+serviceName );
-			}    	
-		var s = specs || {};			    	 
+	onExecute: function(options) {	
+		var dc = this.dc;   	
+		var serviceName = options.name;
+		var s = options || {};	    	 
 		var p = {data: Ext.encode(dc.record.data ) };
 		p[Dnet.requestParam.SERVICE_NAME_PARAM]= serviceName;
 		p["rpcType"]= "data";
@@ -50,15 +34,13 @@ dnet.base.DcRpcDataCommand = Ext.extend(dnet.base.AbstractDcAsyncCommand, {
 			Ext.Msg.progress('Working...');
 	    }
 		Ext.Ajax.request({
-			url: Dnet.dsAPI(dc.dsName, ((specs.stream)?"stream":"json")).service, method:"POST", params: p
+			url: Dnet.dsAPI(dc.dsName, ((s.stream)?"stream":"json")).service, method:"POST", params: p
 			,success :this.onAjaxSuccess
 			,failure: this.onAjaxFailure	
-			,scope: dc
-			,options: { action: "doService", serviceName: serviceName, specs: s }
-		});
-		this.afterExecute(dc, serviceName, specs);    
-		
-	}
+			,scope: this
+			,options: options
+		});		 
+	},
 
 	
 	/**
@@ -73,15 +55,18 @@ dnet.base.DcRpcDataCommand = Ext.extend(dnet.base.AbstractDcAsyncCommand, {
 	 * @param specs: Specifications regarding the execution of this task. @See doService() 
 	 * 
      */
-	,onAjaxSuccess: function(response, options) {
-		Ext.Msg.hide(); var o = options.options || {}, serviceName = o.serviceName, s = o.specs;
+	onAjaxSuccess: function(response, options) {		 
+		Ext.Msg.hide(); var o = options.options || {}, name = o.name, s = o || {};	
+		var dc = this.dc;
 		if (s.callbacks && s.callbacks.successFn) {
-			s.callbacks.successFn.call(s.callbacks.successScope||dc, dc, response, serviceName, specs);
+			s.callbacks.successFn.call(s.callbacks.successScope||dc, dc, response, name, options);
 		}		
 		if (!(s.callbacks && s.callbacks.silentSuccess === true)) {
-			dc.fireEvent("afterDoServiceSuccess", dc, response, serviceName, s);
-		}			
-	}
+			dc.fireEvent("afterDoServiceSuccess", dc, response, name, options);
+		}		
+	},
+	
+	 
 	
 	/**
      * Method called when execution of the service fails. 
@@ -94,16 +79,20 @@ dnet.base.DcRpcDataCommand = Ext.extend(dnet.base.AbstractDcAsyncCommand, {
      * @param serviceName: the name of service which has been executed.
 	 * @param specs: Specifications regarding the execution of this task. @See doService() 
      */
-	,onAjaxFailure: function(response, options) {
-		Ext.Msg.hide(); var o = options.options || {}, serviceName = o.serviceName, s = o.specs;
+	onAjaxFailure: function(response, options) {		  
+		Ext.Msg.hide(); var o = options.options || {}, serviceName = o.name, s = o || {};
+		var dc = this.dc;
 		if (s.callbacks && s.callbacks.failureFn) {
 			s.callbacks.failureFn.call(s.callbacks.failureScope||dc, dc, response, serviceName, specs);
 		}		
 		if (!(specs.callbacks && specs.callbacks.silentFailure === true)) {
-			dc.fireEvent("afterDoServiceFailure", dc, response, serviceName, specs);
-		}		
-	}
+			dc.fireEvent("afterDoServiceFailure", dc, response, name, options);
+		}			
+	},
 	
+	canExecute: function() {
+		return true
+	}
 
 });
  

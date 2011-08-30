@@ -41,7 +41,8 @@ dnet.base.AbstractDcvForm = Ext.extend( Ext.form.FormPanel, {
 	      ,frame:true
 	      ,border:true
 	      ,trackResetOnLoad: true
-	      ,buttonAlign:"left"	     
+	      ,buttonAlign:"left"	  
+	      ,maskDisabled: false
 	      ,defaults:{
 	      	   labelAlign:"right"
 	      	  ,labelWidth:90
@@ -62,6 +63,7 @@ dnet.base.AbstractDcvForm = Ext.extend( Ext.form.FormPanel, {
 			this.updateBound(this._controller_.getRecord()); 
 		}   });
 		this._controller_.addBindedView(this.id,this._dcViewType_);	 
+		this.on("afterrender", function() { if ( this._controller_&& this._controller_.getRecord()) { this.onBind(this._controller_.getRecord()); } else { this.onUnbind(null);} }, this);
 	}
 
     ,_startDefine_: function () {}
@@ -78,16 +80,18 @@ dnet.base.AbstractDcvForm = Ext.extend( Ext.form.FormPanel, {
     ,_getConfig_: function(name) {  return this._elems_.get(name); }
     
 	,onBind:function(record) {
-		this.form.items.each(function(f){
-			f.enable();
-		});
+//		this.form.items.each(function(f){
+//			f.enable();
+//		});
+		this.enable();
 		this._applyContextRules_(record);
 		this.updateBound(record); 
 	}
 	,onUnbind:function(record) { 
-		this.form.items.each(function(f){
-			f.disable();
-		}); 
+//		this.form.items.each(function(f){
+//			f.disable();
+//		}); 
+		this.disable();
 		this.updateBound(); 
 	}
 	,afterEdit:function(record) { this.updateBound(record); }

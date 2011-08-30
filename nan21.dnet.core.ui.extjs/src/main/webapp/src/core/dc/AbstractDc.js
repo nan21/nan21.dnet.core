@@ -202,6 +202,7 @@ Ext.extend(dnet.base.AbstractDc, Ext.util.Observable, {
 
 		this.store.on("update", function() {
 			dnet.base.Logger.debug("dnet.base.AbstractDc ("+this.dsName+") -> store.on.update event handler");
+			this.fireEvent("statusChange", {dc:this});
 			this.updateActionsState();
 		}, this);
 
@@ -233,7 +234,7 @@ Ext.extend(dnet.base.AbstractDc, Ext.util.Observable, {
 		if (this.afterStoreLoadDoDefaultSelection) {
 			this.store.on("load", function(store, records, options) {
 				if (this.afterStoreLoadDoDefaultSelection) {
-					//this.doDefaultSelection();
+					this.doDefaultSelection();
 				}					
 			}, this);
 		}
@@ -365,7 +366,7 @@ Ext.extend(dnet.base.AbstractDc, Ext.util.Observable, {
 	/**
 	 * Deprecated: Alias for doRpcData Shall be removed
 	 */
-	doService: function(options) {
+	doService: function(serviceName, specs) {
 		this.doRpcData(Ext.apply(specs, {name:serviceName}));
 	},
 	
@@ -893,9 +894,7 @@ Ext.extend(dnet.base.AbstractDc, Ext.util.Observable, {
 			throw (dnet.base.DcExceptions.NO_CURRENT_RECORD);
 		}
 		var s = specs || {};
-		if (this.beforeDoService(serviceName, s) === false) {
-			return;
-		}
+		 
 		var p = {
 			data : Ext.encode(this.record.data)
 		};

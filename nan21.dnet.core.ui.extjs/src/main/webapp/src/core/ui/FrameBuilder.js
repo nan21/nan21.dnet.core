@@ -28,12 +28,28 @@ dnet.base.FrameBuilder.prototype =  {
 
 	,addDcFormView: function(dc, config) {	
 		this.addDcView(dc, config);	
-		this.frame._dcs_.get(dc).addBindedView(config.id, "edit-form");
+		var theDc = this.frame._dcs_.get(dc);
+		var viewId = config.id;
+		theDc.addBindedView(viewId, "edit-form");
+		theDc.isRecordValid = theDc.isRecordValid.createInterceptor(function() {
+			var c = Ext.getCmp(viewId);
+			if (c) {
+				return c.getForm().isValid();
+			} else return true;			 
+		} );
 		return this;
 	}
 	,addDcFilterFormView: function(dc, config) {	
 		this.addDcView(dc, config);	
-		this.frame._dcs_.get(dc).addBindedView(config.id, "filter-form");
+		var theDc = this.frame._dcs_.get(dc);
+		var viewId = config.id;
+		theDc.addBindedView(config.id, "filter-form");
+		theDc.isFilterValid = theDc.isFilterValid.createInterceptor(function() {
+			var c = Ext.getCmp(viewId);
+			if (c) {
+				return c.getForm().isValid();
+			} else return true;			
+		} );
 		return this;
 	} 
 	,addDcListView: function(dc, config) {	
@@ -47,45 +63,7 @@ dnet.base.FrameBuilder.prototype =  {
 		this.applyViewSharedConfig(config);				
 		return this;
 	} 
-	/*
-	,createFilterBinding: function(dc, views) {
-		this.frame._dcs_.get(dc).on('afterCurrentRecordChange', 
-				function(evnt) { 
-					var newRecord = evnt.newRecord; 
-					var oldRecord = evnt.oldRecord; 
-					var newIdx = evnt.newIdx;
-					if(newRecord) {								 
-						Ext.BindMgr.unbind(oldRecord);
-						var vids = [];
-						for(var i=0;i<views.length;i++){
-							vids[i] = this._elems_.get(views[i]).id;
-						}
-						Ext.BindMgr.bind(newRecord, vids);								 
-					} else {								 
-						Ext.BindMgr.unbind(oldRecord);								 
-					} }, this.frame );	
-		return this;
-	}
-	
-	,createFormBinding: function(dc, views) {
-		this.frame._dcs_.get(dc).on('afterCurrentRecordChange', 
-				function(evnt) { 
-					var newRecord = evnt.newRecord; 
-					var oldRecord = evnt.oldRecord; 
-					var newIdx = evnt.newIdx;
-					if(newRecord) {								 
-						Ext.BindMgr.unbind(oldRecord);
-						var vids = [];
-						for(var i=0;i<views.length;i++){
-							vids[i] = this._elems_.get(views[i]).id;
-						}
-						Ext.BindMgr.bind(newRecord, vids);								 
-					} else {								 
-						Ext.BindMgr.unbind(oldRecord);								 
-					} }, this.frame );	
-		return this;
-	}
-	*/
+ 
 	,addPanel:function(config) {
 		config.listeners = config.listeners || {};
 		Ext.applyIf(config.listeners, {			 
