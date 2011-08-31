@@ -55,6 +55,7 @@ public class AbstractViewModelDescriptor<M> implements IViewModelDescriptor<M> {
 			this.refPaths = new HashMap<String, String>();
 			this.jpqlFieldFilterRules = new HashMap<String, String>();
 			this.fetchJoins = new HashMap<String, String>();
+			this.nestedFetchJoins = new HashMap<String, String>();
 			Field[] fields = this.modelClass.getDeclaredFields();
 			for (Field field : fields) {
 				if(field.isAnnotationPresent(DsField.class)) {					 
