@@ -244,6 +244,7 @@ dnet.Translation = Ext.apply({},{
 	   ,CurrencyXRates_UI : "Currency exchange rates"
 
 	   ,Uoms_UI :"Units of measure"
+	   ,UomType_UI :"Unit of measure types"
 	   ,UomMD_UI :"Unit of measure with details"
 	   ,UomConversion_UI : "Unit of measure conversions"
 
@@ -294,11 +295,9 @@ dnet.Translation = Ext.apply({},{
 
 		// hr-pad
 		,Absence_UI : "Absences"
-		,TimeManagementBaseData_UI : "Time management base data"
-		,LicenseType_UI : "License types"
-		,EducationType_UI : "Education types"
-		,EmploymentType_UI :"Employment types"
-	    ,EmployeeContactRelationship_UI : "Contact relationship"
+		,AbsenceBaseData_UI : "Absence base data"
+		,EmployeeTypeDefs_UI : "Employee base data definition"			 
+		,EmploymentType_UI :"Employment types"	    
 		,Employee_UI : "Employees"
 		,Cand : "Applicants"
 		,Payroll_UI: "Payroll"
@@ -308,9 +307,7 @@ dnet.Translation = Ext.apply({},{
         ,CourseType_UI : "Course types"
 		,Course_UI : "Courses"
         ,EmployeeBySkill_UI : "Employees by competence"
-       
-	   
-
+        
 	   // MY 
 	   ,MyAbsenceRequests_UI : "My absences"
 	   ,MyTimeSheets_UI : "My timesheets"

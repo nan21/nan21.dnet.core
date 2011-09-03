@@ -242,6 +242,7 @@ dnet.Translation = Ext.apply({},{
 	   ,CurrencyXRates_UI : "Rate de schimb valutar"
 
 	   ,Uoms_UI :"Unităţi de masură"
+	   ,UomType_UI :"Tipuri unitate de masură"
 	   ,UomMD_UI :"Unitate de masurăcu detalii"
        ,UomConversion_UI : "Conversii unităţi de masură"
 
@@ -289,11 +290,10 @@ dnet.Translation = Ext.apply({},{
 		,Question_UI : "Intrebări"
 		// hr-pad
 		,Absence_UI : "Absenţe"
-		,TimeManagementBaseData_UI : "Definitii pontaj"
-		,LicenseType_UI : "Tipuri licenţă"
-		,EducationType_UI : "Tipuri studiu"
+		,AbsenceBaseData_UI : "Definitii absenţă"
+		,EmployeeTypeDefs_UI : "Definitii angajat"		 
 		,EmploymentType_UI :"Forme de angajare"
-        ,EmployeeContactRelationship_UI : "Relaţii contact"
+        
 
 		,Employee_UI : "Angajaţi"
 		,Cand : "Candidaţi"
