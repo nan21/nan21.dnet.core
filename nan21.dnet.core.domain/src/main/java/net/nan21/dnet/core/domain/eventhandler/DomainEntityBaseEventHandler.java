@@ -13,7 +13,7 @@ public class DomainEntityBaseEventHandler extends DomainEntityEventAdapter  {
 
     @Override
     public void customize(ClassDescriptor descriptor) {
-        super.customize(descriptor);       
+        super.customize(descriptor);
         descriptor.getEventManager().addListener(this);  
     }
 

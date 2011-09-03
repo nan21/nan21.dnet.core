@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: DNet Core - domain
 Bundle-SymbolicName: nan21.dnet.core.domain
 Bundle-Vendor: Nan21 
-Bundle-Version: 1.0.0.M1
+Bundle-Version: 1.0.0.M2
 Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.html
 Import-Template: 
  javax.persistence.*;version="[2.0,2.1)",

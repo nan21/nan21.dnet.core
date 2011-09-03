@@ -10,6 +10,9 @@ public class AsgnTxServiceFactory implements IAsgnTxServiceFactory{
 	@Autowired
 	private ApplicationContext appContext;
 	
+	private String name;
+	
+	
 	@Override
 	public <E> IAsgnTxService<E> create(String key) {
 		IAsgnTxService<E> s = (IAsgnTxService<E>)this.appContext.getBean(key);
@@ -26,6 +29,14 @@ public class AsgnTxServiceFactory implements IAsgnTxServiceFactory{
 	}
 	public void setAppContext(ApplicationContext appContext) {
 		this.appContext = appContext;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 	
 }

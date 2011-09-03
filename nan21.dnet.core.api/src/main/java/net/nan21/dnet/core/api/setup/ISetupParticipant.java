@@ -6,8 +6,8 @@ import javax.persistence.EntityManager;
 
 public interface ISetupParticipant {
 	
-	public EntityManager getEntityManager();
-	public void setEntityManager(EntityManager em);
+	//public EntityManager getEntityManager();
+	//public void setEntityManager(EntityManager em);
  
 	public List<ISetupTask> getTasks();
 	
@@ -16,7 +16,7 @@ public interface ISetupParticipant {
 	public String getBundleId();
 	
 	public String getTargetName();
-	public void run() throws Exception;
+	public void execute() throws Exception;
 	
 	public boolean hasWorkToDo();
 }

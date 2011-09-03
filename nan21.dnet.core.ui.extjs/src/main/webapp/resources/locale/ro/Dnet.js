@@ -328,8 +328,9 @@ dnet.Translation = Ext.apply({},{
         ,ProductManufacturer_UI : "Producători"
         ,Product_UI : "Articole"
 	    ,ProductAccountGroup_UI : "Clase cont articol"
-
-
+	    ,ProductAttributeDefs_UI : "Atribute articol"		
+	    ,ProductAttachmentType_UI: "Tipuri atasament"
+	    		 
 	    //SD
 	    ,SalesOrderBaseData_UI : "Definiţii ( facturi)"
         //,SalesOrderStatus_UI : "Stări comenzi"

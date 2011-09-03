@@ -13,20 +13,23 @@ public class DsServiceFactory implements IDsServiceFactory {
 
 	@Autowired
 	private ApplicationContext appContext;
-	 
+
 	private List<IEntityServiceFactory> entityServiceFactories;
-	 
+
+	private String name;
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public <M, P> IDsService<M, P> create(String key) {
-		IDsService<M, P> s = (IDsService<M, P>)this.appContext.getBean(key);
+		IDsService<M, P> s = (IDsService<M, P>) this.appContext.getBean(key);
 		s.setEntityServiceFactories(entityServiceFactories);
-		return s; 		 
+		return s;
 	}
-	 
+
 	public ApplicationContext getAppContext() {
 		return appContext;
 	}
+
 	public void setAppContext(ApplicationContext appContext) {
 		this.appContext = appContext;
 	}
@@ -39,6 +42,13 @@ public class DsServiceFactory implements IDsServiceFactory {
 			List<IEntityServiceFactory> entityServiceFactories) {
 		this.entityServiceFactories = entityServiceFactories;
 	}
-	
-	
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
 }

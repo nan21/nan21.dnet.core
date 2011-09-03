@@ -3,17 +3,17 @@ Bundle-ManifestVersion: 2
 Bundle-Name: DNet Core - presenter
 Bundle-SymbolicName: nan21.dnet.core.presenter
 Bundle-Vendor: Nan21 
-Bundle-Version: 1.0.0.M1
+Bundle-Version: 1.0.0.M2
 Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.html
 Import-Package: 
- net.nan21.dnet.core.api.action;version="[1.0.0.M1,1.0.0.M1]",
- net.nan21.dnet.core.api.annotation;version="[1.0.0.M1,1.0.0.M1]",
- net.nan21.dnet.core.api.descriptor;version="[1.0.0.M1,1.0.0.M1]",
- net.nan21.dnet.core.api.session;version="[1.0.0.M1,1.0.0.M1]",
- net.nan21.dnet.core.api.service;version="[1.0.0.M1,1.0.0.M1]",
- net.nan21.dnet.core.api.model;version="[1.0.0.M1,1.0.0.M1]",
- net.nan21.dnet.core.api.converter;version="[1.0.0.M1,1.0.0.M1]",
- net.nan21.dnet.core.api.marshall;version="[1.0.0.M1,1.0.0.M1]",
+ net.nan21.dnet.core.api.action;version="[1.0.0.M2,1.0.0.M2]",
+ net.nan21.dnet.core.api.annotation;version="[1.0.0.M2,1.0.0.M2]",
+ net.nan21.dnet.core.api.descriptor;version="[1.0.0.M2,1.0.0.M2]",
+ net.nan21.dnet.core.api.session;version="[1.0.0.M2,1.0.0.M2]",
+ net.nan21.dnet.core.api.service;version="[1.0.0.M2,1.0.0.M2]",
+ net.nan21.dnet.core.api.model;version="[1.0.0.M2,1.0.0.M2]",
+ net.nan21.dnet.core.api.converter;version="[1.0.0.M2,1.0.0.M2]",
+ net.nan21.dnet.core.api.marshall;version="[1.0.0.M2,1.0.0.M2]",
  org.activiti.spring;version="[5.6,6.0)",
  org.springframework.context;version="[3.0,3.1)",
  org.springframework.context.config;version="[3.0,3.1)",

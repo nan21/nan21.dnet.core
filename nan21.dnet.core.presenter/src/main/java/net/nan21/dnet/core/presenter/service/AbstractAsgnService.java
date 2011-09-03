@@ -38,6 +38,8 @@ public abstract class AbstractAsgnService<M, P, E> {
 	protected String rightObjectIdField;
 	protected String rightItemIdField;
 	
+	protected String asgnTxFactoryName;
+	
 	protected List<IAsgnTxServiceFactory> asgnTxServiceFactories;
 	/**
 	 * Delegate service in business layer to perform transactions. 
@@ -48,24 +50,26 @@ public abstract class AbstractAsgnService<M, P, E> {
 	//TODO: this becomes findasgTxService 
 	private IAsgnTxService<E> findTxService() throws Exception {
 		for(IAsgnTxServiceFactory f: asgnTxServiceFactories) {
-			try {
-				IAsgnTxService<E> es = f.create( "baseAsgnTxService" ); //this.getEntityClass()
-				if (es != null) {
-					//this.entityService = es;
-					es.setEntityClass(entityClass); 
-					es.setObjectId(objectId);
-					es.setSelectionId(selectionId);
-					  
-					es.setLeftTable(leftTable);
-					es.setRightItemIdField(rightItemIdField);
-					es.setRightTable(rightTable);
-					es.setRightObjectIdField(rightObjectIdField);
-					es.setLeftPkField(leftPkField);
-					return es;
-				}					
-			} catch(NoSuchBeanDefinitionException e) {
-				// service not found in this factory, ignore 		
-			}				
+			if (this.asgnTxFactoryName != null && this.asgnTxFactoryName.equals(f.getName())) {
+				try {
+					IAsgnTxService<E> es = f.create( "baseAsgnTxService" ); //this.getEntityClass()
+					if (es != null) {
+						//this.entityService = es;
+						es.setEntityClass(entityClass); 
+						es.setObjectId(objectId);
+						es.setSelectionId(selectionId);
+						  
+						es.setLeftTable(leftTable);
+						es.setRightItemIdField(rightItemIdField);
+						es.setRightTable(rightTable);
+						es.setRightObjectIdField(rightObjectIdField);
+						es.setLeftPkField(leftPkField);
+						return es;
+					}					
+				} catch(NoSuchBeanDefinitionException e) {
+					// service not found in this factory, ignore 		
+				}	
+			}
 		}
 		throw new Exception (  "Transactional assignement service not found ");
  
@@ -355,6 +359,14 @@ public abstract class AbstractAsgnService<M, P, E> {
 
 	public void setRightItemIdField(String rightItemIdField) {
 		this.rightItemIdField = rightItemIdField;
+	}
+
+	public String getAsgnTxFactoryName() {
+		return asgnTxFactoryName;
+	}
+
+	public void setAsgnTxFactoryName(String asgnTxFactoryName) {
+		this.asgnTxFactoryName = asgnTxFactoryName;
 	}
 	
 	

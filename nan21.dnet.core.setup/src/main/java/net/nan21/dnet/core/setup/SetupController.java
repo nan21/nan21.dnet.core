@@ -127,7 +127,7 @@ public class SetupController {
 					if (participant.getBundleId().equals(bundleId)) {
 						ISetupTask task = participant.getTask(taskId);
 						task.setParamValues(values);
-						participant.run();
+						participant.execute();
 					}
 				} 
 				
@@ -151,8 +151,15 @@ public class SetupController {
 	private void prepareListModel(Map<String, Object> model) {
 		model.put("paramPrefix", ISetupTaskParam.PREFIX);
 		if(participants.size()>0) {
-			ISetupParticipant current = participants.get(0);
-			if(current.getTasks().size()>0) {
+			
+			ISetupParticipant current = null;
+			for(ISetupParticipant p: participants) {
+				boolean b = p.hasWorkToDo();
+				if (b && current==null) {
+					current = p;
+				}
+			} 
+			if(current != null && current.getTasks().size()>0) {
 				ISetupTask currentTask = current.getTasks().get(0);
 				model.put("bundleId", current.getBundleId() );
 				model.put("taskId", currentTask.getId() );
