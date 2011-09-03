@@ -7,7 +7,7 @@ Bundle-Version: 1.0.0.M2
 Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.html
 Bundle-ClassPath: WEB-INF/classes
 Import-Template: 
- org.eclipse.persistence.jpa.*;version="[2.1,2.4)"
+ org.eclipse.persistence.jpa.*;version="[2.1,2.5)"
 Import-Package: 
  net.nan21.dnet.core.api;version="[1.0.0.M2,1.0.0.M2]",
  net.nan21.dnet.core.api.action;version="[1.0.0.M2,1.0.0.M2]",

@@ -48,7 +48,12 @@ public class SetupTask implements ISetupTask {
 	@Override
 	public void setParamValues(Map<String, Object> values) {
 		for(ISetupTaskParam param: params) {
-			param.setValue(  ((String[]) values.get(ISetupTaskParam.PREFIX + param.getName()))[0]  );
+			String[] v = (String[])values.get(ISetupTaskParam.PREFIX + param.getName());
+			if (v!=null) {
+				param.setValue(  ((String[]) values.get(ISetupTaskParam.PREFIX + param.getName()))[0]  );				
+			} else {
+				param.setValue(null);
+			}			
 		}		
 	}
 	

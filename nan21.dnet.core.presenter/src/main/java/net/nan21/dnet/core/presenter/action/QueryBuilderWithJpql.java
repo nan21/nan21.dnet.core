@@ -31,6 +31,12 @@ public class QueryBuilderWithJpql<F, P> extends AbstractQueryBuilder<F, P> {
 	protected Map<String, Object> defaultFilterItems;
 	protected List<String> noFilterItems;
 
+	/**
+	 * Dirty work-around to avoid eclipselink bug when using fetch-groups with Cursor
+	 * 
+	 */
+	protected boolean forExport;
+	
 	private String entityAlias = "e";
 
 	public String getBaseEql() {
@@ -302,6 +308,8 @@ public class QueryBuilderWithJpql<F, P> extends AbstractQueryBuilder<F, P> {
 	}
 
 	protected void addFetchGroup(Query q) {
+		// see the reason of forExport flag
+		if (this.forExport) return;
 		logger.debug("Adding fetchGroup...");
 		FetchGroup fg = new FetchGroup("default");
 		fg.setShouldLoad(true);
@@ -362,4 +370,12 @@ public class QueryBuilderWithJpql<F, P> extends AbstractQueryBuilder<F, P> {
 		this.defaultSort = defaultSort;
 	}
 
+	public boolean isForExport() {
+		return forExport;
+	}
+
+	public void setForExport(boolean forExport) {
+		this.forExport = forExport;
+	}
+	
 }

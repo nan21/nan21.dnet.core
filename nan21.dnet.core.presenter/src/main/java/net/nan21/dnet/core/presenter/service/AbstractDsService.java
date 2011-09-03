@@ -428,6 +428,7 @@ public class AbstractDsService<M, P, E>
 			IQueryBuilder<M, P> builder, IDsExport<M> writer) throws Exception {
 		
 		QueryBuilderWithJpql<M, P> bld = (QueryBuilderWithJpql<M, P>) builder;
+		bld.setForExport(true);
 		
 		EntityManager lem = bld.getEntityManager().getEntityManagerFactory().createEntityManager();
 		bld.setEntityManager(lem);
@@ -447,7 +448,7 @@ public class AbstractDsService<M, P, E>
 				.setMaxResults(bld.getResultSize());
 			
 			Cursor c = q.unwrap(JpaQuery.class).getResultCursor();		
-			 
+			  
 			M ds ;
 			writer.begin();
 			boolean isFirst = true;

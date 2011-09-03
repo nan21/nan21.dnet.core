@@ -104,7 +104,11 @@ public abstract class AbstractDsExport<M> {
         	if (this.outFilePath == null || this.outFileName == null || this.outFileExtension == null) {
         		throw new Exception("Either a File or a file-path, file-name and file-extension must be provided");
         	}
-        	this.outFile = File.createTempFile(this.outFileName, "."+this.outFileExtension, new File(this.outFilePath ));            
+        	File dir = new File(this.outFilePath );
+        	if (!dir.exists()) {
+        		dir.mkdirs();
+        	}
+        	this.outFile = File.createTempFile(this.outFileName, "."+this.outFileExtension, dir);            
         }         
         FileWriter fstream = new FileWriter(this.outFile);
         this.bufferedWriter = new BufferedWriter(fstream);
