@@ -266,4 +266,11 @@ public abstract class AbstractEntityService <E>  {
 		}
 		return q.executeUpdate();	
 	}
+	
+	public <T extends AbstractBusinessDelegate> T getBusinessDelegate(Class<T> clazz) throws Exception {
+		T delegate = clazz.newInstance();
+		//delegate.setAppContext(this.appContext);
+		delegate.setEntityManager(this.em);
+		return delegate;
+	}
 }
