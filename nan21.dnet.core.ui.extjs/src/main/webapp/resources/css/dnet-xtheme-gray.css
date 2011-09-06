@@ -1,0 +1,258 @@
+ 
+ /* EXTJS plugin css */
+
+.x-form-file-wrap {
+    position: relative;
+    height: 22px;
+}
+.x-form-file-wrap .x-form-file {
+	position: absolute;
+	right: 0;
+	-moz-opacity: 0;
+	filter:alpha(opacity: 0);
+	opacity: 0;
+	z-index: 2;
+    height: 22px;
+}
+.x-form-file-wrap .x-form-file-btn {
+	position: absolute;
+	right: 0;
+	z-index: 1;
+}
+.x-form-file-wrap .x-form-file-text {
+    position: absolute;
+    left: 0;
+    z-index: 3;
+    color: #777;
+}
+
+ /* EXTJS Overrides  */
+/* [OPTIONAL] -- may be used for either Ext.grid.GroupSummary / Ext.ux.grid.GridSummary plugins */
+.x-grid3-summary-row{border-left:1px solid #fff;border-right:1px solid #fff;color:#333;background:#f1f2f4;}
+.x-grid3-summary-row .x-grid3-cell-inner{font-weight:bold;padding-bottom:4px;}
+.x-grid3-cell-first .x-grid3-cell-inner{padding-left:16px;}
+.x-grid-hide-summary .x-grid3-summary-row{display:none;}
+.x-grid3-summary-msg{padding:4px 16px;font-weight:bold;}
+
+
+/* [REQUIRED] (by Ext.ux.grid.GridSummary plugin) */
+.x-grid3-gridsummary-row-inner{overflow:hidden;width:100%;}/* IE6 requires width:100% for hori. scroll to work */
+.x-grid3-gridsummary-row-offset{width:10000px;}
+.x-grid-hide-gridsummary .x-grid3-gridsummary-row-inner{display:none;}
+
+ 
+.x-item-disabled {
+    color: #000 !important;
+}
+.documentTotalField {
+	font-weight:bold !important;
+}
+
+span.dialogName {float:left;font-size:14px;font-weight:bold;padding-left:5px;padding-right:5px;}
+span.dialogCode {float:left;font-size:10px;font-weight:normal;padding-left:5px;padding-right:5px;}
+span.dialogNamePathSeparator {float:left;font-size:14px;font-weight:bold;padding-left:3px;padding-right:3px;}
+span.dialogPath {float:left;font-size:14px;font-weight:bold;padding-left:5px;padding-right:5px;}
+span.dialogClientCd {float:right;font-size:14px;font-weight:bold;padding-left:5px;padding-right:5px;}
+
+.dnet-toolbar-title { font-weight:bold !important;  }
+
+.lovCombo-item {
+    font:normal 11px tahoma, arial, helvetica, sans-serif;
+    padding:3px 10px 3px 10px;
+    border:1px solid #fff;
+    border-bottom:1px solid #eeeeee;
+    white-space:normal;
+    color:#555;
+}
+.lovCombo-item h3 {
+    display:block;
+    font:inherit;
+    font-weight:bold;
+    color:#222;
+}
+
+.lovCombo-item h3 span {
+    float: right;
+    font-weight:normal;
+    margin:0 0 5px 5px;
+    width:100px;
+    display:block;
+    clear:none;
+}
+ 
+
+.app-header-text {
+	font:bold 11px tahoma, arial, helvetica, sans-serif;
+	padding:8px 5px 5px 5px;
+}
+.app-header-link {
+	font:normal 11px tahoma, arial, helvetica, sans-serif;
+	font-color:#229;
+	text-decoration: underline;
+	cursor: pointer;
+	padding:8px 5px 5px 5px;
+}
+
+
+.icon-hometab {
+    background-image: url(../images/icon/home_nav.gif) !important;
+}
+
+/*   Action buttons css  */
+.icon-lov-open-dialog {
+    background-image: url(../images/icon/action_next_rec1.gif) !important;
+}
+.icon-product-hr {
+    background-image: url(../images/icon/icon_hr.png) !important;
+}
+
+.icon-action-new {
+    background-image: url(../images/icon/action_new.gif) !important;
+}
+.icon-action-add {
+    background-image: url(../images/icon/action_add.gif) !important;
+}
+.icon-action-copy {
+    background-image: url(../images/icon/action_copy.gif) !important;
+}
+.icon-action-edit {
+    background-image: url(../images/icon/action_edit.gif) !important;
+}
+.icon-action-delete {
+    background-image: url(../images/icon/action_delete.gif) !important;
+}
+.icon-action-remove {
+    background-image: url(../images/icon/action_delete.gif) !important;
+}
+.icon-action-removeSelection {
+    background-image: url(../images/icon/action_delete.gif) !important;
+}
+.icon-action-deleteSelection {
+    background-image: url(../images/icon/action_delete.gif) !important;
+}
+.icon-action-commit {
+    background-image: url(../images/icon/action_commit.png) !important;
+}
+.icon-action-rollback {
+    background-image: url(../images/icon/action_rollback3.gif) !important;
+}
+.icon-action-save {
+    background-image: url(../images/icon/action_save.gif) !important;
+}
+.icon-action-saveAll {
+    background-image: url(../images/icon/action_saveAll.gif) !important;
+}
+
+.icon-action-refresh {
+    background-image: url(../images/icon/action_refresh.gif) !important;
+}
+.icon-action-filter {
+    background-image: url(../images/icon/action_filter.gif) !important;
+}
+.icon-action-fetch {
+    background-image: url(../images/icon/action_fetch.gif) !important;
+}
+.icon-action-export{
+    background-image: url(../images/icon/action_export.gif) !important;
+}
+.icon-action-import{
+    background-image: url(../images/icon/action_import.gif) !important;
+}
+.icon-action-customlayout{
+    background-image: url(../images/icon/customlayout.gif) !important;
+}
+
+
+
+.icon-action-confirm {
+    background-image: url(../images/icon/action_confirm.png) !important;
+}
+.icon-action-run {
+    background-image: url(../images/icon/action_run.gif) !important;
+}
+.icon-action-reset {
+    background-image: url(../images/icon/action_reset.gif) !important;
+}
+.icon-action-back {
+    background-image: url(../images/icon/action_back.gif) !important;
+}
+.icon-action-paste {
+    background-image: url(../images/icon/action_paste.png) !important;
+}
+.icon-action-summary {
+    background-image: url(../images/icon/action_summary.png) !important;
+}
+
+.icon-action-service{
+    background-image: url(../images/icon/ds_service.png) !important;
+}
+.icon-action-print{
+    background-image: url(../images/icon/action_print.png) !important;
+} 
+.icon-action-expand-all {
+    background-image: url(../images/icon/action_expand_all.gif) !important;
+}
+.icon-action-collapse-all {
+    background-image: url(../images/icon/action_collapse_all.gif) !important;
+}
+.icon-action-synchronize {
+    background-image: url(../images/icon/action_synchronize.gif) !important;
+}
+
+
+.icon-action-previous {
+    background-image: url(../images/icon/action_prev_rec.gif) !important;
+}
+.icon-action-next {
+    background-image: url(../images/icon/action_next_rec.gif) !important;
+}
+
+
+.icon-action-help {
+    background-image: url(../images/icon/action_help.png) !important;
+}
+.icon-action-resetForm {
+    background-image: url(../images/icon/action_resetForm.gif) !important;
+}
+.icon-package {
+    background-image: url(../images/icon/obj_package.gif) !important;
+}
+.icon-ds {
+    background-image: url(../images/icon/obj_ds.png) !important;
+}
+.icon-dc {
+    background-image: url(../images/icon/obj_dc.png) !important;
+}
+.icon-lov {
+    background-image: url(../images/icon/obj_lov.gif) !important;
+}
+.icon-dialog {
+    background-image: url(../images/icon/obj_dialog.png) !important;
+}
+.icon-gears {
+    background-image: url(../images/icon/ds_service.png) !important;
+}
+
+.icon-lock {
+    background-image: url(../images/icon/lock.gif) !important ;
+}
+.icon-lang-ro {
+    background-image: url(../images/icon/flag_ro.jpg) !important ;
+}
+.icon-lang-en {
+    background-image: url(../images/icon/flag_en.jpg) !important;
+}
+
+.icon-action-assign_moveleft {
+    background-image: url(../images/icon/action_assign_left.gif) !important;
+}
+.icon-action-assign_moveright {
+    background-image: url(../images/icon/action_assign_right.gif) !important;
+}
+
+.icon-action-assign_moveleftall {
+    background-image: url(../images/icon/action_assign_leftall.gif) !important;
+}
+.icon-action-assign_moverightall {
+    background-image: url(../images/icon/action_assign_rightall.gif) !important;
+}

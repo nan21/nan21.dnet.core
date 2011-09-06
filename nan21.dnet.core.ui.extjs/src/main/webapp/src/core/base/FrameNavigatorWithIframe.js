@@ -10,9 +10,22 @@ dnet.base.FrameNavigatorWithIframe = Ext.apply({}, {
  
 	 maxOpenTabs : -1
 	
+	,getFrameInstance:  function(frame) {
+		//var crtTab = getApplication().getViewBody().getActiveTab();
+		var theFrame = window.frames[__CmpId__.FRAME_IFRAME_PREFIX+frame];
+		var theFrameInstance = null;
+		if( theFrame ) {
+			theFrameInstance = theFrame.theFrameInstance;
+		}
+		return theFrameInstance;
+	
+		 //document.getElementById(__CmpId__.FRAME_IFRAME_PREFIX+frame);
+	}
+
 	,isFrameOpened:  function(frame) {
 		 return !Ext.isEmpty(document.getElementById(__CmpId__.FRAME_IFRAME_PREFIX+frame))
 	}
+
 
 	,isFrameActive:  function(frame) {
 		return (getApplication().getViewBody().getActiveTab().getId() == __CmpId__.FRAME_TAB_PREFIX);  

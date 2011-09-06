@@ -39,29 +39,28 @@ dnet.base.Application = Ext.apply({}, {
 	 *  params: the arguments used in callback call  
 	 */
 	,showFrame: function(frame, options) {
-		var applyCallbackNow = this.navigator.isFrameOpened(frame);
+		var theFrame = this.navigator.getFrameInstance(frame);
+		var applyCallbackNow = !Ext.isEmpty(theFrame);
 		this.navigator.showFrame(frame, options);
 		this.registerFrameCallback(frame, options);
 		if (applyCallbackNow) {
-			this.applyFrameCallback(frame, this.frameRefs.get(frame));
+			this.applyFrameCallback(frame, theFrame);
 		}		
 	}
-	
-	,registerFrameInstance : function(frame, theFrameObject) {
-		if (this.frameRefs.containsKey(frame)) {
-			this.frameRefs.removeKey(frame);
+		
+	,registerFrameCallback : function (frame, options) { 
+		if (options && !Ext.isEmpty(options.tocElement) && Ext.isEmpty(options.callback) ) {
+			options.callback = function(params) {
+				this._showTocElement_(params.tocElement);				 
+			}
+			options.params = {tocElement:options.tocElement }
 		}
-		this.frameRefs.add(frame, theFrameObject);
-	}
-	
-	,registerFrameCallback : function (frame, options) {
 		if (options && options.callback) {
 			this.frameCallbacks.add(frame, options);
 		}		
 	}
 	
-	,applyFrameCallback: function(frame, theFrameObject) {
-		this.frameRefs.add(frame, theFrameObject);
+	,applyFrameCallback: function(frame, theFrameObject) {		 
 		if (this.frameCallbacks.containsKey(frame)) {
 			var opt = this.frameCallbacks.get(frame);			 
 			opt.callback.call(theFrameObject, opt.params);

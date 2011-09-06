@@ -97,6 +97,6 @@
     <link rel="stylesheet" type="text/css" href="${urlUiExtjsLibExtjs}/js/extjs/resources/css/ext-all-notheme.css"/>
     <link rel="stylesheet" type="text/css" href="${urlUiExtjsLibExtjs}/js/extjs/resources/css/xtheme-${theme}.css"/>        
     <link rel="stylesheet" type="text/css" href="${urlUiExtjsLibExtjs}/js/extjs/resources/examples/ux/calendar/resources/css/calendar-${theme}.css"/>
- 
+ 	<link rel="stylesheet" type="text/css" href="${urlUiExtjsCore}/resources/css/dnet-xtheme-${theme}.css"/>
       
         

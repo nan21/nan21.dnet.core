@@ -43,7 +43,7 @@
 	</script>
     
  	<script>
-
+	var theFrameInstance = null;
     Ext.onReady(function(){
 
     	<%@ include file="_on_ready.jspf" %>
@@ -54,11 +54,13 @@
          	      	,region:"center"
          	        ,layout:"fit"
          	        ,border: false
-         	        ,split: true    	         
+         	        ,split: true  
+         	       ,listeners:{ 
+        				afterrender : { fn: function(p) { theFrameInstance = this; } }
+        			}  	         
          	      }	]};
     	var __theViewport__ = new Ext.Viewport(cfg);
-    	__theViewport__.doLayout();
-    	 
+    	__theViewport__.doLayout(); 
 	});
 
     <%@ include file="_loading_mask_remove.jspf" %> 

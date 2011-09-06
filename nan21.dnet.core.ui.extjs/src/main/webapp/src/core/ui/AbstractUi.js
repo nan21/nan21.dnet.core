@@ -99,7 +99,7 @@ dnet.base.AbstractUi = Ext.extend( Ext.Panel, {
 	,_onReady_: function(p) { 
 		getApplication().setFrameTabTitle(this._name_, this._title_);
 		//getApplication().registerFrameInstance(this._name_,this);
-		//getApplication().applyFrameCallback(this._name_,this);
+		getApplication().applyFrameCallback(this._name_,this);
 		if (p==this) { this._onReady_(); }
 
 	}
@@ -216,6 +216,19 @@ dnet.base.AbstractUi = Ext.extend( Ext.Panel, {
 		}
         if (b) {b.execute();}
     }
+	,_showTocElement_: function(name) {	
+		if (Ext.isNumber(name)) {
+			var theToc = this._getElement_("_toc_").items.items[0];
+			var r = theToc.store.getAt(name);
+			theToc.select(r);
+		} else {
+			var theToc = this._getElement_("_toc_").items.items[0];
+			var r = theToc.store.getById(name);
+			theToc.select(r);
+		}
+		
+	} 
+	
     ,_showStackedViewElement_: function(svn, idx) {
 		if (Ext.isNumber(idx) ) {
     		this._getElement_(svn).getLayout().setActiveItem(idx);

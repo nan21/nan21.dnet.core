@@ -17,18 +17,30 @@ dnet.base.ActionBuilder.prototype =  {
 		//this.frame._tlbitms_ = new Ext.util.MixedCollection();
 	}
  
+	,addLabel: function(config) {
+		var cfg = config||{};		
+		Ext.applyIf(cfg, { dc: this.dc, xtype:"label", cls:"dnet-toolbar-label" });		  		 
+		this.frame._tlbitms_.add(this.name+"__"+config.name , config);  
+		return this;
+	}
+	,addTitle: function(config) {
+		var cfg = config||{};		
+		Ext.applyIf(cfg, { dc: this.dc, xtype:"label", "name":"title", cls:"dnet-toolbar-title"  });		
+		this.frame._tlbitms_.add(this.name+"__"+config.name , config);  
+		return this;
+	}
 	,addQuery: function(config) {
 		var cfg = config||{};		
 		Ext.applyIf(cfg, { dc: this.dc });		  
 		var a = this.frame._getDc_(cfg.dc).actions.doQuery;
-		this.frame._tlbitms_.add(this.name+"__"+a.initialConfig.name, a);  //new Ext.Action(cfg)	
+		this.frame._tlbitms_.add(this.name+"__"+a.initialConfig.name, a);
 		return this;
 	}
 	,addNew: function(config) {
 		var cfg = config||{};		
 		Ext.applyIf(cfg, { dc: this.dc, tlb:this.name, autoEdit:true });		  
 		var a = this.frame._getDc_(cfg.dc).actions.doNew;
-		this.frame._tlbitms_.add(this.name+"__"+a.initialConfig.name, a);  //new Ext.Action(cfg)
+		this.frame._tlbitms_.add(this.name+"__"+a.initialConfig.name, a);
 		if (cfg.autoEdit) {
 			this.frame._getDc_(cfg.dc).on('afterDoNew', function() {
 				this._invokeTlbItem_("doEdit", cfg.tlb);
@@ -41,14 +53,14 @@ dnet.base.ActionBuilder.prototype =  {
 		var cfg = config||{};		
 		Ext.applyIf(cfg, { dc: this.dc });		  
 		var a = this.frame._getDc_(cfg.dc).actions.doCopy;
-		this.frame._tlbitms_.add(this.name+"__"+a.initialConfig.name, a);  //new Ext.Action(cfg)	
+		this.frame._tlbitms_.add(this.name+"__"+a.initialConfig.name, a);
 		return this;
 	}
 	,addDeleteSelected: function(config) {
 		var cfg = config||{};		
 		Ext.applyIf(cfg, { dc: this.dc });		  
 		var a = this.frame._getDc_(cfg.dc).actions.doDelete;
-		this.frame._tlbitms_.add(this.name+"__"+a.initialConfig.name, a);  //new Ext.Action(cfg)	
+		this.frame._tlbitms_.add(this.name+"__"+a.initialConfig.name, a);
 		return this;
 	}
 	,addEdit: function(config) {

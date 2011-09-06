@@ -111,6 +111,47 @@ dnet.base.FrameBuilder.prototype =  {
 		return new dnet.base.ActionBuilder({name:name, frame:this.frame, dc: config.dc});
 	}
 	
+	,addToc: function(canvases) {
+		var data = [];
+		for(var i=0;i<canvases.length;i++) {
+			data[i] = [canvases[i], this.frame._elems_.get(canvases[i]).title];			
+		}
+		var config = {
+				name:"_toc_", collapsible: true, layout:"fit", id:Ext.id(),
+				region:"west", title: 'Navigation', width: 250, header:true, frame:false
+				, items:[{
+					 name: "_toc_items_", xtype: 'listview',id:Ext.id()
+					,hideHeaders:true
+					,autoScroll:true
+					,singleSelect: true					 
+					,store: new Ext.data.ArrayStore({					    
+					    autoDestroy: true,					     
+					    idIndex: 0,  
+					    fields: [					        
+					       {name: 'name', type: 'string'},
+					       {name: 'title', type: 'string'},					       
+					    ], 
+					    data: data
+					     
+					})				
+					,columns: [ {
+				        header: 'title',				        
+				        dataIndex: 'title'
+				    }]				    
+				    ,listeners: {scope:this.frame, 
+		            	selectionchange: function(view, nodes) {
+							this._showStackedViewElement_("main", view.getRecord(nodes[0]).data.name);			 
+		            	} 
+						,afterrender: function() {
+							this._showTocElement_(0);			 
+		            	}   
+		        	}
+				}]
+				
+			} 
+		this.frame._elems_.add(config.name, config);
+		return this;
+	} 
 	
 	
 	,addButton: function(config) {		
@@ -129,6 +170,7 @@ dnet.base.FrameBuilder.prototype =  {
 		return this;
 	} 
 	,add: function(config) {
+		Ext.applyIf(config,{ id:Ext.id()} );
 		this.frame._elems_.add(name, config);
 		return this;
 	}
