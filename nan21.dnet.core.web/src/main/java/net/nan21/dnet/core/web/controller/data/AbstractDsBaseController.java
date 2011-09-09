@@ -2,10 +2,13 @@ package net.nan21.dnet.core.web.controller.data;
 
 import java.util.List;
 
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 
 import net.nan21.dnet.core.api.service.IDsService;
 import net.nan21.dnet.core.api.service.IDsServiceFactory;
+import net.nan21.dnet.core.api.session.IAuthorizeDsAction;
+import net.nan21.dnet.core.security.AuthorizeDsActionService;
 
 public class AbstractDsBaseController<M, P>
 		extends AbstractDataController  {
@@ -14,6 +17,8 @@ public class AbstractDsBaseController<M, P>
 	protected Class<P> paramClass;
 
 	protected List<IDsServiceFactory> serviceFactories;
+	protected IAuthorizeDsAction authorizeActionService;
+	
 	
 	protected Class<P> getParamClass() {
 		return this.paramClass;
@@ -46,4 +51,16 @@ public class AbstractDsBaseController<M, P>
 		}
 		throw new Exception(dsName + "Service not found !");
 	}
+	
+	 
+
+	public IAuthorizeDsAction getAuthorizeActionService() {
+		return authorizeActionService;
+	}
+
+	public void setAuthorizeActionService(IAuthorizeDsAction authorizeActionService) {
+		this.authorizeActionService = authorizeActionService;
+	}
+	
+	
 }

@@ -56,6 +56,9 @@ public class AbstractDsReadController<M, P>
 			this.prepareRequest();
 			this.resourceName = resourceName;
 			this.dataFormat = dataFormat;
+			
+			authorizeActionService.authorize(resourceName.substring(0, resourceName.length()-2), "find");	
+			
 			IDsService<M, P> service = getDsService(this.resourceName);
 			IQueryBuilder<M,P> builder = service.createQueryBuilder().addFetchLimit(
 					resultStart, resultSize).addSortInfo(orderByCol,
@@ -116,6 +119,9 @@ public class AbstractDsReadController<M, P>
 			this.prepareRequest();
 			this.resourceName = resourceName;
 			this.dataFormat = dataFormat;
+			
+			authorizeActionService.authorize(resourceName.substring(0, resourceName.length()-2), "export");	
+			
 			IDsService<M, P> service = getDsService(this.resourceName);
 			IQueryBuilder<M,P> builder = service.createQueryBuilder().addFetchLimit(
 					resultStart, resultSize).addSortInfo(orderByCol,

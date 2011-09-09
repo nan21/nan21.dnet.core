@@ -12,7 +12,7 @@ public class NotAuthorizedRequestException extends Exception {
     private static final long serialVersionUID = 1L;
 
     public NotAuthorizedRequestException(String message) {
-         
+         super(message);
     }
 
 }

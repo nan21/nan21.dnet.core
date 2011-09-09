@@ -9,18 +9,24 @@ package net.nan21.dnet.core.security;
 
 import java.sql.SQLException;
 
+import net.nan21.dnet.core.api.session.IAuthorizeDsAction;
 import net.nan21.dnet.core.security.NotAuthorizedRequestException;
  
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-public class AuthorizeDsActionService  extends JdbcDaoSupport {
+public class AuthorizeDsActionService  extends JdbcDaoSupport
+		implements IAuthorizeDsAction{
 
-     public void authorize(String dsName, String action, boolean defaultIsAllow ) throws Exception {
-         
+     public void authorize(String dsName, String action ) throws Exception {
+    	 SessionUser u = (SessionUser)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+     	if (u.isAdministrator()) {
+     		return;
+     	}
         int i=0;
         try {
-            i = this.getJdbcTemplate().queryForInt(this.buildSql(dsName, action, defaultIsAllow));
+        	
+        	i = this.getJdbcTemplate().queryForInt(this.buildSql(dsName, action ),  dsName, u.getUsername());
         } catch (org.springframework.dao.EmptyResultDataAccessException e) {
             // catch it to handle it below
         } finally {
@@ -32,21 +38,23 @@ public class AuthorizeDsActionService  extends JdbcDaoSupport {
             }
         }
                 
-        if ( (defaultIsAllow && i==1)
-                || ( !defaultIsAllow && i==0 )) {
+        if ( i<1) {
             throw new NotAuthorizedRequestException("You are not authorized to execute this action.");
         } 
     }
     
-    private String buildSql(String dsName, String action, boolean defaultIsAllow) {
-        StringBuffer sb = new StringBuffer();
-        SessionUser u = (SessionUser)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        sb.append("select 1 ");        
-        sb.append(" from bd_acl_ds acl  where acl.dsname = '"+dsName+"' ");
- 
-        sb.append("and acl.role_id in (select ur.roles_id from bd_users_roles ur where ur.users_id in ( select u.id from bd_users u where u.code = '"+u.getUsername()+"' ) )");
-        int x = (defaultIsAllow )? 0:1;
-         
+    private String buildSql(String dsName, String action ) {
+    	String baseSql = "select distinct 1 from AD_ACCESS_CONTROL_DS acl where acl.dsname = ? "
+    		+" and exists ( "
+    		+" select 1 "
+    		+"   from AD_ROLES_ACCESSCTRL rac"
+    		+"  where rac.accessControls_id = acl.accessControl_id and rac.roles_id in ( "
+    		+" 		select ur.roles_id from ad_users_roles ur where ur.users_id in ( select u.id from ad_users u where u.code = ? )"
+    		+"	)"
+    		+")";
+    	
+        StringBuffer sb = new StringBuffer(baseSql);
+         int x = 1;
         if (action.equals("find")) {
             sb.append(" and acl.queryAllowed = "+x);
         }

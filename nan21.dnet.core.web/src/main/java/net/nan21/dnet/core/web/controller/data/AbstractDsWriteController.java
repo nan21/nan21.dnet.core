@@ -41,6 +41,8 @@ public class AbstractDsWriteController<M, P>
 			this.resourceName = resourceName;		
 			this.dataFormat = dataFormat;
 			
+			authorizeActionService.authorize(resourceName.substring(0, resourceName.length()-2), "insert");	
+			
 			if (!dataString.startsWith("[")) {
 				dataString = "[" + dataString + "]";
 			}
@@ -85,6 +87,8 @@ public class AbstractDsWriteController<M, P>
 			this.prepareRequest();
 			this.resourceName = resourceName;		
 			this.dataFormat = dataFormat;
+			
+			authorizeActionService.authorize(resourceName.substring(0, resourceName.length()-2), "update");	
 			
 			if (!dataString.startsWith("[")) {
 				dataString = "[" + dataString + "]";
@@ -131,6 +135,8 @@ public class AbstractDsWriteController<M, P>
 			this.prepareRequest();
 			this.resourceName = resourceName;		
 			this.dataFormat = dataFormat;
+			
+			authorizeActionService.authorize(resourceName.substring(0, resourceName.length()-2), "delete");	
 			
 			if (!idsString.startsWith("[")) {
 				idsString = "[" + idsString + "]";

@@ -59,7 +59,17 @@ public class SessionUser implements UserDetails {
      * @return the administrator
      */
     public Boolean isAdministrator() {
-        return this.administrator;
+    	if (this.administrator == null) { 
+    		String adminRole = this.params.getAdminRole();
+    		this.administrator = false;
+    		for(GrantedAuthority a : authorities) {
+    			if (a.getAuthority().equals(adminRole)) {
+    				this.administrator = true;
+    				break;
+    			}
+    		}    		
+    	}
+    	return this.administrator;
     } 
      
     /**

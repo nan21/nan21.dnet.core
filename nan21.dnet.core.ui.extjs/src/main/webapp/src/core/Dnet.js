@@ -162,7 +162,7 @@ Dnet = {
 		,my : {name: "mbMenuMY" , title :"MY: My DNet", children: []}*/
 	}
 	   
-	,import: function(list) {
+	,doImport: function(list) {
 		for(var i=0; i<list.length;i++) {
 			if (!Ext.isEmpty(list[i])) {
 				var rd = this.describeResource(list[i]);
