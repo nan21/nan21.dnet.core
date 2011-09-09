@@ -263,7 +263,7 @@ dnet.Translation = Ext.apply({},{
 	   ,UserGroups_UI : "User groups"
 		,UserTypes_UI : "User types"
 	   ,Role_UI : "Roles"
-       ,AclDs_UI : "Access rights"
+       ,AccessControl_UI : "Access rights"
 	   ,MyBookmark_UI : "My bookmarks"
 	   ,WorkflowAdmin_UI: "Workflow admin console"
 	   ,WorkflowDef_UI : "Workflow definition"

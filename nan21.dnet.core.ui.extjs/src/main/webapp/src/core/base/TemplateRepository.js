@@ -42,7 +42,6 @@ dnet.base.TemplateRepository = Ext.apply({}, {
         +"<tr><td><h5 style='text-align: left;font-family: arial, sans-serif;font-size:10pt;margin-top: 5px;' > Version: {dnetVersion} </h5> </td></tr>"
         +"<tr><td >"
         +"  <br>Open source software with HRM / CRM functionalities."
-		+"  <br><br>  Thank you for using this software.</td></tr>"
         +"</table>"
   ,APPLICATION_ABOUT_BOX:
          "<table width='100%' border='0' align=center cellpadding='0' cellspacing='0' style='font-family: arial, sans-serif;line-height: 140%;font-size:10pt;'>"
@@ -53,7 +52,6 @@ dnet.base.TemplateRepository = Ext.apply({}, {
         +"  <br>Open source software with HRM / CRM functionalities."
       	+"  </td></tr>"
 		+" <tr><td > <br>Website:  <a href='http://dnet.nan21.net' target=_blank>http://dnet.nan21.net</a> </td> </tr>"
-         +"  <br><br>  Thank you for using this software.</td></tr>"
         +"  </td></tr>"
         +"</table>"
   ,APPLICATION_HOME_CR : "<br><br><br><table width='600' border='0' align=center cellpadding='0' cellspacing='0'><tr><td><h1 style='font-size:16px;'>Welcome to Component Repository</h1></td></tr></table>"

@@ -14,7 +14,7 @@ dnet.base.FrameBuilder.prototype =  {
 	}
 	
 	,linkDc: function(childName, parentName, relation) {
-		Ext.applyIf(relation, {fetchMode:"auto", strict: true});
+		Ext.applyIf(relation, {fetchMode:"manual", strict: true});
 		var c = this.frame._dcs_.get(childName);
 		var p = this.frame._dcs_.get(parentName);
 		var ctx = new dnet.base.DcContext({

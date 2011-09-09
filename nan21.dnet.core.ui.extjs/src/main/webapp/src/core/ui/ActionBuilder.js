@@ -120,7 +120,24 @@ dnet.base.ActionBuilder.prototype =  {
 		return this;
 	}
 	 
-     
+    ,addAutoLoad: function() {
+    	var cfg = { name:"autoLoad", disabled: false,enableToggle :true
+        		,text: "Auto", tooltip: "Toogle auto-load mode (Load data automatically when parent record is changed)"   			
+        			,scope:dc, handler: function(btn, evnt) { 
+        				try { 
+        					dc.dcContext.relation.fetchMode = (btn.pressed)? "auto":"manual";
+        				} catch(e) { dnet.base.DcExceptions.showMessage(e);}}
+    				,dc: this.dc
+            	};		
+		 
+		var dc = this.frame._getDc_(cfg.dc);		
+		if (dc.dcContext.relation.fetchMode == "auto" || dc.dcContext.relation.fetchMode == undefined) {
+			cfg.pressed = true;
+		};
+		var a = new Ext.Action(cfg);	
+		this.frame._tlbitms_.add(this.name+"__"+a.initialConfig.name, a);  //new Ext.Action(cfg)	
+		return this;
+    } 
 	,addSave: function(config) {
 		var cfg = config||{};		
 		Ext.applyIf(cfg, { dc: this.dc });	
