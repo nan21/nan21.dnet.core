@@ -23,12 +23,17 @@ public final class ViewModelDescriptorManager {
 	}
 	
 	public static <M> AsgnDescriptor<M> getAsgnDescriptor(Class<M> modelClass) throws Exception {
-		 
-		String key = modelClass.getCanonicalName();
-		if ( !store.containsKey(key)) {
-			store.put(key, new AsgnDescriptor<M>(modelClass));			
+		boolean useCache = false;
+		if (useCache) {
+			String key = modelClass.getCanonicalName();
+			if ( !store.containsKey(key)) {
+				store.put(key, new AsgnDescriptor<M>(modelClass));			
+			}
+			return (AsgnDescriptor<M>)store.get(key);	
+		}else {
+			return new AsgnDescriptor<M>(modelClass);
 		}
-		return (AsgnDescriptor<M>)store.get(key);		 
+		 
 	}
 	
 	public static void remove(AbstractViewModelDescriptor<?> descriptor) {

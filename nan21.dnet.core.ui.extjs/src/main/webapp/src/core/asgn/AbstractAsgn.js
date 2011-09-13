@@ -347,10 +347,12 @@ Ext.extend(dnet.base.AbstractAsgn, Ext.util.Observable, {
     }	  	     
   ,doQueryLeftImpl: function() {    		 	  
   		 this.storeLeft.removeAll();	 
-       var lp = {};
-       if (this.filter.left.field){lp[this.filter.left.field] = this.filter.left.value}   
-       //var bp = this.store.baseParams;
-       //for(var p in bp) { if ((bp[p] == "" ||bp[p] == null)  && !this.dataCtx.hasOwnProperty(p)){delete bp[p];} }
+       var lp = {};       
+       var data = {};        
+       if (this.filter.left.field){    	   
+    	   data[this.filter.left.field] = this.filter.left.value;
+    	}   
+       lp.data =  Ext.encode(data);      
        lp[Dnet.requestParam.START] = 0;
        lp[Dnet.requestParam.SIZE] = this.tuning.fetchSize;
        Ext.apply(lp, this.params);
@@ -370,9 +372,11 @@ Ext.extend(dnet.base.AbstractAsgn, Ext.util.Observable, {
 
   		 this.storeRight.removeAll();
        var lp = {};
-       if (this.filter.right.field){lp[this.filter.right.field] = this.filter.right.value}   
-       //var bp = this.store.baseParams;
-       //for(var p in bp) { if ((bp[p] == "" ||bp[p] == null)  && !this.dataCtx.hasOwnProperty(p)){delete bp[p];} }
+       var data = {};        
+       if (this.filter.right.field){    	   
+    	   data[this.filter.right.field] = this.filter.right.value;
+    	}   
+       lp.data =  Ext.encode(data);        
        lp[Dnet.requestParam.START] = 0;
        lp[Dnet.requestParam.SIZE] = this.tuning.fetchSize;
        Ext.apply(lp, this.params);

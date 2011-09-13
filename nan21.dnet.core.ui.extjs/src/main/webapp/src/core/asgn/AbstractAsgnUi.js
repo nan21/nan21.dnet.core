@@ -3,16 +3,23 @@ Ext.ns("dnet.base");
 dnet.base.AbstractAsgnUi = Ext.extend(Ext.Window,{
 
 
-    _elems_: new Ext.util.MixedCollection()
-    ,_tlbs_: new Ext.util.MixedCollection()
-	,_tlbitms_: new Ext.util.MixedCollection()
+    _elems_: null
+    ,_tlbs_: null
+	,_tlbitms_: null
     ,_controller_: null
     ,_leftGridId_:null
 	,_rightGridId_:null
 	,_windowConfig_:null
+	,_filterFields_: null
+	,_defaultFilterField_: null
+	,_autoCloseAfterSave_: true
 	
 	,initComponent: function() {
  
+		this._elems_ = new Ext.util.MixedCollection();
+		this._tlbs_ = new Ext.util.MixedCollection();
+		this._tlbitms_ = new Ext.util.MixedCollection();
+
 		var Cls = this._controller_;
 		this._controller_ = new Cls();
   
@@ -28,15 +35,17 @@ dnet.base.AbstractAsgnUi = Ext.extend(Ext.Window,{
 
 		//if (this._beforeDefineElements_()) {
 		   this._defineElements_();
-		   
-
-			this._elems_.add("leftFilterCombo", {xtype:"combo", value:"", width:100, selectOnFocus:true,  triggerAction:"all", id:Ext.id()
-				,listeners:{ "change" : { scope:this  , fn:function(f,nv,ov) {this._theController.filter.left.field = nv;} } }
-				, store:[["id","Id"],["code","Code"],["name","Name"]] 
+		    
+			this._elems_.add("leftFilterCombo", {xtype:"combo", value:"", width:100, selectOnFocus:true, forceSelection:true, triggerAction:"all", id:Ext.id()
+				//,listeners:{ "change" : { scope:this  , fn:function(f,nv,ov) {this._controller_.filter.left.field = nv;} } }
+				, store:this._filterFields_
+				,value:this._defaultFilterField_         
 			});
-			this._elems_.add("rightFilterCombo", {xtype:"combo", value:"", width:100, selectOnFocus:true,  triggerAction:"all", id:Ext.id()
-				,listeners:{ "change" : { scope:this  , fn:function(f,nv,ov) {this._theController.filter.left.field = nv;} } }
-				, store:[["id","Id"],["code","Code"],["name","Name"]] 
+			this._controller_.filter.left.field = "code";
+			this._elems_.add("rightFilterCombo", {xtype:"combo", value:"", width:100, selectOnFocus:true, forceSelection:true, triggerAction:"all", id:Ext.id()
+				//,listeners:{ "change" : { scope:this  , fn:function(f,nv,ov) {this._controller_.filter.left.field = nv;} } }
+				, store:this._filterFields_
+				,value:this._defaultFilterField_
 			});
 			
 			
@@ -85,6 +94,13 @@ dnet.base.AbstractAsgnUi = Ext.extend(Ext.Window,{
 
 	}
 
+	,_getElement_: function(name) {
+		//try { 
+			return Ext.getCmp( this._elems_.get(name).id);
+//		} catch(e) {  }
+		}
+	,_getElementConfig_: function(name) {  return this._elems_.get(name); }
+
     ,_startDefine_: function () {}
     ,_endDefine_: function () {}
 
@@ -128,15 +144,40 @@ dnet.base.AbstractAsgnUi = Ext.extend(Ext.Window,{
 			,this._tlbitms_.get("moveLeftAll"), this._tlbitms_.get("moveRightAll")
 			,this._tlbitms_.get("save") ]  );
 	}
-
+	 
+	,_doQueryLeft_: function() {
+		var f = this._controller_.filter.left;
+		f.field = this._getElement_("leftFilterCombo").getValue();
+		f.value = this._getElement_("leftFilterField").getValue();
+		if(Ext.isEmpty(f.field) && !Ext.isEmpty(f.value) ) {
+			Ext.Msg.show({ icon : Ext.MessageBox.ERROR,msg: "Specify a selection criteria and select the field to filter. ",buttons : {ok : 'OK'} } );
+			return ;
+		}
+		this._controller_.doQueryLeft();
+	}
+	
+	,_doQueryRight_: function() {
+		var f = this._controller_.filter.right;
+		f.field = this._getElement_("rightFilterCombo").getValue();
+		f.value = this._getElement_("rightFilterField").getValue();
+		if(Ext.isEmpty(f.field) && !Ext.isEmpty(f.value) ) {
+			Ext.Msg.show({ icon : Ext.MessageBox.ERROR,msg: "Specify a selection criteria and select the field to filter. ",buttons : {ok : 'OK'} } );
+			return ;
+		}
+		this._controller_.doQueryRight();
+	}
+	 
+	
 	,_defineDefaultElements_ : function() {
-    	this._elems_.add("leftFilterField", {xtype:"textfield", width:80,emptyText:"Filter..." });
-		this._elems_.add("rightFilterField", {xtype:"textfield", width:80,emptyText:"Filter..." });
-
+    	this._elems_.add("leftFilterField", {xtype:"textfield", width:80,emptyText:"Filter...", id:Ext.id() });
+    	this._elems_.add("leftFilterBtn", {xtype:"button", text:"Ok", scope: this, handler: function() {this._doQueryLeft_();} });
+		this._elems_.add("rightFilterField", {xtype:"textfield", width:80,emptyText:"Filter...", id:Ext.id() });
+		this._elems_.add("rightFilterBtn", {xtype:"button", text:"Ok", scope: this, handler: function() {this._doQueryRight_();} });
+		
 		this._elems_.add("leftFilter", {fieldLabel:"Filter", xtype:"compositefield", preventMark:true
-				,items:[this._elems_.get("leftFilterField"), this._elems_.get("leftFilterCombo") ]  });
+				,items:[this._elems_.get("leftFilterField"), this._elems_.get("leftFilterCombo"), this._elems_.get("leftFilterBtn") ]  });
 		this._elems_.add("rightFilter", {fieldLabel:"Filter", xtype:"compositefield", preventMark:true
-				,items:[this._elems_.get("rightFilterField"), this._elems_.get("rightFilterCombo") ]  });
+				,items:[this._elems_.get("rightFilterField"), this._elems_.get("rightFilterCombo"), this._elems_.get("rightFilterBtn")  ]  });
 	}
 
 	,_getBuilder_: function() {

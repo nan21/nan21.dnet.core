@@ -67,6 +67,7 @@
 <script>
 function doLogin() {
 	  if (checkFields()) {
+		  document.forms['login'].save.disabled=true;
 		  document.forms['login'].submit();
 	   }
   }

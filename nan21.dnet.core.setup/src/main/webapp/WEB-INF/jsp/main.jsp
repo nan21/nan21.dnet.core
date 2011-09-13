@@ -94,6 +94,7 @@
 <script>
 function doSave() {
 	  if (checkFields()) {
+		  document.forms['frm'].save.disabled=true;
 		  document.forms['frm'].submit();
 	   }
   }
