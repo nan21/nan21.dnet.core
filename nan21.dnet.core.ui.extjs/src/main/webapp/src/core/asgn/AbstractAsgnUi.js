@@ -91,7 +91,11 @@ dnet.base.AbstractAsgnUi = Ext.extend(Ext.Window,{
 			]
 		});
     	dnet.base.AbstractAsgnUi.superclass.initComponent.apply(this, arguments);
-
+    	
+    	
+    	if(this._autoCloseAfterSave_ == true ) {
+    		this._controller_.on("afterDoSaveSuccess", function() {this.close(); },this);
+    	}
 	}
 
 	,_getElement_: function(name) {

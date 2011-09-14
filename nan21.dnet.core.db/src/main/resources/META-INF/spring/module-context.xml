@@ -15,21 +15,8 @@
 		
 	<!-- Default properties -->	
 	<osgi-compendium:cm-properties id="net.nan21.dnet.properties"
-		persistent-id="net.nan21.dnet">		
-		<prop key="dbcp.initialSize">0</prop>
-		<prop key="dbcp.maxActive">5</prop>
-		<prop key="dbcp.maxIdle">5</prop>
-		<prop key="dbcp.minIdle">0</prop>
-		<prop key="dbcp.maxWait">30</prop>
-		<prop key="dbcp.minEvictableIdleTimeMillis">1800000</prop>
-		<prop key="dbcp.timeBetweenEvictionRunsMillis">1800000</prop>
-		
-		<prop key="jdbc.driverClassName">org.apache.derby.jdbc.EmbeddedDriver</prop>
-		<prop key="jdbc.url">jdbc:derby:memory:derbyDB;create=true</prop>
-		<prop key="jdbc.username">app</prop>
-		<prop key="jdbc.password">app</prop>		 
-	</osgi-compendium:cm-properties>	
-		
+		persistent-id="net.nan21.dnet" />		
+ 
 	<!-- Data-source -->		
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
 		init-method="createDataSource" destroy-method="close">

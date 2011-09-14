@@ -309,7 +309,7 @@ Ext.extend(dnet.base.AbstractAsgn, Ext.util.Observable, {
 		     params:this.params 
 		    ,method:"POST"
 		    ,failure:this.afterAjaxFailure
-				,success:this.afterDoSaveSuccess
+			,success:this.afterDoSaveSuccess
 		    ,scope:this
 		    ,url: Dnet.asgnUrl+"/"+this.dsName+".json?action=save"
 		    ,timeout:600000
@@ -322,26 +322,28 @@ Ext.extend(dnet.base.AbstractAsgn, Ext.util.Observable, {
 					,serviceName:name
 				}
 		});
+		Ext.Msg.progress('Saving...');
 		//this.afterDoServiceFilter();
 
   	}
-  ,afterDoSaveSuccess: function(response,options) { return;
-      var r = Ext.util.JSON.decode(response.responseText);
-          if( !Ext.isEmpty(r.message) ) {
-          	Ext.Msg.show({title:'Server message'
-				         ,msg: r.message.substr(0,1000)
-				         ,buttons: Ext.Msg.OK				          
-				         ,scope:this
-				         ,icon: ( r.success )?Ext.MessageBox.INFO:Ext.MessageBox.WARNING
-				      });
-          }
-        if(r.success) {
-        	var rr = Ext.util.JSON.decode(response.responseText);        	   
-        	 var pp = rr["params"];
-        	 for(var p in pp) {
-        	 	 this.params[p] = pp[p];
-        	 }
-        }
+  ,afterDoSaveSuccess: function(response,options) { 
+	  Ext.Msg.hide();
+//      var r = Ext.util.JSON.decode(response.responseText);
+//          if( !Ext.isEmpty(r.message) ) {
+//          	Ext.Msg.show({title:'Server message'
+//				         ,msg: r.message.substr(0,1000)
+//				         ,buttons: Ext.Msg.OK				          
+//				         ,scope:this
+//				         ,icon: ( r.success )?Ext.MessageBox.INFO:Ext.MessageBox.WARNING
+//				      });
+//          }
+//        if(r.success) {
+//        	var rr = Ext.util.JSON.decode(response.responseText);        	   
+//        	 var pp = rr["params"];
+//        	 for(var p in pp) {
+//        	 	 this.params[p] = pp[p];
+//        	 }
+//        }
       this.fireEvent("afterDoSaveSuccess", this);
 
     }	  	     
@@ -396,14 +398,14 @@ Ext.extend(dnet.base.AbstractAsgn, Ext.util.Observable, {
     
  , afterAjaxFailure: function(response , options) {
       	Ext.MessageBox.hide();
+      	var msg = (response.responseText)?response.responseText.substr(0,2000):"No error message returned from server.";
       	Ext.Msg.show({
 	          title: 'HTTP:'+response.status+' '+ response.statusText
-	         ,msg: response.responseText.substr(0,2000)
+	         ,msg: msg
 	         ,buttons: Ext.Msg.OK				          
 	         ,scope:this
 	         ,icon: Ext.MessageBox.ERROR
 	      });	 
-
 	  }
 	, proxyException: function(dataProxy, type, action , options , response , arg ) {  
 				        if(type=="response") {
