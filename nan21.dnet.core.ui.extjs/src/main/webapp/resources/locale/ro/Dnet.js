@@ -323,14 +323,16 @@ dnet.Translation = Ext.apply({},{
 
         //MM
         ,ProductCategory_UI : "Categorii articole"
-        ,ProductManufacturer_UI : "Producători"
+        ,ProductBaseData_UI : "Definiţii (produs)"
+        ,InventoryBaseData_UI : "Definiţii (gestiune)"
+        ,SubInventories_UI: "Sub-gestiuni"		
         ,Product_UI : "Articole"
 	    ,ProductAccountGroup_UI : "Clase cont articol"
 	    ,ProductAttributeDefs_UI : "Atribute articol"		
-	    ,ProductAttachmentType_UI: "Tipuri atasament"
+	    ,InvTransactions_UI : "Tranzactii gestiune" 
 	    		 
 	    //SD
-	    ,SalesOrderBaseData_UI : "Definiţii ( facturi)"
+	    ,SalesOrderBaseData_UI : "Definiţii (facturi)"
         //,SalesOrderStatus_UI : "Stări comenzi"
         //,SalesOrderType_UI : "Tipuri comenzi"
         ,SalesOrder_UI : "Comenzi"
