@@ -1,7 +1,8 @@
 
-Ext.ns("dnet.base");
-dnet.base.WorkflowFormWithExtjsWindow = Ext.extend(Ext.Window , {
 
+Ext.define("dnet.base.WorkflowFormWithExtjsWindow", {
+	extend:  "Ext.Window" ,
+ 
 	constructor: function(config) {
 		var cfg = {			 
 			 border: true

@@ -1,14 +1,14 @@
-Ext.ns("dnet.base");
 
-dnet.base.AbstractDcAsyncCommand = Ext.extend( dnet.base.AbstractDcCommand, {
+Ext.define("dnet.base.AbstractDcAsyncCommand", {
 	
-	 onAjaxSuccess: function(response, options) {
-		Ext.Msg.hide();  
-	}
+	extend : "dnet.base.AbstractDcCommand",
 
-	,onAjaxFailure: function(response, options) {
+	onAjaxSuccess : function(response, options) {
+		Ext.Msg.hide();
+	},
+	
+	onAjaxFailure : function(response, options) {
 		this.dc.showAjaxErrors(response, options);
 	}
-	
-	
+
 });

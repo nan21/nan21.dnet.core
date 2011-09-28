@@ -1,6 +1,5 @@
-Ext.ns("dnet.base");
-
-dnet.base.DcDeleteCommand = Ext.extend(dnet.base.AbstractDcSyncCommand, {
+Ext.define("dnet.base.DcDeleteCommand", {
+	extend : "dnet.base.AbstractDcSyncCommand",
 
 	constructor : function(config) {
 		dnet.base.DcDeleteCommand.superclass.constructor.call(this, config);

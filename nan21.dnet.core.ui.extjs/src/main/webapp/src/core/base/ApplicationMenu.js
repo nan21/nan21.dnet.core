@@ -1,46 +1,17 @@
 Ext.ns("dnet.base");
-dnet.base.ApplicationMenu = Ext.extend(Ext.Toolbar, {	
-	initComponent: function(config) {		 
-		var items = dnet.base.ApplicationMenu$LogoItems.concat(dnet.base.ApplicationMenu$ContributedMenus);
-		var productInfo = [
-				"->"
-				,{xtype:"tbtext" , id:"net.nan21.dnet.core.menu.ApplicationMenu$Item$ProductInfo", cls:"app-header-text",
-					html:"<span style='align:right'><span style='font-weight:bold'>"+Dnet.name+" </span><br><span>"+Dnet.translate("appmenuitem", "version__lbl")+": "+Dnet.version+"</span></span>" }
-				];		 		 
-		items = items.concat(dnet.base.ApplicationMenu$Items);
-		items = items.concat(productInfo);
-		 
-		var cfg = {
-			border: false, frame: false, width:1000,height:40
-			,items: items
-		};
-		Ext.apply(cfg,config);
-	    Ext.apply(this,cfg);		 
-		dnet.base.ApplicationMenu.superclass.initComponent.call(this);
-	}
-	,setUserText: function(v) {
-		try{ 
-			this.findById("net.nan21.dnet.core.menu.ApplicationMenu$Item$UserName").setText(v);
-		}
-		catch(e) {} /*maybe customizations do not want this menu item*/
-	}
-	
-	,setClientText: function(v) {
-		try{ 
-			this.findById("net.nan21.dnet.core.menu.ApplicationMenu$Item$ClientName").setText(v);
-		}
-		catch(e) {}		 
-	}
-});
+
 
 dnet.base.ApplicationMenu$ContributedMenus = [];
 /* company logo + user info*/
-dnet.base.ApplicationMenu$LogoItems = [	
-			{ xtype:"box", id:"net.nan21.dnet.core.menu.ApplicationMenu$Item$Logo", 
-					autoEl: {  tag: 'img', src: __STATIC_RESOURCE_URL_CORE__+"/resources/images/logo/logo.png"} }
-            
-			,{xtype:"spacer", id:"net.nan21.dnet.core.menu.ApplicationMenu$Item$LogoSpacer", width:20 }
-			,{xtype:"tbtext" , id:"net.nan21.dnet.core.menu.ApplicationMenu$Item$UserLabel",
+
+Ext.ns("dnet.base");
+dnet.base.ApplicationMenu$LogoItems = [				 
+			Ext.create('Ext.Img', {
+			    src:  __STATIC_RESOURCE_URL_CORE__+"/resources/images/logo/logo.png"
+			    , id:"net.nan21.dnet.core.menu.ApplicationMenu$Item$Logo"
+			}) 
+			,{xtype:"tbspacer", id:"net.nan21.dnet.core.menu.ApplicationMenu$Item$LogoSpacer", width:20 }
+			, {xtype:"tbtext" , id:"net.nan21.dnet.core.menu.ApplicationMenu$Item$UserLabel",
 					text: Dnet.translate("appmenuitem", "user__lbl") } 
 			,{xtype:"tbtext" , id:"net.nan21.dnet.core.menu.ApplicationMenu$Item$UserName",
 					text:"-", style:"font-weight:bold;" }
@@ -50,12 +21,14 @@ dnet.base.ApplicationMenu$LogoItems = [
 			,{xtype:"tbtext" , id:"net.nan21.dnet.core.menu.ApplicationMenu$Item$ClientName",
 					text:"-", style:"font-weight:bold;" }
 			, "-"];
+
+Ext.ns("dnet.base");
 dnet.base.ApplicationMenu$Items = [
  
 			{xtype:"splitbutton" , text:Dnet.translate("appmenuitem", "myaccount__lbl")
 				,menu: new Ext.menu.Menu({
 				        items: [
-					        {text: Dnet.translate("appmenuitem", "changepswd__lbl"), handler:function() { ( new dnet.base.ChangePasswordWindow()).show();}}
+					        {text: Dnet.translate("appmenuitem", "changepswd__lbl"), handler:function() { ( new dnet.base.ChangePasswordWindow({})).show();}}
 					      // , {text: Dnet.translate("appmenuitem", "userprefs__lbl") }
 				        ]
 				   	})
@@ -68,26 +41,7 @@ dnet.base.ApplicationMenu$Items = [
 				        ]
 				   	})
 			}
-			/*
-			,{xtype:"splitbutton" , text:Dnet.translate("appmenuitem", "bookmark__lbl")
-				,menu: new Ext.menu.Menu({
-				        items: [
-				        	 {text: Dnet.translate("appmenuitem", "managebookmark__lbl") , handler:function() {
-										var uiName = 'MyBookmark_UI';
-										var path = Dnet.uiUrl+"/frame/bd/"+uiName;
-			                            getApplication().showFrame(uiName, {url:path  } );
-								 } }
-					        ,"-"
-							, {text: Dnet.translate("appmenuitem", "calendar__lbl") , handler:function() {
-										var uiName = 'Calendar_UI';
-										var path = Dnet.uiUrl+"/spframe/crm/"+uiName;
-			                            getApplication().showFrame(uiName, {url:path  } );
-								 } }
-
-				        ]
-				   	})
-
-			 }*/
+			 
 			, "-" 
 			,{xtype:"splitbutton" , text:Dnet.translate("appmenuitem", "theme__lbl")
 				,menu: new Ext.menu.Menu({
@@ -121,11 +75,46 @@ dnet.base.ApplicationMenu$Items = [
 											})).show();
 								 }
 							  }
-					      // , {text: 'License' , handler:function() {  } }
-					      // , {text: 'Wiki' , handler:function() {  } }
 				        ]
 				   	})
 
 			}
 	 
-			]
+			];
+			
+		
+Ext.define("dnet.base.ApplicationMenu", {	
+	extend: "Ext.toolbar.Toolbar",
+	padding:0, 
+				initComponent: function(config) {		 
+					var items = dnet.base.ApplicationMenu$LogoItems; //.concat(dnet.base.ApplicationMenu$ContributedMenus);
+					var productInfo = [
+							"->"
+							,{xtype:"tbtext" , id:"net.nan21.dnet.core.menu.ApplicationMenu$Item$ProductInfo", cls:"app-header-text",
+								html:"<span style='align:right'><span style='font-weight:bold'>"+Dnet.name+" </span><br><span>"+Dnet.translate("appmenuitem", "version__lbl")+": "+Dnet.version+"</span></span>" }
+							];		 		 
+					items = items.concat(dnet.base.ApplicationMenu$Items);
+					items = items.concat(productInfo);
+					 
+					var cfg = {
+							border: false, frame: false//, width:1000,height:40
+						,items: items
+					};
+					 
+				    Ext.apply(this,cfg);
+				    this.callParent(arguments);					
+				}
+				,setUserText: function(v) {
+					try{ 
+						this.items.get("net.nan21.dnet.core.menu.ApplicationMenu$Item$UserName").setText(v);
+					}
+					catch(e) {} /*maybe customizations do not want this menu item*/
+				}
+				
+				,setClientText: function(v) {
+					try{ 
+						this.items.get("net.nan21.dnet.core.menu.ApplicationMenu$Item$ClientName").setText(v);
+					}
+					catch(e) {}		 
+				}
+			});			

@@ -1,29 +1,28 @@
-
-
-Ext.ns("dnet.base");
-dnet.base.ActionBuilder = function(config) {		
-	this.frame = null; 
-	this.name = null;
-	this.dc = null;
-	this.sepIdx = null;
-	//this._tlbitms_ = null;
-	Ext.apply(this,config);
-	this.setup();
-};
  
-
-dnet.base.ActionBuilder.prototype =  {
+Ext.define("dnet.base.ActionBuilder",  {		
+	frame : null,
+	name : null,
+	dc : null,
+	sepIdx : null,
+	
+	constructor : function(config) {
+        config = config || {};
+        Ext.apply(this, config);
+        this.callParent(arguments);
+    },
+    
 	setup:function() {
 		//this.frame._tlbitms_ = new Ext.util.MixedCollection();
-	}
+	},
  
-	,addLabel: function(config) {
+	addLabel: function(config) {
 		var cfg = config||{};		
 		Ext.applyIf(cfg, { dc: this.dc, xtype:"label", cls:"dnet-toolbar-label" });		  		 
 		this.frame._tlbitms_.add(this.name+"__"+config.name , config);  
 		return this;
-	}
-	,addTitle: function(config) {
+	},
+	
+	addTitle: function(config) {
 		var cfg = config||{};		
 		Ext.applyIf(cfg, { dc: this.dc, xtype:"label", "name":"title", cls:"dnet-toolbar-title"  });		
 		this.frame._tlbitms_.add(this.name+"__"+config.name , config);  
@@ -68,7 +67,6 @@ dnet.base.ActionBuilder.prototype =  {
 		Ext.applyIf(cfg, { dc: this.dc, tlb:this.name});	
 		var fn = function() {
 			try {					
-				//this._getDc_(cfg.dc).doEdit();
 				var ct = (cfg.inContainer )? this._getElement_(cfg.inContainer):this._getElement_("main");				
 				if (cfg.showView ) {
 					ct.getLayout().setActiveItem( this._getElementConfig_(cfg.showView).id );				
@@ -102,10 +100,10 @@ dnet.base.ActionBuilder.prototype =  {
 			}, this.frame);
 		}		
 		return this;		 
-	}
+	},
 	
 	
-	,addPrevRec: function(config) {
+	addPrevRec: function(config) {
 		var cfg = config||{};		
 		Ext.applyIf(cfg, { dc: this.dc });		  
 		var a = this.frame._getDc_(cfg.dc).actions.doPrevRec;
@@ -186,4 +184,4 @@ dnet.base.ActionBuilder.prototype =  {
 	}
  
 	
-}
+});

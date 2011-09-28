@@ -1,38 +1,57 @@
-Ext.ns("dnet.base");
 
-dnet.base.AbstractAsgnGrid = Ext.extend( Ext.grid.GridPanel, {
-
-	 _columns_: new Ext.util.MixedCollection()
-	,_elems_ : new Ext.util.MixedCollection()
-	,_controller_: null
-	,_side_:null
-	,_builder_ : null
+Ext.define("dnet.base.AbstractAsgnGrid", {
+	extend:  "Ext.grid.Panel" ,
+   
+	// DNet properties
 	
-	,initComponent: function(config) {
+	_builder_: null,
+	_columns_ : null,
+	_elems_ : null,
+	_controller_: null,  
+	_side_:null,
+  
+	// defaults
+
+	forceFit: true, 
+    loadMask:true, 
+    stripeRows:true, 
+    border:true,
+    frame:true,
+    viewConfig: {
+		emptyText:"No records found to match the specified selection criteria."
+	},
+
+	initComponent: function(config) {
+		this._elems_ = new Ext.util.MixedCollection();
+		this._columns_ = new Ext.util.MixedCollection();
+	
 		this._startDefine_();
-		/* define columns */
-        if (this._beforeDefineColumns_()!== false) {
-		   this._defineColumns_();
-           this._afterDefineColumns_();
-		}
 		this._defineDefaultElements_();
+		
+        if (this._beforeDefineColumns_()!== false) {
+		   this._defineColumns_();           
+		}
+        this._afterDefineColumns_();
+         
 		this._endDefine_();
 
 		var cfg = {
-			 columns: this._columns_.getRange()
-		    ,forceFit: true, loadMask:true, stripeRows:true, border:true,frame:true
-		    ,viewConfig: {emptyText:"No records found to match the specified selection criteria."}
-		    ,bbar:{xtype:"paging", store: this._controller_.getStore(this._side_), displayInfo:true, pageSize:30
-					 }
-			,sm: new Ext.grid.RowSelectionModel({singleSelect: false
-
-			 })
-			,store: this._controller_.getStore(this._side_)
+			columns: this._columns_.getRange(),		     
+			bbar : {
+				xtype : "pagingtoolbar",
+				store: this._controller_.getStore(this._side_),
+				displayInfo : true		 
+			}
+		 
+		   , selModel :  {
+				mode: "MULTI"				 
+			},
+			store: this._controller_.getStore(this._side_)
 
 		}
 		Ext.apply(cfg,config);
         Ext.apply(this,cfg);
-		dnet.base.AbstractAsgnGrid.superclass.initComponent.call(this);
+        this.callParent(arguments);
 
 	}
 
@@ -53,8 +72,7 @@ dnet.base.AbstractAsgnGrid = Ext.extend( Ext.grid.GridPanel, {
    	,_defineDefaultElements_: function () {
 
 	}
-
-
+ 
 	,_onStoreLoad_: function(store,records,options) {
 
 	}

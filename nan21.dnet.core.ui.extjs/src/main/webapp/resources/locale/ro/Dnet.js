@@ -240,7 +240,8 @@ dnet.Translation = Ext.apply({},{
 	   ,Currencies_UI: "Valute"
 	   ,CurrencyXrateProvider_UI :"Furnizori rate de schimb"
 	   ,CurrencyXRates_UI : "Rate de schimb valutar"
-
+	   ,Classifications_UI: "Clasificări"
+			
 	   ,Uoms_UI :"Unităţi de masură"
 	   ,UomType_UI :"Tipuri unitate de masură"
 	   ,UomMD_UI :"Unitate de masurăcu detalii"
@@ -330,7 +331,8 @@ dnet.Translation = Ext.apply({},{
 	    ,ProductAccountGroup_UI : "Clase cont articol"
 	    ,ProductAttributeDefs_UI : "Atribute articol"		
 	    ,InvTransactions_UI : "Tranzactii gestiune" 
-	    		 
+	    ,InvBalance_UI: "Stocuri"	
+	    	
 	    //SD
 	    ,SalesOrderBaseData_UI : "Definiţii (facturi)"
         //,SalesOrderStatus_UI : "Stări comenzi"

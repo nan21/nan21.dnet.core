@@ -1,69 +1,161 @@
-
-Ext.ns("dnet.base");
-dnet.base.AbstractAsgn = function(config) {
-
+Ext.define("dnet.base.AbstractAsgn", {
+	
+	mixins : {
+		observable : 'Ext.util.Observable'
+	},
+ 
   	//this.dsName = null
-	this.storeLeft = null
-	this.storeRight = null
-	//this.recordFields = null;
+	storeLeft : null,
+	storeRight : null,
 
-	this.tuning = {
-			 queryDelay: 150 // nr of milliseconds before execute the query. Used if value>0	
-			,fetchSize: 30
-		};
+	/**
+	 * Various runtime configuration properties.
+	 */
+	tuning : {
 
-	this.params = {objectId : 8, selectionId : 0, clientId: null }
-	this.filter = {
-	      left:{field:null, value:null}
-	     ,right:{field:null, value:null}
-	}
+		/**
+		 * Number of milliseconds before execute the query. Used if value>0
+		 */
+		queryDelay : 150
 
-	Ext.apply(this,config);
-
-	if (this.storeLeft == null) {
-		this.storeLeft = new Ext.data.Store({
-	        remoteSort:true,pruneModifiedRecords:true
-	       ,proxy: new Ext.data.HttpProxy({
-			        api: Dnet.asgnLeftAPI(this.dsName,"json")
-			    })
- 			,reader: new Ext.data.JsonReader(
-			   		 {totalProperty: 'totalCount',idProperty: 'id',root: 'data',messageProperty: 'message'}
-					,Ext.data.Record.create(this.recordFields))
-	       , writer: new Ext.data.JsonWriter({ encode: true, writeAllFields: true })  
-	       , autoSave: false
-	       , listeners: { "exception":{ fn:  this.proxyException, scope:this }}
-	    });		
-	}
+		/**
+		 * Page-size for a query
+		 */
+		,
+		fetchSize : 30
+	},
 	
-	if (this.storeRight == null) {
-		this.storeRight = new Ext.data.Store({
-	        remoteSort:true,pruneModifiedRecords:true
-	       ,proxy: new Ext.data.HttpProxy({
-			        api: Dnet.asgnRightAPI(this.dsName,"json")
-			    })
- 			,reader: new Ext.data.JsonReader(
-			   		 {totalProperty: 'totalCount',idProperty: 'id',root: 'data',messageProperty: 'message'}
-					,Ext.data.Record.create( this.recordFields ))
-	       , writer: new Ext.data.JsonWriter({ encode: true, writeAllFields: true })  
-	       , autoSave: false
-	       , listeners: { "exception":{ fn:  this.proxyException, scope:this }}
-	    });
-	}
+	/**
+	 * Parameters model instance
+	 */
+	params : null,
+	/**
+	 * Filter object instance. Contains the left filter and right filter
+	 */
+	filter : null,
 	
-	this.addEvents(  "afterDoSaveSuccess"  );
-	dnet.base.AbstractAsgn.superclass.constructor.call(this, config);
+	/**
+	 * Data model signature - record constructor.
+	 */
+	recordModel : null,
 
-   // dnet.base.AbstractAsgn.superclass.constructor.call(this, config);
+	/**
+	 * Parameters model signature - record constructor.
+	 */
+	paramModel : null,
+	
+	
+	constructor : function(config) {
+		config = config || {};
+		Ext.apply(this, config);
+		this.params = {objectId : 8, selectionId : 0, clientId: null }
+		this.filter = {
+		      left:{field:null, value:null}
+		     ,right:{field:null, value:null}
+		}
+		if (this.storeLeft == null) {
+			this.storeLeft = Ext.create("Ext.data.Store", {
+				model : this.recordModel,
+				remoteSort : true,
+				remoteSort : true,
 
-   // this._setup_();
+				autoLoad : false,
+				autoSync : false,
+				clearOnPageLoad : true,
+				pageSize : this.tuning.fetchSize,
+				proxy : {
+					type : 'ajax',
+					api : Dnet.asgnLeftAPI(this.dsName, "json"),
+					actionMethods : {
+						create : 'POST',
+						read : 'POST',
+						update : 'POST',
+						destroy : 'POST'
+					},
+					reader : {
+						type : 'json',
+						root : 'data',
+						idProperty : 'id',
+						totalProperty : 'totalCount',
+						messageProperty : 'message'
+					},
+					writer : {
+						type : 'json',
+						encode : true,
+						allowSingle : false,
+						writeAllFields : true
+					},
+					listeners : {
+						"exception" : {
+							fn : this.proxyException,
+							scope : this
+						}
+					},
+					startParam : Dnet.requestParam.START,
+					limitParam : Dnet.requestParam.SIZE,
+					sortParam : Dnet.requestParam.SORT,
+					directionParam : Dnet.requestParam.SENSE
 
-}
+				}
 
+			});
+			
+			
+		}
+		
+		if (this.storeRight == null) {
+			this.storeRight = Ext.create("Ext.data.Store", {
+				model : this.recordModel,
+				remoteSort : true,
+				remoteSort : true,
 
-Ext.extend(dnet.base.AbstractAsgn, Ext.util.Observable, {
-	//constructor: function(config) {
+				autoLoad : false,
+				autoSync : false,
+				clearOnPageLoad : true,
+				pageSize : this.tuning.fetchSize,
+				proxy : {
+					type : 'ajax',
+					api : Dnet.asgnRightAPI(this.dsName, "json"),
+					actionMethods : {
+						create : 'POST',
+						read : 'POST',
+						update : 'POST',
+						destroy : 'POST'
+					},
+					reader : {
+						type : 'json',
+						root : 'data',
+						idProperty : 'id',
+						totalProperty : 'totalCount',
+						messageProperty : 'message'
+					},
+					writer : {
+						type : 'json',
+						encode : true,
+						allowSingle : false,
+						writeAllFields : true
+					},
+					listeners : {
+						"exception" : {
+							fn : this.proxyException,
+							scope : this
+						}
+					},
+					startParam : Dnet.requestParam.START,
+					limitParam : Dnet.requestParam.SIZE,
+					sortParam : Dnet.requestParam.SORT,
+					directionParam : Dnet.requestParam.SENSE
 
-	//}   
+				}
+
+			});
+		}
+		
+		this.addEvents(  "afterDoSaveSuccess"  );
+		this.mixins.observable.constructor.call(this);
+	},
+	
+ 
 
 	 initAssignement: function () {	 	 
 	 	  this.params.clientId = getApplication().getSession().getClient().id;
@@ -112,7 +204,7 @@ Ext.extend(dnet.base.AbstractAsgn, Ext.util.Observable, {
   /*************************  IMPLEMENTATION => private functions *************/
   /****************************************************************************/
    ,doMoveRightImpl: function(theLeftGrid, theRightGrid) {
-   	  	var selection = theLeftGrid.getSelectionModel().getSelections();
+   	  	var selection = theLeftGrid.getSelectionModel().getSelection();
    		if (selection.length == 0 ) {
    			 return;
    		}
@@ -147,7 +239,7 @@ Ext.extend(dnet.base.AbstractAsgn, Ext.util.Observable, {
 		}
 
   ,doMoveLeftImpl: function(theLeftGrid, theRightGrid) {
-  	var selection = theRightGrid.getSelectionModel().getSelections();
+  	var selection = theRightGrid.getSelectionModel().getSelection();
    		if (selection.length == 0 ) {
    			 return;
    		}
@@ -268,8 +360,7 @@ Ext.extend(dnet.base.AbstractAsgn, Ext.util.Observable, {
 
 
 
-	,afterDoSetupSuccess: function(response, options) {
-		 //var r = Ext.util.JSON.decode(response.responseText);
+	,afterDoSetupSuccess: function(response, options) {		 
 		 this.params["selectionId"] =  response.responseText; //r;
 		 this.doQueryLeft();
 	 	 this.doQueryRight();
@@ -328,22 +419,6 @@ Ext.extend(dnet.base.AbstractAsgn, Ext.util.Observable, {
   	}
   ,afterDoSaveSuccess: function(response,options) { 
 	  Ext.Msg.hide();
-//      var r = Ext.util.JSON.decode(response.responseText);
-//          if( !Ext.isEmpty(r.message) ) {
-//          	Ext.Msg.show({title:'Server message'
-//				         ,msg: r.message.substr(0,1000)
-//				         ,buttons: Ext.Msg.OK				          
-//				         ,scope:this
-//				         ,icon: ( r.success )?Ext.MessageBox.INFO:Ext.MessageBox.WARNING
-//				      });
-//          }
-//        if(r.success) {
-//        	var rr = Ext.util.JSON.decode(response.responseText);        	   
-//        	 var pp = rr["params"];
-//        	 for(var p in pp) {
-//        	 	 this.params[p] = pp[p];
-//        	 }
-//        }
       this.fireEvent("afterDoSaveSuccess", this);
 
     }	  	     
@@ -352,7 +427,7 @@ Ext.extend(dnet.base.AbstractAsgn, Ext.util.Observable, {
        var lp = {};       
        var data = {};        
        if (this.filter.left.field){    	   
-    	   data[this.filter.left.field] = this.filter.left.value;
+    	   data[this.filter.left.field] = this.filter.left.value || '*';
     	}   
        lp.data =  Ext.encode(data);      
        lp[Dnet.requestParam.START] = 0;
@@ -376,7 +451,7 @@ Ext.extend(dnet.base.AbstractAsgn, Ext.util.Observable, {
        var lp = {};
        var data = {};        
        if (this.filter.right.field){    	   
-    	   data[this.filter.right.field] = this.filter.right.value;
+    	   data[this.filter.right.field] = this.filter.right.value || '*';
     	}   
        lp.data =  Ext.encode(data);        
        lp[Dnet.requestParam.START] = 0;

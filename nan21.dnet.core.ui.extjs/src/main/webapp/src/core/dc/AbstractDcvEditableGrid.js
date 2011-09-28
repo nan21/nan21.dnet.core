@@ -1,76 +1,91 @@
-Ext.ns("dnet.base");
 
-dnet.base.AbstractDcvEditableGrid = Ext.extend( Ext.grid.EditorGridPanel, {
+Ext.define("dnet.base.AbstractDcvEditableGrid", {
+	extend:  "Ext.grid.Panel" ,
+	 
+	      
+	// DNet properties
+	
+	_builder_: null,
+	_columns_ : null,
+	_elems_ : null,
+	_controller_: null,
+	
+	_noExport_ : false,
+	_noImport_ : true,
+	_noLayoutCfg_ : true,
+	_exportWindow_ : null,
+	_importWindow_ : null,
+	_layoutWindow_ : null,
+     
+    // defaults
+	
+	forceFit: false,
+    deferRowRender: true,
+    clicksToEdit:1,
+    loadMask:true , 
+    border:true,
+    frame:true,
+    stripeRows:true,
+    buttonAlign:"left"	,    
+    viewConfig: {emptyText:Dnet.translate("msg", "grid_emptytext")  },
+	      
+ 
 
-	 _columns_: null
-	,_elems_ : null
-	,_controller_: null
-	,_noExport_: false
-	,_noImport_: false
-	,_noLayoutCfg_: false
-	,_exportWindow_: null
-	,_importWindow_: null
-	,_layoutWindow_: null
-
-	,initComponent: function(config) {
+	initComponent: function(config) {
+    	
 		this._elems_ =  new Ext.util.MixedCollection();
         this._columns_ =  new Ext.util.MixedCollection();
+        
+        this._noImport_ = true;
+        this._noLayoutCfg_ = true;
+        
+        this.plugins = [
+	  	      Ext.create('Ext.grid.plugin.CellEditing', {
+		          clicksToEdit: 1
+		      })
+		  ];
 		this._startDefine_();
+		this._defineDefaultElements_();
+		
 		/* define columns */
         if (this._beforeDefineColumns_()  !== false ) {
-		   this._defineColumns_();
-           this._afterDefineColumns_();
+		   this._defineColumns_();           
 		}
+        this._afterDefineColumns_();
+        
         this._columns_.each(this._postProcessColumn_, this);
-		this._defineDefaultElements_();
+		
 		this._endDefine_();
 
 
 		var cfg = {
 			 columns: this._columns_.getRange()
-		    ,forceFit: true,clicksToEdit:1,loadMask:true , border:true,frame:true
-		    ,stripeRows:true
-		    ,buttonAlign:"left"	    
-		    ,viewConfig: {emptyText:Dnet.translate("msg", "grid_emptytext")  }
-   			,keys: [
-				{
-                	key : Ext.EventObject.ENTER
-                	,scope:this
-					,handler: function() {
-						 var rec = this.getSelectionModel().getSelected();
-						 var rowIndex = this.store.indexOf(rec);
-						 var cm = this.getColumnModel();
-						 //TODO: find the first editable cell from the column model 
-						 this.startEditing(rowIndex, 1);
-					}
-				}
-			]
-		  // ,tbar:[this._elems_.get("_btnLoad_"),"-",this._elems_.get("_btnSave_"),"-", this._elems_.get("_btnAdd_"),this._elems_.get("_btnRemove_"),"-",this._elems_.get("_btnCopy_"),"-",this._elems_.get("_btnExport_")]
-		   ,bbar:{xtype:"paging", store: this._controller_.store, displayInfo:true, pageSize:this._controller_.tuning.fetchSize }
-			,sm: new Ext.grid.RowSelectionModel({singleSelect: false
-				,listeners: {
-		             "rowselect": {scope: this,fn: function (sm, idx, rec) { 
-					 		//if(this._controller_.getRecord() != rec) {this._controller_.setRecord(idx);}
-					 	} } //, buffer:100
-		            ,"rowdeselect": {scope: this,fn: function (sm, idx, rec) {  
-//			         		if(this._controller_.getRecord() == rec) {
-//			         		  if (sm.getSelections().length > 0 ) {
-//			         		    this._controller_.setRecord(sm.getSelections()[0]);
-//			         		  } else {
-//			         		    this._controller_.setRecord(null);
-//			         		  }
-//			         		}
-			         	}  }// , buffer:100
-		            ,"selectionchange": {scope: this,fn:function(sm) { 
-		            		this._controller_.setSelectedRecords( sm.getSelections() );
-		            	} }//, buffer:100 
-//		            ,"beforerowselect": {scope: this,fn:function(sm) { 
-//		            	if(dnet.base.DcActionsStateManager.isPrevRecDisabled(this._controller_)) {return false;}   
-//	            	}   }
-		            
-		            
+		    
+//   			,keys: [
+//				{
+//                	key : Ext.EventObject.ENTER
+//                	,scope:this
+//					,handler: function() {
+//						 var rec = this.getSelectionModel().getSelected();
+//						 var rowIndex = this.store.indexOf(rec);
+//						 var cm = this.getColumnModel();
+//						 //TODO: find the first editable cell from the column model 
+//						 this.startEditing(rowIndex, 1);
+//					}
+//				}
+//			]
+		  
+		   ,bbar:{xtype:"pagingtoolbar", store: this._controller_.store, displayInfo:true }
+			,selModel: {mode: "MULTI",
+				listeners: {
+					"selectionchange" : {
+						scope : this,
+						fn : function(sm,selected, options) {
+							this._controller_.setSelectedRecords(selected);
+						}
+					} 
 				  }
-			 })
+			 }
 			,store: this._controller_.store
 
 		}
@@ -97,20 +112,16 @@ dnet.base.AbstractDcvEditableGrid = Ext.extend( Ext.grid.EditorGridPanel, {
 
 		Ext.apply(cfg,config);
         Ext.apply(this,cfg);
-		dnet.base.AbstractDcvEditableGrid.superclass.initComponent.call(this);
+
+        this.callParent(arguments);
+        
 		this._controller_.store.on("load", this._onStoreLoad_, this);
 		this.on("afteredit", this._afterEdit_, this);
-//		this._controller_.on("afterDoNew", function(dc) {
-//			this.getSelectionModel().suspendEvents();
-//			this.getSelectionModel().selectLastRow(false);
-//			this.getView().focusRow(this.store.getCount() );
-//            this.getSelectionModel().resumeEvents();
-//		}, this);
 		this._controller_.on("selectionChange",function(evnt) {
 			var s = evnt.dc.getSelectedRecords();
-			if (s != this.getSelectionModel().getSelections() ) {
+			if (s != this.getSelectionModel().getSelection() ) {
 				this.getSelectionModel().suspendEvents();
-				this.getSelectionModel().selectRecords(s,false);
+				this.getSelectionModel().select(s,false);
 				this.getSelectionModel().resumeEvents();
 			}
 		} , this);
@@ -174,10 +185,10 @@ dnet.base.AbstractDcvEditableGrid = Ext.extend( Ext.grid.EditorGridPanel, {
 		 }
          if(store.getCount()>0) {
         	 if (this.selModel.getCount() == 0 ) {
-            	 this.selModel.selectFirstRow();
+            	 this.selModel.select(0);
              } else {
             	 //this._controller_.setRecord(this.selModel.getSelected());
-            	 this._controller_.setSelectedRecords(this.selModel.getSelections());
+            	 this._controller_.setSelectedRecords(this.selModel.getSelection());
              }
          }
 	}
@@ -188,7 +199,7 @@ dnet.base.AbstractDcvEditableGrid = Ext.extend( Ext.grid.EditorGridPanel, {
 	
 	,_postProcessColumn_ : function(item, idx, len) {
 		if (item.header == undefined) {
-			Dnet.translateColumn(this._trl_, this._controller_.ds._trl_,item);
+			Dnet.translateColumn(this._trl_, this._controller_._trl_, item);
 		}
 	}
 		/* get value from resource bundle for the specified key*/
@@ -210,11 +221,9 @@ dnet.base.AbstractDcvEditableGrid = Ext.extend( Ext.grid.EditorGridPanel, {
 
 
 
-dnet.base.AbstractDcvEditableGridCustEditor = Ext.extend( dnet.base.AbstractDcvEditableGrid, {
-	 
-//	initComponent: function(config) {		 
-//		dnet.base.AbstractDcvEditableGridCustEditor.superclass.initComponent.call(this);
-//	}
+Ext.define("dnet.base.AbstractDcvEditableGridCustEditor", {
+	extend:  "dnet.base.AbstractDcvEditableGrid" ,
+	  
  
 	 _getCustomCellEditor_: function(col, row, record) {
 		return this.colModel.getCellEditor(col, row);

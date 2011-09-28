@@ -1,14 +1,10 @@
 
-Ext.ns("dnet.base");
-
-dnet.base.DcvGridBuilder = function(config) {		
-	this.dcv = null; 
-	Ext.apply(this,config);	 
-	dnet.base.DcvGridBuilder.superclass.constructor.call(this, config);
-};
-
-Ext.extend(dnet.base.DcvGridBuilder, Ext.util.Observable, {
+Ext.define("dnet.base.DcvGridBuilder", {
+	extend:  "Ext.util.Observable" ,
+ 	
+	dcv : null,
 	
+ 
 	addTextColumn: function(config) {
 		config.xtype="gridcolumn";		
 		this.applySharedConfig(config);		

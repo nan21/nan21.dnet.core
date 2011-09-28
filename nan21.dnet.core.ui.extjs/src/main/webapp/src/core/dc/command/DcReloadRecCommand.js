@@ -1,6 +1,6 @@
-Ext.ns("dnet.base");
 
-dnet.base.DcReloadRecCommand = Ext.extend(dnet.base.AbstractDcAsyncCommand, {
+Ext.define("dnet.base.DcReloadRecCommand", {
+	extend : "dnet.base.AbstractDcAsyncCommand",
 
 	onExecute : function(dc) {
 		var dc = this.dc;

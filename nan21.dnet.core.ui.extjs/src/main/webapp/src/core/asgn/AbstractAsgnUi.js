@@ -1,97 +1,91 @@
 
-Ext.ns("dnet.base");
-dnet.base.AbstractAsgnUi = Ext.extend(Ext.Window,{
-
-
-    _elems_: null
-    ,_tlbs_: null
-	,_tlbitms_: null
-    ,_controller_: null
-    ,_leftGridId_:null
-	,_rightGridId_:null
-	,_windowConfig_:null
-	,_filterFields_: null
-	,_defaultFilterField_: null
-	,_autoCloseAfterSave_: true
+Ext.define("dnet.base.AbstractAsgnUi", {
+	extend:  "Ext.window.Window" ,
+	 
+	// DNet properties
 	
-	,initComponent: function() {
+    _elems_: null,
+    _tlbs_: null,
+	_tlbitms_: null,
+    _controller_: null,
+    _leftGridId_:null,
+	_rightGridId_:null,
+	_windowConfig_:null,
+	_filterFields_: null,
+	_defaultFilterField_: null,
+	_autoCloseAfterSave_: true,
+	
+	// defaults
+	
+	
+	layout:"fit",
+ 	closable:true,
+	closeAction:"hide",
+	modal:true,
+	
+	initComponent: function() {
  
 		this._elems_ = new Ext.util.MixedCollection();
 		this._tlbs_ = new Ext.util.MixedCollection();
 		this._tlbitms_ = new Ext.util.MixedCollection();
-
-		var Cls = this._controller_;
-		this._controller_ = new Cls();
-  
+		this._controller_ = Ext.create(this._controller_,{});    
 		this._leftGridId_ = Ext.id()
 		this._rightGridId_ = Ext.id() 
   
         this._startDefine_();
- 
 		this._defineToolbars_();
- 
-
+		this._defineDefaultElements_();
+		
         /* define stand-alone user-interface elements */
 
-		//if (this._beforeDefineElements_()) {
-		   this._defineElements_();
-		    
-			this._elems_.add("leftFilterCombo", {xtype:"combo", value:"", width:100, selectOnFocus:true, forceSelection:true, triggerAction:"all", id:Ext.id()
-				//,listeners:{ "change" : { scope:this  , fn:function(f,nv,ov) {this._controller_.filter.left.field = nv;} } }
-				, store:this._filterFields_
-				,value:this._defaultFilterField_         
-			});
-			this._controller_.filter.left.field = "code";
-			this._elems_.add("rightFilterCombo", {xtype:"combo", value:"", width:100, selectOnFocus:true, forceSelection:true, triggerAction:"all", id:Ext.id()
-				//,listeners:{ "change" : { scope:this  , fn:function(f,nv,ov) {this._controller_.filter.left.field = nv;} } }
-				, store:this._filterFields_
-				,value:this._defaultFilterField_
-			});
-			
-			
-        //   this._afterDefineElements_();
-		//}
-        this._defineDefaultElements_();
+		if (this._beforeDefineElements_()!== false) {
+			this._defineElements_();           
+		}
+		this._afterDefineElements_();
+        
 
         /* build the ui, linking elements */
-		if (this._beforeLinkElements_()) {
-		   this._linkElements_();
-           this._afterLinkElements_();
+		if (this._beforeLinkElements_() !== false) {
+		   this._linkElements_();           
 		}
- 
+		this._afterLinkElements_();
+		
         this._endDefine_();
          
 		Ext.apply(this, {
-			 layout:"hbox"
-			,layoutConfig:{ align:"stretch"}
-		 	,closable:true
-			,closeAction:"hide"
-			,modal:true	
-			,items:[
-				 /* left column: filter + list */
-                 {layout:"vbox",frame :true, flex:10,layoutConfig:{ align:"stretch"}, items: [this._elems_.get("leftFilter"), this._elems_.get("leftList")] }
+			items:[ {
+				 layout: {type:"hbox",align:"stretch"} 
+					, items:[
+							 /* left column: filter + list */
+			                 {frame :true, flex:10, layout:{type:"vbox", align:"stretch"}, 
+			                	 items: [this._elems_.get("leftFilter"), this._elems_.get("leftList") ] } //
 
-				,/* middle column: buttons */
-				{ width:80 , frame:true,layout:"vbox" ,layoutConfig:{ align:"center", pack:"center" }
-				//, items: [this._tlbs_.get("main")]
-                   ,items:[
+							 /* middle column: buttons */
+							,{ width:80 , frame:true,layout:{type:"vbox" , align:"stretch", pack:"center" }							 
+			                   ,items:[
 
-                      { xtype:"button",iconCls:'icon-action-reset',tooltip:"Reset", scope:this, handler: function() {this._controller_.doReset(); }}
-			          ,{ xtype:"button",iconCls:'icon-action-assign_moveright', text:">" ,tooltip:"Add selected", style:"padding-top:25px;" ,scope:this, handler: function() {this._controller_.doMoveRight(Ext.getCmp(this._leftGridId_),Ext.getCmp(this._rightGridId_)); } }
-			          ,{ xtype:"button",iconCls:'icon-action-assign_moveleft', text:"<" ,tooltip:"Remove selected",style:"padding-top:5px;", scope:this, handler: function() {this._controller_.doMoveLeft(Ext.getCmp(this._leftGridId_),Ext.getCmp(this._rightGridId_)); }}
+			                      { xtype:"button",  text:'Cancel',tooltip:"Cancel changes and reload initial selection ", scope:this, handler: function() {this._controller_.doReset(); }}
+			                      , {xtype:"tbspacer" , height:25}
+			                      ,{ xtype:"button",iconCls:'icon-action-assign_moveright', text:">" ,tooltip:"Add selected" ,scope:this, handler: function() {this._controller_.doMoveRight(Ext.getCmp(this._leftGridId_),Ext.getCmp(this._rightGridId_)); } }
+			                      , {xtype:"tbspacer" , height:5}
+			                      ,{ xtype:"button",iconCls:'icon-action-assign_moveleft', text:"<" ,tooltip:"Remove selected", scope:this, handler: function() {this._controller_.doMoveLeft(Ext.getCmp(this._leftGridId_),Ext.getCmp(this._rightGridId_)); }}
+						         , {xtype:"tbspacer" , height:25}
+						         ,{ xtype:"button",iconCls:'icon-action-assign_moverightall', text:">>" ,tooltip:"Add all", scope:this, handler: function() {this._controller_.doMoveRightAll(); }}
+						         , {xtype:"tbspacer" , height:5}
+						         ,{ xtype:"button",iconCls:'icon-action-assign_moveleftall', text:"<<" ,tooltip:"Remove all", scope:this, handler: function() {this._controller_.doMoveLeftAll(); }}
+						         , {xtype:"tbspacer" , height:25}
+						         ,{ xtype:"button", text:'Save',tooltip:"Save changes", scope:this, handler: function() {this._controller_.doSave(); }}
+						      ]
+							}
 
-			         ,{ xtype:"button",iconCls:'icon-action-assign_moverightall', text:">>" ,tooltip:"Add all",style:"padding-top:25px;", scope:this, handler: function() {this._controller_.doMoveRightAll(); }}
-			         ,{ xtype:"button",iconCls:'icon-action-assign_moveleftall', text:"<<" ,tooltip:"Remove all",style:"padding-top:5px;", scope:this, handler: function() {this._controller_.doMoveLeftAll(); }}
-			          ,{ xtype:"button",iconCls:'icon-action-save',tooltip:"Save",style:"padding-top:25px;", scope:this, handler: function() {this._controller_.doSave(); }}
-			      ]
-				}
-
-				,/* right column: filter + list */
-                {layout:"vbox",frame :true, flex:10,layoutConfig:{ align:"stretch"}, items: [this._elems_.get("rightFilter"), this._elems_.get("rightList")] }
-			]
+							//,/* right column: filter + list */
+			                ,{frame :true, flex:10,layout:{type:"vbox", align:"stretch"}, 
+			                		items: [this._elems_.get("rightFilter"), this._elems_.get("rightList") ] } //
+						]
+		}]
+			 
 		});
-    	dnet.base.AbstractAsgnUi.superclass.initComponent.apply(this, arguments);
-    	
+		this.callParent(arguments);
     	
     	if(this._autoCloseAfterSave_ == true ) {
     		this._controller_.on("afterDoSaveSuccess", function() {this.close(); },this);
@@ -123,7 +117,7 @@ dnet.base.AbstractAsgnUi = Ext.extend(Ext.Window,{
     	,_afterLinkElements_: function () {}
 
 
-	,_defineToolbars_: function () {
+	,_defineToolbars_: function () {return ;
 
     	this._tlbitms_.add("moveLeft", new Ext.Action({
 			id:Ext.id(), text:"<", tooltip: "Remove selected", iconCls: "icon-action-asgnLeft",scope:this
@@ -132,6 +126,7 @@ dnet.base.AbstractAsgnUi = Ext.extend(Ext.Window,{
 			id:Ext.id(), text:">", tooltip: "Add selected", iconCls: "icon-action-asgnRight",scope:this
 			, handler:function() { },  itemId: "menuItem-moveRight" }) );
 
+       // this._tlbitms_.add("spacer1", {xtype:"tbspacer" , height:20});	
         this._tlbitms_.add("moveLeftAll", new Ext.Action({
 			id:Ext.id(), tooltip: "Remove all", iconCls: "icon-action-asgnLeftAll",scope:this
 			, handler:function() { },  itemId: "menuItem-moveLeft", style:"padding-top:5px;" }) );
@@ -154,7 +149,7 @@ dnet.base.AbstractAsgnUi = Ext.extend(Ext.Window,{
 		f.field = this._getElement_("leftFilterCombo").getValue();
 		f.value = this._getElement_("leftFilterField").getValue();
 		if(Ext.isEmpty(f.field) && !Ext.isEmpty(f.value) ) {
-			Ext.Msg.show({ icon : Ext.MessageBox.ERROR,msg: "Specify a selection criteria and select the field to filter. ",buttons : {ok : 'OK'} } );
+			Ext.Msg.show({ icon : Ext.MessageBox.ERROR,msg: "Specify a selection criteria and select the field to filter. ",buttons : Ext.Msg.OK } );
 			return ;
 		}
 		this._controller_.doQueryLeft();
@@ -165,7 +160,7 @@ dnet.base.AbstractAsgnUi = Ext.extend(Ext.Window,{
 		f.field = this._getElement_("rightFilterCombo").getValue();
 		f.value = this._getElement_("rightFilterField").getValue();
 		if(Ext.isEmpty(f.field) && !Ext.isEmpty(f.value) ) {
-			Ext.Msg.show({ icon : Ext.MessageBox.ERROR,msg: "Specify a selection criteria and select the field to filter. ",buttons : {ok : 'OK'} } );
+			Ext.Msg.show({ icon : Ext.MessageBox.ERROR,msg: "Specify a selection criteria and select the field to filter. ",buttons : Ext.Msg.OK } );
 			return ;
 		}
 		this._controller_.doQueryRight();
@@ -178,10 +173,24 @@ dnet.base.AbstractAsgnUi = Ext.extend(Ext.Window,{
 		this._elems_.add("rightFilterField", {xtype:"textfield", width:80,emptyText:"Filter...", id:Ext.id() });
 		this._elems_.add("rightFilterBtn", {xtype:"button", text:"Ok", scope: this, handler: function() {this._doQueryRight_();} });
 		
-		this._elems_.add("leftFilter", {fieldLabel:"Filter", xtype:"compositefield", preventMark:true
+		this._elems_.add("leftFilterCombo", {xtype:"combo", value:"", width:100, selectOnFocus:true, forceSelection:true, triggerAction:"all", id:Ext.id()
+			//,listeners:{ "change" : { scope:this  , fn:function(f,nv,ov) {this._controller_.filter.left.field = nv;} } }
+			, store:this._filterFields_
+			,value:this._defaultFilterField_         
+		});
+		this._controller_.filter.left.field = "code";
+		this._elems_.add("rightFilterCombo", {xtype:"combo", value:"", width:100, selectOnFocus:true, forceSelection:true, triggerAction:"all", id:Ext.id()
+			//,listeners:{ "change" : { scope:this  , fn:function(f,nv,ov) {this._controller_.filter.left.field = nv;} } }
+			, store:this._filterFields_
+			,value:this._defaultFilterField_
+		});
+		
+		this._elems_.add("leftFilter", {fieldLabel:"Filter", xtype:"fieldcontainer",  layout: 'hbox',preventMark:true, labelAlign: "right", labelWidth:70
 				,items:[this._elems_.get("leftFilterField"), this._elems_.get("leftFilterCombo"), this._elems_.get("leftFilterBtn") ]  });
-		this._elems_.add("rightFilter", {fieldLabel:"Filter", xtype:"compositefield", preventMark:true
+		this._elems_.add("rightFilter", {fieldLabel:"Filter", xtype:"fieldcontainer",  layout: 'hbox',preventMark:true, labelAlign: "right", labelWidth:70
 				,items:[this._elems_.get("rightFilterField"), this._elems_.get("rightFilterCombo"), this._elems_.get("rightFilterBtn")  ]  });
+ 
+		
 	}
 
 	,_getBuilder_: function() {

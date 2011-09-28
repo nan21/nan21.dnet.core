@@ -1,31 +1,20 @@
-Ext.ns("dnet.base");
-dnet.base.AbstractDs = function(config) {
 
-	this.dsName = "";
-	this.store = null;
+Ext.define("dnet.base.AbstractDs", {
+	extend:  "Ext.util.Observable" ,
+ 	 
+	dsName : "",
+	store : null,
 
-	this.filter = null;
+	filter : null,
 
-	this.record = null;
-	this.recordFields = null;
-	this.RecordModel = null;
+	record : null,
+	recordFields : null,
+	RecordModel : null,
 
-	this.params = null;
-	this.paramFields = null;
-	this.paramModel = null;
+	params: null,
+	paramFields : null,
+	paramModel : null,
 
-	this.fetchSize = 30;
-
-	Ext.apply(this, config);
-
-	dnet.base.AbstractDs.superclass.constructor.call(this, config);
-	//this._setup_();
-};
-
-Ext.extend(dnet.base.AbstractDs, Ext.util.Observable, {
-	
-	
+	fetchSize : 30,
+ 
 });
-
-
-

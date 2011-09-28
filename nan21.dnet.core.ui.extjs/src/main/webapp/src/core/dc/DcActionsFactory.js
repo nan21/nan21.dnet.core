@@ -1,6 +1,6 @@
-Ext.ns("dnet.base");
-dnet.base.DcActionsFactory = function() {	
-	return {
+
+
+dnet.base.DcActionsFactory = {
 		
 		actionNames : function() {
 			return ["Query", "ClearQuery", 
@@ -131,4 +131,3 @@ dnet.base.DcActionsFactory = function() {
 		
 		,logger: dnet.base.Logger
 	};	
-}();

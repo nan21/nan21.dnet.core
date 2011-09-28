@@ -242,7 +242,8 @@ dnet.Translation = Ext.apply({},{
 	   ,Currencies_UI: "Currencies"	    
 	   ,CurrencyXrateProvider_UI :"Currency exchange rate providers"
 	   ,CurrencyXRates_UI : "Currency exchange rates"
-
+	   ,Classifications_UI: "Classifications"
+		   
 	   ,Uoms_UI :"Units of measure"
 	   ,UomType_UI :"Unit of measure types"
 	   ,UomMD_UI :"Unit of measure with details"
@@ -331,7 +332,7 @@ dnet.Translation = Ext.apply({},{
         ,ProductAccountGroup_UI : "Product account groups"
         ,ProductAttributeDefs_UI : "Product attributes"
         ,InvTransactions_UI : "Inventory transactions"
-        	
+        ,InvBalance_UI: "Stocks"	
           //SD
         ,SalesOrderBaseData_UI : "Base data(Sales orders)"
         //,SalesOrderType_UI : "Order type"

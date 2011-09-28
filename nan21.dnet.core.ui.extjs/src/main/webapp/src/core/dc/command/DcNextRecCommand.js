@@ -1,6 +1,6 @@
-Ext.ns("dnet.base");
 
-dnet.base.DcNextRecCommand = Ext.extend(dnet.base.AbstractDcSyncCommand, {
+Ext.define("dnet.base.DcNextRecCommand", {
+	extend : "dnet.base.AbstractDcSyncCommand",
 
 	onExecute : function() {
 		var dc = this.dc;
@@ -9,7 +9,7 @@ dnet.base.DcNextRecCommand = Ext.extend(dnet.base.AbstractDcSyncCommand, {
 			if (++crtIdx >= dc.store.getCount()) {
 				throw (dnet.base.DcExceptions.NAVIGATE_AFTER_LAST);
 			} else {
-				dc.setRecord(dc.store.getAt(crtIdx));
+				dc.setSelectedRecords([dc.store.getAt(crtIdx)]);
 			}
 		} else {
 			var crtIdx = dc.selectedRecords.indexOf(dc.record);

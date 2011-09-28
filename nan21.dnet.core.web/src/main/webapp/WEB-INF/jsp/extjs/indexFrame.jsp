@@ -22,7 +22,7 @@
 </head>
 <body  onUnload="javascript: onContentPanelClose('_ALL_'); ">
 	
-	<%@ include file="_loading_mask.jspf" %> 
+	<!-- <%@ include file="_loading_mask.jspf" %>  -->
 
     <script type="text/javascript">
     	if(document &&  document.getElementById('n21-loading-msg')) {
@@ -60,10 +60,10 @@
         			}  	         
          	      }	]};
     	var __theViewport__ = new Ext.Viewport(cfg);
-    	__theViewport__.doLayout(); 
+    	//__theViewport__.doLayout(); 
 	});
 
-    <%@ include file="_loading_mask_remove.jspf" %> 
+    /* <%@ include file="_loading_mask_remove.jspf" %> */ 
     
   </script>
 </body> 

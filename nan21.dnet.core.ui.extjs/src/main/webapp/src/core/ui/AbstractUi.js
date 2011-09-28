@@ -1,7 +1,7 @@
-Ext.ns("dnet.base");
-
-dnet.base.AbstractUi = Ext.extend( Ext.Panel, {
-
+ 
+Ext.define("dnet.base.AbstractUi", {
+	extend:  "Ext.Panel" ,
+ 
  	  _elems_: null
  	 ,_configVars_: null
 	 ,_tlbs_:  null
@@ -91,7 +91,7 @@ dnet.base.AbstractUi = Ext.extend( Ext.Panel, {
 
 		this._title_ = Dnet.translate("ui", this._name_.substring(this._name_.lastIndexOf(".")+1 )  ); //.substr(this._name_.strpos() )
 
-    	dnet.base.AbstractUi.superclass.initComponent.apply(this, arguments);
+    	this.callParent(arguments);
     	this.addListener("afterlayout", this._onReady_, this);
  
     }
@@ -157,6 +157,9 @@ dnet.base.AbstractUi = Ext.extend( Ext.Panel, {
 
 	,_linkToolbar_: function(tlbName, viewName) {
         var tlb =  this._tlbs_.get(tlbName);
+        if (Ext.isEmpty(tlb )) {
+        	return ;
+        }
         var view =  this._elems_.get(viewName);
 		view["tbar"] = tlb;
 		var keys = [];
@@ -220,11 +223,11 @@ dnet.base.AbstractUi = Ext.extend( Ext.Panel, {
 		if (Ext.isNumber(name)) {
 			var theToc = this._getElement_("_toc_").items.items[0];
 			var r = theToc.store.getAt(name);
-			theToc.select(r);
+			theToc.getSelectionModel().select(r);
 		} else {
 			var theToc = this._getElement_("_toc_").items.items[0];
-			var r = theToc.store.getById(name);
-			theToc.select(r);
+			var r = theToc.store.findRecord("name",name);
+			theToc.getSelectionModel().select(r);
 		}
 		
 	} 
@@ -233,7 +236,14 @@ dnet.base.AbstractUi = Ext.extend( Ext.Panel, {
 		if (Ext.isNumber(idx) ) {
     		this._getElement_(svn).getLayout().setActiveItem(idx);
 		} else {
-			this._getElement_(svn).getLayout().setActiveItem(this._getElement_(idx));
+			var ct = this._getElement_(svn);
+			var cmp = this._getElement_(idx);
+			if(cmp) {
+				ct.getLayout().setActiveItem(cmp);
+			} else {				
+				ct.getLayout().setActiveItem( ct.items.indexOfKey(idx));
+			}
+			  
 		}
 	}
     
@@ -243,12 +253,13 @@ dnet.base.AbstractUi = Ext.extend( Ext.Panel, {
 		}	
 		return this._builder_;
 	}
+    
     ,showAsgnWindow: function(asgnWdwClass,cfg) { 
     	//this.showAsgnWindow(net.nan21.dnet.module.ad.usr.asgn.RolesOfUser$Ui ,{dc:"rol",objectIdField:"id"});
     	
     	//var cfg = this._getConfig_(name);
-		var objectId = this._dcs_.get(cfg.dc).record[cfg.objectIdField];
-		var aw=new asgnWdwClass(cfg);
+		var objectId = this._dcs_.get(cfg.dc).record.data[cfg.objectIdField];
+		var aw=Ext.create( asgnWdwClass, cfg);
 		aw.show();
 		aw._controller_.params.objectId = objectId ;
 		aw._controller_.initAssignement();				

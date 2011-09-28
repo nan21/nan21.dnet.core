@@ -1,14 +1,40 @@
-Ext.ns("dnet.base");
-
-dnet.base.AbstractDcvFilterForm = Ext.extend( Ext.form.FormPanel, {
+Ext.define("dnet.base.AbstractDcvFilterForm", {
+	extend:  "Ext.form.Panel" ,
+ 
+	// DNet properties
 	
-	 _elems_: null
-	,_is_filter_: false
-	,_controller_: null
-    ,_mainViewName_: "main"
-    ,_trl_:null
-    ,_dcViewType_:"filter-form"
-	,initComponent: function(config) {
+	_builder_: null,
+	_elems_: null,
+	_controller_: null,
+    _mainViewName_: "main",
+    _dcViewType_: "filter-form",	
+    _trl_:null,
+    
+    // defaults
+    
+    frame:true,
+	border:false,
+	bodyBorder:false,
+	maskDisabled: false,
+	layout:"fit",
+  	buttonAlign:"left",
+  	bodyCls: 'dcv-edit-form',
+  	bodyPadding: '5 5 0 0',
+  	
+    fieldDefaults:{
+  	   labelAlign:"right",
+  	   labelWidth:100  
+  	},
+  	
+    defaults: {
+   	 	frame:false
+       ,border:false
+       ,bodyBorder:false
+       ,bodyStyle: " background:transparent "
+    },
+    
+
+	initComponent: function(config) {
 		this._elems_ =  new Ext.util.MixedCollection();
 		this._startDefine_();
 
@@ -28,24 +54,17 @@ dnet.base.AbstractDcvFilterForm = Ext.extend( Ext.form.FormPanel, {
         this._endDefine_();
 
 		var cfg = {
-	       layout:"fit"
-	      ,frame:true
-	      ,border:true
-	      ,defaults:{
-	      	   labelAlign:"right"
-	      	  ,labelWidth:110
-	      	  ,border:true
-	      	}
-	     ,items:[ this._elems_.get(this._mainViewName_) ]
+	       layout:"fit", items:[ this._elems_.get(this._mainViewName_) ]
 		}
 		Ext.apply(cfg,config);
         Ext.apply(this,cfg);
-		dnet.base.AbstractDcvFilterForm.superclass.initComponent.call(this);
+
+        this.callParent(arguments);
 		
 		this.on({ scope: this ,afterrender: function() { 
 			this.updateBound(this._controller_.getFilter()); 
 		}   });
-		this._controller_.addBindedView(this.id, this._dcViewType_ );	
+		//this._controller_.addBindedView(this.id, this._dcViewType_ );	
   
 	}
 
@@ -80,7 +99,7 @@ dnet.base.AbstractDcvFilterForm = Ext.extend( Ext.form.FormPanel, {
     	
 	,_postProcessElem_ : function(item, idx, len) {
 		if (item.fieldLabel == undefined) {
-			Dnet.translateField(this._trl_, this._controller_.ds._trl_,item);
+			Dnet.translateField(this._trl_, this._controller_._trl_ ,item);
 		} 
 	}
 	/*,_onChange_: function (field, newVal, oldVal) {		

@@ -1,6 +1,7 @@
-Ext.ns("dnet.base");
-dnet.base.UiHeader = Ext.extend(Ext.Toolbar , {
-	 
+
+Ext.define("dnet.base.UiHeader", {
+	extend:  "Ext.toolbar.Toolbar" ,
+ 
 	initComponent: function(config) {
 		var items =   [
 

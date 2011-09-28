@@ -1,7 +1,8 @@
-
-Ext.ns("dnet.base");
-dnet.base.AbstractLov = Ext.extend(Ext.form.TriggerField, {
-    
+ 
+Ext.define("dnet.base.AbstractLov", {
+	extend:  "Ext.form.TriggerField" ,
+ 	alias: "xlovfield",
+ 	 
 	 defaultAutoCreate : {tag: "input", type: "text", size: "16",style:"cursor:default;", autocomplete: "off"}
     ,triggerClass: 'x-form-search-trigger'
 
@@ -128,4 +129,4 @@ dnet.base.AbstractLov = Ext.extend(Ext.form.TriggerField, {
 	  }
 });
 
-Ext.reg('xlovfield', dnet.base.AbstractLov);
+ 

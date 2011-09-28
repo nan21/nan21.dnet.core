@@ -1,5 +1,4 @@
-dnet.base.FrameButtonStateManager = function() {	
-	return {		
+dnet.base.FrameButtonStateManager =  {		
 		register: function(btnName, state, dcName, frame, options) {	
 			this[state](btnName, state, dcName, frame, options);
 			return;			 
@@ -194,5 +193,4 @@ dnet.base.FrameButtonStateManager = function() {
 				}			 
 			 }, frame );
 		}
-	}
-}();
+	};

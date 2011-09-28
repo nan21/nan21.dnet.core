@@ -1,13 +1,23 @@
-
-Ext.ns("dnet.base");
-dnet.base.FrameBuilder = function(config) {		
-	this.frame = null; 
-	Ext.apply(this,config);	 	
-};
+Ext.define('dnet.base.FrameBuilder$TocModel', {
+	extend : 'Ext.data.Model',
+	fields : [ {
+		name : 'name',
+		type : 'string'
+	}, {
+		name : 'title',
+		type : 'string'
+	}]
+});
  
+Ext.define("dnet.base.FrameBuilder" , {		
+	frame : null,
+	
+	constructor : function(config) {
+        config = config || {};
+        Ext.apply(this, config);
+        this.callParent(arguments);
+    },
 
-dnet.base.FrameBuilder.prototype =  {
-	 
 	addDc: function(name, obj) {
 		this.frame._dcs_.add(name, obj);	
 		return this;
@@ -30,26 +40,26 @@ dnet.base.FrameBuilder.prototype =  {
 		this.addDcView(dc, config);	
 		var theDc = this.frame._dcs_.get(dc);
 		var viewId = config.id;
-		theDc.addBindedView(viewId, "edit-form");
-		theDc.isRecordValid = theDc.isRecordValid.createInterceptor(function() {
-			var c = Ext.getCmp(viewId);
-			if (c) {
-				return c.getForm().isValid();
-			} else return true;			 
-		} );
+//		theDc.addBindedView(viewId, "edit-form");
+//		theDc.isRecordValid = theDc.isRecordValid.createInterceptor(function() {
+//			var c = Ext.getCmp(viewId);
+//			if (c) {
+//				return c.getForm().isValid();
+//			} else return true;			 
+//		} );
 		return this;
 	}
 	,addDcFilterFormView: function(dc, config) {	
 		this.addDcView(dc, config);	
 		var theDc = this.frame._dcs_.get(dc);
 		var viewId = config.id;
-		theDc.addBindedView(config.id, "filter-form");
-		theDc.isFilterValid = theDc.isFilterValid.createInterceptor(function() {
-			var c = Ext.getCmp(viewId);
-			if (c) {
-				return c.getForm().isValid();
-			} else return true;			
-		} );
+//		theDc.addBindedView(config.id, "filter-form");
+//		theDc.isFilterValid = theDc.isFilterValid.createInterceptor(function() {
+//			var c = Ext.getCmp(viewId);
+//			if (c) {
+//				return c.getForm().isValid();
+//			} else return true;			
+//		} );
 		return this;
 	} 
 	,addDcListView: function(dc, config) {	
@@ -58,7 +68,7 @@ dnet.base.FrameBuilder.prototype =  {
 	,addDcView: function(dc, config) {	
 		Ext.apply(config, {
 			_controller_:this.frame._dcs_.get(dc)
-			,listeners:{ activate:{scope:this,fn:function(p){p.doLayout(false,true);} } }
+			//,listeners:{ activate:{scope:this,fn:function(p){p.doLayout(false,true);} } }
 		});
 		this.applyViewSharedConfig(config);				
 		return this;
@@ -66,9 +76,9 @@ dnet.base.FrameBuilder.prototype =  {
  
 	,addPanel:function(config) {
 		config.listeners = config.listeners || {};
-		Ext.applyIf(config.listeners, {			 
-			 activate:{scope:this,fn:function(p){p.doLayout(false,true);}  }
-		});
+//		Ext.applyIf(config.listeners, {			 
+//			 activate:{scope:this,fn:function(p){p.doLayout(false,true);}  }
+//		});
 		//this.fireEvent('canvaschange', p); for canvas
 		this.applyViewSharedConfig(config);	
 		return this;
@@ -102,7 +112,7 @@ dnet.base.FrameBuilder.prototype =  {
 
 	,applyViewSharedConfig: function(config) {
 		Ext.applyIf(config,{
-			id:Ext.id()
+			id:Ext.id(), itemId: config.name
 		});				 
 		this.frame._elems_.add(config.name, config);
 	}
@@ -114,35 +124,47 @@ dnet.base.FrameBuilder.prototype =  {
 	,addToc: function(canvases) {
 		var data = [];
 		for(var i=0;i<canvases.length;i++) {
-			data[i] = [canvases[i], this.frame._elems_.get(canvases[i]).title];			
+			data[i] = { "name": canvases[i], "title":this.frame._elems_.get(canvases[i]).title } ;			
 		}
+		var store = Ext.create( 'Ext.data.Store', {
+			model: 'dnet.base.FrameBuilder$TocModel',
+			data: data			 
+		});
+		
 		var config = {
 				name:"_toc_", collapsible: true, layout:"fit", id:Ext.id(),
-				region:"west", title: 'Navigation', width: 250, header:true, frame:false
+				region:"west", title: 'Navigation', width: 250, frame:false
 				, items:[{
-					 name: "_toc_items_", xtype: 'listview',id:Ext.id()
+					 name: "_toc_items_", xtype: 'gridpanel',id:Ext.id()
 					,hideHeaders:true
 					,autoScroll:true
-					,singleSelect: true					 
-					,store: new Ext.data.ArrayStore({					    
-					    autoDestroy: true,					     
-					    idIndex: 0,  
-					    fields: [					        
-					       {name: 'name', type: 'string'},
-					       {name: 'title', type: 'string'},					       
-					    ], 
-					    data: data
-					     
-					})				
+					,viewConfig: {
+						stripeRows: false
+					}					 					 
+					,singleSelect: true
+					,forceFit: true
+					,store: store			
 					,columns: [ {
 				        header: 'title',				        
 				        dataIndex: 'title'
-				    }]				    
-				    ,listeners: {scope:this.frame, 
-		            	selectionchange: function(view, nodes) {
-							this._showStackedViewElement_("main", view.getRecord(nodes[0]).data.name);			 
-		            	} 
-						,afterrender: function() {
+				    }]
+				   , selModel :  {
+						mode: "SINGLE",
+						listeners : {
+							 
+							"selectionchange" : {
+								scope : this.frame,
+								fn : function(sm,selected, options) {
+									if(this._getElement_("main").rendered) {
+										this._showStackedViewElement_("main", selected[0].data.name);	
+									} 									
+								}
+							}
+						}
+					},
+				    listeners: {scope:this.frame, 
+		            	 
+						 afterrender: function() {
 							this._showTocElement_(0);			 
 		            	}   
 		        	}
@@ -188,4 +210,4 @@ dnet.base.FrameBuilder.prototype =  {
 	}
 	
 	
-};
+});

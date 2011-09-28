@@ -1,6 +1,4 @@
-Ext.ns("dnet.base");
+Ext.define("dnet.base.AbstractDcSyncCommand", {
+	extend : "dnet.base.AbstractDcCommand"
 
-dnet.base.AbstractDcSyncCommand = Ext.extend( dnet.base.AbstractDcCommand, {
-	
-	
 });

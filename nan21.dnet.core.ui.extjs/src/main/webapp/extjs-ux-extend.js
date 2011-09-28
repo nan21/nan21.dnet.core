@@ -1,101 +1,6 @@
+ 
 
-/*!
- * Ext JS Library 3.2.1
- * Copyright(c) 2006-2010 Ext JS, Inc.
- * licensing@extjs.com
- * http://www.extjs.com/license
- */
-/**
- * @class Ext.Loader
- * @singleton
- * Simple class to help load JavaScript files on demand
- */
-Ext.Loader = Ext.apply({}, {
-    /**
-     * Loads a given set of .js files. Calls the callback function when all files have been loaded
-     * Set preserveOrder to true to ensure non-parallel loading of files if load order is important
-     * @param {Array} fileList Array of all files to load
-     * @param {Function} callback Callback to call after all files have been loaded
-     * @param {Object} scope The scope to call the callback in
-     * @param {Boolean} preserveOrder True to make files load in serial, one after the other (defaults to false)
-     */
-    load: function(fileList, callback, scope, preserveOrder) {
-        var scope       = scope || this,
-            head        = document.getElementsByTagName("head")[0],
-            fragment    = document.createDocumentFragment(),
-            numFiles    = fileList.length,
-            loadedFiles = 0,
-            me          = this;
-        
-        /**
-         * Loads a particular file from the fileList by index. This is used when preserving order
-         */
-        var loadFileIndex = function(index) {
-            head.appendChild(
-                me.buildScriptTag(fileList[index], onFileLoaded)
-            );
-        };
-        
-        /**
-         * Callback function which is called after each file has been loaded. This calls the callback
-         * passed to load once the final file in the fileList has been loaded
-         */
-        var onFileLoaded = function() {
-            loadedFiles ++;
-            
-            //if this was the last file, call the callback, otherwise load the next file
-            if (numFiles == loadedFiles && typeof callback == 'function') {
-                callback.call(scope);
-            } else {
-                if (preserveOrder === true) {
-                    loadFileIndex(loadedFiles);
-                }
-            }
-        };
-        
-        if (preserveOrder === true) {
-            loadFileIndex.call(this, 0);
-        } else {
-            //load each file (most browsers will do this in parallel)
-            Ext.each(fileList, function(file, index) {
-                fragment.appendChild(
-                    this.buildScriptTag(file, onFileLoaded)
-                );  
-            }, this);
-            
-            head.appendChild(fragment);
-        }
-    },
-    
-    /**
-     * @private
-     * Creates and returns a script tag, but does not place it into the document. If a callback function
-     * is passed, this is called when the script has been loaded
-     * @param {String} filename The name of the file to create a script tag for
-     * @param {Function} callback Optional callback, which is called when the script has been loaded
-     * @return {Element} The new script ta
-     */
-    buildScriptTag: function(filename, callback) {
-        var script  = document.createElement('script');
-        script.type = "text/javascript";
-        script.src  = filename;
-        
-        //IE has a different way of handling <script> loads, so we need to check for it here
-        if (script.readyState) {
-            script.onreadystatechange = function() {
-                if (script.readyState == "loaded" || script.readyState == "complete") {
-                    script.onreadystatechange = null;
-                    callback();
-                }
-            };
-        } else {
-            script.onload = callback;
-        }    
-        
-        return script;
-    }
-});
-ÔªøExt.util.MD5 = function(s,raw,hexcase,chrsz) {
+Ext.util.MD5 = function(s,raw,hexcase,chrsz) {
 	raw = raw || false;	
 	hexcase = hexcase || false;
 	chrsz = chrsz || 8;
@@ -234,561 +139,32 @@ Ext.Loader = Ext.apply({}, {
 	}
 	return (raw ? binl2str(core_md5(str2binl(s), s.length * chrsz)) : binl2hex(core_md5(str2binl(s), s.length * chrsz))	);
 };
-
-// vim: ts=4:sw=4:nu:fdc=4:nospell
-/*global Ext */
-/**
- * @class Ext.ux.data.BindMgr
- * @extends Ext.util.Observable
- *
- * If a component is binding, bound or unbinding to a record the BindMgr calls the following methods
- * of the bound component (if they exist):
- * <ul class="list">
- * <li><b>onBind(record)</b> after the component is bound to the record</li>
- * <li><b>onUnbind(record)</b> after the component is unbound from the record</li>
- * <li><b>afterEdit(record)</b> as the response to editing (change) of the record data</li>
- * <li><b>afterReject(record)</b> as the response to rejecting the record changes</li>
- * <li><b>afterCommit(record)</b> as the response to commiting the record changes</li>
- * </ul>
- *
- * All these methods are called in the scope of the bound component and with
- * the record triggering the change as the only argument
- *
- * @singleton
- *
- * @author    Ing. Jozef Sak√°lo≈°
- * @copyright (c) 2009, Ing. Jozef Sak√°lo≈°
- * @date      22. February 2009
- * @version   1.0
- * @revision  $Id: Ext.ux.data.BindMgr.js 609 2009-03-07 00:45:10Z jozo $
- *
- * @license Ext.ux.data.Binder is licensed under the terms of
- * the Open Source LGPL 3.0 license.  Commercial use is permitted to the extent
- * that the code/component(s) do NOT become part of another Open Source or Commercially
- * licensed development library or toolkit without explicit permission.
- * 
- * <p>License details: <a href="http://www.gnu.org/licenses/lgpl.html"
- * target="_blank">http://www.gnu.org/licenses/lgpl.html</a></p>
- *
- * @demo      http://examples.extjs.eu/?ex=databind
- *
- * @donate
- * <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
- * <input type="hidden" name="cmd" value="_s-xclick">
- * <input type="hidden" name="hosted_button_id" value="3430419">
- * <input type="image" src="https://www.paypal.com/en_US/i/btn/x-click-butcc-donate.gif" 
- * border="0" name="submit" alt="PayPal - The safer, easier way to pay online.">
- * <img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1">
- * </form>
- */
-
-Ext.ns('Ext.ux.data');
-
-Ext.ux.data.BindMgr = Ext.apply(new Ext.util.Observable(), {
-
-	/**
-	 * Internal id counter
-	 * @private
-	 */
-	 AUTO_ID:1000
-
-	/**
-	 * Stores bound records and components
-	 * @private
-	 */
-	,bounds:{}
-
-	// {{{
-	/**
-	 * Binds a component to a record
-	 * @param {Ext.data.Record} record The record to bind the component to
-	 * @param {Ext.Component/String/Array} cmp The instance of the component to bind to the record 
-	 * or id of the component or the array of instances and/or ids
-	 */
-	,bind:function(record, cmp) {
-		// handle array of components
-		if(Ext.isArray(cmp)) {
-			for(var i = 0; i < cmp.length; i++) {
-				this.bind(record, cmp[i]);
-			}
-		}
-		var c = this.getCmp(cmp);
-		if(!record || !c || !c.id) {
-			return;
-		}
-		var id = this.idOf(record);
-		if(!id) {
-			id = String(++this.AUTO_ID);
-			this.bounds[id] = {};
-			Ext.apply(this.bounds[id], {
-				 record:record
-				,components:{}
-				,size:0
-			});
-			record.afterEdit = record.afterEdit.createSequence(this.afterEdit, this);
-			record.afterReject = record.afterReject.createSequence(this.afterReject, this);
-			record.afterCommit = record.afterCommit.createSequence(this.afterCommit, this);
-		}
-		// do nothing if already bound
-		if(this.bounds[id].components[c.id] !== c) {
-			this.bounds[id].components[c.id] = c;
-			this.bounds[id].size++;
-			this.callMethod('onBind', record, c);
-		}
-	} // eo function bind
-	// }}}
-	// {{{
-	/**
-	 * Unbinds the component from the record
-	 * @param {Ext.data.Record} record The record to unbind the component from
-	 * @param {Ext.Component/String} cmp (optional) The component to unbind. If it is
-	 * not set, all components from the record are unbound.
-	 */
-	,unbind:function(record, cmp) {
-		var id = this.idOf(record);
-		if(!id) {
-			return;
-		}
-		var c;
-		if(!cmp) {
-			for(var p in this.bounds[id].components) {
-				if(this.bounds[id].components.hasOwnProperty(p)) {
-					c = this.bounds[id].components[p];
-					this.unbind(record, c);
-				}
-			}
-		}
-		else {
-			c = this.getCmp(cmp);
-			if(c && c.id) {
-				delete(this.bounds[id].components[c.id]);
-				if(0 === --this.bounds[id].size) {
-					record.afterEdit = Ext.data.Record.prototype.afterEdit;
-					record.afterReject = Ext.data.Record.prototype.afterReject;
-					record.afterCommit = Ext.data.Record.prototype.afterCommit;
-					delete(this.bounds[id]);
-				}
-				this.callMethod('onUnbind', record, c);
-			}
-		}
-	} // eo function unbind
-	// }}}
-	// {{{
-	/**
-	 * Calls a method (if it exists in cmp) in the scope of cmp with record as argument
-	 * @private
-	 * @param {String} method The method to call
-	 * @param {Ext.data.Record} record The record to pass to the call
-	 * @param {Ext.Component} cmp The component to call the method of
-	 */
-	,callMethod:function(method, record, cmp) {
-		if('function' === typeof cmp[method]) {
-			cmp[method](record);
-		}
-	} // eo function callMethod
-	// }}}
-	// {{{
-	/**
-	 * Returns the instance of cmp
-	 * @private
-	 * @param {Ext.Component/String} cmp Component or id of the component
-	 * @return {Ext.Component} 
-	 */
-	,getCmp:function(cmp) {
-		return 'string' === typeof cmp ? Ext.getCmp(cmp) : cmp;
-	} // eo function getCmp
-	// }}}
-	// {{{
-	/**
-	 * Returns internal id of the passed record
-	 * @private
-	 * @return {String/Boolean} string id or boolean false if record is not bound
-	 */
-	,idOf:function(record) {
-		for(var id in this.bounds) {
-			if(this.bounds[id] && this.bounds[id].record === record) {
-				return id;
-			}
-		}
-		return false;
-	} // eo function idOf
-	// }}}
-	// {{{
-	/**
-	 * Calls afterEdit of the bound components
-	 * @private
-	 * @param {Ext.data.Record} record
-	 */
-	,afterEdit:function(record) {
-		var id = this.idOf(record);
-		if(id) {
-			for(var p in this.bounds[id].components) {
-				if(this.bounds[id].components.hasOwnProperty(p)) {
-					var c = this.bounds[id].components[p];
-					this.callMethod('afterEdit', record, c);
-				}
-			}
-		}
-	} //eo function afterEdit
-	// }}}
-	// {{{
-	/**
-	 * Calls afterReject of the bound components
-	 * @private
-	 * @param {Ext.data.Record} record
-	 */
-	,afterReject:function(record) {
-		var id = this.idOf(record);
-		if(id) {
-			for(var p in this.bounds[id].components) {
-				if(this.bounds[id].components.hasOwnProperty(p)) {
-					var c = this.bounds[id].components[p];
-					this.callMethod('afterReject', record, c);
-				}
-			}
-		}
-	} // eo function afterReject
-	// }}}
-	// {{{
-	/**
-	 * Calls afterCommit of the bound components
-	 * @private
-	 * @param {Ext.data.Record} record
-	 */
-	,afterCommit:function(record) {
-		var id = this.idOf(record);
-		if(id) {
-			for(var p in this.bounds[id].components) {
-				if(this.bounds[id].components.hasOwnProperty(p)) {
-					var c = this.bounds[id].components[p];
-					this.callMethod('afterCommit', record, c);
-				}
-			}
-		}
-	} // eo function afterCommit
-	// }}}
-
-}); // eo apply
-
-// shortcut
-Ext.BindMgr = Ext.ux.data.BindMgr;
-
-// {{{
-// patch Ext.data.Record
- // if('function' !== typeof Ext.data.Record.prototype.afterEdit) {
-	Ext.override(Ext.data.Record, {
-		afterEdit:function(record) {
-			if(this.store) {
-				this.store.afterEdit(this);
-			}
-		} // eo function afterEdit
-
-		,set:function(name, value) {
-			if(String(this.data[name]) == String(value)){
-				return;
-			}
-			this.dirty = true;
-			if(!this.modified){
-				this.modified = {};
-			}
-			if(typeof this.modified[name] == 'undefined'){
-				this.modified[name] = this.data[name];
-			}
-			this.data[name] = value;
-			if(!this.editing){
-				this.afterEdit(this);
-			}
-		} // eo function set
-
-		,endEdit:function() {
-			this.editing = false;
-			if(this.dirty){
-				this.afterEdit(this);
-			}
-		} // eo function endEdit
-
-		,afterReject:function(record) {
-			if(this.store) {
-				this.store.afterReject(this);
-			}
-		} // eo function afterReject
-
-		,reject:function(silent) {
-			var m = this.modified;
-			for(var n in m){
-				if(typeof m[n] != "function"){
-					this.data[n] = m[n];
-				}
-			}
-			this.dirty = false;
-			delete this.modified;
-			this.editing = false;
-			if(silent !== true){
-				this.afterReject(this);
-			}
-		} // eo function reject
-
-		,afterCommit:function(record) {
-			if(this.store) {
-				this.store.afterCommit(this);
-			}
-		} // eo function afterCommit
-
-		,commit:function(silent) {
-			this.dirty = false;
-			delete this.modified;
-			this.editing = false;
-			if(silent !== true){
-				this.afterCommit(this);
-			}
-		} // eo function commit
-	});
-//} // eo Record override
-// }}}
-
-// eof
-
-Ext.ns('Ext.ux.grid');
-
-Ext.ux.grid.GridSummary = function(config) {
-        Ext.apply(this, config);
-};
-
-Ext.extend(Ext.ux.grid.GridSummary, Ext.util.Observable, {
-    init : function(grid) {
-        this.grid = grid;
-        this.cm = grid.getColumnModel();
-        this.view = grid.getView();
-
-        var v = this.view;
-
-        // override GridView's onLayout() method
-        v.onLayout = this.onLayout;
-
-        v.afterMethod('render', this.refreshSummary, this);
-        v.afterMethod('refresh', this.refreshSummary, this);
-        v.afterMethod('syncScroll', this.syncSummaryScroll, this);
-        v.afterMethod('onColumnWidthUpdated', this.doWidth, this);
-        v.afterMethod('onAllColumnWidthsUpdated', this.doAllWidths, this);
-        v.afterMethod('onColumnHiddenUpdated', this.doHidden, this);
-
-        // update summary row on store's add/remove/clear/update events
-         
-        grid._theController.on({
-            //add: this.refreshSummary,
-           // remove: this.refreshSummary,
-           // clear: this.refreshSummary,
-           // update: this.refreshSummary,
-            summarychanged: this.refreshSummary 
-           , scope: this
-        });
-        
-        
-        if (!this.rowTpl) {
-            this.rowTpl = new Ext.Template(
-                '<div class="x-grid3-summary-row x-grid3-gridsummary-row-offset">',
-                    '<table class="x-grid3-summary-table" border="0" cellspacing="0" cellpadding="0" style="{tstyle}">',
-                        '<tbody><tr>{cells}</tr></tbody>',
-                    '</table>',
-                '</div>'
-            );
-            this.rowTpl.disableFormats = true;
-        }
-        this.rowTpl.compile();
-
-        if (!this.cellTpl) {
-            this.cellTpl = new Ext.Template(
-                '<td class="x-grid3-col x-grid3-cell x-grid3-td-{id} {css}" style="{style}">',
-                    '<div class="x-grid3-cell-inner x-grid3-col-{id}" unselectable="on" {attr}>{value}</div>',
-                "</td>"
-            );
-            this.cellTpl.disableFormats = true;
-        }
-        this.cellTpl.compile();
-    },
-
-    calculate : function(rs, cm) {
-        var data = {}, cfg = cm.config;
-        for (var i = 0, len = cfg.length; i < len; i++) { // loop through all columns in ColumnModel
-            var cf = cfg[i], // get column's configuration
-                cname = cf.dataIndex; // get column dataIndex
-
-            // initialise grid summary row data for
-            // the current column being worked on
-            data[cname] = 0;
-
-            if (cf.summaryType) {
-                for (var j = 0, jlen = rs.length; j < jlen; j++) {
-                    var r = rs[j]; // get a single Record
-                    data[cname] = Ext.ux.grid.GridSummary.Calculations[cf.summaryType](r.get(cname), r, cname, data, j);
-                }
-            }
-        }
-
-        return data;
-    },
-
-    onLayout : function(vw, vh) {
-        if (Ext.type(vh) != 'number') { // handles grid's height:'auto' config
-            return;
-        }
-        // note: this method is scoped to the GridView
-        if (!this.grid.getGridEl().hasClass('x-grid-hide-gridsummary')) {
-            // readjust gridview's height only if grid summary row is visible
-            this.scroller.setHeight(vh - this.summary.getHeight());
-        }
-    },
-
-    syncSummaryScroll : function() {
-        var mb = this.view.scroller.dom;
-
-        this.view.summaryWrap.dom.scrollLeft = mb.scrollLeft;
-        this.view.summaryWrap.dom.scrollLeft = mb.scrollLeft; // second time for IE (1/2 time first fails, other browsers ignore)
-    },
-
-    doWidth : function(col, w, tw) {
-        var s = this.view.summary.dom;
-
-        s.firstChild.style.width = tw;
-        s.firstChild.rows[0].childNodes[col].style.width = w;
-    },
-
-    doAllWidths : function(ws, tw) {
-        var s = this.view.summary.dom, wlen = ws.length;
-
-        s.firstChild.style.width = tw;
-
-        var cells = s.firstChild.rows[0].childNodes;
-
-        for (var j = 0; j < wlen; j++) {
-            cells[j].style.width = ws[j];
-        }
-    },
-
-    doHidden : function(col, hidden, tw) {
-        var s = this.view.summary.dom,
-            display = hidden ? 'none' : '';
-
-        s.firstChild.style.width = tw;
-        s.firstChild.rows[0].childNodes[col].style.display = display;
-    },
-
-    renderSummary : function(o, cs, cm) {
-        cs = cs || this.view.getColumnData();
-        var cfg = cm.config,
-            buf = [],
-            last = cs.length - 1;
-
-        for (var i = 0, len = cs.length; i < len; i++) {
-            var c = cs[i], cf = cfg[i], p = {};
-
-            p.id = c.id;
-            p.style = c.style;
-            p.css = i === 0 ? 'x-grid3-cell-first ' : (i == last ? 'x-grid3-cell-last ' : '');
-
-              /*
-            if (cf.summaryType || cf.summaryRenderer) {
-                p.value = (cf.summaryRenderer || c.renderer)(o.data[c.name ], p, o);
-            } else {
-                p.value = '';
-            }*/
-            p.value = o.data[c.name.toLowerCase() ] || o.data[c.name.toUpperCase() ]
-            p.value = Ext.util.Format.number(p.value,"0,0.00");
-            if (p.value === undefined || p.value === "") {
-                p.value = "&#160;";
-            }
-            buf[buf.length] = this.cellTpl.apply(p);
-        }
-
-        return this.rowTpl.apply({
-            tstyle: 'width:' + this.view.getTotalWidth() + ';',
-            cells: buf.join('')
-        });
-    }
-    
-    //,data : {} 
-
-    ,refreshSummary : function() {
-        var g = this.grid, ds = g.store,
-            cs = this.view.getColumnData(),
-            cm = this.cm,
-            rs = ds.getRange(),
-           //data = this.calculate(rs, cm),
-            data = this.grid._theController.summaryData,
-            buf = this.renderSummary({data: data}, cs, cm);
-
-        if (!this.view.summaryWrap) {
-            this.view.summaryWrap = Ext.DomHelper.insertAfter(this.view.scroller, {
-                tag: 'div',
-                cls: 'x-grid3-gridsummary-row-inner'
-            }, true);
-        }
-        this.view.summary = this.view.summaryWrap.update(buf).first();
-    },
-
-    toggleSummary : function(visible) { // true to display summary row
-        var el = this.grid.getGridEl();
-
-        if (el) {
-            if (visible === undefined) {
-                visible = el.hasClass('x-grid-hide-gridsummary');
-            }
-            el[visible ? 'removeClass' : 'addClass']('x-grid-hide-gridsummary');
-
-            this.view.layout(); // readjust gridview height
-        }
-    },
-
-    getSummaryNode : function() {
-        return this.view.summary;
-    }
-});
-Ext.reg('gridsummary', Ext.ux.grid.GridSummary);
-
+ 
 /*
- * all Calculation methods are called on each Record in the Store
- * with the following 5 parameters:
- *
- * v - cell value
- * record - reference to the current Record
- * colName - column name (i.e. the ColumnModel's dataIndex)
- * data - the cumulative data for the current column + summaryType up to the current Record
- * rowIdx - current row index
- */
-Ext.ux.grid.GridSummary.Calculations = {
-    sum : function(v, record, colName, data, rowIdx) {
-        return data[colName] + Ext.num(v, 0);
-    },
 
-    count : function(v, record, colName, data, rowIdx) {
-        return rowIdx + 1;
-    },
+This file is part of Ext JS 4
 
-    max : function(v, record, colName, data, rowIdx) {
-        return Math.max(Ext.num(v, 0), data[colName]);
-    },
+Copyright (c) 2011 Sencha Inc
 
-    min : function(v, record, colName, data, rowIdx) {
-        return Math.min(Ext.num(v, 0), data[colName]);
-    },
+Contact:  http://www.sencha.com/contact
 
-    average : function(v, record, colName, data, rowIdx) {
-        var t = data[colName] + Ext.num(v, 0), count = record.store.getCount();
-        return rowIdx == count - 1 ? (t / count) : t;
-    }
-};
+GNU General Public License Usage
+This file may be used under the terms of the GNU General Public License version 3.0 as published by the Free Software Foundation and appearing in the file LICENSE included in the packaging of this file.  Please review the following information to ensure the GNU General Public License version 3.0 requirements will be met: http://www.gnu.org/copyleft/gpl.html.
 
+If you are unsure which license is appropriate for your use, please contact the sales department at http://www.sencha.com/contact.
+
+*/
 /**
  * @class Ext.ux.StatusBar
  * <p>Basic status bar component that can be used as the bottom toolbar of any {@link Ext.Panel}.  In addition to
- * supporting the standard {@link Ext.Toolbar} interface for adding buttons, menus and other items, the StatusBar
+ * supporting the standard {@link Ext.toolbar.Toolbar} interface for adding buttons, menus and other items, the StatusBar
  * provides a greedy status element that can be aligned to either side and has convenient methods for setting the
  * status text and icon.  You can also indicate that something is processing using the {@link #showBusy} method.</p>
  * <pre><code>
-new Ext.Panel({
+Ext.create('Ext.Panel', {
     title: 'StatusBar',
     // etc.
-    bbar: new Ext.ux.StatusBar({
+    bbar: Ext.create('Ext.ux.StatusBar', {
         id: 'my-status',
 
         // defaults to use when the status is cleared:
@@ -821,12 +197,16 @@ sb.showBusy();
 
 sb.clearStatus(); // once completeed
 </code></pre>
- * @extends Ext.Toolbar
+ * @extends Ext.toolbar.Toolbar
  * @constructor
  * Creates a new StatusBar
  * @param {Object/Array} config A config object
  */
-Ext.ux.StatusBar = Ext.extend(Ext.Toolbar, {
+Ext.define('Ext.ux.statusbar.StatusBar', {
+    extend: 'Ext.toolbar.Toolbar',
+    alternateClassName: 'Ext.ux.StatusBar',
+    alias: 'widget.statusbar',
+    requires: ['Ext.toolbar.TextItem'],
     /**
      * @cfg {String} statusAlign
      * The alignment of the status element within the overall StatusBar layout.  When the StatusBar is rendered,
@@ -837,10 +217,10 @@ Ext.ux.StatusBar = Ext.extend(Ext.Toolbar, {
      * <pre><code>
 // Create a left-aligned status bar containing a button,
 // separator and text item that will be right-aligned (default):
-new Ext.Panel({
+Ext.create('Ext.Panel', {
     title: 'StatusBar',
     // etc.
-    bbar: new Ext.ux.StatusBar({
+    bbar: Ext.create('Ext.ux.StatusBar', {
         defaultText: 'Default status text',
         id: 'status-id',
         items: [{
@@ -852,10 +232,10 @@ new Ext.Panel({
 // By adding the statusAlign config, this will create the
 // exact same toolbar, except the status and toolbar item
 // layout will be reversed from the previous example:
-new Ext.Panel({
+Ext.create('Ext.Panel', {
     title: 'StatusBar',
     // etc.
-    bbar: new Ext.ux.StatusBar({
+    bbar: Ext.create('Ext.ux.StatusBar', {
         defaultText: 'Default status text',
         id: 'status-id',
         statusAlign: 'right',
@@ -895,7 +275,7 @@ new Ext.Panel({
 }
 
 // Setting a default icon:
-var sb = new Ext.ux.StatusBar({
+var sb = Ext.create('Ext.ux.StatusBar', {
     defaultIconCls: 'x-status-custom'
 });
 
@@ -958,30 +338,31 @@ sb.setStatus({
 
     // private
     initComponent : function(){
-        if(this.statusAlign=='right'){
+        if (this.statusAlign === 'right') {
             this.cls += ' x-status-right';
         }
-        Ext.ux.StatusBar.superclass.initComponent.call(this);
+        this.callParent(arguments);
     },
 
     // private
     afterRender : function(){
-        Ext.ux.StatusBar.superclass.afterRender.call(this);
+        this.callParent(arguments);
 
-        var right = this.statusAlign == 'right';
+        var right = this.statusAlign === 'right';
         this.currIconCls = this.iconCls || this.defaultIconCls;
-        this.statusEl = new Ext.Toolbar.TextItem({
+        this.statusEl = Ext.create('Ext.toolbar.TextItem', {
             cls: 'x-status-text ' + (this.currIconCls || ''),
             text: this.text || this.defaultText || ''
         });
 
-        if(right){
+        if (right) {
             this.add('->');
             this.add(this.statusEl);
-        }else{
+        } else {
             this.insert(0, this.statusEl);
             this.insert(1, '->');
         }
+        this.height = 27;
         this.doLayout();
     },
 
@@ -1034,39 +415,40 @@ statusBar.setStatus({
 </code></pre>
      * @return {Ext.ux.StatusBar} this
      */
-    setStatus : function(o){
+    setStatus : function(o) {
         o = o || {};
 
-        if(typeof o == 'string'){
+        if (Ext.isString(o)) {
             o = {text:o};
         }
-        if(o.text !== undefined){
+        if (o.text !== undefined) {
             this.setText(o.text);
         }
-        if(o.iconCls !== undefined){
+        if (o.iconCls !== undefined) {
             this.setIcon(o.iconCls);
         }
 
-        if(o.clear){
+        if (o.clear) {
             var c = o.clear,
                 wait = this.autoClear,
                 defaults = {useDefaults: true, anim: true};
 
-            if(typeof c == 'object'){
+            if (Ext.isObject(c)) {
                 c = Ext.applyIf(c, defaults);
-                if(c.wait){
+                if (c.wait) {
                     wait = c.wait;
                 }
-            }else if(typeof c == 'number'){
+            } else if (Ext.isNumber(c)) {
                 wait = c;
                 c = defaults;
-            }else if(typeof c == 'boolean'){
+            } else if (Ext.isBoolean(c)) {
                 c = defaults;
             }
 
             c.threadId = this.activeThreadId;
-            this.clearStatus.defer(wait, this, [c]);
+            Ext.defer(this.clearStatus, wait, this, [c]);
         }
+        this.doLayout();
         return this;
     },
 
@@ -1081,10 +463,10 @@ statusBar.setStatus({
      * </ul>
      * @return {Ext.ux.StatusBar} this
      */
-    clearStatus : function(o){
+    clearStatus : function(o) {
         o = o || {};
 
-        if(o.threadId && o.threadId !== this.activeThreadId){
+        if (o.threadId && o.threadId !== this.activeThreadId) {
             // this means the current call was made internally, but a newer
             // thread has set a message since this call was deferred.  Since
             // we don't want to overwrite a newer message just ignore.
@@ -1094,30 +476,31 @@ statusBar.setStatus({
         var text = o.useDefaults ? this.defaultText : this.emptyText,
             iconCls = o.useDefaults ? (this.defaultIconCls ? this.defaultIconCls : '') : '';
 
-        if(o.anim){
-            // animate the statusEl Ext.Element
-            this.statusEl.el.fadeOut({
+        if (o.anim) {
+            // animate the statusEl Ext.core.Element
+            this.statusEl.el.puff({
                 remove: false,
                 useDisplay: true,
                 scope: this,
                 callback: function(){
                     this.setStatus({
-	                    text: text,
-	                    iconCls: iconCls
-	                });
+                     text: text,
+                     iconCls: iconCls
+                 });
 
                     this.statusEl.el.show();
                 }
             });
-        }else{
+        } else {
             // hide/show the el to avoid jumpy text or icon
-            this.statusEl.hide();
-	        this.setStatus({
-	            text: text,
-	            iconCls: iconCls
-	        });
-            this.statusEl.show();
+             this.statusEl.hide();
+             this.setStatus({
+                 text: text,
+                 iconCls: iconCls
+             });
+             this.statusEl.show();
         }
+        this.doLayout();
         return this;
     },
 
@@ -1129,7 +512,7 @@ statusBar.setStatus({
     setText : function(text){
         this.activeThreadId++;
         this.text = text || '';
-        if(this.rendered){
+        if (this.rendered) {
             this.statusEl.setText(this.text);
         }
         return this;
@@ -1153,16 +536,16 @@ statusBar.setStatus({
         this.activeThreadId++;
         cls = cls || '';
 
-        if(this.rendered){
-	        if(this.currIconCls){
-	            this.statusEl.removeClass(this.currIconCls);
-	            this.currIconCls = null;
-	        }
-	        if(cls.length > 0){
-	            this.statusEl.addClass(cls);
-	            this.currIconCls = cls;
-	        }
-        }else{
+        if (this.rendered) {
+         if (this.currIconCls) {
+             this.statusEl.removeCls(this.currIconCls);
+             this.currIconCls = null;
+         }
+         if (cls.length > 0) {
+             this.statusEl.addCls(cls);
+             this.currIconCls = cls;
+         }
+        } else {
             this.currIconCls = cls;
         }
         return this;
@@ -1179,8 +562,8 @@ statusBar.setStatus({
      * @return {Ext.ux.StatusBar} this
      */
     showBusy : function(o){
-        if(typeof o == 'string'){
-            o = {text:o};
+        if (Ext.isString(o)) {
+            o = { text: o };
         }
         o = Ext.applyIf(o || {}, {
             text: this.busyText,
@@ -1189,19 +572,42 @@ statusBar.setStatus({
         return this.setStatus(o);
     }
 });
-Ext.reg('statusbar', Ext.ux.StatusBar);
+
+ 
+
+
+/*
+
+This file is part of Ext JS 4
+
+Copyright (c) 2011 Sencha Inc
+
+Contact:  http://www.sencha.com/contact
+
+GNU General Public License Usage
+This file may be used under the terms of the GNU General Public License version 3.0 as published by the Free Software Foundation and appearing in the file LICENSE included in the packaging of this file.  Please review the following information to ensure the GNU General Public License version 3.0 requirements will be met: http://www.gnu.org/copyleft/gpl.html.
+
+If you are unsure which license is appropriate for your use, please contact the sales department at http://www.sencha.com/contact.
+
+*/
 /**
  * @class Ext.ux.TabCloseMenu
- * @extends Object 
  * Plugin (ptype = 'tabclosemenu') for adding a close context menu to tabs. Note that the menu respects
  * the closable configuration on the tab. As such, commands like remove others and remove all will not
  * remove items that are not closable.
- * 
+ *
  * @constructor
  * @param {Object} config The configuration options
  * @ptype tabclosemenu
  */
-Ext.ux.TabCloseMenu = Ext.extend(Object, {
+Ext.define('Ext.tab.TabCloseMenu', {
+    alias: 'plugin.tabclosemenu',
+    alternateClassName: 'Ext.ux.TabCloseMenu',
+
+    mixins: {
+        observable: 'Ext.util.Observable'
+    },
+
     /**
      * @cfg {String} closeTabText
      * The text for closing the current tab. Defaults to <tt>'Close Tab'</tt>.
@@ -1209,14 +615,20 @@ Ext.ux.TabCloseMenu = Ext.extend(Object, {
     closeTabText: 'Close Tab',
 
     /**
+     * @cfg {Boolean} showCloseOthers
+     * Indicates whether to show the 'Close Others' option. Defaults to <tt>true</tt>.
+     */
+    showCloseOthers: true,
+
+    /**
      * @cfg {String} closeOtherTabsText
      * The text for closing all tabs except the current one. Defaults to <tt>'Close Other Tabs'</tt>.
      */
-    closeOtherTabsText: 'Close Other Tabs',
-    
+    closeOthersTabsText: 'Close Other Tabs',
+
     /**
      * @cfg {Boolean} showCloseAll
-     * Indicates whether to show the 'Close All' option. Defaults to <tt>true</tt>. 
+     * Indicates whether to show the 'Close All' option. Defaults to <tt>true</tt>.
      */
     showCloseAll: true,
 
@@ -1225,1000 +637,174 @@ Ext.ux.TabCloseMenu = Ext.extend(Object, {
      * <p>The text for closing all tabs. Defaults to <tt>'Close All Tabs'</tt>.
      */
     closeAllTabsText: 'Close All Tabs',
-    
-    constructor : function(config){
-        Ext.apply(this, config || {});
-    },
+
+    /**
+     * @cfg {Array} extraItemsHead
+     * An array of additional context menu items to add to the front of the context menu.
+     */
+    extraItemsHead: null,
+
+    /**
+     * @cfg {Array} extraItemsTail
+     * An array of additional context menu items to add to the end of the context menu.
+     */
+    extraItemsTail: null,
 
     //public
-    init : function(tabs){
-        this.tabs = tabs;
-        tabs.on({
+    constructor: function (config) {
+        this.addEvents(
+            'aftermenu',
+            'beforemenu');
+
+        this.mixins.observable.constructor.call(this, config);
+    },
+
+    init : function(tabpanel){
+        this.tabPanel = tabpanel;
+        this.tabBar = tabpanel.down("tabbar");
+
+        this.mon(this.tabPanel, {
             scope: this,
-            contextmenu: this.onContextMenu,
-            destroy: this.destroy
+            afterlayout: this.onAfterLayout,
+            single: true
         });
     },
-    
-    destroy : function(){
+
+    onAfterLayout: function() {
+        this.mon(this.tabBar.el, {
+            scope: this,
+            contextmenu: this.onContextMenu,
+            delegate: 'div.x-tab'
+        });
+    },
+
+    onBeforeDestroy : function(){
         Ext.destroy(this.menu);
-        delete this.menu;
-        delete this.tabs;
-        delete this.active;    
+        this.callParent(arguments);
     },
 
     // private
-    onContextMenu : function(tabs, item, e){
-        this.active = item;
-        var m = this.createMenu(),
+    onContextMenu : function(event, target){
+        var me = this,
+            menu = me.createMenu(),
             disableAll = true,
             disableOthers = true,
-            closeAll = m.getComponent('closeall');
-        
-        m.getComponent('close').setDisabled(!item.closable);
-        tabs.items.each(function(){
-            if(this.closable){
-                disableAll = false;
-                if(this != item){
-                    disableOthers = false;
-                    return false;
+            tab = me.tabBar.getChildByElement(target),
+            index = me.tabBar.items.indexOf(tab);
+
+        me.item = me.tabPanel.getComponent(index);
+        menu.child('*[text="' + me.closeTabText + '"]').setDisabled(!me.item.closable);
+
+        if (me.showCloseAll || me.showCloseOthers) {
+            me.tabPanel.items.each(function(item) {
+                if (item.closable) {
+                    disableAll = false;
+                    if (item != me.item) {
+                        disableOthers = false;
+                        return false;
+                    }
                 }
+                return true;
+            });
+
+            if (me.showCloseAll) {
+                menu.child('*[text="' + me.closeAllTabsText + '"]').setDisabled(disableAll);
             }
-        });
-        m.getComponent('closeothers').setDisabled(disableOthers);
-        if(closeAll){
-            closeAll.setDisabled(disableAll);
+
+            if (me.showCloseOthers) {
+                menu.child('*[text="' + me.closeOthersTabsText + '"]').setDisabled(disableOthers);
+            }
         }
-        
-        e.stopEvent();
-        m.showAt(e.getPoint());
+
+        event.preventDefault();
+        me.fireEvent('beforemenu', menu, me.item, me);
+
+        menu.showAt(event.getXY());
     },
-    
-    createMenu : function(){
-        if(!this.menu){
+
+    createMenu : function() {
+        var me = this;
+
+        if (!me.menu) {
             var items = [{
-                itemId: 'close',
-                text: this.closeTabText,
-                scope: this,
-                handler: this.onClose
+                text: me.closeTabText,
+                scope: me,
+                handler: me.onClose
             }];
-            if(this.showCloseAll){
+
+            if (me.showCloseAll || me.showCloseOthers) {
                 items.push('-');
             }
-            items.push({
-                itemId: 'closeothers',
-                text: this.closeOtherTabsText,
-                scope: this,
-                handler: this.onCloseOthers
-            });
-            if(this.showCloseAll){
+
+            if (me.showCloseOthers) {
                 items.push({
-                    itemId: 'closeall',
-                    text: this.closeAllTabsText,
-                    scope: this,
-                    handler: this.onCloseAll
+                    text: me.closeOthersTabsText,
+                    scope: me,
+                    handler: me.onCloseOthers
                 });
             }
-            this.menu = new Ext.menu.Menu({
-                items: items
+
+            if (me.showCloseAll) {
+                items.push({
+                    text: me.closeAllTabsText,
+                    scope: me,
+                    handler: me.onCloseAll
+                });
+            }
+
+            if (me.extraItemsHead) {
+                items = me.extraItemsHead.concat(items);
+            }
+
+            if (me.extraItemsTail) {
+                items = items.concat(me.extraItemsTail);
+            }
+
+            me.menu = Ext.create('Ext.menu.Menu', {
+                items: items,
+                listeners: {
+                    hide: me.onHideMenu,
+                    scope: me
+                }
             });
         }
-        return this.menu;
+
+        return me.menu;
     },
-    
+
+    onHideMenu: function () {
+        var me = this;
+
+        me.item = null;
+        me.fireEvent('aftermenu', me.menu, me);
+    },
+
     onClose : function(){
-        this.tabs.remove(this.active);
+        this.tabPanel.remove(this.item);
     },
-    
+
     onCloseOthers : function(){
         this.doClose(true);
     },
-    
+
     onCloseAll : function(){
         this.doClose(false);
     },
-    
+
     doClose : function(excludeActive){
         var items = [];
-        this.tabs.items.each(function(item){
+
+        this.tabPanel.items.each(function(item){
             if(item.closable){
-                if(!excludeActive || item != this.active){
+                if(!excludeActive || item != this.item){
                     items.push(item);
-                }    
+                }
             }
         }, this);
+
         Ext.each(items, function(item){
-            this.tabs.remove(item);
+            this.tabPanel.remove(item);
         }, this);
     }
 });
 
-Ext.preg('tabclosemenu', Ext.ux.TabCloseMenu); 
-
-/**
- * @class Ext.ux.form.DateTime
- * @extends Ext.form.Field
- *
- * DateTime field, combination of DateField and TimeField
- *
- * @author      Ing. Jozef Sak·loö
- * @copyright (c) 2008, Ing. Jozef Sak·loö
- * @version   2.0
- * @revision  $Id: Ext.ux.form.DateTime.js 813 2010-01-29 23:32:36Z jozo $
- *
- * @license Ext.ux.form.DateTime is licensed under the terms of
- * the Open Source LGPL 3.0 license.  Commercial use is permitted to the extent
- * that the code/component(s) do NOT become part of another Open Source or Commercially
- * licensed development library or toolkit without explicit permission.
- * 
- * <p>License details: <a href="http://www.gnu.org/licenses/lgpl.html"
- * target="_blank">http://www.gnu.org/licenses/lgpl.html</a></p>
- *
- * @forum      22661
- *
- * @donate
- * <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
- * <input type="hidden" name="cmd" value="_s-xclick">
- * <input type="hidden" name="hosted_button_id" value="3430419">
- * <input type="image" src="https://www.paypal.com/en_US/i/btn/x-click-butcc-donate.gif" 
- * border="0" name="submit" alt="PayPal - The safer, easier way to pay online.">
- * <img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1">
- * </form>
- */
-
-Ext.ns('Ext.ux.form');
-
-/**
- * Creates new DateTime
- * @constructor
- * @param {Object} config A config object
- */
-Ext.ux.form.DateTime = Ext.extend(Ext.form.Field, {
-    /**
-     * @cfg {Function} dateValidator A custom validation function to be called during date field
-     * validation (defaults to null)
-     */
-     dateValidator:null
-    /**
-     * @cfg {String/Object} defaultAutoCreate DomHelper element spec
-     * Let superclass to create hidden field instead of textbox. Hidden will be submittend to server
-     */
-    ,defaultAutoCreate:{tag:'input', type:'hidden'}
-    /**
-     * @cfg {String} dtSeparator Date - Time separator. Used to split date and time (defaults to ' ' (space))
-     */
-    ,dtSeparator:' '
-    /**
-     * @cfg {String} hiddenFormat Format of datetime used to store value in hidden field
-     * and submitted to server (defaults to 'Y-m-d H:i:s' that is mysql format)
-     */
-    ,hiddenFormat:'Y-m-d H:i:s'
-    /**
-     * @cfg {Boolean} otherToNow Set other field to now() if not explicly filled in (defaults to true)
-     */
-    ,otherToNow:true
-    /**
-     * @cfg {Boolean} emptyToNow Set field value to now on attempt to set empty value.
-     * If it is true then setValue() sets value of field to current date and time (defaults to false)
-     */
-    /**
-     * @cfg {String} timePosition Where the time field should be rendered. 'right' is suitable for forms
-     * and 'below' is suitable if the field is used as the grid editor (defaults to 'right')
-     */
-    ,timePosition:'right' // valid values:'below', 'right'
-    /**
-     * @cfg {Function} timeValidator A custom validation function to be called during time field
-     * validation (defaults to null)
-     */
-    ,timeValidator:null
-    /**
-     * @cfg {Number} timeWidth Width of time field in pixels (defaults to 100)
-     */
-    ,timeWidth:100
-    /**
-     * @cfg {String} dateFormat Format of DateField. Can be localized. (defaults to 'm/y/d')
-     */
-    ,dateFormat:'m/d/y'
-    /**
-     * @cfg {String} timeFormat Format of TimeField. Can be localized. (defaults to 'g:i A')
-     */
-    ,timeFormat:'g:i A'
-    /**
-     * @cfg {Object} dateConfig Config for DateField constructor.
-     */
-    /**
-     * @cfg {Object} timeConfig Config for TimeField constructor.
-     */
-
-    // {{{
-		
-		
-	 ,onChangeDate: function(fld, nv, ov) {
-		this.updateDate(nv);
-		return false;
-
-	}
-	,onChangeTime: function(fld, nv, ov) {
-		this.updateTime(nv);
-		return false;
-
-	}
-
-    /**
-     * @private
-     * creates DateField and TimeField and installs the necessary event handlers
-     */
-    ,initComponent:function() {
-        // call parent initComponent
-        Ext.ux.form.DateTime.superclass.initComponent.call(this);
-
-        // create DateField
-        var dateConfig = Ext.apply({}, {
-             id:this.id + '-date'
-            ,format:  Ext.DATE_FORMAT //   this.dateFormat || Ext.form.DateField.prototype.format
-            ,width:100 // this.timeWidth
-            ,selectOnFocus:this.selectOnFocus
-            ,validator:this.dateValidator
-            ,listeners:{
-                  blur:{scope:this, fn:this.onBlur}
-                 ,focus:{scope:this, fn:this.onFocus}
-                 ,change:{scope:this, fn:this.onChangeDate}
-            }
-        }, this.dateConfig);
-        this.df = new Ext.form.DateField(dateConfig);
-        this.df.ownerCt = this;
-        delete(this.dateFormat);
-
-        // create TimeField
-        var timeConfig = Ext.apply({}, {
-             id:this.id + '-time'
-            ,format:this.timeFormat || Ext.form.TimeField.prototype.format
-            ,width: 70 //this.timeWidth
-            ,selectOnFocus:this.selectOnFocus
-            ,validator:this.timeValidator
-            ,listeners:{
-                  blur:{scope:this, fn:this.onBlur}
-                 ,focus:{scope:this, fn:this.onFocus}
-                 ,change:{scope:this, fn:this.onChangeTime }
-            }
-        }, this.timeConfig);
-        this.tf = new Ext.form.TimeField(timeConfig);
-        this.tf.ownerCt = this;
-        delete(this.timeFormat);
-
-        // relay events
-        this.relayEvents(this.df, ['focus', 'specialkey', 'invalid', 'valid']);
-        this.relayEvents(this.tf, ['focus', 'specialkey', 'invalid', 'valid']);
-
-        this.on('specialkey', this.onSpecialKey, this);
-
-    } // eo function initComponent
-    // }}}
-    // {{{
-    /**
-     * @private
-     * Renders underlying DateField and TimeField and provides a workaround for side error icon bug
-     */
-    ,onRender:function(ct, position) {
-        // don't run more than once
-        if(this.isRendered) {
-            return;
-        }
-
-        // render underlying hidden field
-        Ext.ux.form.DateTime.superclass.onRender.call(this, ct, position);
-
-        // render DateField and TimeField
-        // create bounding table
-        var t;
-        if('below' === this.timePosition || 'bellow' === this.timePosition) {
-            t = Ext.DomHelper.append(ct, {tag:'table',style:'border-collapse:collapse',children:[
-                 {tag:'tr',children:[{tag:'td', style:'padding-bottom:1px', cls:'ux-datetime-date'}]}
-                ,{tag:'tr',children:[{tag:'td', cls:'ux-datetime-time'}]}
-            ]}, true);
-        }
-        else {
-            t = Ext.DomHelper.append(ct, {tag:'table',style:'border-collapse:collapse',children:[
-                {tag:'tr',children:[
-                    {tag:'td',style:'padding-right:4px;width:100px;', cls:'ux-datetime-date'},{tag:'td', cls:'ux-datetime-time'}
-                ]}
-            ]}, true);
-        }
-
-        this.tableEl = t;
-        this.wrap = t.wrap({cls:'x-form-field-wrap'});
-//        this.wrap = t.wrap();
-        this.wrap.on("mousedown", this.onMouseDown, this, {delay:10});
-
-        // render DateField & TimeField
-        this.df.render(t.child('td.ux-datetime-date'));
-        this.tf.render(t.child('td.ux-datetime-time'));
-
-        // workaround for IE trigger misalignment bug
-        // see http://extjs.com/forum/showthread.php?p=341075#post341075
-//        if(Ext.isIE && Ext.isStrict) {
-//            t.select('input').applyStyles({top:0});
-//        }
-
-        this.df.el.swallowEvent(['keydown', 'keypress']);
-        this.tf.el.swallowEvent(['keydown', 'keypress']);
-
-        // create icon for side invalid errorIcon
-        if('side' === this.msgTarget) {
-            var elp = this.el.findParent('.x-form-element', 10, true);
-            if(elp) {
-                this.errorIcon = elp.createChild({cls:'x-form-invalid-icon'});
-            }
-
-            var o = {
-                 errorIcon:this.errorIcon
-                ,msgTarget:'side'
-                ,alignErrorIcon:this.alignErrorIcon.createDelegate(this)
-            };
-            Ext.apply(this.df, o);
-            Ext.apply(this.tf, o);
-//            this.df.errorIcon = this.errorIcon;
-//            this.tf.errorIcon = this.errorIcon;
-        }
-
-        // setup name for submit
-        this.el.dom.name = this.hiddenName || this.name || this.id;
-
-        // prevent helper fields from being submitted
-        this.df.el.dom.removeAttribute("name");
-        this.tf.el.dom.removeAttribute("name");
-
-        // we're rendered flag
-        this.isRendered = true;
-
-        // update hidden field
-        this.updateHidden();
-
-    } // eo function onRender
-    // }}}
-    // {{{
-    /**
-     * @private
-     */
-    ,adjustSize:Ext.BoxComponent.prototype.adjustSize
-    // }}}
-    // {{{
-    /**
-     * @private
-     */
-    ,alignErrorIcon:function() {
-        this.errorIcon.alignTo(this.tableEl, 'tl-tr', [2, 0]);
-    }
-    // }}}
-    // {{{
-    /**
-     * @private initializes internal dateValue
-     */
-    ,initDateValue:function() {
-        this.dateValue = this.otherToNow ? new Date() : new Date(1970, 0, 1, 0, 0, 0);
-    }
-    // }}}
-    // {{{
-    /**
-     * Calls clearInvalid on the DateField and TimeField
-     */
-    ,clearInvalid:function(){
-        this.df.clearInvalid();
-        this.tf.clearInvalid();
-    } // eo function clearInvalid
-    // }}}
-    // {{{
-    /**
-     * Calls markInvalid on both DateField and TimeField
-     * @param {String} msg Invalid message to display
-     */
-    ,markInvalid:function(msg){
-        this.df.markInvalid(msg);
-        this.tf.markInvalid(msg);
-    } // eo function markInvalid
-    // }}}
-    // {{{
-    /**
-     * @private
-     * called from Component::destroy. 
-     * Destroys all elements and removes all listeners we've created.
-     */
-    ,beforeDestroy:function() {
-        if(this.isRendered) {
-//            this.removeAllListeners();
-            this.wrap.removeAllListeners();
-            this.wrap.remove();
-            this.tableEl.remove();
-            this.df.destroy();
-            this.tf.destroy();
-        }
-    } // eo function beforeDestroy
-    // }}}
-    // {{{
-    /**
-     * Disable this component.
-     * @return {Ext.Component} this
-     */
-    ,disable:function() {
-        if(this.isRendered) {
-            this.df.disabled = this.disabled;
-            this.df.onDisable();
-            this.tf.onDisable();
-        }
-        this.disabled = true;
-        this.df.disabled = true;
-        this.tf.disabled = true;
-        this.fireEvent("disable", this);
-        return this;
-    } // eo function disable
-    // }}}
-    // {{{
-    /**
-     * Enable this component.
-     * @return {Ext.Component} this
-     */
-    ,enable:function() {
-        if(this.rendered){
-            this.df.onEnable();
-            this.tf.onEnable();
-        }
-        this.disabled = false;
-        this.df.disabled = false;
-        this.tf.disabled = false;
-        this.fireEvent("enable", this);
-        return this;
-    } // eo function enable
-    // }}}
-    // {{{
-    /**
-     * @private Focus date filed
-     */
-    ,focus:function() {
-        this.df.focus();
-    } // eo function focus
-    // }}}
-    // {{{
-    /**
-     * @private
-     */
-    ,getPositionEl:function() {
-        return this.wrap;
-    }
-    // }}}
-    // {{{
-    /**
-     * @private
-     */
-    ,getResizeEl:function() {
-        return this.wrap;
-    }
-    // }}}
-    // {{{
-    /**
-     * @return {Date/String} Returns value of this field
-     */
-    ,getValue:function() {
-        // create new instance of date
-        return this.dateValue ? new Date(this.dateValue) : '';
-    } // eo function getValue
-    // }}}
-    // {{{
-    /**
-     * @return {Boolean} true = valid, false = invalid
-     * @private Calls isValid methods of underlying DateField and TimeField and returns the result
-     */
-    ,isValid:function() {
-        return this.df.isValid() && this.tf.isValid();
-    } // eo function isValid
-    // }}}
-    // {{{
-    /**
-     * Returns true if this component is visible
-     * @return {boolean} 
-     */
-    ,isVisible : function(){
-        return this.df.rendered && this.df.getActionEl().isVisible();
-    } // eo function isVisible
-    // }}}
-    // {{{
-		
-		
-		
-
-    /** 
-     * @private Handles blur event
-     */
-    ,onBlur:function(f) {
-        // called by both DateField and TimeField blur events
-
-        // revert focus to previous field if clicked in between
-        if(this.wrapClick) {
-            f.focus();
-            this.wrapClick = false;
-        }
-
-        // update underlying value
-       // if(f === this.df) {
-       //     this.updateDate();
-       // }
-      //  else {
-       //     this.updateTime();
-       // }
-      //  this.updateHidden();
-
-        this.validate();
-
-        var v = this.getValue();
-                if(String(v) !== String(this.startValue)) {
-                    this.fireEvent("change", this, v, this.startValue);
-                }
-                this.hasFocus = false;
-                this.fireEvent('blur', this);
-
-        // fire events later
-        /*
-        (function() {
-            if(!this.df.hasFocus && !this.tf.hasFocus) {
-                var v = this.getValue();
-                if(String(v) !== String(this.startValue)) {
-                    this.fireEvent("change", this, v, this.startValue);
-                }
-                this.hasFocus = false;
-                this.fireEvent('blur', this);
-            }
-        }).defer(100, this);
-		*/
-    } // eo function onBlur
-    // }}}
-    // {{{
-    /**
-     * @private Handles focus event
-     */
-    ,onFocus:function() {
-        if(!this.hasFocus){
-            this.hasFocus = true;
-            this.startValue = this.getValue();
-            this.fireEvent("focus", this);
-        }
-    }
-    // }}}
-    // {{{
-    /**
-     * @private Just to prevent blur event when clicked in the middle of fields
-     */
-    ,onMouseDown:function(e) {
-        if(!this.disabled) {
-            this.wrapClick = 'td' === e.target.nodeName.toLowerCase();
-        }
-    }
-    // }}}
-    // {{{
-    /**
-     * @private
-     * Handles Tab and Shift-Tab events
-     */
-    ,onSpecialKey:function(t, e) {
-        var key = e.getKey();
-        if(key === e.TAB) {
-            if(t === this.df && !e.shiftKey) {
-                e.stopEvent();
-                this.tf.focus();
-            }
-            if(t === this.tf && e.shiftKey) {
-                e.stopEvent();
-                this.df.focus();
-            }
-            this.updateValue();
-        }
-        // otherwise it misbehaves in editor grid
-        if(key === e.ENTER) {
-            this.updateValue();
-        }
-
-    } // eo function onSpecialKey
-    // }}}
-    // {{{
-    /**
-     * Resets the current field value to the originally loaded value 
-     * and clears any validation messages. See Ext.form.BasicForm.trackResetOnLoad
-     */
-    ,reset:function() {
-        this.df.setValue(this.originalValue);
-        this.tf.setValue(this.originalValue);
-    } // eo function reset
-    // }}}
-    // {{{
-    /**
-     * @private Sets the value of DateField
-     */
-    ,setDate:function(date) {
-        this.df.setValue(date);
-    } // eo function setDate
-    // }}}
-    // {{{
-    /** 
-     * @private Sets the value of TimeField
-     */
-    ,setTime:function(date) {
-        this.tf.setValue(date);
-    } // eo function setTime
-    // }}}
-    // {{{
-    /**
-     * @private
-     * Sets correct sizes of underlying DateField and TimeField
-     * With workarounds for IE bugs
-     */
-    ,setSize:function(w, h) {
-        if(!w) {
-            return;
-        }
-        if('below' === this.timePosition) {
-            this.df.setSize(w, h);
-            this.tf.setSize(w, h);
-            if(Ext.isIE) {
-                this.df.el.up('td').setWidth(w);
-                this.tf.el.up('td').setWidth(w);
-            }
-        }
-        else {
-            this.df.setSize(w - this.timeWidth - 4, h);
-            this.tf.setSize(this.timeWidth, h);
-
-            if(Ext.isIE) {
-                this.df.el.up('td').setWidth(w - this.timeWidth - 4);
-                this.tf.el.up('td').setWidth(this.timeWidth);
-            }
-        }
-    } // eo function setSize
-    // }}}
-    // {{{
-    /**
-     * @param {Mixed} val Value to set
-     * Sets the value of this field
-     */
-    ,setValue:function(val) {
-        if(!val && true === this.emptyToNow) {
-            this.setValue(new Date());
-            return;
-        }
-        else if(!val) {
-            this.setDate('');
-            this.setTime('');
-            this.updateValue();
-            return;
-        }
-        if ('number' === typeof val) {
-          val = new Date(val);
-        }
-        else if('string' === typeof val && this.hiddenFormat) {
-            val = Date.parseDate(val, this.hiddenFormat);
-        }
-        val = val ? val : new Date(1970, 0 ,1, 0, 0, 0);
-        var da;
-        if(val instanceof Date) {
-            this.setDate(val);
-            this.setTime(val);
-            this.dateValue = new Date(Ext.isIE ? val.getTime() : val);
-        }
-        else {
-            da = val.split(this.dtSeparator);
-            this.setDate(da[0]);
-            if(da[1]) {
-                if(da[2]) {
-                    // add am/pm part back to time
-                    da[1] += da[2];
-                }
-                this.setTime(da[1]);
-            }
-        }
-        this.updateValue();
-    } // eo function setValue
-    // }}}
-    // {{{
-    /**
-     * Hide or show this component by boolean
-     * @return {Ext.Component} this
-     */
-    ,setVisible: function(visible){
-        if(visible) {
-            this.df.show();
-            this.tf.show();
-        }else{
-            this.df.hide();
-            this.tf.hide();
-        }
-        return this;
-    } // eo function setVisible
-    // }}}
-    //{{{
-    ,show:function() {
-        return this.setVisible(true);
-    } // eo function show
-    //}}}
-    //{{{
-    ,hide:function() {
-        return this.setVisible(false);
-    } // eo function hide
-    //}}}
-    // {{{
-    /**
-     * @private Updates the date part
-     */
-    ,updateDate:function() {
-
-        var d = this.df.getValue();
-        if(d) {
-            if(!(this.dateValue instanceof Date)) {
-                this.initDateValue();
-                if(!this.tf.getValue()) {
-                    this.setTime(this.dateValue);
-                }
-            }
-            this.dateValue.setMonth(0); // because of leap years
-            this.dateValue.setFullYear(d.getFullYear());
-            this.dateValue.setMonth(d.getMonth(), d.getDate());
-//            this.dateValue.setDate(d.getDate());
-        }
-        else {
-            this.dateValue = '';
-            this.setTime('');
-        }
-    } // eo function updateDate
-    // }}}
-    // {{{
-    /**
-     * @private
-     * Updates the time part
-     */
-    ,updateTime:function() {
-        var t = this.tf.getValue();
-        if(t && !(t instanceof Date)) {
-            t = Date.parseDate(t, this.tf.format);
-        }
-        if(t && !this.df.getValue()) {
-            this.initDateValue();
-            this.setDate(this.dateValue);
-        }
-        if(this.dateValue instanceof Date) {
-            if(t) {
-                this.dateValue.setHours(t.getHours());
-                this.dateValue.setMinutes(t.getMinutes());
-                this.dateValue.setSeconds(t.getSeconds());
-            }
-            else {
-                this.dateValue.setHours(0);
-                this.dateValue.setMinutes(0);
-                this.dateValue.setSeconds(0);
-            }
-        }
-    } // eo function updateTime
-    // }}}
-    // {{{
-    /**
-     * @private Updates the underlying hidden field value
-     */
-    ,updateHidden:function() { return;
-        if(this.isRendered) {
-            var value = this.dateValue instanceof Date ? this.dateValue.format(this.hiddenFormat) : '';
-            this.el.dom.value = value;
-        }
-    }
-    // }}}
-    // {{{
-    /**
-     * @private Updates all of Date, Time and Hidden
-     */
-    ,updateValue:function() {
-
-        this.updateDate();
-        this.updateTime();
-        this.updateHidden();
-
-        return;
-    } // eo function updateValue
-    // }}}
-    // {{{
-    /**
-     * @return {Boolean} true = valid, false = invalid
-     * calls validate methods of DateField and TimeField
-     */
-    ,validate:function() {
-        return this.df.validate() && this.tf.validate();
-    } // eo function validate
-    // }}}
-    // {{{
-    /**
-     * Returns renderer suitable to render this field
-     * @param {Object} Column model config
-     */
-    ,renderer: function(field) {
-        var format = field.editor.dateFormat || Ext.ux.form.DateTime.prototype.dateFormat;
-        format += ' ' + (field.editor.timeFormat || Ext.ux.form.DateTime.prototype.timeFormat);
-        var renderer = function(val) {
-            var retval = Ext.util.Format.date(val, format);
-            return retval;
-        };
-        return renderer;
-    } // eo function renderer
-    // }}}
-
-}); // eo extend
-
-// register xtype
-Ext.reg('xdatetime', Ext.ux.form.DateTime);
-
-/**
- * @class Ext.ux.form.FileUploadField
- * @extends Ext.form.TextField
- * Creates a file upload field.
- * @xtype fileuploadfield
- */
-Ext.ux.form.FileUploadField = Ext.extend(Ext.form.TextField,  {
-    /**
-     * @cfg {String} buttonText The button text to display on the upload button (defaults to
-     * 'Browse...').  Note that if you supply a value for {@link #buttonCfg}, the buttonCfg.text
-     * value will be used instead if available.
-     */
-    buttonText: 'Browse...',
-    /**
-     * @cfg {Boolean} buttonOnly True to display the file upload field as a button with no visible
-     * text field (defaults to false).  If true, all inherited TextField members will still be available.
-     */
-    buttonOnly: false,
-    /**
-     * @cfg {Number} buttonOffset The number of pixels of space reserved between the button and the text field
-     * (defaults to 3).  Note that this only applies if {@link #buttonOnly} = false.
-     */
-    buttonOffset: 3,
-    /**
-     * @cfg {Object} buttonCfg A standard {@link Ext.Button} config object.
-     */
-
-    // private
-    readOnly: true,
-
-    /**
-     * @hide
-     * @method autoSize
-     */
-    autoSize: Ext.emptyFn,
-
-    // private
-    initComponent: function(){
-        Ext.ux.form.FileUploadField.superclass.initComponent.call(this);
-
-        this.addEvents(
-            /**
-             * @event fileselected
-             * Fires when the underlying file input field's value has changed from the user
-             * selecting a new file from the system file selection dialog.
-             * @param {Ext.ux.form.FileUploadField} this
-             * @param {String} value The file value returned by the underlying file input field
-             */
-            'fileselected'
-        );
-    },
-
-    // private
-    onRender : function(ct, position){
-        Ext.ux.form.FileUploadField.superclass.onRender.call(this, ct, position);
-
-        this.wrap = this.el.wrap({cls:'x-form-field-wrap x-form-file-wrap'});
-        this.el.addClass('x-form-file-text');
-        this.el.dom.removeAttribute('name');
-        this.createFileInput();
-
-        var btnCfg = Ext.applyIf(this.buttonCfg || {}, {
-            text: this.buttonText
-        });
-        this.button = new Ext.Button(Ext.apply(btnCfg, {
-            renderTo: this.wrap,
-            cls: 'x-form-file-btn' + (btnCfg.iconCls ? ' x-btn-icon' : '')
-        }));
-
-        if(this.buttonOnly){
-            this.el.hide();
-            this.wrap.setWidth(this.button.getEl().getWidth());
-        }
-
-        this.bindListeners();
-        this.resizeEl = this.positionEl = this.wrap;
-    },
-    
-    bindListeners: function(){
-        this.fileInput.on({
-            scope: this,
-            mouseenter: function() {
-                this.button.addClass(['x-btn-over','x-btn-focus'])
-            },
-            mouseleave: function(){
-                this.button.removeClass(['x-btn-over','x-btn-focus','x-btn-click'])
-            },
-            mousedown: function(){
-                this.button.addClass('x-btn-click')
-            },
-            mouseup: function(){
-                this.button.removeClass(['x-btn-over','x-btn-focus','x-btn-click'])
-            },
-            change: function(){
-                var v = this.fileInput.dom.value;
-                this.setValue(v);
-                this.fireEvent('fileselected', this, v);    
-            }
-        }); 
-    },
-    
-    createFileInput : function() {
-        this.fileInput = this.wrap.createChild({
-            id: this.getFileInputId(),
-            name: this.name||this.getId(),
-            cls: 'x-form-file',
-            tag: 'input',
-            type: 'file',
-            size: 1
-        });
-    },
-    
-    reset : function(){
-        this.fileInput.remove();
-        this.createFileInput();
-        this.bindListeners();
-        Ext.ux.form.FileUploadField.superclass.reset.call(this);
-    },
-
-    // private
-    getFileInputId: function(){
-        return this.id + '-file';
-    },
-
-    // private
-    onResize : function(w, h){
-        Ext.ux.form.FileUploadField.superclass.onResize.call(this, w, h);
-
-        this.wrap.setWidth(w);
-
-        if(!this.buttonOnly){
-            var w = this.wrap.getWidth() - this.button.getEl().getWidth() - this.buttonOffset;
-            this.el.setWidth(w);
-        }
-    },
-
-    // private
-    onDestroy: function(){
-        Ext.ux.form.FileUploadField.superclass.onDestroy.call(this);
-        Ext.destroy(this.fileInput, this.button, this.wrap);
-    },
-    
-    onDisable: function(){
-        Ext.ux.form.FileUploadField.superclass.onDisable.call(this);
-        this.doDisable(true);
-    },
-    
-    onEnable: function(){
-        Ext.ux.form.FileUploadField.superclass.onEnable.call(this);
-        this.doDisable(false);
-
-    },
-    
-    // private
-    doDisable: function(disabled){
-        this.fileInput.dom.disabled = disabled;
-        this.button.setDisabled(disabled);
-    },
-
-
-    // private
-    preFocus : Ext.emptyFn,
-
-    // private
-    alignErrorIcon : function(){
-        this.errorIcon.alignTo(this.wrap, 'tl-tr', [2, 0]);
-    }
-
-});
-
-Ext.reg('fileuploadfield', Ext.ux.form.FileUploadField);
-
-// backwards compat
-Ext.form.FileUploadField = Ext.ux.form.FileUploadField;

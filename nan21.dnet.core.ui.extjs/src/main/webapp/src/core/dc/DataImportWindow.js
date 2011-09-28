@@ -1,5 +1,8 @@
-Ext.ns('dnet.base');
-dnet.base.DataImportWindow = Ext.extend(Ext.Window, {
+
+Ext.define("dnet.base.DataImportWindow", {
+	extend:  "Ext.Window" ,
+  
+ 
 
     _elems_ : new Ext.util.MixedCollection()
    ,_formats_: ["csv", "json" ]

@@ -1,6 +1,9 @@
-Ext.ns("dnet.base");
-dnet.base.AbstractComboListView = Ext.extend(Ext.form.ComboBox, {
+ 
 
+Ext.define("dnet.base.AbstractComboListView", {
+	extend:  "Ext.form.ComboBox" ,
+ 	alias: "xcombolist",
+ 
 	  _dataProviderFields_ : null
 	 ,_dataProviderName_: null
      ,triggerClass: 'x-form-search-trigger'
@@ -197,4 +200,3 @@ dnet.base.AbstractComboListView = Ext.extend(Ext.form.ComboBox, {
     }
 
 });
-Ext.reg('xcombolist', dnet.base.AbstractComboListView );

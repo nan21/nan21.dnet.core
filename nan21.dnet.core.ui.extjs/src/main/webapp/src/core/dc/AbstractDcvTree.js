@@ -1,7 +1,7 @@
-Ext.ns("dnet.base");
 
-dnet.base.AbstractDcvTree = Ext.extend( Ext.tree.TreePanel, {
-
+Ext.define("dnet.base.AbstractDcvTree", {
+	extend:  "Ext.tree.Panel" ,
+  
 	 _columns_: null
 	,_elems_ : null
 	,_controller_: null

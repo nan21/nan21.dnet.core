@@ -1,77 +1,68 @@
-Ext.ns("dnet.base");
-dnet.base.AbstractDc = function(config) {
+Ext.define("dnet.base.AbstractDc", {
+	
+	mixins : {
+		observable : 'Ext.util.Observable'
+	},
 
-	// properties
-
-	this.ds = null;
-	this.dsName = "";
+	 
+	dsName : "",
 
 	/**
 	 * List with action names implemented
 	 */
-	this.actionNames = null;
+	actionNames : null,
 
 	/**
 	 * Action instances. Used to create control widgets in UI to be triggered by
 	 * user, mainly toolbar items.
 	 */
-	this.actions = null;
+	actions : null,
 
 	/**
 	 * Executable functions. Implements workers for API methods of a
 	 * data-control.
 	 */
-	this.commands = null;
+	commands : null,
 
 	/**
 	 * Allow to edit more than one record at once.
 	 */
-	this.multiEdit = false;
+	multiEdit : false,
 
 	/**
 	 * Filter model instance. Has the same signature as the data model instance
 	 */
-	this.filter = null;
+	filter : null,
 
 	/**
 	 * Data model instance.
 	 */
-	this.record = null;
-
-	/**
-	 * Data model signature - fields definition.
-	 */
-	this.recordFields = null;
-
-	/**
-	 * Data model signature - record constructor.
-	 */
-	this.RecordModel = null;
+	record : null,
 
 	/**
 	 * Parameters model instance
 	 */
-	this.params = null;
+	params : null,
 
 	/**
-	 * Parameters model signature - fields definition.
+	 * Data model signature - record constructor.
 	 */
-	this.paramFields = null;
+	recordModel : null,
 
 	/**
 	 * Parameters model signature - record constructor.
 	 */
-	this.ParamModel = null;
+	paramModel : null,
 
 	/**
 	 * Keep track of the selected records
 	 */
-	this.selectedRecords = [];
+	selectedRecords : null,
 
 	/**
 	 * Various runtime configuration properties.
 	 */
-	this.tuning = {
+	tuning : {
 
 		/**
 		 * Number of milliseconds before execute the query. Used if value>0
@@ -83,190 +74,230 @@ dnet.base.AbstractDc = function(config) {
 		 */
 		,
 		fetchSize : 30
-	};
+	},
 
 	/**
 	 * Children data-controls, similar to a `HasMany` association.
 	 */
-	this.children = [];
+	children : null,
 
 	/**
 	 * Parent data-control, similar to a `BelongsTo` association.
 	 */
-	this.parent = null;
+	parent : null,
 
 	/**
 	 * Array with form-views registered to data-binding.
 	 */
-	this.bindedFormViews = null;
+	bindedFormViews : null,
 
 	/**
 	 * Array with filter-views registered to data-binding.
 	 */
-	this.bindedFilterViews = null;
+	bindedFilterViews : null,
 
 	/**
 	 * Should apply a default selection on store load ?
 	 */
-	this.afterStoreLoadDoDefaultSelection = true;
+	afterStoreLoadDoDefaultSelection : true,
 
 	/**
 	 * Local reference to the data-source store.
 	 */
-	this.store = null;
+	store : null,
 
-	Ext.apply(this, config);
+	dcContext : null,
+	_trl_ : null,
 
-	this.addEvents(
+	store : null,
 
-	/**
-	 * Record instance changed
-	 */
-	"recordChange",
+	constructor : function(config) {
+		config = config || {};
+		Ext.apply(this, config);
+		this.children = [];
+		this.selectedRecords = [];
+		this.dsName = this.recordModel.substring( this.recordModel.lastIndexOf('.')+1 ,this.recordModel.length);	
+		this.store = Ext.create("Ext.data.Store", {
+			model : this.recordModel,
+			remoteSort : true,
+			remoteSort : true,
 
-	/**
-	 * Data-control status status changed: record state change: clean / dirty
-	 * record status change: new record / persisted
-	 
-	"statusChange",*/
+			autoLoad : false,
+			autoSync : false,
+			clearOnPageLoad : true,
+			pageSize : this.tuning.fetchSize,
+			proxy : {
+				type : 'ajax',
+				api : Dnet.dsAPI(this.dsName, "json"),
+				model : this.recordModel,
+				extraParams: {
+					params: {}
+				},
+				actionMethods : {
+					create : 'POST',
+					read : 'POST',
+					update : 'POST',
+					destroy : 'POST'
+				},
+				reader : {
+					type : 'json',
+					root : 'data',
+					idProperty : 'id',
+					totalProperty : 'totalCount',
+					messageProperty : 'message'
+				},
+				writer : {
+					type : 'json',
+					encode : true,
+					root: "data",
+					allowSingle : false,
+					writeAllFields : true
+				},
+				listeners : {
+					"exception" : {
+						fn : this.proxyException,
+						scope : this
+					}
+				},
+				startParam : Dnet.requestParam.START,
+				limitParam : Dnet.requestParam.SIZE,
+				sortParam : Dnet.requestParam.SORT,
+				directionParam : Dnet.requestParam.SENSE
 
-	/**
-	 * Selected records changed
-	 */
-	"selectionChange"
-
-	);
-	this.recordFields = this.ds.recordFields;
-	this.paramFields = this.ds.paramFields;
-
-	this.dcContext = null;
-	this._trl_ = null;
-
-	this.store = new Ext.data.Store( {
-		remoteSort : true,
-		pruneModifiedRecords : true,
-		proxy : new Ext.data.HttpProxy( {
-			api : Dnet.dsAPI(this.ds.dsName, "json")
-		}),
-		reader : new Ext.data.JsonReader( {
-			totalProperty : 'totalCount',
-			idProperty : 'id',
-			root : 'data',
-			messageProperty : 'message'
-		}, Ext.data.Record.create(this.recordFields)),
-		writer : new Ext.data.JsonWriter( {
-			encode : true,
-			writeAllFields : true
-		}),
-		autoSave : false,
-		listeners : {
-			"exception" : {
-				fn : this.proxyException,
-				scope : this
 			}
-		}
-	});
-	dnet.base.AbstractDc.superclass.constructor.call(this, config);
-	this._setup_();
-};
 
-Ext.extend(dnet.base.AbstractDc, Ext.util.Observable, {
+		});
+
+		this.addEvents(
+		/**
+		 * Record instance changed
+		 */
+		"recordChange",
+
+		/**
+		 * Data-control status status changed: record state change: clean /
+		 * dirty record status change: new record / persisted
+		 * 
+		 * "statusChange",
+		 */
+
+		/**
+		 * Selected records changed
+		 */
+		"selectionChange");
+
+		this.mixins.observable.constructor.call(this);
+		this._setup_();
+	},
 
 	_setup_ : function() {
+		
+		
+		
+		this._trl_ = Ext.create(this.recordModel +"$Trl");
+		// this.dsName = this.ds.dsName;
 
-		this.dsName = this.ds.dsName;
+		// this.RecordModel = Ext.data.Record.create(this.recordFields);
+		// this.ParamModel = Ext.data.Record.create(this.paramFields);
 
-		this.RecordModel = Ext.data.Record.create(this.recordFields);
-		this.ParamModel = Ext.data.Record.create(this.paramFields);
-		this.setFilter(new this.RecordModel(this
-				.emptyFilterData(this.recordFields)));
-		this.setParams(new this.ParamModel(this
-				.emptyParamData(this.paramFields)));
+		this.setFilter(this.newFilterInstance()); // Ext.create(this.recordModel,
+													// {})
+		this.setParams(Ext.create(this.paramModel, {}));
+		// this.setFilter(new this.RecordModel(this
+		// .emptyFilterData(this.recordFields)));
+		// this.setParams(new this.ParamModel(this
+		// .emptyParamData(this.paramFields)));
 
 		this.actionNames = dnet.base.DcActionsFactory.actionNames();
 		this.commandNames = dnet.base.DcCommandFactory.commandNames();
-		
+
 		this.actions = dnet.base.DcActionsFactory.createActions(this,
 				this.actionNames);
 		this.commands = dnet.base.DcCommandFactory.createCommands(this,
 				this.commandNames.concat(this.actionNames));
-		 
+
 		// register listeners
 
 		// if Query action is disabled do not execute it.
-		this.store.on("beforeload", function(store, options) {
+		this.store.on("beforeload", function(store, operation, eopts) {
 			if (dnet.base.DcActionsStateManager.isQueryDisabled(this)) {
 				return false;
 			}
 		}, this);
 
-		this.store.on("update", function() {
-			dnet.base.Logger.debug("dnet.base.AbstractDc ("+this.dsName+") -> store.on.update event handler");
-			this.fireEvent("statusChange", {dc:this});
+		this.store.on("update", function(store, rec, operation, eopts) {			 
+			this.fireEvent("statusChange", {
+				dc : this
+			});
 			this.updateActionsState();
 		}, this);
 
-		this.store.on("add", function(store, records, index) {
-			dnet.base.Logger.debug("dnet.base.AbstractDc ("+this.dsName+") -> store.on.add event handler");
-			//this.setSelectedRecords(records);
-			//this.updateActionsState();
-		}, this);
+		this.store.on("add", function(store, records, index, eopts) {
+//			dnet.base.Logger.debug("dnet.base.AbstractDc (" + this.dsName
+//					+ ") -> store.on.add event handler");
+				 this.updateActionsState();
+			}, this);
 
-		this.store.on("remove", function(store, records, index) {
-			dnet.base.Logger.debug("dnet.base.AbstractDc ("+this.dsName+") -> store.on.remove event handler");
-			//this.updateActionsState(); 
-			//this.doDefaultSelection();
-			
+		this.store.on("remove", function(store, records, index, eopts) {
+//			dnet.base.Logger.debug("dnet.base.AbstractDc (" + this.dsName
+//					+ ") -> store.on.remove event handler");
+			 this.updateActionsState();
+				 this.doDefaultSelection();
+			}, this);
+		 
+		this.store.on("clear", function(store, eopts) {
+			dnet.base.Logger.debug("dnet.base.AbstractDc (" + this.dsName
+					+ ") -> store.on.remove event handler");
+			 this.updateActionsState();
+				// this.doDefaultSelection();
+
+			}, this);
+		
+		this.store.on("datachanged", function(store, eopts) {
+			this.updateActionsState();
 		}, this);
-		this.store.on("save", function(store, batch, data) {
-			dnet.base.Logger.debug("dnet.base.AbstractDc ("+this.dsName+") -> store.on.remove event handler");
-			//this.updateActionsState(); 
-			//this.doDefaultSelection();
-			
-		}, this);
-		this.store.on("clear", function(store, records) {
-			dnet.base.Logger.debug("dnet.base.AbstractDc ("+this.dsName+") -> store.on.remove event handler");
-			//this.updateActionsState(); 
-			//this.doDefaultSelection();
-			
-		}, this);
+		
 		// after the store is loaded apply an initial selection
 		if (this.afterStoreLoadDoDefaultSelection) {
-			this.store.on("load", function(store, records, options) {
+			this.store.on("load", function(store, records, success, operation, eopts) {
 				if (this.afterStoreLoadDoDefaultSelection) {
-					this.doDefaultSelection();
-				}					
+					//this.doDefaultSelection();
+				}
 			}, this);
 		}
-
-		// invoke the action state update whenever necessary
-		this.on("recordChange", this.updateActionsState, this );
-		this.on("selectionChange", this.updateActionsState, this );
-
- 
 		
+			
+		
+		
+		
+		
+		
+		// invoke the action state update whenever necessary
+		this.on("recordChange", this.updateActionsState, this);
+		this.on("selectionChange", this.updateActionsState, this);
+
 		// ************************************************
 		// to be reviewd
 		// ************************************************
 
-		this.store.on("write", function(store, action, result, tx, records) {
-			if (action == Ext.data.Api.actions.update) {
-				this.afterDoSaveSuccess();
+		this.store.on("write", function(store, operation, eopts) {
+			/* after write extjs replaces the record instance from the store 
+			 * with the new record instance created by the result reader,
+			 *  so our record is an orphan item. Selection is also lost 
+			 *   -> handle this until is fixed in extjs */
+			//this.record.dirty = false;
+			if(this.record) {
+				this.record = this.store.data.get(this.record.data.id);	
+				if (!this.multiEdit) {
+					this.setSelectedRecords([this.record]);
+				}
 			}
-			if (action == Ext.data.Api.actions.create) {
-				this.afterDoSaveSuccess();
-			}
-			if (action == Ext.data.Api.actions.destroy) {
-				this.afterDoSaveSuccess();
-			}
-			this.updateActionsState(); 
-			//this.onStoreDataChange();
+			
+			this.updateActionsState();
 
-		}, this);
-
+			}, this);
 	},
- 
-	
+
 	/** ************************************************************************* */
 	/** *********************** Public API ****************************** */
 	/** ************************************************************************* */
@@ -353,10 +384,11 @@ Ext.extend(dnet.base.AbstractDc, Ext.util.Observable, {
 	 * Deprecated: Alias for doRpcFilter Shall be removed
 	 */
 	doServiceFilter : function(serviceName, specs) {
-		this.doRpcFilter(Ext.apply(specs||{}, {name:serviceName}));
+		this.doRpcFilter(Ext.apply(specs || {}, {
+			name : serviceName
+		}));
 	},
-	
-	
+
 	/**
 	 * Call a server side RPC with the model instance
 	 */
@@ -366,11 +398,12 @@ Ext.extend(dnet.base.AbstractDc, Ext.util.Observable, {
 	/**
 	 * Deprecated: Alias for doRpcData Shall be removed
 	 */
-	doService: function(serviceName, specs) {
-		this.doRpcData(Ext.apply(specs, {name:serviceName}));
+	doService : function(serviceName, specs) {
+		this.doRpcData(Ext.apply(specs, {
+			name : serviceName
+		}));
 	},
-	
-	
+
 	/**
 	 * Set the previous available record as current record.
 	 */
@@ -392,7 +425,7 @@ Ext.extend(dnet.base.AbstractDc, Ext.util.Observable, {
 	 * the filter forms.
 	 */
 	isFilterValid : function() {
-		return true;
+		return this.filter.isValid();
 	},
 
 	/**
@@ -400,7 +433,7 @@ Ext.extend(dnet.base.AbstractDc, Ext.util.Observable, {
 	 * the editor forms.
 	 */
 	isRecordValid : function() {
-		return true;
+		return this.record.isValid();
 	},
 
 	/**
@@ -427,9 +460,11 @@ Ext.extend(dnet.base.AbstractDc, Ext.util.Observable, {
 	 * Update the enabled/disabled states of the actions. Delegate the work to
 	 * the states manager.
 	 */
-	updateActionsState : function() {		
+	updateActionsState : function() {
 		dnet.base.DcActionsStateManager.applyStates(this);
-		this.fireEvent("updateActionsState", {dc:this});
+		this.fireEvent("updateActionsState", {
+			dc : this
+		});
 	},
 
 	/**
@@ -450,7 +485,7 @@ Ext.extend(dnet.base.AbstractDc, Ext.util.Observable, {
 	 * Returns true if the current record instance is dirty
 	 */
 	isCurrentRecordDirty : function() {
-		if (this.record && this.record.dirty) {
+		if (this.record != null && (this.record.dirty || this.record.phantom)) {
 			return true;
 		}
 		return false;
@@ -461,8 +496,11 @@ Ext.extend(dnet.base.AbstractDc, Ext.util.Observable, {
 	 * <code>multiEdit=true</code>
 	 */
 	isStoreDirty : function() {
-		return this.store.getModifiedRecords().length > 0
-				|| this.store.removed.length > 0;
+		// return this.store.getModifiedRecords().length > 0
+		// || this.store.removed.length > 0;
+		return this.store.getRemovedRecords().length > 0
+				|| this.store.getUpdatedRecords().length > 0
+				|| this.store.getNewRecords().length > 0;
 	},
 
 	/**
@@ -470,7 +508,8 @@ Ext.extend(dnet.base.AbstractDc, Ext.util.Observable, {
 	 * or any child
 	 */
 	isDirty : function() {
-		return this.isCurrentRecordDirty() || this.isStoreDirty()
+		return this.isCurrentRecordDirty() || 
+				this.isStoreDirty()
 				|| this.isAnyChildDirty();
 	},
 
@@ -479,11 +518,8 @@ Ext.extend(dnet.base.AbstractDc, Ext.util.Observable, {
 	 */
 	doDefaultSelection : function() {
 		if (this.store.getCount() > 0) {
-			//this.setRecord(this.store.getAt(0));			
 			this.setSelectedRecords( [ this.store.getAt(0) ]);
 		} else {
-			// force reset
-			//this.setRecord(null);
 			this.setSelectedRecords( []);
 		}
 	},
@@ -503,17 +539,17 @@ Ext.extend(dnet.base.AbstractDc, Ext.util.Observable, {
 	setSelectedRecords : function(recArray) {
 		if (this.selectedRecords != recArray) {
 			this.selectedRecords = recArray;
-			if (recArray.length == 0 ) {
-				this.setRecord(null);				
+			if (recArray.length == 0) {
+				this.setRecord(null);
 			} else {
 				if (this.record != recArray[0]) {
-					this.setRecord(recArray[0]);		
+					this.setRecord(recArray[0]);
 				}
-			}			
+			}
 			this.fireEvent('selectionChange', {
 				dc : this
 			});
-		} 
+		}
 	},
 
 	/**
@@ -622,16 +658,17 @@ Ext.extend(dnet.base.AbstractDc, Ext.util.Observable, {
 		if (p != null) {
 			if (Ext.isNumber(p)) {
 				idx = p;
-				rec = this.store.getAt(p);
+				rec = this.store.getAt(p);				
 				if (rec && (this.record != rec)) {
 					oldrec = this.record;
 					this.record = rec;
 					changed = true;
 				}
 			} else {
+				 
 				rec = p;
 				idx = this.store.indexOf(p);
-				if (rec && (this.record != rec)) {
+				if (rec && (this.record != rec)) {					
 					oldrec = this.record;
 					this.record = rec;
 					changed = true;
@@ -644,6 +681,11 @@ Ext.extend(dnet.base.AbstractDc, Ext.util.Observable, {
 
 		}
 		if (changed) {
+			var msg = "null";
+			if (rec) {
+				msg = rec.data.name+ ", dirty = "+rec.dirty; 
+			}
+			dnet.base.Logger.debug("dnet.base.AbstractDc.setRecord  => " +msg );
 			// this.addToSelectedRecords(rec);
 			this.fireEvent('recordChange', {
 				dc : this,
@@ -659,7 +701,7 @@ Ext.extend(dnet.base.AbstractDc, Ext.util.Observable, {
 	 * Return parent data-control
 	 */
 	getParent : function() {
-		return (this.dcContext)?this.dcContext.parentDc:null;
+		return (this.dcContext) ? this.dcContext.parentDc : null;
 	},
 
 	/**
@@ -674,83 +716,35 @@ Ext.extend(dnet.base.AbstractDc, Ext.util.Observable, {
 	/** ************************************************************************* */
 
 	/**
-	 * Initialize a new record instance with empty data. TODO: needs to be
-	 * reviewed
+	 * Creates a new record instance and initialize it
 	 */
-	emptyRecordData : function(fd) {
-		var r = {};
-		r["clientId"] = getApplication().getSession().client.id;
-		for ( var i = 0; i < fd.length; i++) {
-			if (fd[i]["name"] != "clientId") {
-				if (fd[i]["type"] == "string") {
-					r[fd[i]["name"]] = "";
-				} else {
-					if (fd[i]["type"] == "boolean") {
-						r[fd[i]["name"]] = false;
-					} else {
-						r[fd[i]["name"]] = null;
-					}
-				}
-			}
-		}
-		return r;
+	newRecordInstance : function() {
+		var o = Ext.create(this.filterModel, {});
+		o.data["clientId"] = getApplication().getSession().client.id;
+		return o;
 	},
 
 	/**
-	 * Initialize a new filter instance with empty data. TODO: needs to be
-	 * reviewed
+	 * Creates a new filter instance and initialize it
 	 */
-	emptyFilterData : function(fd) {
-		var r = {};
-		r["clientId"] = getApplication().getSession().client.id;
-		for ( var i = 0; i < fd.length; i++) {
-			if (fd[i]["name"] != "clientId") {
-				if (fd[i]["type"] == "string") {
-					r[fd[i]["name"]] = "";
-				} else {
-					r[fd[i]["name"]] = null;
-				}
-			}
-		}
-		return r;
-	},
-
-	/**
-	 * Initialize a new parameters instance with empty data. TODO: needs to be
-	 * reviewed
-	 */
-	emptyParamData : function(fd) {
-		var r = {};
-		for ( var i = 0; i < fd.length; i++) {
-			if (fd[i]["type"] == "string") {
-				r[fd[i]["name"]] = "";
-			} else {
-				r[fd[i]["name"]] = null;
-			}
-		}
-		return r;
+	newFilterInstance : function() {
+		var o = Ext.create(this.recordModel, {});
+		o.data["clientId"] = getApplication().getSession().client.id;
+		return o;
 	},
 
 	/**
 	 * Default proxy-exception handler
 	 */
-	proxyException : function(dataProxy, type, action, options, response, arg) {
-		if (type == "response") {
-			this.showAjaxErrors(response, options);
-		} else {
-			if (!Ext.isEmpty(response.message)) {
-				alert(response.message.substr(0, 1500));
-			} else {
-				alert("Exception returned by server with no message.");
-			}
-		}
+	proxyException : function(proxy, response, operation, eOpts) {
+		this.showAjaxErrors(response, eOpts);
 	},
 
 	/**
 	 * Show errors to user. TODO: Externalize it as command.
 	 */
 	showAjaxErrors : function(response, options) {
-		Ext.MessageBox.hide();
+		// Ext.MessageBox.hide();
 		var msg, withDetails = false;
 		if (response.responseText) {
 			if (response.responseText.length > 2000) {
@@ -763,12 +757,11 @@ Ext.extend(dnet.base.AbstractDc, Ext.util.Observable, {
 			msg = "No response received from server.";
 		}
 		var alertCfg = {
+			title :response.statusText,	
 			msg : msg,
 			scope : this,
 			icon : Ext.MessageBox.ERROR,
-			buttons : {
-				ok : 'OK'
-			}
+			buttons : Ext.MessageBox.OK
 		}
 		if (withDetails) {
 			alertCfg.buttons['cancel'] = 'Details';
@@ -791,64 +784,64 @@ Ext.extend(dnet.base.AbstractDc, Ext.util.Observable, {
 	 */
 	addChild : function(dc) {
 		this.children[this.children.length] = dc;
-		//dc.on("recordChange", this.updateActionsState, this);
+		// dc.on("recordChange", this.updateActionsState, this);
 	},
 
 	/**
 	 * Register a data-control view for data binding management
 	 */
-	addBindedView : function(id, type) {
-		if (type == "edit-form") {
-			this.addBindedFormView(id);
-		}
-		if (type == "filter-form") {
-			this.addBindedFilterView(id);
-		}
-	},
+//	addBindedView : function(id, type) {
+//		if (type == "edit-form") {
+//			this.addBindedFormView(id);
+//		}
+//		if (type == "filter-form") {
+//			this.addBindedFilterView(id);
+//		}
+//	},
 
 	/**
 	 * Register a data-control form-view for data binding.
 	 */
-	addBindedFormView : function(id) {
-		if (this.bindedFormViews == null) {
-			this.bindedFormViews = [];
-		}
-		this.bindedFormViews[this.bindedFormViews.length] = id;
-
-		this.on('recordChange', function(evnt) {
-			var newRecord = evnt.newRecord;
-			var oldRecord = evnt.oldRecord;
-			var newIdx = evnt.newIdx;
-			if (newRecord) {
-				Ext.BindMgr.unbind(oldRecord);
-				Ext.BindMgr.bind(newRecord, this.bindedFormViews);
-			} else {
-				Ext.BindMgr.unbind(oldRecord);
-			}
-		}, this);
-
-	},
+//	addBindedFormView : function(id) {
+//		if (this.bindedFormViews == null) {
+//			this.bindedFormViews = [];
+//		}
+//		this.bindedFormViews[this.bindedFormViews.length] = id;
+//
+//		this.on('recordChange', function(evnt) {
+//			var newRecord = evnt.newRecord;
+//			var oldRecord = evnt.oldRecord;
+//			var newIdx = evnt.newIdx;
+//			if (newRecord) {
+//				Ext.BindMgr.unbind(oldRecord);
+//				Ext.BindMgr.bind(newRecord, this.bindedFormViews);
+//			} else {
+//				Ext.BindMgr.unbind(oldRecord);
+//			}
+//		}, this);
+//
+//	},
 
 	/**
 	 * Register a data-control filter-form view for data binding.
 	 */
-	addBindedFilterView : function(id) {
-		if (this.bindedFilterViews == null) {
-			this.bindedFilterViews = [];
-		}
-		this.bindedFilterViews[this.bindedFilterViews.length] = id;
-
-		this.on('filterChanged', function(evnt) {
-			var newFilter = evnt.newFilter;
-			var oldFilter = evnt.oldFilter;
-			if (newFilter) {
-				Ext.BindMgr.unbind(oldFilter);
-				Ext.BindMgr.bind(newFilter, this.bindedFilterViews);
-			} else {
-				Ext.BindMgr.unbind(oldFilter);
-			}
-		}, this);
-	},
+//	addBindedFilterView : function(id) {
+//		if (this.bindedFilterViews == null) {
+//			this.bindedFilterViews = [];
+//		}
+//		this.bindedFilterViews[this.bindedFilterViews.length] = id;
+//
+//		this.on('filterChanged', function(evnt) {
+//			var newFilter = evnt.newFilter;
+//			var oldFilter = evnt.oldFilter;
+//			if (newFilter) {
+//				Ext.BindMgr.unbind(oldFilter);
+//				Ext.BindMgr.bind(newFilter, this.bindedFilterViews);
+//			} else {
+//				Ext.BindMgr.unbind(oldFilter);
+//			}
+//		}, this);
+//	},
 
 	// ************************************************
 	// to be reviewd
@@ -894,7 +887,7 @@ Ext.extend(dnet.base.AbstractDc, Ext.util.Observable, {
 			throw (dnet.base.DcExceptions.NO_CURRENT_RECORD);
 		}
 		var s = specs || {};
-		 
+
 		var p = {
 			data : Ext.encode(this.record.data)
 		};

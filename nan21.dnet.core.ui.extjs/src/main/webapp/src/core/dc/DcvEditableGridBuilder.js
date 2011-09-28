@@ -1,28 +1,34 @@
 
-Ext.ns("dnet.base");
 
-dnet.base.DcvEditableGridBuilder = function(config) {		
-	this.dcv = null; 
-	Ext.apply(this,config);	 
-	dnet.base.DcvEditableGridBuilder.superclass.constructor.call(this, config);
-};
-
-Ext.extend(dnet.base.DcvEditableGridBuilder, Ext.util.Observable, {
-	
+Ext.define("dnet.base.DcvEditableGridBuilder", {
+	extend:  "Ext.util.Observable" ,
+ 	
+	dcv : null,
+ 
 	addTextColumn: function(config) {
 		config.xtype="gridcolumn";		
 		this.applySharedConfig(config);		
 		return this;
 	}	
 	,addBooleanColumn: function(config) {
+		
 		config.xtype="booleancolumn";
 		Ext.apply(config,{trueText:Dnet.translate("msg", "bool_true"), falseText:Dnet.translate("msg", "bool_false")});	
 		if(config.editor == undefined && config._noEdit_ !== false) {
-			config.editor =  {xtype: 'combo', mode: 'local', selectOnFocus:true, valueField: 'bv', displayField: 'tv', 
-			store:new Ext.data.ArrayStore({idIndex:0,fields: [ 'bv', 'tv' ], 
-							data: [[true,Dnet.translate("msg", "bool_true")],[false,Dnet.translate("msg", "bool_false")]] }),
+			
+			var yesNoStore = Ext.create('Ext.data.Store', {
+				fields: [ "bv", "tv" ], 
+				data: [
+			       {"bv":true,"tv":Dnet.translate("msg", "bool_true")},
+			       {"bv":false,"tv":Dnet.translate("msg", "bool_false")}        
+				]			
+			});
+			
+			config.editor =  {xtype: 'combo', queryMode: 'local', selectOnFocus:true, valueField: 'bv', displayField: 'tv', 
+			store:yesNoStore,
 							triggerAction:'all', forceSelection:true }
 		}
+		 
 		this.applySharedConfig(config);
 		return this;
 	}
@@ -68,8 +74,11 @@ Ext.extend(dnet.base.DcvEditableGridBuilder, Ext.util.Observable, {
 	
 	,applySharedConfig: function(config) {
 		Ext.applyIf(config,{
-			id:Ext.id(),selectOnFocus:true,sortable:true, hidden:false
+			id:Ext.id(),selectOnFocus:true,sortable:true, hidden:false,_dcView_:this.dcv
 		});
+		if(config.editor) {
+			Ext.applyIf(config.editor,{_dcView_:this.dcv});
+		}
 		if(config._sharedLabel_) {
 			config._rbkey_ = config.name;
 		}

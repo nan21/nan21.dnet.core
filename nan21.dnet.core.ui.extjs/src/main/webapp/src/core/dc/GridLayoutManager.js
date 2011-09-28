@@ -1,6 +1,8 @@
-Ext.ns('dnet.base');
-dnet.base.GridLayoutManager = Ext.extend(Ext.Window, {
 
+Ext.define("dnet.base.GridLayoutManager", {
+	extend:  "Ext.Window" ,
+ 	
+ 
     _elems_ : new Ext.util.MixedCollection()
 
    ,_grid_:null

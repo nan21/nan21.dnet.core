@@ -1,10 +1,4 @@
-/*
- * NbsCore4ExtjsUi
- * Nan21 eBusiness Suite framework libraries for Extjs client
- * Copyright (C) 2008 Nan21 Electronics srl www.nan21.net
- * License: LGPL v3
- */
-
+ 
 
 function getProtocolAPI(resource, format) {
    return {
@@ -38,8 +32,8 @@ function getProtocolAPI_AsgnRight(resource, format) {
 }
 
 
-Ext.ns("dnet.base.action");
-dnet.base.RequestParamFactory = Ext.apply({}, {
+
+dnet.base.RequestParamFactory = {
 
 	 findRequest: function(filter) {
 	 	var p = {
@@ -49,14 +43,12 @@ dnet.base.RequestParamFactory = Ext.apply({}, {
 			};
 		return p;
  	 }
-});
+};
 
 
 
-Ext.ns("dnet.base");
-dnet.base.UrlBuilder = Ext.apply({}, {
-	 
-
+dnet.base.UrlBuilder =  {
+	  
 	  baseUrl: function(pDc, pFormat) {
 	  	var o = {};
 		o[__Http__.REQUEST_PARAM_RESOURCE_TYPE] = __Http__.RESOURCE_TYPE_DC;
@@ -215,7 +207,7 @@ dnet.base.UrlBuilder = Ext.apply({}, {
 		return url;
 	}
 
-});
+};
 
 
 

@@ -25,6 +25,7 @@
 	<%@ include file="_loading_mask.jspf" %> 
 
     <script type="text/javascript">
+    
     	if(document &&  document.getElementById('n21-loading-msg')) {
         	document.getElementById('n21-loading-msg').innerHTML = 'Loading...';
         }
@@ -37,6 +38,7 @@
  	${extensions}
  	
 	<script type="text/javascript">
+	
   		if(document && document.getElementById('n21-loading-msg')) {
   	  		document.getElementById('n21-loading-msg').innerHTML = Dnet.translate("msg", "initialize")+' ${item}...';
   	  	}
@@ -57,8 +59,8 @@
 			 layout:'card', activeItem:0
 			,forceLayout:true
 			,items:[
-				{ html:"" } 
-			   	,{ xtype:"container"
+				 { html:"" } 
+			   	,{ xtype:"container", padding:0
 			    	,layout:'border'
 				    ,forceLayout:true
 				    ,items:[
@@ -71,10 +73,10 @@
 						   	,plugins: new Ext.ux.TabCloseMenu()
 				   			,id:"dnet-application-view-body"
 				    	    ,items:[
-						    	    {	xtype:"dnetHomePanel"
-							    	    ,iconCls: "icon-hometab"
-								    	,id:"dnet-application-view-home"
-									 }
+								{	xtype:"dnetHomePanel"
+								    ,iconCls: "icon-hometab"
+									,id:"dnet-application-view-home"
+								 }    
 							]   
 						}				    	        
 				    	,__application__.menu 

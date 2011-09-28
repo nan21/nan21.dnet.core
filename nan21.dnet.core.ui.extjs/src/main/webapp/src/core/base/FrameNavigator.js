@@ -1,12 +1,5 @@
-/*
- * NbsCore4ExtjsUi
- * Nan21 eBusiness Suite framework libraries for Extjs client
- * Copyright (C) 2008 Nan21 Electronics srl www.nan21.net
- * License: LGPL v3
- */
 
-Ext.ns("dnet.base");
-dnet.base.FrameNavigator = Ext.apply({}, {
+dnet.base.FrameNavigator = {
  
 	 maxOpenTabs : -1
 	
@@ -49,6 +42,6 @@ dnet.base.FrameNavigator = Ext.apply({}, {
                vb.activate(tabID);
         }
       }
-});
+};
 
  

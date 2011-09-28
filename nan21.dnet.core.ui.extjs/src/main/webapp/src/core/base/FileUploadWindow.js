@@ -1,7 +1,6 @@
-
-Ext.ns("dnet.base");
-dnet.base.FileUploadWindow = Ext.extend(Ext.Window , {
-
+ 
+Ext.define("dnet.base.FileUploadWindow" , {
+	extend:"Ext.Window",
 	 initComponent: function(config) {
 		var cfg = {
 				title:Dnet.translate("msg", "upload_title")

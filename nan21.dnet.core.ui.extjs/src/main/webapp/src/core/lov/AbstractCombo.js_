@@ -1,16 +1,14 @@
  
-Ext.define('dnet.base.AbstractRemoteCombo', {
+Ext.define('Ext.form.field.ComboBox', {
     extend:'Ext.form.field.Picker',
-    requires: ['Ext.util.DelayedTask', 
-               'Ext.EventObject', 
-               'Ext.view.BoundList', 
-               'Ext.view.BoundListKeyNav', 
-               'Ext.data.StoreManager'],
+    requires: ['Ext.util.DelayedTask', 'Ext.EventObject', 'Ext.view.BoundList', 'Ext.view.BoundListKeyNav', 'Ext.data.StoreManager'],
     alternateClassName: 'Ext.form.ComboBox',
-    alias: ['widget.remotecombo' ],
+    alias: ['widget.combobox', 'widget.combo'],
  
     triggerCls: Ext.baseCSSPrefix + 'form-arrow-trigger',
-   // multiSelect: false,
+
+    
+    multiSelect: false,
  
     delimiter: ', ',
 
@@ -46,6 +44,8 @@ Ext.define('dnet.base.AbstractRemoteCombo', {
    
     forceSelection: false,
 
+   
+ 
     defaultListConfig: {
         emptyText: '',
         loadingText: 'Loading...',
@@ -70,9 +70,9 @@ Ext.define('dnet.base.AbstractRemoteCombo', {
         if (!store && !transform) {
             Ext.Error.raise('Either a valid store, or a HTML select to transform, must be configured on the combo.');
         }
-//        if (me.typeAhead && me.multiSelect) {
-//            Ext.Error.raise('typeAhead and multiSelect are mutually exclusive options -- please remove one of them.');
-//        }
+        if (me.typeAhead && me.multiSelect) {
+            Ext.Error.raise('typeAhead and multiSelect are mutually exclusive options -- please remove one of them.');
+        }
         if (me.typeAhead && !me.editable) {
             Ext.Error.raise('If typeAhead is enabled the combo must be editable: true -- please change one of those settings.');
         }
@@ -172,13 +172,13 @@ Ext.define('dnet.base.AbstractRemoteCombo', {
             value = me.getRawValue(),
             rec;
 
-//        if (me.multiSelect) {
-//            // For multiselect, check that the current displayed value matches the current
-//            // selection, if it does not then revert to the most recent selection.
-//            if (value !== me.getDisplayValue()) {
-//                me.setValue(me.lastSelection);
-//            }
-//        } else {
+        if (me.multiSelect) {
+            // For multiselect, check that the current displayed value matches the current
+            // selection, if it does not then revert to the most recent selection.
+            if (value !== me.getDisplayValue()) {
+                me.setValue(me.lastSelection);
+            }
+        } else {
             // For single-select, match the displayed value to a record and select it,
             // if it does not match a record then revert to the most recent selection.
             rec = me.findRecordByDisplay(value);
@@ -187,7 +187,7 @@ Ext.define('dnet.base.AbstractRemoteCombo', {
             } else {
                 me.setValue(me.lastSelection);
             }
-        //}
+        }
         me.collapse();
     },
 
@@ -456,8 +456,7 @@ Ext.define('dnet.base.AbstractRemoteCombo', {
             menuCls = Ext.baseCSSPrefix + 'menu',
             opts = Ext.apply({
                 selModel: {
-                   // mode: me.multiSelect ? 'SIMPLE' : 'SINGLE'
-                    mode:  'SINGLE'	
+                    mode: me.multiSelect ? 'SIMPLE' : 'SINGLE'
                 },
                 floating: true,
                 hidden: true,
@@ -498,8 +497,7 @@ Ext.define('dnet.base.AbstractRemoteCombo', {
             valueField = me.valueField,
             selected;
 
-        //if (!me.multiSelect && lastSelection) {
-        if ( lastSelection) {
+        if (!me.multiSelect && lastSelection) {
             selected = lastSelection[0];
             if (selected && (record.get(valueField) === selected.get(valueField))) {
                 me.collapse();
@@ -509,31 +507,25 @@ Ext.define('dnet.base.AbstractRemoteCombo', {
 
     onListSelectionChange: function(list, selectedRecords) {
         var me = this,
-            //isMulti = me.multiSelect,
+            isMulti = me.multiSelect,
             hasRecords = selectedRecords.length > 0;
         // Only react to selection if it is not called from setValue, and if our list is
         // expanded (ignores changes to the selection model triggered elsewhere)
         if (!me.ignoreSelection && me.isExpanded) {
-             
+            if (!isMulti) {
                 Ext.defer(me.collapse, 1, me);
-            
+            }
             /*
              * Only set the value here if we're in multi selection mode or we have
              * a selection. Otherwise setValue will be called with an empty value
              * which will cause the change event to fire twice.
              */
-//            if (isMulti || hasRecords) {
-//                me.setValue(selectedRecords, false);
-//            }
-//            if (hasRecords) {
-//                me.fireEvent('select', me, selectedRecords);
-//            }
-            if (hasRecords) {
+            if (isMulti || hasRecords) {
                 me.setValue(selectedRecords, false);
-                this._mapReturnFields_(selectedRecords[0]);
+            }
+            if (hasRecords) {
                 me.fireEvent('select', me, selectedRecords);
             }
-             
             me.inputEl.focus();
         }
     },
@@ -656,21 +648,15 @@ Ext.define('dnet.base.AbstractRemoteCombo', {
             // store is not loaded or they set a value not in the store
             else {
                 // if valueNotFoundText is defined, display it, otherwise display nothing for this value
-                if (me.isExpanded) {
-                	if (Ext.isDefined(valueNotFoundText)) {
-                        displayTplData.push(valueNotFoundText);
-                    }
-                } else {
-                	displayTplData.push(value[i]);
+                if (Ext.isDefined(valueNotFoundText)) {
+                    displayTplData.push(valueNotFoundText);
                 }
-            	
                 processedValue.push(value[i]);
             }
         }
 
         // Set the value of this field. If we are multiselecting, then that is an array.
-        //me.value = me.multiSelect ? processedValue : processedValue[0];
-        me.value =  processedValue[0];
+        me.value = me.multiSelect ? processedValue : processedValue[0];
         if (!Ext.isDefined(me.value)) {
             me.value = null;
         }
@@ -784,7 +770,7 @@ Ext.define('dnet.base.AbstractRemoteCombo', {
 });
 
 Ext.define("dnet.base.AbstractCombo", {
-	extend:  "dnet.base.AbstractRemoteCombo" ,
+	extend:  "Ext.form.field.ComboBox" ,
  	alias: "widget.xcombo",
  
  // DNet properties
@@ -874,11 +860,20 @@ Ext.define("dnet.base.AbstractCombo", {
 		});
 	 },
  
-	 
+	 doQuery: function(queryString, forceAll, rawQuery) {		 
+         var bp = {}
+         bp[this.displayField] = queryString+"*";
+         bp["clientId"] = getApplication().getSession().client.id;			 
+			if (this.filterFieldMapping != null) {
+			   this._mapFilterFields_(bp);
+			}
+         this.store.proxy.extraParams["data"] =  Ext.encode(bp)
+         return this.callParent(arguments);
+	 },
  
     _mapReturnFields_: function(crec) {   
-		if (this.inEditor) {
-           var mrec = this._targetRecord_;
+		if (this.gridEditor) {
+           var mrec = this.gridEditor.record;
            this._mapReturnFieldsExecute_(crec,mrec);
 		} else {
 			var dcv = this._dcView_, mrec = null;
@@ -969,62 +964,7 @@ Ext.define("dnet.base.AbstractCombo", {
 		this.showAjaxErrors(response, eOpts);
 	},
 
-	
-    
-	
-    
-
-    
-    /**
-	 * Show errors to user. TODO: Externalize it as command.
-	 */
-	showAjaxErrors : function(response, options) {
-		// Ext.MessageBox.hide();
-		var msg, withDetails = false;
-		if (response.responseText) {
-			if (response.responseText.length > 2000) {
-				msg = response.responseText.substr(0, 2000);
-				withDetails = true;
-			} else {
-				msg = response.responseText;
-			}
-		} else {
-			msg = "No response received from server.";
-		}
-		var alertCfg = {
-			msg : msg,
-			scope : this,
-			icon : Ext.MessageBox.ERROR,
-			buttons : Ext.MessageBox.OK
-		}
-		if (withDetails) {
-			alertCfg.buttons['cancel'] = 'Details';
-			alertCfg['detailedMessage'] = response.responseText;
-		}
-		Ext.Msg.show(alertCfg);
-
-	},
-    
-	
-	// ****************************************************************
-	// *********************** OVERRIDES ******************************
-	// ****************************************************************
-	
-	
-    doQuery: function(queryString, forceAll, rawQuery) {		 
-        var bp = {}
-        bp[this.displayField] = queryString+"*";
-        bp["clientId"] = getApplication().getSession().client.id;			 
-			if (this.filterFieldMapping != null) {
-			   this._mapFilterFields_(bp);
-			}
-        this.store.proxy.extraParams["data"] =  Ext.encode(bp)
-        return this.callParent(arguments);
-	 },
-	 
- 
-    
-    assertValue: function() {
+	assertValue: function() {
         var me = this,
             val = me.getRawValue(),
             rec;
@@ -1062,7 +1002,64 @@ Ext.define("dnet.base.AbstractCombo", {
         }
         
         me.collapse();
-    }
+    },
 
+    
+	/**
+	 * Show errors to user. TODO: Externalize it as command.
+	 */
+	showAjaxErrors : function(response, options) {
+		// Ext.MessageBox.hide();
+		var msg, withDetails = false;
+		if (response.responseText) {
+			if (response.responseText.length > 2000) {
+				msg = response.responseText.substr(0, 2000);
+				withDetails = true;
+			} else {
+				msg = response.responseText;
+			}
+		} else {
+			msg = "No response received from server.";
+		}
+		var alertCfg = {
+			msg : msg,
+			scope : this,
+			icon : Ext.MessageBox.ERROR,
+			buttons : Ext.MessageBox.OK
+		}
+		if (withDetails) {
+			alertCfg.buttons['cancel'] = 'Details';
+			alertCfg['detailedMessage'] = response.responseText;
+		}
+		Ext.Msg.show(alertCfg);
+
+	}
+    
+    ,onListSelectionChange: function(list, selectedRecords) {
+        var me = this,
+            isMulti = me.multiSelect,
+            hasRecords = selectedRecords.length > 0;
+        // Only react to selection if it is not called from setValue, and if our list is
+        // expanded (ignores changes to the selection model triggered elsewhere)
+        if (!me.ignoreSelection && me.isExpanded) {
+            if (!isMulti) {
+                Ext.defer(me.collapse, 1, me);
+            }
+            /*
+             * Only set the value here if we're in multi selection mode or we have
+             * a selection. Otherwise setValue will be called with an empty value
+             * which will cause the change event to fire twice.
+             */
+            if (isMulti || hasRecords) {
+                me.setValue(selectedRecords, false);
+            }
+            if (hasRecords) {
+            	this._mapReturnFields_(selectedRecords[0]);
+                me.fireEvent('select', me, selectedRecords);
+            }
+            me.inputEl.focus();
+        }
+    },
+    
 });
  

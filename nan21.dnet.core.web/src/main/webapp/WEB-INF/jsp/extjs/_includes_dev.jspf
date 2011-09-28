@@ -1,16 +1,30 @@
 
     <!-- Extjs  --> 
-    <script type="text/javascript" src="${urlUiExtjsLibExtjs}/js/extjs/adapter/ext/ext-base.js"> </script>
-    <script type="text/javascript" src="${urlUiExtjsLibExtjs}/js/extjs/ext-all-debug.js"></script>
-    <script type="text/javascript" src="${urlUiExtjsLibExtjs}/js/extjs/examples/ux/ux-all.js"></script>
+    <link rel="stylesheet" type="text/css" href="${urlUiExtjsLibExtjs}/resources/css/ext-all-${theme}.css"/>
+    <!-- 
+    <link rel="stylesheet" type="text/css" href="${urlUiExtjsLibExtjs}/js/extjs/resources/css/xtheme-${theme}.css"/>        
+  -->
+    <script type="text/javascript" src="${urlUiExtjsLibExtjs}/ext-all-debug.js"></script>
+    <!--  -->
+    <script type="text/javascript" src="${urlUiExtjsLibExtjs}/compatibility/ext3-core-compat.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsLibExtjs}/compatibility/ext3-compat.js"></script>
+    
+    <script>
+    Ext.Compat.showErrors = true;
+    </script>
+    <!-- <script type="text/javascript" src="${urlUiExtjsLibExtjs}/js/extjs/examples/ux/ux-all.js"></script>  --> 
+    
     
     <script type="text/javascript" src="${urlUiExtjsCore}/src/core/Dnet.js" ></script>    
     <script type="text/javascript" src="${urlUiExtjsCore}/extjs-extend.js"></script>
-    <script type="text/javascript" src="${urlUiExtjsCore}/extjs-ux-extend.js"></script>
+    
+    
+    <script type="text/javascript" src="${urlUiExtjsCore}/extjs-ux-extend.js"></script> 
+    <!--   
     <script type="text/javascript" src="${urlUiExtjsCore}/lib/Extjs/${extjsVersion}/ux/dnet-calendar-all-debug.js"></script>
-    
+   
     <script type="text/javascript" src="${urlUiExtjsLibExtjs}/js/extjs/locale/ext-lang-${shortLanguage}.js"></script>               
-    
+     -->
     <!-- DNet locale -->            
     <script type="text/javascript" src="${urlUiExtjsCore}/resources/locale/${shortLanguage}/Dnet.js"></script>
   
@@ -30,7 +44,6 @@
     <script type="text/javascript" src="${urlUiExtjsCore}/src/core/base/LoginWindow.js"></script>
     <script type="text/javascript" src="${urlUiExtjsCore}/src/core/base/ChangePasswordWindow.js"></script>
     <script type="text/javascript" src="${urlUiExtjsCore}/src/core/base/HomePanel.js"></script>
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/core/base/HomePanelCr.js"></script>
     <script type="text/javascript" src="${urlUiExtjsCore}/src/core/base/UrlBuilder.js"></script>
     <script type="text/javascript" src="${urlUiExtjsCore}/src/core/base/UiHeader.js"></script>
     <script type="text/javascript" src="${urlUiExtjsCore}/src/core/base/FrameNavigatorWithIframe.js"></script>
@@ -93,10 +106,9 @@
     <script type="text/javascript" src="${urlUiExtjsCore}/src/core/lov/AbstractCombo.js"></script>  
     <script type="text/javascript" src="${urlUiExtjsCore}/src/core/lov/AbstractLov.js"></script>
      
-    <!-- Css  -->      
-    <link rel="stylesheet" type="text/css" href="${urlUiExtjsLibExtjs}/js/extjs/resources/css/ext-all-notheme.css"/>
-    <link rel="stylesheet" type="text/css" href="${urlUiExtjsLibExtjs}/js/extjs/resources/css/xtheme-${theme}.css"/>        
+    <!-- Css   
     <link rel="stylesheet" type="text/css" href="${urlUiExtjsLibExtjs}/js/extjs/resources/examples/ux/calendar/resources/css/calendar-${theme}.css"/>
+    -->     
  	<link rel="stylesheet" type="text/css" href="${urlUiExtjsCore}/resources/css/dnet-xtheme-${theme}.css"/>
       
         

@@ -1,7 +1,6 @@
-Ext.ns("dnet.base");
+ 
 dnet.base.Rpc = {
-
-
+ 
 	/**
 	    @param: rpcCall :Object
 			class : class-name as datasource name
@@ -29,7 +28,7 @@ dnet.base.Rpc = {
 	      	Ext.Msg.show({
 		          title: 'HTTP:'+response.status+' '+ response.statusText
 		         ,msg: msg
-		         ,buttons: {ok:'OK'} //, cancel:'Details'
+		         ,buttons:Ext.MessageBox.OK
 		         ,scope:this
 		         ,icon: Ext.MessageBox.ERROR
 		         ,_detailedMessage_:response.responseText
@@ -38,10 +37,10 @@ dnet.base.Rpc = {
 		} else {
             Ext.Msg.show({
 				  msg: 'Server returned error with HTTP-STATUS '+ response.status + ' but no other details. '
-		         ,buttons: {ok:'OK'} //, cancel:'Details'
+		         ,buttons:Ext.MessageBox.OK
 		         ,scope:this
 		         ,icon: Ext.MessageBox.ERROR
 		      });
 		}
   }
-}
+});

@@ -1,13 +1,9 @@
 
-Ext.ns("dnet.base");
-dnet.base.DcvFormBuilder = function(config) {		
-	this.dcv = null; 
-	Ext.apply(this,config);	 
-	dnet.base.DcvFormBuilder.superclass.constructor.call(this, config);
-};
-
-Ext.extend(dnet.base.DcvFormBuilder, Ext.util.Observable, {
-	
+Ext.define("dnet.base.DcvFormBuilder", {
+	extend:  "Ext.util.Observable" ,
+ 	
+	dcv : null,
+ 
 	addTextField: function(config) {
 		config.xtype="textfield";		
 		this.applyModelUpdater(config);
@@ -40,8 +36,8 @@ Ext.extend(dnet.base.DcvFormBuilder, Ext.util.Observable, {
 		return this;
 	}
 	,addDateTimeField: function(config) {
-		config.xtype="xdatetime";
-		Ext.applyIf(config,{dateFormat:Ext.DATE_FORMAT,timeFormat:Ext.TIME_FORMAT,dtSeparator:"T"});
+		config.xtype="datefield";
+		Ext.applyIf(config,{format:Ext.DATETIME_FORMAT });
 		this.applyModelUpdater(config);
 		this.applySharedConfig(config);
 		return this;
@@ -63,6 +59,11 @@ Ext.extend(dnet.base.DcvFormBuilder, Ext.util.Observable, {
 		return this;
 	}
 	,addPanel: function(config) {
+		Ext.applyIf(config, this.dcv.defaults );
+		Ext.applyIf(config,{
+			defaults: this.dcv.defaults
+		});
+		 
 		this.dcv._elems_.add(config.name, config); 		 
 		return this;
 	}
@@ -93,6 +94,7 @@ Ext.extend(dnet.base.DcvFormBuilder, Ext.util.Observable, {
 	}
 	//private
 	,applyModelUpdater: function(config, eventName) {
+		 
 		var en = eventName || "change";
 		if (!config.listeners) {
 			config.listeners = {};
@@ -102,13 +104,24 @@ Ext.extend(dnet.base.DcvFormBuilder, Ext.util.Observable, {
 		}
 		// add change listener to update the model 
 		if(config._isParam_=== true) {
-			var fn = function(f,nv,ov) {
-				f._dcView_._controller_.setParamValue(f.dataIndex, f.getValue(),true);
+			var fn = function(f,nv,ov, eopts) {
+				//f._dcView_._controller_.setParamValue(f.dataIndex, f.getValue(),true);
 			}
 		} else {
-			var fn = function(f,nv,ov) {
-				this._dcView_._controller_.getRecord().set(f.dataIndex, f.getValue());
-				//f._dcView_._controller_.dataModified();
+			var fn = function(f,nv,ov, eopts) {
+				var r = this._dcView_._controller_.getRecord();
+				if(!r) return;
+				var rv = r.get(f.dataIndex);
+				if (Ext.isDate(rv)) {
+					var rd = Ext.Date.parse(Ext.Date.format(rv, f.format), f.format);					 
+					if ( ! r.isEqual(rd, nv ) ) {
+						r.set(f.dataIndex, nv);
+					}
+				} else {
+					if ( !r.isEqual(rv, nv ) ) {
+						r.set(f.dataIndex, nv);
+					}
+				}
 			}
 		}
 		if (config.listeners[en].fn) {
@@ -119,7 +132,7 @@ Ext.extend(dnet.base.DcvFormBuilder, Ext.util.Observable, {
 	}
 	,applySharedConfig: function(config) {
 		Ext.applyIf(config,{
-			id:Ext.id(),selectOnFocus:true,_dcView_:this.dcv
+			id:Ext.id(),itemId: config.name,selectOnFocus:true,_dcView_:this.dcv
 		});
 		if (config.allowBlank === false) {
 			config.labelSeparator="*";

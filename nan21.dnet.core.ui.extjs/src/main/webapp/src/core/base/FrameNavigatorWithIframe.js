@@ -1,12 +1,5 @@
-/*
- * NbsCore4ExtjsUi
- * Nan21 eBusiness Suite framework libraries for Extjs client
- * Copyright (C) 2008 Nan21 Electronics srl www.nan21.net
- * License: LGPL v3
- */
 
-Ext.ns("dnet.base"); 
-dnet.base.FrameNavigatorWithIframe = Ext.apply({}, {
+dnet.base.FrameNavigatorWithIframe = {
  
 	 maxOpenTabs : -1
 	
@@ -59,7 +52,7 @@ dnet.base.FrameNavigatorWithIframe = Ext.apply({}, {
 
         if (this.isFrameOpened(frame)) {
           if (!this.isFrameActive(frame)) {
-        	  getApplication().getViewBody().activate(tabID);
+        	  getApplication().getViewBody().setActiveTab(tabID);
           }
         } else {
           if (this.maxOpenTabs > 0 && ((vb.items.getCount()+1) == this.maxOpenTabs )) { // add one for the home tab
@@ -78,9 +71,9 @@ dnet.base.FrameNavigatorWithIframe = Ext.apply({}, {
                    beforeclose: { scope:this, fn: function(panel) {   onContentPanelClose(panel.initialConfig.n21_iframeID); } }
                  }
                }));
-               vb.activate(tabID);
+               vb.setActiveTab(tabID);
         }
       }
-});
+};
 
  

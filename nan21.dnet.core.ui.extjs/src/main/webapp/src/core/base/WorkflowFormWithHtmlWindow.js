@@ -1,7 +1,8 @@
 
-Ext.ns("dnet.base");
-dnet.base.WorkflowFormWithHtmlWindow = Ext.extend(Ext.Window , {
 
+Ext.define("dnet.base.WorkflowFormWithHtmlWindow", {
+	extend:  "Ext.Window" ,
+ 
 	constructor: function(config) {
 		var cfg = {			 
 			 border: true
@@ -85,7 +86,7 @@ dnet.base.WorkflowFormWithHtmlWindow = Ext.extend(Ext.Window , {
 		} else {
 			msg = "No response received from server.";
 		}
-		var alertCfg = { msg: msg, scope:this, icon: Ext.MessageBox.ERROR, buttons: {ok:'OK'} }  
+		var alertCfg = { msg: msg, scope:this, icon: Ext.MessageBox.ERROR, buttons: Ext.MessageBox.OK }  
 		if (withDetails) {
 			alertCfg.buttons['cancel'] = 'Details';
 			alertCfg['detailedMessage'] = response.responseText;

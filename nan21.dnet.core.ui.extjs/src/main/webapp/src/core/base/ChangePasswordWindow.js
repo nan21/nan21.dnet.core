@@ -1,80 +1,82 @@
 
-Ext.ns("dnet.base");
-dnet.base.ChangePasswordWindow = Ext.extend(Ext.Window , {
 
-	 initComponent: function(config) {
+Ext.define("dnet.base.ChangePasswordForm" , {
+	extend: "Ext.form.Panel",
+	theButton: null,
+	initComponent: function() {
+	
+		this.theButton = this.initialConfig.theButton;
+		this.theButton.setHandler(this.doTask, this);
+		 
 		var cfg = {
-				title:Dnet.translate("msg", "chpswd_title")
-					,border: true
-					,width: 350
-					,resizable: false
-
-					,padding:20
-					,closable:true
-					,constrain:true
-					,layout:"form"
-					,labelAlign:"right"
-					,buttonAlign:"center"
-					,modal:true
-					,items: [
-					
-							{xtype:"textfield", name:"opswd", fieldLabel:"Password", width:150, selectOnFocus: true, allowBlank: false
-								,autoCreate: {tag: "input", type: "password", autocomplete: "off", size: "20" }
-							 	,listeners: {change: {scope:this, fn:this.enableAction }}   }
-
-							,{xtype:"textfield", name:"pswd1", fieldLabel:Dnet.translate("msg", "chpswd_pswd1"), width:150, selectOnFocus: true, allowBlank: false
-						    	,autoCreate: {tag: "input", type: "password", autocomplete: "off", size: "20" }
-						     	,listeners: {change: {scope:this, fn:this.enableAction }}   }
-					     	
-					     	,{xtype:"textfield", name:"pswd2", fieldLabel:Dnet.translate("msg", "chpswd_pswd2"), width:150, selectOnFocus: true, allowBlank: false
-						    	,autoCreate: {tag: "input", type: "password", autocomplete: "off", size: "20" }
-						     	,listeners: {change: {scope:this, fn:this.enableAction }}   }
-					     	
-
-					 ]
-				    ,buttons:[
-				        {xtype:"button", text:Dnet.translate("msg", "chpswd_btn"), disabled:true
-				        	, scope:this, handler: this.doTask }
-				    ] 
-			};
-
-		Ext.apply(cfg,config);
+			frame : true,
+			bodyStyle : 'padding:5px 5px 0',
+			fieldDefaults : {
+				labelAlign : 'right',
+				labelWidth : 130,
+				msgTarget : 'side'
+			},			 
+			defaults : {
+				anchor : '90%'
+			},
+			items : this._buildItems_()			
+		};
         Ext.apply(this,cfg);
+		dnet.base.ChangePasswordForm.superclass.initComponent.call(this, arguments);
+ 	},
 
-		dnet.base.ChangePasswordWindow.superclass.initComponent.call(this);
+	_buildItems_ : function() {
+ 		return [
+				
+				{xtype:"textfield", itemId:"opswd", fieldLabel:"Password", width:150, selectOnFocus: true, allowBlank: false
+					,autoCreate: {tag: "input", type: "password", autocomplete: "off", size: "20" }
+				 	,listeners: {change: {scope:this, fn:this.enableAction }}   }
 
+				,{xtype:"textfield", itemId:"pswd1", fieldLabel:Dnet.translate("msg", "chpswd_pswd1"), width:150, selectOnFocus: true, allowBlank: false
+			    	,autoCreate: {tag: "input", type: "password", autocomplete: "off", size: "20" }
+			     	,listeners: {change: {scope:this, fn:this.enableAction }}   }
+		     	
+		     	,{xtype:"textfield", itemId:"pswd2", fieldLabel:Dnet.translate("msg", "chpswd_pswd2"), width:150, selectOnFocus: true, allowBlank: false
+			    	,autoCreate: {tag: "input", type: "password", autocomplete: "off", size: "20" }
+			     	,listeners: {change: {scope:this, fn:this.enableAction }}   }
+		 ]; 		
  	}
-	,getCurrentPasswordField: function() {
-		return this.items.get(0);
+	
+ 	,getTheButton: function() {
+ 		return this.theButton;
+ 	}
+ 	
+ 	,getCurrentPasswordField: function() {		 
+		return this.getComponent("opswd");
 	}
+	
 	,getPasswordField: function() {
-		return this.items.get(1);
+		return this.getComponent("pswd1");
 	}
+	
 	,getConfirmPasswordField: function() {
-		return this.items.get(2);
+		return this.getComponent("pswd2");
 	}
 
-	,doOnFailure: function(response , options) {
-        // var r = Ext.util.JSON.decode( response.responseText );
+	,doOnFailure: function(response, options) {         
 		 Ext.Msg.show({
-		          msg: response.responseText
-		         ,buttons: {ok:'OK'}
-		         ,scope:this
-		         ,icon: Ext.MessageBox.ERROR
-			 });
+	          msg: response.responseText
+	         ,buttons: Ext.MessageBox.OK
+	         ,scope:this
+	         ,icon: Ext.MessageBox.ERROR
+		 });
 
 		 (response.responseText);
 	}
 	,doOnSuccess: function(response , options) {
           Ext.Msg.show({
+	          msg: Dnet.translate("msg", "chpswd_success")
+	         ,buttons: Ext.MessageBox.OK
+	         ,scope:this
+	         ,icon: Ext.MessageBox.INFO
 
-		          msg: Dnet.translate("msg", "chpswd_success")
-		         ,buttons: {ok:'OK'}
-		         ,scope:this
-		         ,icon: Ext.MessageBox.INFO
-
-			 });
-			 this.close();
+		 });
+		// this.close();
 	}
 
 	,doTask: function(btn, evnt) {
@@ -83,50 +85,72 @@ dnet.base.ChangePasswordWindow = Ext.extend(Ext.Window , {
 
 			Ext.Msg.show({
 		          msg: Dnet.translate("msg", "chpswd_nomatch")
-		         ,buttons: {ok:'OK'}
+		         ,buttons: Ext.MessageBox.OK
 		         ,scope:this
 		         ,icon: Ext.MessageBox.ERROR
 			 });
 			return;
 		}
 
-		var p = {};
-
-	//	p["user"] = this.getUserField().getValue();
+		var p = {}; 
 		p["npswd"] = Ext.util.MD5(this.getPasswordField().getValue() );
 		p["opswd"] = Ext.util.MD5(this.getCurrentPasswordField().getValue() );
-	//	p["client"] = this.getClientField().getValue();
-	//	p["lang"] = this.getLanguageField().getValue();
-
+ 
 		Ext.Ajax.request({
              method:"POST"
             ,params:p
-            //,async:false
             ,failure:this.doOnFailure
 			,success:this.doOnSuccess
             ,scope:this
             ,url: Dnet.sessionAPI("json").changePassword
             ,timeout:600000
-
         });
 	}
 
 	,clearFields: function() {
 		this.items.each( function(item) { item.setValue(null); } , this);
 	}
-    ,clearInvalid: function() {
-		//this.getUserField().clearInvalid();
-		//this.getClientField().clearInvalid();
-	}
-
-
+ 
 	,enableAction: function() {
 		var valid = true;
 		this.items.each( function(item) { if (!item.isValid() ) {valid=false;return false; } } , this);
-		if (valid) {
-			this.buttons[0].enable();
+		if (this.getForm().isValid() ) {
+			this.getTheButton().enable();
 		} else {
-			this.buttons[0].disable();
+			this.getTheButton().disable();
 		}
 	}
+});
+
+
+Ext.define("dnet.base.ChangePasswordWindow" , {
+	extend: "Ext.Window",
+	initComponent: function() {
+	
+		var btn = Ext.create('Ext.Button', {
+			text : Dnet.translate("msg", "login_btn"),
+			disabled : true
+		}); 
+		 
+		var cfg = {
+			title : Dnet.translate("msg", "chpswd_btn"),
+			border : true,
+			width : 350,
+			resizable : false,
+			closeAction : "hide",
+			padding : 5,
+			closable : true,
+			constrain : true,
+			xtype : "form",
+			buttonAlign : "center",
+			modal : true,
+			items : new dnet.base.ChangePasswordForm({theButton: btn}),
+			buttons : [ btn ]
+		};
+		Ext.apply(this, cfg);
+	
+		dnet.base.ChangePasswordWindow.superclass.initComponent.call(this, arguments);
+ 
+ 	}
+ 
 });

@@ -1,6 +1,6 @@
-Ext.ns("dnet.base");
-dnet.base.DcActionsStateManager = function() {
-	return {
+
+
+dnet.base.DcActionsStateManager = {
 
 		applyStates : function(dc) {
 			this.logger.info("dnet.base.DcActionsStateManager.applyStates -> " + dc.dsName);
@@ -184,13 +184,14 @@ dnet.base.DcActionsStateManager = function() {
 		},
 
 		_isSaveEnabled : function(flags) {
-			return (flags.isStoreDirty);
+			return (flags.isCurrentRecordDirty || flags.isStoreDirty);
 		},
 		_isSaveDisabled : function(flags) {
 			return !this._isSaveEnabled(flags);
 		},
 		_getFlagsSave : function(dc) {
 			return {
+				isCurrentRecordDirty : dc.isCurrentRecordDirty(),
 				isStoreDirty : dc.isStoreDirty()
 			};
 		},
@@ -300,4 +301,3 @@ dnet.base.DcActionsStateManager = function() {
 
 		logger : dnet.base.Logger
 	};
-}();

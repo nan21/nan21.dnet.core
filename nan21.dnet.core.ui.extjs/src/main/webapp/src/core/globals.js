@@ -47,76 +47,7 @@
 		,FRAME_TAB_PREFIX: "view-body-tab-" // id of the tabPanel in which the frame is opened
 		,FRAME_IFRAME_PREFIX :"view-body-iframe-" // id of the html iframe in which the frame is opened in TabPanel
     }
-
-
-	// http request constants
-	/*
-	__Http__ = {
-
-   		 RESOURCE_TYPE_LOV	:"lov"
-		,RESOURCE_TYPE_DC	:"dc"
-        ,REQUEST_PARAM_RESOURCE_TYPE	: "_p_resource_type"
-		,REQUEST_PARAM_RESOURCE_NAME	: "_p_resource_name"
-        ,REQUEST_PARAM_ACTION			: "s[method]"
-        ,REQUEST_PARAM_CUSTOM_ACTION 	: "s[service]"
-        ,REQUEST_PARAM_TRANSPORT      	: "c[transport]"
-		,REQUEST_PARAM_CLIENT_SESSION   : "c[session]"
-		,REQUEST_PARAM_CONTROL          : "s[control]"
-		,REQUEST_PARAM_DATA_FORMAT      : "_p_data_format"
-
-    	,REQUEST_PARAM_FETCH_SORT       : "orderByCol"
-		,REQUEST_PARAM_FETCH_SENSE      : "orderBySense"
-		,REQUEST_PARAM_FETCH_START      : "resultStart"
-		,REQUEST_PARAM_FETCH_SIZE       : "resultSize"
-
-		,REQUEST_PARAM_EXPORT_COL_NAMES    : "c[export_col_names]"
-		,REQUEST_PARAM_EXPORT_COL_TITLES   : "c[export_col_titles]"
-		,REQUEST_PARAM_EXPORT_COL_WIDTHS   : "c[export_col_widths]"
-		,REQUEST_PARAM_EXPORT_GROUPBY      : "_p_export_groupby"
-		,REQUEST_PARAM_PRINT_LAYOUT        : "_p_print_layout"
-
-        //Request parameter values: Actions
-
-		,REQUEST_PARAM_ACTION_FETCH         : "fetch"
-		,REQUEST_PARAM_ACTION_FETCH_RECORD  : "fetch"
-		,REQUEST_PARAM_ACTION_INSERT        : "insert"
-		,REQUEST_PARAM_ACTION_UPDATE        : "update"
-		,REQUEST_PARAM_ACTION_DELETE        : "delete"
-		,REQUEST_PARAM_ACTION_EXPORT        : "export"
-		,REQUEST_PARAM_ACTION_CUSTOM        : "service"
-		,REQUEST_PARAM_ACTION_LOGIN         : "login"
-		,REQUEST_PARAM_ACTION_INIT_RECORD   : "initRecord"
-		 
-		,REQUEST_PARAM_REP_ACTION_RUN   	: "show"
-
-        //Request parameter values: Data formats
-	
-
-		,DATA_FORMAT_HTML : "html"
-		,DATA_FORMAT_CSV  : "csv"
-		,DATA_FORMAT_PDF  : "pdf"
-		,DATA_FORMAT_XML  : "xml"
-		,DATA_FORMAT_JSON : "json"
-
-		,PRINT_LAYOUT_H : "Landscape"
-		,PRINT_LAYOUT_V : "Portrait"
-
-		// Miscellaneous
-
-		,RECORD_XML_ROOT_TAG       : "record" 
-		,RECORD_JSON_ROOT_TAG      : "data"
-		,RECORDS_XML_ROOT_TAG      : "records" 
-		,RECORDS_JSON_ROOT_TAG     : "data"
-		,TRANSPORT_TAG             : "transport" 
-		,COLLECTION_RECORD_ID_TAG  : "storeRecordId" 
-		,SESSION_TAB_ID           : "sessionTabId" 
-	};
-	*/
  
-//	function query_field_alias(v){return v;};
-
-
-
 	function checkAndStart() {
 		__checkConfig();
 		__prepare();
@@ -127,10 +58,7 @@
 	   if (__COOKIE_AUTH_TOKEN__ == null) __alertUndefinedConfigVar("__COOKIE_AUTH_TOKEN__");
 	   if (__COOKIE_LOGIN_NAME__ == null) __alertUndefinedConfigVar("__COOKIE_LOGIN_NAME__");
 	   if (__COOKIE_CURRENT_THEME__ == null) __alertUndefinedConfigVar("__COOKIE_CURRENT_THEME__");
-
-       //if (__PATH_FOR_LOV__ == null) __alertUndefinedConfigVar("__PATH_FOR_LOV__");
-      // if (__PATH_FOR_DC__ == null) __alertUndefinedConfigVar("__PATH_FOR_DC__");
-
+  
 	   if (__DEFAULT_THEME__ == null) __alertUndefinedConfigVar("__DEFAULT_THEME__");
 	   if (__DEFAULT_LANGUAGE__== null) __alertUndefinedConfigVar("__DEFAULT_LANGUAGE__");
 	}

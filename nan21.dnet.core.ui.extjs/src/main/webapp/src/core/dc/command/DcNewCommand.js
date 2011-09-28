@@ -1,10 +1,10 @@
-Ext.ns("dnet.base");
 
-dnet.base.DcNewCommand = Ext.extend(dnet.base.AbstractDcSyncCommand, {
+Ext.define("dnet.base.DcNewCommand", {
+	extend : "dnet.base.AbstractDcSyncCommand",
 
 	onExecute : function() {
 		var dc = this.dc;
-		var r = new dc.RecordModel(dc.emptyRecordData(dc.recordFields));
+		var r = Ext.create(dc.recordModel, {});
 
 		if (dc.dcContext) {
 			dc.dcContext._applyContextData_(r);
@@ -12,7 +12,9 @@ dnet.base.DcNewCommand = Ext.extend(dnet.base.AbstractDcSyncCommand, {
 		dc.store.add(r);
 		dc.setRecord(r);
 		dc.setSelectedRecords( [ dc.record ]);
-		dc.fireEvent("afterDoNew", {dc:dc});
+		dc.fireEvent("afterDoNew", {
+			dc : dc
+		});
 	},
 
 	checkActionState : function() {

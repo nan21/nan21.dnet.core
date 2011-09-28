@@ -55,7 +55,7 @@ dnet.base.GridMenu = Ext.extend(Ext.menu.Menu, {
         el.setWidth(el.getWidth()); //nasty hack for IE7 strict mode
     }
  });
- Ext.reg('gridmenu', dnet.base.GridMenu);
+ Ext.reg('gridmenu', 'dnet.base.GridMenu');
 
 
 
@@ -255,4 +255,4 @@ dnet.base.AbstractLov2 = Ext.extend(Ext.form.TriggerField, {
 	  }
 });
 
-Ext.reg('xlovfield2', dnet.base.AbstractLov2);
+Ext.reg('xlovfield2', 'dnet.base.AbstractLov2');

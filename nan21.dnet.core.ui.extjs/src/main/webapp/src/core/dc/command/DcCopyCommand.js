@@ -1,6 +1,6 @@
-Ext.ns("dnet.base");
 
-dnet.base.DcCopyCommand = Ext.extend(dnet.base.AbstractDcSyncCommand, {
+Ext.define("dnet.base.DcCopyCommand", {
+	extend : "dnet.base.AbstractDcSyncCommand",
 
 	onExecute : function() {
 		var dc = this.dc;

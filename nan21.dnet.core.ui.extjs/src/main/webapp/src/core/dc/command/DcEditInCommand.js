@@ -1,10 +1,9 @@
-Ext.ns("dnet.base");
 
-dnet.base.DcEditInCommand = Ext.extend(dnet.base.AbstractDcSyncCommand, {
-	
-	execute: function(dc) {	
-		 
-	}	
- 
+Ext.define("dnet.base.DcEditInCommand", {
+	extend : "dnet.base.AbstractDcSyncCommand",
+
+	execute : function(dc) {
+
+	}
+
 });
- 

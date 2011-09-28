@@ -1,13 +1,11 @@
 
-Ext.ns("dnet.base");
-dnet.base.DcvFilterFormBuilder = function(config) {		
-	this.dcv = null; 
-	Ext.apply(this,config);	 
-	dnet.base.DcvFilterFormBuilder.superclass.constructor.call(this, config);
-};
 
-Ext.extend(dnet.base.DcvFilterFormBuilder, Ext.util.Observable, {
-	
+
+Ext.define("dnet.base.DcvFilterFormBuilder", {
+	extend:  "Ext.util.Observable" ,
+ 	
+	dcv : null,
+ 
 	addTextField: function(config) {
 		config.xtype="textfield";	
 		this.applyModelUpdater(config);
@@ -33,13 +31,20 @@ Ext.extend(dnet.base.DcvFilterFormBuilder, Ext.util.Observable, {
 		return this;
 	}
 	,addBooleanField: function(config) {
-		Ext.applyIf(config, {forceSelection:true, width:70});
+		Ext.applyIf(config, {forceSelection:false, width:70});
+		
+		var yesNoStore = Ext.create('Ext.data.Store', {
+			fields: [ "bv", "tv" ], 
+			data: [
+		       {"bv":true,"tv":Dnet.translate("msg", "bool_true")},
+		       {"bv":false,"tv":Dnet.translate("msg", "bool_false")}        
+			]			
+		});
+		
 		Ext.apply(config,{ 
-				xtype:"combo", mode: "local", valueField: "bv", displayField: "tv", triggerAction:"all", 
-				store:new Ext.data.ArrayStore({
-						idIndex:0, fields: [ "bv", "tv" ], 
-						data: [[true,Dnet.translate("msg", "bool_true")],[false,Dnet.translate("msg", "bool_false")]] 
-						}) 
+			xtype:"combo", queryMode: "local", valueField: "bv", displayField: "tv",
+			triggerAction:"all", 
+			store: yesNoStore
 		});		
 		this.applyModelUpdater(config);
 		this.applySharedConfig(config);
@@ -70,9 +75,13 @@ Ext.extend(dnet.base.DcvFilterFormBuilder, Ext.util.Observable, {
 	}
 	
 	,addPanel: function(config) {
-		Ext.applyIf(config,{
-			id:Ext.id() 
-		});
+		Ext.applyIf(config, this.dcv.defaults );
+		if (config.defaults) {
+			Ext.applyIf(config.defaults, this.dcv.defaults );
+		} else {
+			config.defaults =  this.dcv.defaults;
+		}
+		  
 		this.dcv._elems_.add(config.name, config); 		 
 		return this;
 	}

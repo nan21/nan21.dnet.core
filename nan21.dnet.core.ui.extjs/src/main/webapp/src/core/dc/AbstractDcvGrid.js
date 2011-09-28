@@ -1,101 +1,101 @@
-Ext.ns("dnet.base");
-
-dnet.base.AbstractDcvGrid = Ext.extend(Ext.grid.GridPanel, {
-
+Ext.define("dnet.base.AbstractDcvGrid", {
+	extend:  "Ext.grid.Panel" ,
+  
+	// DNet properties
+	
+	_builder_: null,
 	_columns_ : null,
 	_elems_ : null,
-	_controller_ : null,
+	_controller_: null,
+	
 	_noExport_ : false,
-	_noImport_ : false,
-	_noLayoutCfg_ : false,
+	_noImport_ : true,
+	_noLayoutCfg_ : true,
 	_exportWindow_ : null,
 	_importWindow_ : null,
 	_layoutWindow_ : null,
-	_builder_ : null,
-
+     
+    // defaults
+     
+	buttonAlign : "left",
+	forceFit : false,
+	loadMask : true,
+	stripeRows : true,
+	border : true,
+	frame : true,
+	deferRowRender: true, 
+	 
 	initComponent : function(config) {
 		this._elems_ = new Ext.util.MixedCollection();
 		this._columns_ = new Ext.util.MixedCollection();
 
 		this._startDefine_();
-		/* define columns */
-		if (this._beforeDefineColumns_() !== false) {
-			this._defineColumns_();
-			this._afterDefineColumns_();
-		}
-		this._columns_.each(this._postProcessColumn_, this);
-
 		this._defineDefaultElements_();
+		 
+		if (this._beforeDefineColumns_() !== false) {
+			this._defineColumns_();			
+		}
+		this._afterDefineColumns_();
+		
+		
+		this._columns_.each(this._postProcessColumn_, this);
+		
 		this._endDefine_();
+		
 		// disable default selection handler in controller
 		// let it be triggered from here
 		this._controller_.afterStoreLoadDoDefaultSelection = false;
+		
 		var cfg = {
 			columns : this._columns_.getRange(),
-			buttonAlign : "left",
-			forceFit : true,
-			loadMask : true,
-			stripeRows : true,
-			border : true,
-			frame : true,
+			
 			viewConfig : {
 				emptyText : Dnet.translate("msg", "grid_emptytext")
 			},
 			bbar : {
-				xtype : "paging",
+				xtype : "pagingtoolbar",
 				store : this._controller_.store,
-				displayInfo : true,
-				pageSize : this._controller_.tuning.fetchSize
+				displayInfo : true		 
 			},
-			sm : new Ext.grid.RowSelectionModel( {
-				singleSelect : false,
-				listeners : {
-					"rowselect" : {
-						scope : this,
-						fn : function(sm, idx, rec) {
-//							if (this._controller_.getRecord() != rec) {
-//								this._controller_.setRecord(idx);
-//							}
-						}
-					},
-					"rowdeselect" : {
-						scope : this,
-						fn : function(sm, idx, rec) {
-//							if (this._controller_.getRecord() == rec) {
-//								if (sm.getSelections().length > 0) {
-//									this._controller_.setRecord(sm
-//											.getSelections()[0]);
-//								} else {
-//									this._controller_.setRecord(null);
-//								}
-//							}
-						}
-					},
+			selModel :  {
+				mode: "MULTI",
+				listeners : {					 
 					"selectionchange" : {
 						scope : this,
-						fn : function(sm) {
-							this._controller_.setSelectedRecords(sm
-									.getSelections());
-						}
+						fn : function(sm,selected, options) {
+							this._controller_.setSelectedRecords(selected);
+						},
+						options: {
+							buffer: 100
+						}						
+					}
+					,"beforedeselect" : {
+						scope : this,
+						fn : function(sm,record, index, eopts) {
+							if (record == this._controller_.record && !this._controller_.isRecordChangeAllowed()) {
+								return false;
+							}
+						}						
 					}
 				}
-			}),
+			},
 			store : this._controller_.store,
 			listeners : {
-				"rowdblclick" : {
+				"itemdblclick" : {
 					scope : this,
-					fn : function(grid, rIdx, e) {
+					fn : function(view, model, item, idx, evnt, evntOpts ) {
 						this._controller_.onEdit();
 					}
 				}
-			},
-			keys:[{
-			    key: Ext.EventObject.ENTER,
-			    fn: function() {
-					this._controller_.onEdit();
-				},
-			    scope: this
-			}]
+			}
+			
+//			,keys:[{
+//			    key: Ext.EventObject.ENTER,
+//			    fn: function() {
+//					this._controller_.onEdit();
+//				},
+//			    scope: this
+//			}]
 		};
 		var bbitems = [];
 		if (!this._noLayoutCfg_) {
@@ -121,28 +121,22 @@ dnet.base.AbstractDcvGrid = Ext.extend(Ext.grid.GridPanel, {
 
 		Ext.apply(cfg, config);
 		Ext.apply(this, cfg);
-		dnet.base.AbstractDcvGrid.superclass.initComponent.call(this);
+
+		this.callParent(arguments);
+		
 		this._controller_.store.on("load", function(store, records, options) {
 			this._onStoreLoad_(store, records, options);
 		}, this);
-		// this._controller_.on("afterDoNew", function(dc) {
-		// this.getSelectionModel().suspendEvents();
-		// this.getSelectionModel().selectLastRow(false);
-		// //this.getView().focusRow(this.store.getCount() );
-		// this.getSelectionModel().resumeEvents();
-		// }, this);
-		this._controller_.on("selectionChange", function(evnt) {
+		
+		  
+		this._controller_.on("selectionChange",function(evnt) { //return ;
 			var s = evnt.dc.getSelectedRecords();
-			if (s != this.getSelectionModel().getSelections()) {
+			if (s != this.getSelectionModel().getSelection() ) {
 				this.getSelectionModel().suspendEvents();
-				this.getSelectionModel().selectRecords(s, false);
+				this.getSelectionModel().select(s,false);
 				this.getSelectionModel().resumeEvents();
 			}
-		}, this);
-		// this.getSelectionModel().on('beforerowselect',function(sm,ridx,ke,rec)
-		// {
-		// return this._controller_.isRecordChangeAllowed();
-		// }, this);
+		} , this);
 	}
 
 	,
@@ -212,15 +206,14 @@ dnet.base.AbstractDcvGrid = Ext.extend(Ext.grid.GridPanel, {
 	,
 	_doImport_ : function() {
 		if (this._importWindow_ == null) {
-			this._importWindow_ = new dnet.base.DataImportWindow();
+			this._importWindow_ = new dnet.base.DataImportWindow({});
 			this._importWindow_._grid_ = this;
 		}
 		this._importWindow_.show();
 	},
 	_doExport_ : function() {
 		if (this._exportWindow_ == null) {
-			this._exportWindow_ = new dnet.base.DataExportWindow();
-			this._exportWindow_._grid_ = this;
+			this._exportWindow_ = new dnet.base.DataExportWindow({_grid_: this});			 
 		}
 		this._exportWindow_.show();
 	}
@@ -228,8 +221,7 @@ dnet.base.AbstractDcvGrid = Ext.extend(Ext.grid.GridPanel, {
 	,
 	_doLayoutManager_ : function() {
 		if (this._layoutWindow_ == null) {
-			this._layoutWindow_ = new dnet.base.GridLayoutManager();
-			this._layoutWindow_._grid_ = this;
+			this._layoutWindow_ = new dnet.base.GridLayoutManager({_grid_: this});			 
 		}
 		this._layoutWindow_.show();
 	}
@@ -245,11 +237,10 @@ dnet.base.AbstractDcvGrid = Ext.extend(Ext.grid.GridPanel, {
 		}
 		if (store.getCount() > 0) {
 			if (this.selModel.getCount() == 0) {
-				this.selModel.selectFirstRow();
-			} else {
-				//this._controller_.setRecord(this.selModel.getSelected());
+				this.selModel.select(0);
+			} else {				
 				this._controller_.setSelectedRecords(this.selModel
-						.getSelections());
+						.getSelection());
 			}
 		}
 	},
@@ -259,7 +250,7 @@ dnet.base.AbstractDcvGrid = Ext.extend(Ext.grid.GridPanel, {
 	,
 	_postProcessColumn_ : function(item, idx, len) {
 		if (item.header == undefined) {
-			Dnet.translateColumn(this._trl_, this._controller_.ds._trl_, item);
+			Dnet.translateColumn(this._trl_, this._controller_._trl_, item);
 		}
 	}
 
