@@ -101,12 +101,12 @@ Ext.define("dnet.base.AbstractDcvForm", {
 //		}   });
 //		
 //		this._controller_.addBindedView(this.id,this._dcViewType_);	 
-//		this.on("afterrender", function() { 
-//			if ( this._controller_&& this._controller_.getRecord()) { 
-//				this.onBind(this._controller_.getRecord()); 
-//			} else { 
-//				this.onUnbind(null);} 
-//			}, this);
+		this.on("afterrender", function() { 
+			if ( this._controller_&& this._controller_.getRecord()) { 
+				this.onBind(this._controller_.getRecord()); 
+			} else { 
+				this.onUnbind(null);} 
+			}, this);
 		
 	}
  
@@ -135,7 +135,7 @@ Ext.define("dnet.base.AbstractDcvForm", {
 		if (record) {
 			this.getForm().getFields().each(function(field) {
 				if (field.dataIndex) {
-					field.setRawValue(record.data[field.dataIndex]);
+					field._setRawValue_(record.data[field.dataIndex]);
 				}						
 				}); 
 			this._applyContextRules_(record);

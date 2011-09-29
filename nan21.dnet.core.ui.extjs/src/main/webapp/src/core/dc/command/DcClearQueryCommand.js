@@ -1,4 +1,3 @@
-
 Ext.define("dnet.base.DcClearQueryCommand", {
 	extend : "dnet.base.AbstractDcSyncCommand",
 

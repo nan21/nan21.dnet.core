@@ -105,7 +105,5 @@ dnet.base.DcCommandFactory = {
 		return new dnet.base.DcReloadRecCommand( {
 			dc : dc
 		});
-	},
-
-	logger : dnet.base.Logger
+	}
 };

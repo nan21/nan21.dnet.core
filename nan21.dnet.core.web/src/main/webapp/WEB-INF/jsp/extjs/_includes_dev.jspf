@@ -5,12 +5,12 @@
     <link rel="stylesheet" type="text/css" href="${urlUiExtjsLibExtjs}/js/extjs/resources/css/xtheme-${theme}.css"/>        
   -->
     <script type="text/javascript" src="${urlUiExtjsLibExtjs}/ext-all-debug.js"></script>
-    <!--  -->
+    <!--  
     <script type="text/javascript" src="${urlUiExtjsLibExtjs}/compatibility/ext3-core-compat.js"></script>
     <script type="text/javascript" src="${urlUiExtjsLibExtjs}/compatibility/ext3-compat.js"></script>
-    
+    -->
     <script>
-    Ext.Compat.showErrors = true;
+    //Ext.Compat.showErrors = true;
     </script>
     <!-- <script type="text/javascript" src="${urlUiExtjsLibExtjs}/js/extjs/examples/ux/ux-all.js"></script>  --> 
     

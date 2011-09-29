@@ -9,7 +9,7 @@ Ext.define("dnet.base.DcPrevRecCommand", {
 			if (--crtIdx < 0) {
 				throw (dnet.base.DcExceptions.NAVIGATE_BEFORE_FIRST);
 			} else {
-				dc.setSelectedRecords([dc.store.getAt(crtIdx)]);
+				dc.setRecord(dc.store.getAt(crtIdx));
 			}
 		} else {
 			var crtIdx = dc.selectedRecords.indexOf(dc.record);

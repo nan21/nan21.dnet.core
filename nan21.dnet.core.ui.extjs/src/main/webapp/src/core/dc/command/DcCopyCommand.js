@@ -1,4 +1,3 @@
-
 Ext.define("dnet.base.DcCopyCommand", {
 	extend : "dnet.base.AbstractDcSyncCommand",
 

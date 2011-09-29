@@ -1,4 +1,3 @@
-
 Ext.define("dnet.base.DcNextRecCommand", {
 	extend : "dnet.base.AbstractDcSyncCommand",
 
@@ -9,7 +8,7 @@ Ext.define("dnet.base.DcNextRecCommand", {
 			if (++crtIdx >= dc.store.getCount()) {
 				throw (dnet.base.DcExceptions.NAVIGATE_AFTER_LAST);
 			} else {
-				dc.setSelectedRecords([dc.store.getAt(crtIdx)]);
+				dc.setRecord(dc.store.getAt(crtIdx));
 			}
 		} else {
 			var crtIdx = dc.selectedRecords.indexOf(dc.record);

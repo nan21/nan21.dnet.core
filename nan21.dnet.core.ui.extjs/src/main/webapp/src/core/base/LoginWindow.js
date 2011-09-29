@@ -2,6 +2,7 @@ Ext.define("dnet.base.LoginForm", {
 	extend : "Ext.form.Panel",
 	actionButton : null,
 	initComponent : function(config) {
+		
 		this.actionButton = this.initialConfig.actionButton;
 		this.actionButton.setHandler(this.doLogin, this);
 

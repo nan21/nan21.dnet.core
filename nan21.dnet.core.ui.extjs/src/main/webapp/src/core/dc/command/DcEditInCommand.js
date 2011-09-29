@@ -1,4 +1,3 @@
-
 Ext.define("dnet.base.DcEditInCommand", {
 	extend : "dnet.base.AbstractDcSyncCommand",
 

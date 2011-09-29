@@ -26,6 +26,8 @@ Ext.define("dnet.base.DcQueryCommand",{
 		dc.store.proxy.extraParams.params = request.params;
 		dc.store.proxy.extraParams.data = request.data;
 		dc.store.currentPage = 1;
+		//dc.setRecord(null);
+		
 		dc.store.load( {
 			//params : request,
 			scope : dc
@@ -33,7 +35,7 @@ Ext.define("dnet.base.DcQueryCommand",{
 //		dc.store.baseParams = {
 //			data : data
 //		};
-		dc.setRecord(null);
+		 
 
 	},
 

@@ -1,4 +1,3 @@
-
 Ext.define("dnet.base.DcReloadRecCommand", {
 	extend : "dnet.base.AbstractDcAsyncCommand",
 

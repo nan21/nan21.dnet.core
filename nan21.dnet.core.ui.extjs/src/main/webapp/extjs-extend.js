@@ -3,7 +3,7 @@
 //
 Ext.DATE_FORMAT = 'd.m.Y';
 Ext.TIME_FORMAT = 'H:i';
-Ext.DATETIME_FORMAT = 'd.m.Y H:i:s';
+Ext.DATETIME_FORMAT = 'd.m.Y H:i';
 // Ext.MONTH_FORMAT = 'm.Y';
 // //Ext.form.field.DateField.prototype.altFormats = "j|j.n|d|d.m";
 // //Ext.form.field.TimeField.prototype.altFormats = "G|H|G:i";
@@ -13,6 +13,18 @@ Ext.DATETIME_FORMAT = 'd.m.Y H:i:s';
 //
 //
 Ext.MODEL_DATE_FORMAT = "Y-m-d\\TH:i:s.uO";
+
+
+Ext.override(Ext.form.field.Base, {
+	_setRawValue_: function(v) {
+		this.setRawValue(v);
+	}
+});
+Ext.override(Ext.form.field.Date, {
+	_setRawValue_: function(v) {
+		this.setRawValue(this.valueToRaw(v));
+	}
+});
 
 Ext.override(Ext.data.Store, {
 
@@ -129,5 +141,8 @@ Ext.override(Ext.grid.plugin.CellEditing, {
 	
 	
 });
+
+
+
 
  

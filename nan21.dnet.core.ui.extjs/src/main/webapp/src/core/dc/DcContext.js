@@ -1,30 +1,57 @@
-
 /**
- * Defines a parent-child relationship.
- * 
- * @param: parentDc Reference to the parent data-control. Must be specified in
- *         initial configuration.
- * @param: relation Relation definition. It is of type: <code>{ 
- * 		 fetchMode: 'auto' 
- * 		,strict: true // do not allow masterless operations ; default is true
- * 		,fields: [ {childField:"field_name", parentField:"field_name"}, {...} ... ]
- * 	}</code>
- *         Must be specified in initial configuration
- * 
+ * Defines a parent-child relationship between data-controls in a frame.
  */
-
-Ext.define("dnet.base.DcContext",{
+Ext.define("dnet.base.DcContext", {
 	mixins : {
 		observable : 'Ext.util.Observable'
 	},
 
+	/**
+	 * Reference to the parent data-control. Must be specified in initial
+	 * configuration.
+	 */
 	parentDc : null,
+
+	/**
+	 * Reference to the child data-control. Must be specified in initial
+	 * configuration.
+	 */
+
 	childDc : null,
+	/**
+	 * Relation definition. Must be specified in initial configuration. Supports
+	 * the following attributes:
+	 * <li>fetchMode: 'auto' Automatically load the children data on parent
+	 * record change. </li>
+	 * <li>strict: true Enable /disable masterless operations, i.e. load
+	 * children outside of the parent context</li>
+	 * <li>fields: [ {childField:"field_name", parentField:"field_name"}, {...}
+	 * ... ] Relation mapping fields. </li>
+	 * 
+	 */
 	relation : null,
+
 	doQueryTask : null,
+	/**
+	 * The values for the relation fields, the relation context data.
+	 */
 	ctxData : null,
+
 	autoFetchDelay : 600,
+
+	/**
+	 * Flag used to automatically reload the data in the child DC after a new
+	 * parent record has been saved. Useful if the creation of a parent
+	 * generates child records in the business logic.
+	 */
 	reloadChildrenOnParentInsert : true,
+
+	/**
+	 * Flag used to automatically reload the data in the child DC after the
+	 * parent record has been saved. Useful if the update of a parent alters
+	 * data in the children or if the relation contains fields which are allowed
+	 * to be modified by the user.
+	 */
 	reloadChildrenOnParentUpdate : false,
 
 	constructor : function(config) {
@@ -76,37 +103,36 @@ Ext.define("dnet.base.DcContext",{
 			}
 		}, this);
 
-	}
+	},
 
 	/**
-	 * @param eventName
+	 * Update context data whenever context is changed.
 	 */
-	,
 	_updateCtxData_ : function(eventName) {
-//		dnet.base.Logger
-//				.debug("dnet.base.DcContext._updateCtxData_ eventName="
-//						+ eventName);
+
 		this.ctxData = {};
-		var f = this.relation.fields, l = f.length, r = this.parentDc.record, changed = false, nv = null, ov = null;
+		var f = this.relation.fields;
+		var l = f.length;
+		var r = this.parentDc.record;
+		var changed = false;
+		var nv = null;
+		var ov = null;
 
 		for ( var i = 0; i < l; i++) {
 			ov = this.ctxData[f[i]["childField"]];
 			nv = (r) ? r.get(f[i]["parentField"]) : null;
 			this.ctxData[f[i]["childField"]] = nv;
-
-			if (nv !== ov)
+			if (nv !== ov) {
 				changed = true;
+			}
 		}
 
-		if (!eventName)
+		if (!eventName) {
 			return;
+		}
 
 		if (changed) {
-//			dnet.base.Logger
-//					.debug("dnet.base.DcContext._updateCtxData_ context data is changed ");
-
-			dnet.base.DcActionsStateManager
-					.applyStates(this.childDc);
+			dnet.base.DcActionsStateManager.applyStates(this.childDc);
 			this._updateChildFilter_();
 			this.fireEvent("dataContextChanged", this);
 
@@ -114,17 +140,17 @@ Ext.define("dnet.base.DcContext",{
 
 			this.childDc.store.loadData( [], false);
 
-			if (this.relation.fetchMode == "auto"
-					&& this.parentDc.getRecord()
+			if (this.relation.fetchMode == "auto" && this.parentDc.getRecord()
 					&& !this.parentDc.getRecord().phantom) {
 
 				this.doQueryTask.delay(this.autoFetchDelay);
-
 			}
 		}
-	}
+	},
 
-	,
+	/**
+	 * Update the filter values in the child. Called usually after a context change.
+	 */
 	_updateChildFilter_ : function() {
 		var f = this.childDc.filter;
 		f.beginEdit();
@@ -132,9 +158,8 @@ Ext.define("dnet.base.DcContext",{
 			f.set(p, this.ctxData[p]);
 		}
 		this.childDc.filter.endEdit();
-	}
+	},
 
-	,
 	_applyContextData_ : function(record) {
 		Ext.apply(record.data, this.ctxData);
 	}

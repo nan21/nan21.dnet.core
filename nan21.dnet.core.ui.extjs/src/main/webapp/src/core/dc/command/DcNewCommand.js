@@ -1,4 +1,3 @@
-
 Ext.define("dnet.base.DcNewCommand", {
 	extend : "dnet.base.AbstractDcSyncCommand",
 
@@ -10,6 +9,7 @@ Ext.define("dnet.base.DcNewCommand", {
 			dc.dcContext._applyContextData_(r);
 		}
 		dc.store.add(r);
+
 		dc.setRecord(r);
 		dc.setSelectedRecords( [ dc.record ]);
 		dc.fireEvent("afterDoNew", {

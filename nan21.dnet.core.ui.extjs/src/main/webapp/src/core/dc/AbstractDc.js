@@ -38,7 +38,8 @@ Ext.define("dnet.base.AbstractDc", {
 	 * Data model instance.
 	 */
 	record : null,
-
+ 
+	
 	/**
 	 * Parameters model instance
 	 */
@@ -261,16 +262,12 @@ Ext.define("dnet.base.AbstractDc", {
 		if (this.afterStoreLoadDoDefaultSelection) {
 			this.store.on("load", function(store, records, success, operation, eopts) {
 				if (this.afterStoreLoadDoDefaultSelection) {
-					//this.doDefaultSelection();
+					this.doDefaultSelection();
 				}
 			}, this);
 		}
 		
-			
-		
-		
-		
-		
+			 
 		
 		// invoke the action state update whenever necessary
 		this.on("recordChange", this.updateActionsState, this);
@@ -284,12 +281,22 @@ Ext.define("dnet.base.AbstractDc", {
 			/* after write extjs replaces the record instance from the store 
 			 * with the new record instance created by the result reader,
 			 *  so our record is an orphan item. Selection is also lost 
-			 *   -> handle this until is fixed in extjs */
-			//this.record.dirty = false;
-			if(this.record) {
-				this.record = this.store.data.get(this.record.data.id);	
+			 *   -> handle this until is fixed in extjs
+			 *   If this.record is a new one than get it from the last position in store, 
+			 *   no other information is available ( DcNewCommand places it to the last position ) */
+			
+			if(this.record) {				
+				if (this.record.phantom) {
+					this.record = this.store.getAt(this.store.getCount()-1);	
+				} else {
+					this.record = this.store.data.get(this.record.data.id);	
+				}				 
 				if (!this.multiEdit) {
-					this.setSelectedRecords([this.record]);
+					try {
+						this.setSelectedRecords([this.record]);
+					}catch(e) {
+						console.log(e);
+					}					
 				}
 			}
 			
@@ -298,9 +305,9 @@ Ext.define("dnet.base.AbstractDc", {
 			}, this);
 	},
 
-	/** ************************************************************************* */
-	/** *********************** Public API ****************************** */
-	/** ************************************************************************* */
+	/** ***************************************************** */
+	/** ***************** Public API ************************ */
+	/** ***************************************************** */
 
 	/**
 	 * Execute query to fetch data.
@@ -526,31 +533,7 @@ Ext.define("dnet.base.AbstractDc", {
 
 	// --------------------- getters / setters ----------------------
 
-	/**
-	 * Returns the selected records
-	 */
-	getSelectedRecords : function() {
-		return this.selectedRecords;
-	},
 
-	/**
-	 * Set the selected records
-	 */
-	setSelectedRecords : function(recArray) {
-		if (this.selectedRecords != recArray) {
-			this.selectedRecords = recArray;
-			if (recArray.length == 0) {
-				this.setRecord(null);
-			} else {
-				if (this.record != recArray[0]) {
-					this.setRecord(recArray[0]);
-				}
-			}
-			this.fireEvent('selectionChange', {
-				dc : this
-			});
-		}
-	},
 
 	/**
 	 * Returns the filter instance
@@ -687,6 +670,7 @@ Ext.define("dnet.base.AbstractDc", {
 			}
 			dnet.base.Logger.debug("dnet.base.AbstractDc.setRecord  => " +msg );
 			// this.addToSelectedRecords(rec);
+			
 			this.fireEvent('recordChange', {
 				dc : this,
 				newRecord : rec,
@@ -694,9 +678,62 @@ Ext.define("dnet.base.AbstractDc", {
 				newIdx : idx,
 				status : this.getRecordStatus()
 			});
+			if (this.selectedRecords.length <= 1 && this.shouldRecordNotifySelection ) {
+				if (this.record != null ) {
+					this.shouldSelectionNotifyRecord = false;
+					this.setSelectedRecords([this.record]);
+					this.shouldSelectionNotifyRecord = true;
+				} else {
+					this.shouldSelectionNotifyRecord = false;
+					this.setSelectedRecords([]);
+					this.shouldSelectionNotifyRecord = true;
+				}				 
+			}
 		}
 	},
+	
+	shouldRecordNotifySelection: true,
+	shouldSelectionNotifyRecord: true,
+	
+	/**
+	 * Returns the selected records
+	 */
+	getSelectedRecords : function() {
+		return this.selectedRecords;
+	},
 
+
+	/**
+	 * Set the selected records
+	 */
+	setSelectedRecords : function(recArray) {
+		recArray = recArray || [];
+		if (!Ext.isArray(recArray)) {
+			recArray = [recArray];
+		}
+		dnet.base.Logger.debug("dnet.base.AbstractDc.setSelectedRecords length = " 
+				+recArray.length );
+		if (this.selectedRecords != recArray) {
+			this.selectedRecords = recArray;
+			if (this.shouldSelectionNotifyRecord) {
+				if (recArray.length == 0) {
+					this.shouldRecordNotifySelection = false;
+					this.setRecord(null);
+					this.shouldRecordNotifySelection = true;
+				} else {
+					if ( this.record == null || recArray.length == 1 ) { //||  !Ext.Array.contains(recArray, this.record)
+						this.shouldRecordNotifySelection = false;
+						this.setRecord(recArray[0]);
+						this.shouldRecordNotifySelection = true;
+					}
+				} 
+			}			
+			this.fireEvent('selectionChange', {
+				dc : this
+			});
+		}
+	},
+	
 	/**
 	 * Return parent data-control
 	 */

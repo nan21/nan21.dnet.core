@@ -12,8 +12,7 @@ Ext.define("dnet.base.DataExportForm", {
 
 		this.actionButton = this.initialConfig.actionButton;
 		this.actionButton.setHandler(this.executeTask, this);
-		//this._grid_ = this.initialConfig._grid_;
-		
+
 		this._buildItems_();
 
 		var cfg = {
@@ -46,11 +45,11 @@ Ext.define("dnet.base.DataExportForm", {
 		if (nv == "pdf") {
 			this._getElement_("fld_columns_listvisible").setValue(true);
 			this._getElement_("fld_columns_listall").disable();
-			//this._getElement_("fld_columns_all").disable();
+			// this._getElement_("fld_columns_all").disable();
 			this._getElement_("fld_layout").enable();
 		} else {
 			this._getElement_("fld_columns_listall").enable();
-			//this._getElement_("fld_columns_all").enable();
+			// this._getElement_("fld_columns_all").enable();
 			this._getElement_("fld_layout").disable();
 		}
 	},
@@ -78,11 +77,11 @@ Ext.define("dnet.base.DataExportForm", {
 			params["resultSize"] = 30;
 			params["resultStart"] = 0;
 		}
-//		var sortState = ctrl.store.getSortState();
-//		if (sortState) {
-//			params[Dnet.requestParam.SORT] = sortState.field;
-//			params[Dnet.requestParam.SENSE] = sortState.direction;
-//		}
+		// var sortState = ctrl.store.getSortState();
+		// if (sortState) {
+		// params[Dnet.requestParam.SORT] = sortState.field;
+		// params[Dnet.requestParam.SENSE] = sortState.direction;
+		// }
 		if (fcv != "a") {
 			var gridCm = this._grid_.getColumnModel();
 			var cs = '';
@@ -91,9 +90,9 @@ Ext.define("dnet.base.DataExportForm", {
 			var cnt = 0;
 			var len = gridCm.length;
 			for ( var i = 0; i < len; i++) {
-				if (fcv == "l" || !gridCm[i].hidden ) {
+				if (fcv == "l" || !gridCm[i].hidden) {
 					cs += (cnt > 0) ? "," : "";
-					cs += gridCm[i].dataIndex ;
+					cs += gridCm[i].dataIndex;
 					cst += (cnt > 0) ? "," : "";
 					cst += gridCm[i].text.replace(",", " ");
 					csw += (cnt > 0) ? "," : "";
@@ -159,13 +158,6 @@ Ext.define("dnet.base.DataExportForm", {
 			name : "fld_columns",
 			id : Ext.id()
 		});
-//		this._elems_.add("fld_columns_all", {
-//			boxLabel : Dnet.translate("dcvgrid", "exp_col_all2"),
-//			inputValue : 'a',
-//			name : "fld_columns",
-//			id : Ext.id(),
-//			checked : true
-//		});
 
 		this._elems_.add("fld_columns", {
 			fieldLabel : Dnet.translate("dcvgrid", "exp_columns"),
@@ -174,7 +166,7 @@ Ext.define("dnet.base.DataExportForm", {
 			columns : 1,
 			id : Ext.id(),
 			items : [ this._elems_.get("fld_columns_listvisible"),
-					this._elems_.get("fld_columns_listall")  ]
+					this._elems_.get("fld_columns_listall") ]
 		});
 
 		this._elems_.add("fld_records_selected", {
@@ -216,13 +208,13 @@ Ext.define("dnet.base.DataExportForm", {
 Ext.define("dnet.base.DataExportWindow", {
 	extend : "Ext.Window",
 
-	_grid_: null,
-	
+	_grid_ : null,
+
 	initComponent : function(config) {
 
 		var btn = Ext.create('Ext.Button', {
-			text:Dnet.translate("dcvgrid", "exp_run"), 
-			iconCls: 'icon-action-run'
+			text : Dnet.translate("dcvgrid", "exp_run"),
+			iconCls : 'icon-action-run'
 		});
 
 		var cfg = {
@@ -238,7 +230,7 @@ Ext.define("dnet.base.DataExportWindow", {
 			modal : true,
 			items : new dnet.base.DataExportForm( {
 				actionButton : btn,
-				_grid_: this._grid_
+				_grid_ : this._grid_
 			}),
 			buttons : [ btn ]
 		};

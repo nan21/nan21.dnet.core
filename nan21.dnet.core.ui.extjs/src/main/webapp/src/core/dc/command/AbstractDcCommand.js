@@ -1,36 +1,68 @@
-/*dnet.base.AbstractDcCommand = function(config) {
- this.dc = null;
- this.confirmByUser = false;
- this.confirmMessageTitle = "";
- this.confirmMessageBody = "Please confirm action";	 
- this.logger = dnet.base.Logger;
- Ext.apply(this, config);
- };*/
+/**
+ * Abstract base class for any kind of command. Do not directly subclass this
+ * one but use one of the provided children depending on what type of command
+ * you need. See the synchronous and asynchronous commands for details.
+ */
 Ext.define("dnet.base.AbstractDcCommand", {
 
+	/**
+	 * Data-control on which this command is invoked.
+	 */
 	dc : null,
-	confirmByUser : false,
-	confirmMessageTitle : "",
-	confirmMessageBody : "Please confirm action",
-	logger : dnet.base.Logger,
 
+	/**
+	 * Flag to set if this command needs explicit confirmation from the user in
+	 * order to execute.
+	 */
+	confirmByUser : false,
+
+	/**
+	 * User confirmation message title.
+	 */
+	confirmMessageTitle : "",
+
+	/**
+	 * User confirmation message body.
+	 */
+	confirmMessageBody : "Please confirm action",
+
+	/**
+	 * Constructor
+	 */
 	constructor : function(config) {
-        config = config || {};
-        Ext.apply(this, config);
-        this.callParent(arguments);
-    },
-    
+		config = config || {};
+		Ext.apply(this, config);
+		this.callParent(arguments);
+	},
+
+	/**
+	 * Template method where subclasses or external contexts can provide
+	 * additional logic. If it returns false the execution is stopped.
+	 */
 	beforeExecute : function() {
 		return true;
 	},
 
+	/**
+	 * Template method where subclasses or external contexts can provide
+	 * additional logic. Called after the execution is finished. ATTENTION:
+	 * Commands which initiate AJAX calls do not have the result of the remote
+	 * call available here. Provide callbacks for such situations.
+	 */
 	afterExecute : function() {
 	},
 
+	/**
+	 * Provide whatever extra-logic to check if the command can be executed.
+	 */
 	canExecute : function() {
 		return true;
 	},
 
+	/**
+	 * Default routine which ask confirmation from the user to proceed. Called
+	 * if confirmByUser = true.
+	 */
 	confirmExecute : function(btn, options) {
 		if (!btn) {
 			Ext.Msg.confirm(this.confirmMessageTitle, this.confirmMessageBody,
@@ -49,9 +81,15 @@ Ext.define("dnet.base.AbstractDcCommand", {
 		return this.confirmByUser;
 	},
 
+	/**
+	 * Calls the appropriate method from the action-state manager.
+	 */
 	checkActionState : function(options) {
 	},
 
+	/**
+	 * Command execution entry point.
+	 */
 	execute : function(options) {
 		options = options || {};
 		this.checkActionState();
@@ -68,5 +106,14 @@ Ext.define("dnet.base.AbstractDcCommand", {
 		this.onExecute(options);
 
 		this.afterExecute(options);
+	},
+
+	/**
+	 * Empty template method meant to be overriden by the subclasses.
+	 * 
+	 */
+	onExecute : function(option) {
+		throw new Exception("Unimplemented onExecute!");
 	}
+
 });
