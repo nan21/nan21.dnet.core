@@ -25,8 +25,6 @@ Ext.define("dnet.base.DcCancelCommand", {
 				dc.record.reject();
 			}
 			if (dc.record.phantom) {
-				/* TODO: check if it is necessary */
-				dc.store.remove(dc.record);
 				s.rejectChanges();
 				/* workaround to avoid the dirty check in AbstractDc */
 				var cr = dc.record;

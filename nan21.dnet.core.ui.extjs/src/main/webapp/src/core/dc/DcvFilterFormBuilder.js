@@ -24,21 +24,21 @@ Ext.define("dnet.base.DcvFilterFormBuilder", {
 		}
 		return this;
 	},
-	
+
 	addTextArea : function(config) {
 		config.xtype = "textarea";
 		this.applyModelUpdater(config);
 		this.applySharedConfig(config);
 		return this;
 	},
-	
+
 	addCheckbox : function(config) {
 		config.xtype = "checkbox";
 		this.applyModelUpdater(config, "check");
 		this.applySharedConfig(config);
 		return this;
 	},
-	
+
 	addBooleanField : function(config) {
 		Ext.applyIf(config, {
 			forceSelection : false,
@@ -158,13 +158,12 @@ Ext.define("dnet.base.DcvFilterFormBuilder", {
 			};
 		}
 		if (config.listeners[en].fn) {
-			config.listeners[en].fn = config.listeners[en].fn
-					.createInterceptor(fn);
+			Ext.Function.createInterceptor(config.listeners[en].fn, fn);
 		} else {
 			config.listeners[en]["fn"] = fn;
 		}
 	},
-	
+
 	applySharedConfig : function(config) {
 		Ext.applyIf(config, {
 			id : Ext.id(),

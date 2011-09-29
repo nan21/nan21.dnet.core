@@ -11,7 +11,7 @@ Ext.define("dnet.base.DcNewCommand", {
 		dc.store.add(r);
 
 		dc.setRecord(r);
-		dc.setSelectedRecords( [ dc.record ]);
+		//dc.setSelectedRecords( [ dc.record ]);
 		dc.fireEvent("afterDoNew", {
 			dc : dc
 		});

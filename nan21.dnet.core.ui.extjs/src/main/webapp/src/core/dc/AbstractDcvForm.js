@@ -170,9 +170,9 @@ Ext.define("dnet.base.AbstractDcvForm", {
 		var msg = "null";
 		if (record) {
 			msg = record.data.name+ ", dirty = "+record.dirty; 
-		}
-		dnet.base.Logger.debug("dnet.base.AbstractDcvForm.updateBound => " +msg );
-		this.getForm().loadRecord(record);
+			dnet.base.Logger.debug("dnet.base.AbstractDcvForm.updateBound => " +msg );
+			this.getForm().loadRecord(record);
+		}		
 	}
 
 	,_defineElements_: function () {}
