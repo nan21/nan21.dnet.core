@@ -1,24 +1,46 @@
 Ext.define("dnet.base.DcReloadRecCommand", {
 	extend : "dnet.base.AbstractDcAsyncCommand",
 
-	onExecute : function(dc) {
-		var dc = this.dc;
-		dc.store.proxy.doRequest("read", null, {
-			data : Ext.encode( {
-				id : dc.record.get("id")
-			})
-		}, dc.store.reader, function(response, options, success) {
-			if (success) {
-				dc.record.beginEdit();
-				for ( var p in dc.record.data) {
-					dc.record.set(p, response.records[0].data[p]);
-				}
-				dc.record.endEdit();
-				dc.record.commit();
-			}
-		}, dc);
+	beforeExecute : function() {
+		var r = this.dc.getRecord();
+		if (!r || r.phantom || !r.data.id) {
+			return false;
+		}
+		return true;
 	},
 
+	onExecute : function(dc) {
+		var dc = this.dc;
+		 
+		Ext.Ajax.request({
+		    url: dc.store.proxy.api.load,		    
+		    params: {
+				data : Ext.encode({
+					id : dc.record.data.id
+				})
+			},			
+		    success:this.onReload,
+		    scope:this
+		});
+	 
+	},
+
+	onReload: function(response, opts) {
+		var dc = this.dc;
+		var rs = dc.store.proxy.reader.read(response);
+		var r = dc.record;
+		var nr = rs.records[0];
+		var shouldCommit = !r.dirty;
+		r.beginEdit();
+		for ( var p in dc.record.data) {
+			dc.record.set(p, nr.data[p]);
+		}
+		r.endEdit();
+		if(shouldCommit) {
+			r.commit();
+		}		
+	},
+	
 	checkActionState : function() {
 		if (dnet.base.DcActionsStateManager.isReloadRecDisabled(this.dc)) {
 			throw ("Reload record is not allowed.");

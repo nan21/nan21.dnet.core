@@ -301,7 +301,11 @@ Ext.define("dnet.base.AbstractDc", {
 			}
 			
 			this.updateActionsState();
-
+			if (operation.action == "update" || operation.action == "insert") {
+				this.afterDoSaveSuccess();
+			}
+			
+			
 			}, this);
 	},
 
@@ -432,7 +436,7 @@ Ext.define("dnet.base.AbstractDc", {
 	 * the filter forms.
 	 */
 	isFilterValid : function() {
-		return this.filter.isValid();
+		return true; //this.filter.isValid();
 	},
 
 	/**

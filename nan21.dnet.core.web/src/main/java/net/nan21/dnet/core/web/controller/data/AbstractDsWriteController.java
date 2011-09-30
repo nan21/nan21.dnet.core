@@ -1,5 +1,6 @@
 package net.nan21.dnet.core.web.controller.data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import net.nan21.dnet.core.api.action.IActionResultSave;
 import net.nan21.dnet.core.api.marshall.IDsMarshaller;
+import net.nan21.dnet.core.api.model.IModelWithId;
 import net.nan21.dnet.core.api.service.IDsService;
 import net.nan21.dnet.core.web.result.ActionResultSave;
 
@@ -126,6 +128,58 @@ public class AbstractDsWriteController<M, P>
 	public String delete(
 				@PathVariable String resourceName,
 				@PathVariable String dataFormat,
+				@RequestParam(value="data", required=false, defaultValue="[]") String dataString,
+				@RequestParam(value="params", required=false, defaultValue="{}") String paramString,	
+				HttpServletResponse response
+	) throws Exception {
+		
+		try {
+			this.prepareRequest();
+			this.resourceName = resourceName;		
+			this.dataFormat = dataFormat;
+			
+			authorizeActionService.authorize(resourceName.substring(0, resourceName.length()-2), "delete");	
+			
+			if (!dataString.startsWith("[")) {
+				dataString = "[" + dataString + "]";
+			}
+			IDsService<M, P> service = getDsService(this.resourceName);
+			IDsMarshaller<M, P> marshaller = service.createMarshaller(dataFormat);
+			
+			List<M> list = marshaller.readListFromString(dataString);
+			P params = marshaller.readParamsFromString(paramString); 	
+			
+			List<Object> ids = new ArrayList<Object>();
+			for(M ds: list) {
+				ids.add( ((IModelWithId) ds ).getId());
+			}
+			service.deleteByIds(ids);
+
+			//IActionResultSave result = this.packResult(list, params); 
+			return "{'success':true}"; // marshaller.writeResultToString(result);
+		} catch(Exception e) {
+			 this.handleException(e, response);
+			 return null;
+		} finally {
+			this.finishRequest();
+		}
+	}
+	
+	
+	/**
+	 * Default handler for delete action.
+	 * @param resourceName
+	 * @param dataformat
+	 * @param idsString
+	 * @param paramString
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(method=RequestMethod.POST , params="action=deleteById")
+	@ResponseBody	
+	public String deleteById(
+				@PathVariable String resourceName,
+				@PathVariable String dataFormat,
 				@RequestParam(value="data", required=false, defaultValue="[]") String idsString,
 				@RequestParam(value="params", required=false, defaultValue="{}") String paramString,	
 				HttpServletResponse response
@@ -158,7 +212,6 @@ public class AbstractDsWriteController<M, P>
 			this.finishRequest();
 		}
 	}
-	
 	
 	public IActionResultSave packResult(List<M> data, P params ) {
 		IActionResultSave pack = new ActionResultSave();

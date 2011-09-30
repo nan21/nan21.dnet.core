@@ -24,13 +24,15 @@ Ext.define("dnet.base.DcCancelCommand", {
 			if (dc.record) {
 				dc.record.reject();
 			}
+			
 			if (dc.record.phantom) {
-				s.rejectChanges();
+				//dc.store.remove(dc.record);
 				/* workaround to avoid the dirty check in AbstractDc */
 				var cr = dc.record;
-				cr.phantom = false;
-				var dcdirty = dc.isDirty();
+				cr.phantom = false;				 
 				dc.setRecord(null);
+				cr.phantom = true;	
+				s.rejectChanges();
 			}
 
 		}

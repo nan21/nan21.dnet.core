@@ -25,6 +25,9 @@ public interface IDsService<M, P> {
 	public void update(M ds) throws Exception;
 	public void update(List<M> list) throws Exception;
 
+	// public void delete(M id) throws Exception;
+	// public void delete(List<M> list) throws Exception;
+	
 	public void deleteById(Object id) throws Exception;
 	public void deleteByIds(List<Object> ids) throws Exception;
 

@@ -13,8 +13,8 @@ Ext.define("dnet.base.DcDeleteCommand", {
 		var dc = this.dc;
 		dc.store.remove(dc.getSelectedRecords());
 		if (!dc.multiEdit) {
-			dc.store.baseParams.params = Ext.encode(dc.params.data);
-			dc.store.save();
+			//dc.store.proxy.extraParams = Ext.encode(dc.params.data);
+			dc.store.sync();
 		}
 		dc.doDefaultSelection();
 	},

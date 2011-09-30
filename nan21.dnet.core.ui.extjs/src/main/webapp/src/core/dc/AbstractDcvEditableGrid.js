@@ -62,10 +62,10 @@ Ext.define("dnet.base.AbstractDcvEditableGrid", {
 		this._controller_.afterStoreLoadDoDefaultSelection = false;
 
 		this._routeSelectionTask_ = new Ext.util.DelayedTask(
-				function(selected) {
-					this._controller_.setSelectedRecords(selected);
+				function() {
+					this._controller_.setSelectedRecords(this.getSelectionModel().getSelection());
 				}, this);
-
+		 
 		var cfg = {
 			columns : this._columns_.getRange()
 
@@ -95,8 +95,7 @@ Ext.define("dnet.base.AbstractDcvEditableGrid", {
 					"selectionchange" : {
 						scope : this,
 						fn : function(sm, selected, options) {
-							this._routeSelectionTask_.delay(150, null, this,
-									selected);
+							this._routeSelectionTask_.delay(150);
 						}
 					}
 				}

@@ -155,6 +155,7 @@ Ext.define("dnet.base.AbstractDcvForm", {
 		
 		this.getForm().getFields().each(function(field) {
 			field.setRawValue(null);
+			field.clearInvalid();
 			field.disable();
 			}); 
   

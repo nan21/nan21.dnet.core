@@ -5,7 +5,7 @@ Ext.DATE_FORMAT = 'd.m.Y';
 Ext.TIME_FORMAT = 'H:i';
 Ext.DATETIME_FORMAT = 'd.m.Y H:i';
 // Ext.MONTH_FORMAT = 'm.Y';
-// //Ext.form.field.DateField.prototype.altFormats = "j|j.n|d|d.m";
+Ext.form.field.Date.prototype.altFormats = "j|j.n|d|d.m";
 // //Ext.form.field.TimeField.prototype.altFormats = "G|H|G:i";
 //
 // Ext.NUMBER_FORMAT_DEC = "0,000.00";
@@ -48,7 +48,7 @@ Ext.override(Ext.data.Store, {
 			this.insert(this.removed[i].lastIndex || 0, this.removed[i]);
 		}
 
-		this.remove(this.getNewRecords());
+		this.remove(this.getAllNewRecords());
 
 		this.each(function(rec) {
 			rec.reject();
@@ -57,7 +57,15 @@ Ext.override(Ext.data.Store, {
 		this.removed = [];
 		this.resumeEvents();
 		this.fireEvent('datachanged', this);
-	} // rejectChanges
+	} ,
+	
+	filterAllNew: function(item) {        
+        return item.phantom === true;
+    },
+    
+    getAllNewRecords: function() {
+        return this.data.filterBy(this.filterAllNew).items;
+    } 
 
 }); // Ext.data.Store
 

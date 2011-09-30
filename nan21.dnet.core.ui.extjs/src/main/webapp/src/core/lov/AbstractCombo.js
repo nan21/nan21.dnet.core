@@ -931,8 +931,8 @@ Ext.define("dnet.base.AbstractCombo", {
 	 
 	 
 	 _mapFilterFields_: function(bp) {    
-		if (this.gridEditor) {
-           var mrec = this.gridEditor.record;
+		if (this.inEditor) {
+	       var mrec = this._targetRecord_;
            this._mapFilterFieldsExecute_(bp,mrec);
 		} else {
 			var dcv = this._dcView_, mrec = null;
@@ -1017,6 +1017,8 @@ Ext.define("dnet.base.AbstractCombo", {
         bp["clientId"] = getApplication().getSession().client.id;			 
 			if (this.filterFieldMapping != null) {
 			   this._mapFilterFields_(bp);
+			   /*TODO: check the filter mapping change instead of this brut force stuff*/
+			   this.queryCaching = false;
 			}
         this.store.proxy.extraParams["data"] =  Ext.encode(bp)
         return this.callParent(arguments);
