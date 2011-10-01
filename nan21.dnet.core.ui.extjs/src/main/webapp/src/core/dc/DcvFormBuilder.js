@@ -67,18 +67,20 @@ Ext.define("dnet.base.DcvFormBuilder", {
 		return this;
 	},
 
+	
 	addLov : function(config) {
 		Ext.applyIf(config, {			
-			checkChangeBuffer : 400
+			checkChangeBuffer : 800
 		});
 		this.applyModelUpdater(config);
 		this.applySharedConfig(config);
 		return this;
 	},
 
+	// TODO:  remove the updater and create an AbstractLocalCombo
 	addCombo : function(config) {
 		Ext.applyIf(config, {			
-			checkChangeBuffer : 400
+			checkChangeBuffer : 600
 		});
 		this.applyModelUpdater(config);
 		this.applySharedConfig(config);
