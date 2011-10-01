@@ -69,7 +69,12 @@ Ext.define("dnet.base.ActionBuilder",  {
 			try {					
 				var ct = (cfg.inContainer )? this._getElement_(cfg.inContainer):this._getElement_("main");				
 				if (cfg.showView ) {
-					ct.getLayout().setActiveItem( this._getElementConfig_(cfg.showView).id );				
+					var cmp = this._get_(cfg.showView);
+					if (cmp) {
+						ct.getLayout().setActiveItem( cmp );
+					} else {
+						ct.getLayout().setActiveItem( this._getElementConfig_(cfg.showView).id );
+					}					 		
 				} else {
 					ct.getLayout().setActiveItem(1);
 				}
@@ -167,7 +172,12 @@ Ext.define("dnet.base.ActionBuilder",  {
 			try {					
 				var ct = (cfg.inContainer )? this._getElement_(cfg.inContainer):this._getElement_("main");				
 				if (cfg.showView ) {
-					ct.getLayout().setActiveItem( this._getElementConfig_(cfg.showView).id );				
+					var cmp = this._get_(cfg.showView);
+					if (cmp) {
+						ct.getLayout().setActiveItem( cmp );
+					} else {
+						ct.getLayout().setActiveItem( this._getElementConfig_(cfg.showView).id );
+					}	
 				} else {
 					ct.getLayout().setActiveItem(0);
 				}

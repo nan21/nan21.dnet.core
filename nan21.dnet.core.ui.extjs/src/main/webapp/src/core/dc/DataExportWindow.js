@@ -83,7 +83,7 @@ Ext.define("dnet.base.DataExportForm", {
 		// params[Dnet.requestParam.SENSE] = sortState.direction;
 		// }
 		if (fcv != "a") {
-			var gridCm = this._grid_.getColumnModel();
+			var gridCm = this._grid_.columns;
 			var cs = '';
 			var cst = '';
 			var csw = '';

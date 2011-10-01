@@ -511,7 +511,7 @@ Ext.define("dnet.base.AbstractDc", {
 		// || this.store.removed.length > 0;
 		return this.store.getRemovedRecords().length > 0
 				|| this.store.getUpdatedRecords().length > 0
-				|| this.store.getNewRecords().length > 0;
+				|| this.store.getAllNewRecords().length > 0;
 	},
 
 	/**

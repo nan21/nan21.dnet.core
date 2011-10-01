@@ -68,12 +68,18 @@ Ext.define("dnet.base.DcvFormBuilder", {
 	},
 
 	addLov : function(config) {
+		Ext.applyIf(config, {			
+			checkChangeBuffer : 400
+		});
 		this.applyModelUpdater(config);
 		this.applySharedConfig(config);
 		return this;
 	},
 
 	addCombo : function(config) {
+		Ext.applyIf(config, {			
+			checkChangeBuffer : 400
+		});
 		this.applyModelUpdater(config);
 		this.applySharedConfig(config);
 		return this;

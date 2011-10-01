@@ -18,7 +18,7 @@ Ext.define("dnet.base.DcSaveCommand", {
 			if ( ! this.isValid(dc.store.getUpdatedRecords()) ) {
 				return false;
 			}
-			if ( ! this.isValid(dc.store.getNewRecords()) ) {
+			if ( ! this.isValid(dc.store.getAllNewRecords()) ) {
 				return false;
 			} 			 
 			return true;
@@ -46,7 +46,7 @@ Ext.define("dnet.base.DcSaveCommand", {
 			errors = recs[i].validate();
 			if (!errors.isValid()) {
 				Ext.Msg.show({
-					   title: 'Invalid form data',
+					   title: 'Invalid data',
 					   msg: this.errorTpl.apply(errors.getRange()),
 					   icon : Ext.MessageBox.ERROR,
 					   buttons :Ext.MessageBox.OK

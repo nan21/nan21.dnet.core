@@ -162,7 +162,8 @@ Dnet = {
 		,my : {name: "mbMenuMY" , title :"MY: My DNet", children: []}*/
 	}
 	   
-	,doImport: function(list) {
+	,doImport: function(resourseList) {
+		var list = Ext.Array.unique(resourseList);
 		for(var i=0; i<list.length;i++) {
 			if (!Ext.isEmpty(list[i])) {
 				var rd = this.describeResource(list[i]);
