@@ -67,13 +67,13 @@ Ext.define("dnet.base.AbstractDcvForm", {
 		
 		
 		this._controller_.store.on("update", function(store, rec, op, eopts) {	
-			dnet.base.Logger.debug("dnet.base.AbstractDcvForm. store.on.update" );	 
+			//dnet.base.Logger.debug("dnet.base.AbstractDcvForm. store.on.update" );	 
 			this.updateBound(rec);
 		}, this);
 		
 		
 		this._controller_.store.on("datachanged", function(store, eopts) {	
-			dnet.base.Logger.debug("dnet.base.AbstractDcvForm. store.on.datachanged" );	 
+			//dnet.base.Logger.debug("dnet.base.AbstractDcvForm. store.on.datachanged" );	 
 			if(this.getForm().getRecord()) {
 				this.updateBound(this.getForm().getRecord());
 			}			
@@ -82,7 +82,7 @@ Ext.define("dnet.base.AbstractDcvForm", {
 		
 		 
 		this._controller_.on("recordChange", function(evnt) {		
-			dnet.base.Logger.debug("dnet.base.AbstractDcvForm. controller.on.recordChange, form.dirty="+this.getForm().isDirty() );	 
+			//dnet.base.Logger.debug("dnet.base.AbstractDcvForm. controller.on.recordChange, form.dirty="+this.getForm().isDirty() );	 
 			var newRecord = evnt.newRecord;
 			var oldRecord = evnt.oldRecord;
 			var newIdx = evnt.newIdx;
@@ -116,7 +116,7 @@ Ext.define("dnet.base.AbstractDcvForm", {
     ,_getElement_: function(name) {
 		try { 
 			return Ext.getCmp( this._elems_.get(name).id);
-		} catch(e) { if (console) { console.log(name+':'+ e.message);} }
+		} catch(e) { /*if (console) { console.log(name+':'+ e.message);}*/ }
 		}
     ,_getElementConfig_: function(name) {  return this._elems_.get(name); }
     
@@ -130,7 +130,7 @@ Ext.define("dnet.base.AbstractDcvForm", {
 		if (record) {
 			msg = record.data.name + ", dirty = "+record.dirty; 
 		}
-		dnet.base.Logger.debug("dnet.base.AbstractDcvForm.onBind => " + msg);
+		//dnet.base.Logger.debug("dnet.base.AbstractDcvForm.onBind => " + msg);
 		
 		if (record) {
 			this.getForm().getFields().each(function(field) {
@@ -150,7 +150,7 @@ Ext.define("dnet.base.AbstractDcvForm", {
 		if (record) {
 			msg = record.data.name+ ", dirty = "+record.dirty; 
 		}
-		dnet.base.Logger.debug("dnet.base.AbstractDcvForm.onUnbind => " +msg);
+		//dnet.base.Logger.debug("dnet.base.AbstractDcvForm.onUnbind => " +msg);
 		 
 		
 		this.getForm().getFields().each(function(field) {
@@ -171,7 +171,7 @@ Ext.define("dnet.base.AbstractDcvForm", {
 		var msg = "null";
 		if (record) {
 			msg = record.data.name+ ", dirty = "+record.dirty; 
-			dnet.base.Logger.debug("dnet.base.AbstractDcvForm.updateBound => " +msg );
+			//dnet.base.Logger.debug("dnet.base.AbstractDcvForm.updateBound => " +msg );
 			this.getForm().loadRecord(record);
 		}		
 	}

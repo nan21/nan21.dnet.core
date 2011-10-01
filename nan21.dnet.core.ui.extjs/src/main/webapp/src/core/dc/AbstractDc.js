@@ -246,12 +246,8 @@ Ext.define("dnet.base.AbstractDc", {
 				 this.doDefaultSelection();
 			}, this);
 		 
-		this.store.on("clear", function(store, eopts) {
-			dnet.base.Logger.debug("dnet.base.AbstractDc (" + this.dsName
-					+ ") -> store.on.remove event handler");
-			 this.updateActionsState();
-				// this.doDefaultSelection();
-
+		this.store.on("clear", function(store, eopts) { 
+			 this.updateActionsState();				
 			}, this);
 		
 		this.store.on("datachanged", function(store, eopts) {
@@ -295,7 +291,7 @@ Ext.define("dnet.base.AbstractDc", {
 					try {
 						this.setSelectedRecords([this.record]);
 					}catch(e) {
-						console.log(e);
+						//console.log(e);
 					}					
 				}
 			}
@@ -672,7 +668,7 @@ Ext.define("dnet.base.AbstractDc", {
 			if (rec) {
 				msg = rec.data.name+ ", dirty = "+rec.dirty; 
 			}
-			dnet.base.Logger.debug("dnet.base.AbstractDc.setRecord  => " +msg );
+			//dnet.base.Logger.debug("dnet.base.AbstractDc.setRecord  => " +msg );
 			// this.addToSelectedRecords(rec);
 			
 			this.fireEvent('recordChange', {
@@ -715,8 +711,8 @@ Ext.define("dnet.base.AbstractDc", {
 		if (!Ext.isArray(recArray)) {
 			recArray = [recArray];
 		}
-		dnet.base.Logger.debug("dnet.base.AbstractDc.setSelectedRecords length = " 
-				+recArray.length );
+		//dnet.base.Logger.debug("dnet.base.AbstractDc.setSelectedRecords length = " 
+		//		+recArray.length );
 		if (this.selectedRecords != recArray) {
 			this.selectedRecords = recArray;
 			if (this.shouldSelectionNotifyRecord) {
