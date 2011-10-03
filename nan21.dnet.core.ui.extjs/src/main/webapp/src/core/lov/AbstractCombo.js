@@ -825,6 +825,14 @@ Ext.define("dnet.base.AbstractCombo", {
 	
 	initComponent : function(){		 	
 		this._createStore_(); 
+		if (this.retFieldMapping == null) {
+			this.retFieldMapping = [];
+		}
+		//TODO: handle if it is binded to a parameter
+		this.retFieldMapping[this.retFieldMapping.length] = {
+				lovField:this.displayField,
+				dsField: this.dataIndex
+		};		
 	    this.callParent(arguments);	
 	},	 
 	
@@ -1067,4 +1075,93 @@ Ext.define("dnet.base.AbstractCombo", {
     }
 
 });
- 
+
+
+
+
+Ext.define('dnet.base.LocalCombo', {
+	extend: "Ext.form.field.ComboBox",
+	alias:"widget.localcombo",
+	
+	queryMode: "local", 
+	 selectOnFocus:true,
+	 triggerAction:"query", 
+	 forceSelection:true,
+	 
+	 
+	 setValue: function(value, doSelect) {
+	    var me = this,
+	        valueNotFoundText = me.valueNotFoundText,
+	        inputEl = me.inputEl,
+	        i, len, record,
+	        models = [],
+	        displayTplData = [],
+	        processedValue = [];
+	
+	    if (me.store.loading) {
+	        // Called while the Store is loading. Ensure it is processed by the onLoad method.
+	        me.value = value;
+	        return me;
+	    }
+	
+	    // This method processes multi-values, so ensure value is an array.
+	    value = Ext.Array.from(value);
+	
+	    // Loop through values
+	    for (i = 0, len = value.length; i < len; i++) {
+	        record = value[i];
+	        if (!record || !record.isModel) {
+	            record = me.findRecordByValue(record);
+	        }
+	        // record found, select it.
+	        if (record) {
+	            models.push(record);
+	            displayTplData.push(record.data);
+	            processedValue.push(record.get(me.valueField));
+	        }
+	        // record was not found, this could happen because
+	        // store is not loaded or they set a value not in the store
+	        else {
+	            // if valueNotFoundText is defined, display it, otherwise display nothing for this value
+	            if (Ext.isDefined(valueNotFoundText)) {
+	                displayTplData.push(valueNotFoundText);
+	            }
+	            processedValue.push(value[i]);
+	        }
+	    }
+	
+	    // Set the value of this field. If we are multiselecting, then that is an array.
+	    me.value = me.multiSelect ? processedValue : processedValue[0];
+	    if (!Ext.isDefined(me.value)) {
+	        me.value = null;
+	    }
+	    me.displayTplData = displayTplData; //store for getDisplayValue method
+	    me.lastSelection = me.valueModels = models;
+	
+	    if (inputEl && me.emptyText && !Ext.isEmpty(value)) {
+	        inputEl.removeCls(me.emptyCls);
+	    }
+	
+	    // Calculate raw value from the collection of Model data
+	    me.setRawValue(me.getDisplayValue());
+	    me.checkChange();
+	
+	    me._processedValue_ = processedValue;
+	    if(processedValue.length > 0) {
+	    	var r = this._dcView_._controller_.getRecord();
+			if (r) {
+				var rv = r.get(me.dataIndex);				  
+				if (!r.isEqual(rv, me.value)) {
+					r.set(me.dataIndex, me.value);
+				}
+			}
+			 
+	    }
+	    if (doSelect !== false) {
+	        me.syncSelection();
+	    }
+	    me.applyEmptyText();
+	
+	    return me;
+	}
+});

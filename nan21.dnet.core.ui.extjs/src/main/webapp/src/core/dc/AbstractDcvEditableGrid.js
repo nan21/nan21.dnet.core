@@ -61,11 +61,11 @@ Ext.define("dnet.base.AbstractDcvEditableGrid", {
 		 */
 		this._controller_.afterStoreLoadDoDefaultSelection = false;
 
-		this._routeSelectionTask_ = new Ext.util.DelayedTask(
-				function() {
-					this._controller_.setSelectedRecords(this.getSelectionModel().getSelection());
-				}, this);
-		 
+		this._routeSelectionTask_ = new Ext.util.DelayedTask(function() {
+			this._controller_.setSelectedRecords(this.getSelectionModel()
+					.getSelection());
+		}, this);
+
 		var cfg = {
 			columns : this._columns_.getRange()
 
@@ -288,84 +288,32 @@ Ext.define("dnet.base.AbstractDcvEditableGrid", {
 	}
 });
 
-Ext
-		.define(
-				"dnet.base.AbstractDcvEditableGridCustEditor",
-				{
-					extend : "dnet.base.AbstractDcvEditableGrid",
-
-					_getCustomCellEditor_ : function(col, row, record) {
-						return this.colModel.getCellEditor(col, row);
-					}
-
-					,
-					startEditing : function(row, col) {
-						this.stopEditing();
-						if (this.colModel.isCellEditable(col, row)) {
-							this.view.ensureVisible(row, col, true);
-							var r = this.store.getAt(row), field = this.colModel
-									.getDataIndex(col), e = {
-								grid : this,
-								record : r,
-								field : field,
-								value : r.data[field],
-								row : row,
-								column : col,
-								cancel : false
-							};
-							if (this.fireEvent("beforeedit", e) !== false
-									&& !e.cancel) {
-								this.editing = true;
-								var ed = this
-										._getCustomCellEditor_(col, row, r);
-								if (!ed) {
-									return;
-								}
-								if (!ed.rendered) {
-									ed.parentEl = this.view.getEditorParent(ed);
-									ed.on( {
-										scope : this,
-										render : {
-											fn : function(c) {
-												c.field.focus(false, true);
-											},
-											single : true,
-											scope : this
-										},
-										specialkey : function(field, e) {
-											this.getSelectionModel()
-													.onEditorKey(field, e);
-										},
-										complete : this.onEditComplete,
-										canceledit : this.stopEditing
-												.createDelegate(this, [ true ])
-									});
-								}
-								Ext.apply(ed, {
-									row : row,
-									col : col,
-									record : r
-								});
-								this.lastEdit = {
-									row : row,
-									col : col
-								};
-								this.activeEditor = ed;
-								// Set the selectSameEditor flag if we are
-								// reusing the same editor again and
-								// need to prevent the editor from firing onBlur
-								// on itself.
-								ed.selectSameEditor = (this.activeEditor == this.lastActiveEditor);
-								var v = this.preEditValue(r, field);
-								ed.startEdit(
-										this.view.getCell(row, col).firstChild,
-										Ext.isDefined(v) ? v : '');
-
-								// Clear the selectSameEditor flag
-								(function() {
-									delete ed.selectSameEditor;
-								}).defer(50);
-							}
-						}
-					}
-				});
+/*
+ * Ext .define( "dnet.base.AbstractDcvEditableGridCustEditor", { extend :
+ * "dnet.base.AbstractDcvEditableGrid",
+ * 
+ * _getCustomCellEditor_ : function(col, row, record) { return
+ * this.colModel.getCellEditor(col, row); }
+ *  , startEditing : function(row, col) { this.stopEditing(); if
+ * (this.colModel.isCellEditable(col, row)) { this.view.ensureVisible(row, col,
+ * true); var r = this.store.getAt(row), field = this.colModel
+ * .getDataIndex(col), e = { grid : this, record : r, field : field, value :
+ * r.data[field], row : row, column : col, cancel : false }; if
+ * (this.fireEvent("beforeedit", e) !== false && !e.cancel) { this.editing =
+ * true; var ed = this ._getCustomCellEditor_(col, row, r); if (!ed) { return; }
+ * if (!ed.rendered) { ed.parentEl = this.view.getEditorParent(ed); ed.on( {
+ * scope : this, render : { fn : function(c) { c.field.focus(false, true); },
+ * single : true, scope : this }, specialkey : function(field, e) {
+ * this.getSelectionModel() .onEditorKey(field, e); }, complete :
+ * this.onEditComplete, canceledit : this.stopEditing .createDelegate(this, [
+ * true ]) }); } Ext.apply(ed, { row : row, col : col, record : r });
+ * this.lastEdit = { row : row, col : col }; this.activeEditor = ed; // Set the
+ * selectSameEditor flag if we are // reusing the same editor again and // need
+ * to prevent the editor from firing onBlur // on itself. ed.selectSameEditor =
+ * (this.activeEditor == this.lastActiveEditor); var v = this.preEditValue(r,
+ * field); ed.startEdit( this.view.getCell(row, col).firstChild,
+ * Ext.isDefined(v) ? v : '');
+ *  // Clear the selectSameEditor flag (function() { delete ed.selectSameEditor;
+ * }).defer(50); } } } });
+ * 
+ */

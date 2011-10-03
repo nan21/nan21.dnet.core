@@ -1,9 +1,4 @@
-/*
- * DNet
- * Copyright (C) 2008-2011 Nan21 Electronics srl www.nan21.net
- * License: GPL v3
- */
-
+ 
 function getApplication() {
 	if (!__application__ && !window.parent) {
 		alert("Cannot find application.");
@@ -123,8 +118,8 @@ dnet.base.Application = {
 		this.showMainApplicationView();
 		this.loginWindow.hide();
 
-		//this.menu.setUserText(this.session.user.name);
-		//this.menu.setClientText(this.session.client.code);
+		this.menu.setUserText(this.session.user.name);
+		this.menu.setClientText(this.session.client.code);
 	}
 
 	,

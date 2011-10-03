@@ -69,20 +69,67 @@ Ext.define("dnet.base.DcvFormBuilder", {
 
 	
 	addLov : function(config) {
-		Ext.applyIf(config, {			
-			checkChangeBuffer : 800
-		});
-		this.applyModelUpdater(config);
+//		Ext.applyIf(config, {			
+//			checkChangeBuffer : 800
+//		});
+//		this.applyModelUpdater(config);
+		 
 		this.applySharedConfig(config);
 		return this;
 	},
 
 	// TODO:  remove the updater and create an AbstractLocalCombo
 	addCombo : function(config) {
-		Ext.applyIf(config, {			
-			checkChangeBuffer : 600
-		});
-		this.applyModelUpdater(config);
+//		Ext.applyIf(config, {			
+//			checkChangeBuffer : 600
+//		});
+		//this.applyModelUpdater(config, "select");
+		 
+//		var en = "change";
+//		if (!config.listeners) {
+//			config.listeners = {};
+//		}
+//		if (!config.listeners[en]) {
+//			config.listeners[en] = {};
+//		}
+//
+//		if (config._isParam_ === true) {
+//			var fn = function(f, nv, ov, eopts) {
+//
+//			};
+//		} else {
+//			var fn = function(f, nv, ov, eopts) {
+//				if(f._processedValue_.length > 0) {
+//			    	var r = this._dcView_._controller_.getRecord();
+//					if (r) {
+//						var rv = r.get(f.dataIndex);				  
+//						if (!r.isEqual(rv, f._processedValue_[0])) {
+//							r.set(f.dataIndex, f._processedValue_[0]);
+//						}
+//					}
+//					 
+//			    }
+//					
+////				if (!f.isValid()) {
+////					return false;
+////				}
+////				var r = this._dcView_._controller_.getRecord();
+////				if (!r)
+////					return;
+////				var rv = r.get(f.dataIndex);				  
+////				if (!r.isEqual(rv, nv)) {
+////					r.set(f.dataIndex, nv);
+////				}				 
+//			}
+//		}
+//		if (config.listeners[en].fn) {
+//			config.listeners[en].fn = config.listeners[en].fn
+//					.createInterceptor(fn);
+//		} else {
+//			config.listeners[en]["fn"] = fn;
+//		}
+		
+		
 		this.applySharedConfig(config);
 		return this;
 	},
