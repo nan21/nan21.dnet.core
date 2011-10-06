@@ -2,12 +2,14 @@ package net.nan21.dnet.core.web.controller.data;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
 import net.nan21.dnet.core.api.action.IActionResultFind;
 import net.nan21.dnet.core.api.action.IDsExport;
 import net.nan21.dnet.core.api.action.IQueryBuilder;
+import net.nan21.dnet.core.api.action.SortToken;
 import net.nan21.dnet.core.api.marshall.IDsMarshaller;
 import net.nan21.dnet.core.api.service.IDsService;
 import net.nan21.dnet.core.api.session.Session;
@@ -22,9 +24,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-public class AbstractDsReadController<M, P>
-		extends AbstractDsBaseController<M, P> {
- 
+public class AbstractDsReadController<M, P> extends
+		AbstractDsBaseController<M, P> {
 
 	/**
 	 * Default handler for find action.
@@ -37,6 +38,7 @@ public class AbstractDsReadController<M, P>
 	 * @param resultSize
 	 * @param orderByCol
 	 * @param orderBySense
+	 * @param orderBy
 	 * @return
 	 * @throws Exception
 	 */
@@ -51,30 +53,41 @@ public class AbstractDsReadController<M, P>
 			@RequestParam(value = "resultSize", required = false, defaultValue = "500") int resultSize,
 			@RequestParam(value = "orderByCol", required = false, defaultValue = "") String orderByCol,
 			@RequestParam(value = "orderBySense", required = false, defaultValue = "") String orderBySense,
+			@RequestParam(value = "orderBy", required = false, defaultValue = "") String orderBy,
 			HttpServletResponse response) throws Exception {
 		try {
 			this.prepareRequest();
 			this.resourceName = resourceName;
 			this.dataFormat = dataFormat;
-			
-			authorizeActionService.authorize(resourceName.substring(0, resourceName.length()-2), "find");	
-			
-			IDsService<M, P> service = getDsService(this.resourceName);
-			IQueryBuilder<M,P> builder = service.createQueryBuilder().addFetchLimit(
-					resultStart, resultSize).addSortInfo(orderByCol,
-					orderBySense);
 
+			authorizeActionService.authorize(resourceName.substring(0,
+					resourceName.length() - 2), "find");
+
+			IDsService<M, P> service = getDsService(this.resourceName);
 			IDsMarshaller<M, P> marshaller = service
 					.createMarshaller(dataFormat);
+
+			IQueryBuilder<M, P> builder = service.createQueryBuilder()
+					.addFetchLimit(resultStart, resultSize);
+
+			if (orderBy != null && !orderBy.equals("")) {
+				List<SortToken> sortTokens = marshaller.readListFromString(
+						orderBy, SortToken.class);
+				builder.addSortInfo(sortTokens);
+			} else {
+				builder.addSortInfo(orderByCol, orderBySense);
+			}
 
 			M filter = marshaller.readDataFromString(dataString);
 			P params = marshaller.readParamsFromString(paramString);
 
 			List<M> list = service.find(filter, params, builder);
-			long totalCount = service.count(filter, params, builder); // service.count(filter, params, builder);
+			long totalCount = service.count(filter, params, builder); // service.count(filter,
+																		// params,
+																		// builder);
 
-			IActionResultFind result = this
-					.packfindResult(list, params, totalCount);
+			IActionResultFind result = this.packfindResult(list, params,
+					totalCount);
 			return marshaller.writeResultToString(result);
 		} catch (Exception e) {
 			return this.handleException(e, response);
@@ -83,7 +96,6 @@ public class AbstractDsReadController<M, P>
 		}
 
 	}
-
 
 	/**
 	 * Default handler for find action.
@@ -109,30 +121,37 @@ public class AbstractDsReadController<M, P>
 			@RequestParam(value = "resultStart", required = false, defaultValue = "0") int resultStart,
 			@RequestParam(value = "resultSize", required = false, defaultValue = "500") int resultSize,
 			@RequestParam(value = "orderByCol", required = false, defaultValue = "") String orderByCol,
-			@RequestParam(value = "orderBySense", required = false, defaultValue = "") String orderBySense,			
+			@RequestParam(value = "orderBySense", required = false, defaultValue = "") String orderBySense,
+			@RequestParam(value = "orderBy", required = false, defaultValue = "") String orderBy,
 			@RequestParam(value = "c[export_col_names]", required = true, defaultValue = "") String colNames,
 			@RequestParam(value = "c[export_col_titles]", required = true, defaultValue = "") String colTitles,
 			@RequestParam(value = "c[export_col_widths]", required = true, defaultValue = "") String colWidths,
-			
+
 			HttpServletResponse response) throws Exception {
 		try {
 			this.prepareRequest();
 			this.resourceName = resourceName;
 			this.dataFormat = dataFormat;
-			
-			authorizeActionService.authorize(resourceName.substring(0, resourceName.length()-2), "export");	
-			
-			IDsService<M, P> service = getDsService(this.resourceName);
-			IQueryBuilder<M,P> builder = service.createQueryBuilder().addFetchLimit(
-					resultStart, resultSize).addSortInfo(orderByCol,
-					orderBySense);
 
-			IDsMarshaller<M, P> marshaller = service
-					.createMarshaller("json");
+			authorizeActionService.authorize(resourceName.substring(0,
+					resourceName.length() - 2), "export");
+
+			IDsService<M, P> service = getDsService(this.resourceName);
+			IQueryBuilder<M, P> builder = service.createQueryBuilder()
+					.addFetchLimit(resultStart, resultSize);
+			IDsMarshaller<M, P> marshaller = service.createMarshaller("json");
+
+			if (orderBy != null && !orderBy.equals("")) {
+				List<SortToken> sortTokens = marshaller.readListFromString(
+						orderBy, SortToken.class);
+				builder.addSortInfo(sortTokens);
+			} else {
+				builder.addSortInfo(orderByCol, orderBySense);
+			}
 
 			M filter = marshaller.readDataFromString(dataString);
 			P params = marshaller.readParamsFromString(paramString);
-			
+
 			IDsExport<M> writer = null;
 			if (dataFormat.equalsIgnoreCase("csv")) {
 				writer = new DsCsvExport<M>(service.getModelClass());
@@ -146,32 +165,32 @@ public class AbstractDsReadController<M, P>
 			if (dataFormat.equalsIgnoreCase("pdf")) {
 				writer = new DsXmlExport<M>(service.getModelClass());
 			}
-			if(writer==null) {
-				throw new Exception("Invalid data-format "+dataFormat);
+			if (writer == null) {
+				throw new Exception("Invalid data-format " + dataFormat);
 			}
-			
+
 			writer.setFieldNames(Arrays.asList(colNames.split(",")));
 			writer.setFieldTitles(Arrays.asList(colTitles.split(",")));
 			writer.setFieldWidths(Arrays.asList(colWidths.split(",")));
 
 			writer.setOutFilePath(Session.params.get().getTempPath());
 			service.doExport(filter, params, builder, writer);
-			
-			if(this.dataFormat.equalsIgnoreCase("csv")) {
+
+			if (this.dataFormat.equalsIgnoreCase("csv")) {
 				response.setContentType("application/vnd.ms-excel");
 			}
-			if(this.dataFormat.equalsIgnoreCase("json")) {
+			if (this.dataFormat.equalsIgnoreCase("json")) {
 				response.setContentType("text/plain");
 			}
-			if(this.dataFormat.equalsIgnoreCase("xml")) {
+			if (this.dataFormat.equalsIgnoreCase("xml")) {
 				response.setContentType("text/xml");
 			}
 			response.setHeader("Content-Description", "File Transfer");
 			response.setHeader("Content-Disposition",
-	                "inline; filename=\"export_file."
-	                        + this.dataFormat.toLowerCase() + "\";");
-	        
-			this.sendFile(writer.getOutFile(), response.getOutputStream() );
+					"inline; filename=\"export_file."
+							+ this.dataFormat.toLowerCase() + "\";");
+
+			this.sendFile(writer.getOutFile(), response.getOutputStream());
 			return null;
 		} catch (Exception e) {
 			return this.handleException(e, response);
@@ -180,14 +199,14 @@ public class AbstractDsReadController<M, P>
 		}
 
 	}
-	
-	public IActionResultFind packfindResult(List<M> data, P params, long totalCount) {
+
+	public IActionResultFind packfindResult(List<M> data, P params,
+			long totalCount) {
 		IActionResultFind pack = new ActionResultFind();
 		pack.setData(data);
 		pack.setParams(params);
 		pack.setTotalCount(totalCount);
 		return pack;
 	}
- 
 
 }

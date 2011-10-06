@@ -1,8 +1,11 @@
 package net.nan21.dnet.core.presenter.action;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 
 import net.nan21.dnet.core.api.action.IQueryBuilder;
+import net.nan21.dnet.core.api.action.SortToken;
 import net.nan21.dnet.core.api.descriptor.IViewModelDescriptor;
 
 public abstract class AbstractQueryBuilder<F, P> implements IQueryBuilder<F,P> {
@@ -12,7 +15,7 @@ public abstract class AbstractQueryBuilder<F, P> implements IQueryBuilder<F,P> {
 	
 	protected String[] sortColumnNames;
 	protected String[] sortColumnSense;
-	
+	 
 	private Class<F> filterClass;
 	private Class<P> paramClass;
 	
@@ -35,6 +38,21 @@ public abstract class AbstractQueryBuilder<F, P> implements IQueryBuilder<F,P> {
 		return this;
 	}
 
+	public IQueryBuilder<F,P> addSortInfo(List<SortToken> sortTokens) {
+		if (sortTokens != null ) {
+			int len = sortTokens.size();
+			int i = 0;
+			this.sortColumnNames = new String[len];
+			this.sortColumnSense = new String[len];
+			
+			for(SortToken token: sortTokens) {
+				this.sortColumnNames[i] = token.getProperty();
+				this.sortColumnSense[i] = token.getDirection();
+				i++;
+			}			 
+		}		
+		return this;
+	}
 	 
 	public IQueryBuilder<F,P> addSortInfo(String columns, String sense) {
 		if (columns != null && !"".equals(columns) && sense != null && !"".equals(sense) ) {
@@ -132,5 +150,7 @@ public abstract class AbstractQueryBuilder<F, P> implements IQueryBuilder<F,P> {
 		this.resultSize = resultSize;
 	}
 
+
+	 
 	
 }

@@ -224,8 +224,7 @@ Ext.define("dnet.base.AbstractDcvEditableGrid", {
 	},
 	_doExport_ : function() {
 		if (this._exportWindow_ == null) {
-			this._exportWindow_ = new dnet.base.DataExportWindow();
-			this._exportWindow_._grid_ = this;
+			this._exportWindow_ = new dnet.base.DataExportWindow({_grid_: this});			 
 		}
 		this._exportWindow_.show();
 	},

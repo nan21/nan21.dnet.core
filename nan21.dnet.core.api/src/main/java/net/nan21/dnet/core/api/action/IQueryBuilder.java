@@ -1,5 +1,7 @@
 package net.nan21.dnet.core.api.action;
 
+import java.util.List;
+
 import net.nan21.dnet.core.api.descriptor.IViewModelDescriptor;
 
 public interface IQueryBuilder<F,P> {
@@ -26,6 +28,7 @@ public interface IQueryBuilder<F,P> {
 	 * @return this
 	 */
 	public IQueryBuilder<F,P> addSortInfo(String columns, String sense);
+	
 	/**
 	 * Add sort information. 
 	 * @param sortTokens The sort tokens E.g. {"name", "code desc", "id asc"}
@@ -33,6 +36,13 @@ public interface IQueryBuilder<F,P> {
 	 */
 	public IQueryBuilder<F,P> addSortInfo(String[] sortTokens);
 	 
+	/**
+	 * Add sort information. 
+	 * @param sortTokens 
+	 * @return this
+	 */
+	public IQueryBuilder<F,P> addSortInfo(List<SortToken> sortTokens);
+	
 	public Class<F> getFilterClass();
 	public void setFilterClass(Class<F> filterClass);
 	

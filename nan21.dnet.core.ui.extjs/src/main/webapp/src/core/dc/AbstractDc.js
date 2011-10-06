@@ -162,8 +162,8 @@ Ext.define("dnet.base.AbstractDc", {
 				},
 				startParam : Dnet.requestParam.START,
 				limitParam : Dnet.requestParam.SIZE,
-				sortParam : Dnet.requestParam.SORT,
-				directionParam : Dnet.requestParam.SENSE
+				sortParam : Dnet.requestParam.ORDERBY
+				//directionParam : Dnet.requestParam.SENSE
 
 			}
 

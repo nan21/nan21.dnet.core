@@ -102,7 +102,7 @@
     <script type="text/javascript" src="${urlUiExtjsCore}/src/core/dc/GridLayoutManager.js"></script>     
        
     <script type="text/javascript" src="${urlUiExtjsCore}/src/core/ui/AbstractUi.js"></script>
-    
+    <script type="text/javascript" src="${urlUiExtjsCore}/src/core/lov/AbstractRemoteCombo.js"></script> 
     <script type="text/javascript" src="${urlUiExtjsCore}/src/core/lov/AbstractCombo.js"></script>  
     <script type="text/javascript" src="${urlUiExtjsCore}/src/core/lov/AbstractLov.js"></script>
      

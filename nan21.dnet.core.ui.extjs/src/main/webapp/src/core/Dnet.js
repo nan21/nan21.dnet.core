@@ -38,8 +38,9 @@ Dnet = {
          SORT       : "orderByCol"
         ,SENSE      : "orderBySense"
 		,START      : "resultStart"
-		,SIZE       : "resultSize"
-		
+		,SIZE       : "resultSize"		 
+	    ,ORDERBY    : "orderBy"
+		        	
 		,SERVICE_NAME_PARAM   : "rpcName"
 
 		,EXPORT_COL_NAMES    : "c[export_col_names]"

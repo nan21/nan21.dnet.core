@@ -8,20 +8,14 @@ Ext.define("dnet.base.DcvFormBuilder", {
 
 	addTextField : function(config) {
 		config.xtype = "textfield";
+		Ext.applyIf(config, {
+			enforceMaxLength : true
+		});
+		if (config.caseRestriction ) {
+			config.fieldStyle = "text-transform:"+config.caseRestriction+";";
+		}
 		this.applyModelUpdater(config);
-		this.applySharedConfig(config);
-		if (config.maxLength != undefined && config.autoCreate == undefined) {
-			config.autoCreate = {
-				tag : "input",
-				type : "text",
-				autocomplete : "off",
-				size : "20",
-				maxlength : config.maxLength
-			};
-		}
-		if (config.caseRestriction != undefined) {
-			config.style = "text-transform:uppercase;";
-		}
+		this.applySharedConfig(config);		  
 		return this;
 	},
 
@@ -69,9 +63,10 @@ Ext.define("dnet.base.DcvFormBuilder", {
 
 	
 	addLov : function(config) {
-//		Ext.applyIf(config, {			
-//			checkChangeBuffer : 800
-//		});
+		
+		Ext.applyIf(config, {			
+			_validateListValue_ : true
+		});
 //		this.applyModelUpdater(config);
 		 
 		this.applySharedConfig(config);

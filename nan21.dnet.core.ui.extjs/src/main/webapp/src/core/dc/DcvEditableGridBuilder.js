@@ -17,7 +17,8 @@ Ext.define("dnet.base.DcvEditableGridBuilder", {
 		config.xtype = "booleancolumn";
 		Ext.apply(config, {
 			trueText : Dnet.translate("msg", "bool_true"),
-			falseText : Dnet.translate("msg", "bool_false")
+			falseText : Dnet.translate("msg", "bool_false"),
+			autoSelect: true
 		});
 		if (config.editor == undefined && config._noEdit_ !== false) {
 

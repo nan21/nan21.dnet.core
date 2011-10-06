@@ -94,7 +94,7 @@ Ext.define("dnet.base.DcContext", {
 		this.parentDc.store.on("write", function(store, operation, eopts) {
 
 			if (this.reloadChildrenOnParentInsert
-					&& operation.action == "insert") {
+					&& operation.action == "create") {
 				this._updateCtxData_("parent_store_write");
 			}
 			if (this.reloadChildrenOnParentUpdate
