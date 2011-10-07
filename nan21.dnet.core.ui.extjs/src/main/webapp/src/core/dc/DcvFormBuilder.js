@@ -28,7 +28,7 @@ Ext.define("dnet.base.DcvFormBuilder", {
 
 	addCheckbox : function(config) {
 		config.xtype = "checkbox";
-		this.applyModelUpdater(config, "check");
+		this.applyModelUpdater(config);
 		this.applySharedConfig(config);
 		return this;
 	},
