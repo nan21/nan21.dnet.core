@@ -2,11 +2,16 @@
 
 Ext.define("dnet.base.ChangePasswordForm" , {
 	extend: "Ext.form.Panel",
-	theButton: null,
+	/**
+	 * Action button rendered in the window, 
+	 * given as a reference to be managed from the form.
+	 * @type 
+	 */
+	actionButton : null,
 	initComponent: function() {
 	
-		this.theButton = this.initialConfig.theButton;
-		this.theButton.setHandler(this.doTask, this);
+		this.actionButton = this.initialConfig.actionButton;
+		this.actionButton.setHandler(this.doTask, this);
 		 
 		var cfg = {
 			frame : true,
@@ -25,40 +30,59 @@ Ext.define("dnet.base.ChangePasswordForm" , {
 		dnet.base.ChangePasswordForm.superclass.initComponent.call(this, arguments);
  	},
 
+ 	/**
+	 * Builder method which constructs the form elements.
+	 * @return {Array}
+	 */
 	_buildItems_ : function() {
- 		return [
-				
-				{xtype:"textfield", itemId:"opswd", fieldLabel:"Password", width:150, selectOnFocus: true, allowBlank: false
-					,autoCreate: {tag: "input", type: "password", autocomplete: "off", size: "20" }
-				 	,listeners: {change: {scope:this, fn:this.enableAction }}   }
+ 		return [				
+			{xtype:"textfield", itemId:"opswd", fieldLabel:"Password", width:150, selectOnFocus: true, allowBlank: false, inputType: "password"
+			 	,listeners: {change: {scope:this, fn:this.enableAction }}   }
 
-				,{xtype:"textfield", itemId:"pswd1", fieldLabel:Dnet.translate("msg", "chpswd_pswd1"), width:150, selectOnFocus: true, allowBlank: false
-			    	,autoCreate: {tag: "input", type: "password", autocomplete: "off", size: "20" }
-			     	,listeners: {change: {scope:this, fn:this.enableAction }}   }
-		     	
-		     	,{xtype:"textfield", itemId:"pswd2", fieldLabel:Dnet.translate("msg", "chpswd_pswd2"), width:150, selectOnFocus: true, allowBlank: false
-			    	,autoCreate: {tag: "input", type: "password", autocomplete: "off", size: "20" }
-			     	,listeners: {change: {scope:this, fn:this.enableAction }}   }
+			,{xtype:"textfield", itemId:"pswd1", fieldLabel:Dnet.translate("msg", "chpswd_pswd1"), width:150, selectOnFocus: true, allowBlank: false
+		    	,inputType: "password"
+		     	,listeners: {change: {scope:this, fn:this.enableAction }}   }
+	     	
+	     	,{xtype:"textfield", itemId:"pswd2", fieldLabel:Dnet.translate("msg", "chpswd_pswd2"), width:150, selectOnFocus: true, allowBlank: false
+		    	,inputType: "password"
+		     	,listeners: {change: {scope:this, fn:this.enableAction }}   }
 		 ]; 		
- 	}
+ 	},
 	
- 	,getTheButton: function() {
- 		return this.theButton;
- 	}
- 	
- 	,getCurrentPasswordField: function() {		 
-		return this.getComponent("opswd");
-	}
-	
-	,getPasswordField: function() {
-		return this.getComponent("pswd1");
-	}
-	
-	,getConfirmPasswordField: function() {
-		return this.getComponent("pswd2");
-	}
+ 	getActionButton: function() {
+ 		return this.actionButton;
+ 	},
 
-	,doOnFailure: function(response, options) {         
+ 	/**
+	 * Getter for the current password field.
+	 * @return {Ext.form.field.Text} The component (if found)
+	 */
+ 	getCurrentPasswordField: function() {		 
+		return this.getComponent("opswd");
+	},
+	
+	/**
+	 * Getter for the new password field.
+	 * @return {Ext.form.field.Text} The component (if found)
+	 */
+	getPasswordField: function() {
+		return this.getComponent("pswd1");
+	},
+	
+	/**
+	 * Getter for the confirm new password field.
+	 * @return {Ext.form.field.Text} The component (if found)
+	 */
+	getConfirmPasswordField: function() {
+		return this.getComponent("pswd2");
+	},
+
+	/**
+	 * Callback invoked on unsuccessful password change attempt.
+	 * @param {} response
+	 * @param {} options
+	 */
+	onActionFailure: function(response, options) {         
 		 Ext.Msg.show({
 	          msg: response.responseText
 	         ,buttons: Ext.MessageBox.OK
@@ -67,19 +91,28 @@ Ext.define("dnet.base.ChangePasswordForm" , {
 		 });
 
 		 (response.responseText);
-	}
-	,doOnSuccess: function(response , options) {
-          Ext.Msg.show({
-	          msg: Dnet.translate("msg", "chpswd_success")
+	},
+	
+	/**
+	 * Callback invoked on successful password change.
+	 * @param {} response
+	 * @param {} options
+	 */
+	onActionSuccess: function(response , options) {
+    	Ext.Msg.show({
+	          msg: Dnet.translate("msg", "chpswd_success")	          
 	         ,buttons: Ext.MessageBox.OK
 	         ,scope:this
 	         ,icon: Ext.MessageBox.INFO
+		 });	 
+	},
 
-		 });
-		// this.close();
-	}
-
-	,doTask: function(btn, evnt) {
+	/**
+	 * Execute change password action. The action button click handler.
+	 * @param {} btn
+	 * @param {} evnt
+	 */
+	doTask: function(btn, evnt) {
 
 		if (this.getPasswordField().getValue() != this.getConfirmPasswordField().getValue() ) {
 
@@ -99,25 +132,31 @@ Ext.define("dnet.base.ChangePasswordForm" , {
 		Ext.Ajax.request({
              method:"POST"
             ,params:p
-            ,failure:this.doOnFailure
-			,success:this.doOnSuccess
+            ,failure:this.onActionFailure
+			,success:this.onActionSuccess
             ,scope:this
             ,url: Dnet.sessionAPI("json").changePassword
             ,timeout:600000
         });
-	}
-
-	,clearFields: function() {
+	},
+	
+	/**
+	 * Clear the form fields.
+	 */
+	clearFields: function() {
 		this.items.each( function(item) { item.setValue(null); } , this);
-	}
- 
-	,enableAction: function() {
+	},
+	
+ 	/**
+	 * Enable disable action button.
+	 */
+	enableAction: function() {
 		var valid = true;
 		this.items.each( function(item) { if (!item.isValid() ) {valid=false;return false; } } , this);
 		if (this.getForm().isValid() ) {
-			this.getTheButton().enable();
+			this.getActionButton().enable();
 		} else {
-			this.getTheButton().disable();
+			this.getActionButton().disable();
 		}
 	}
 });
@@ -144,7 +183,7 @@ Ext.define("dnet.base.ChangePasswordWindow" , {
 			xtype : "form",
 			buttonAlign : "center",
 			modal : true,
-			items : new dnet.base.ChangePasswordForm({theButton: btn}),
+			items : new dnet.base.ChangePasswordForm({actionButton: btn}),
 			buttons : [ btn ]
 		};
 		Ext.apply(this, cfg);

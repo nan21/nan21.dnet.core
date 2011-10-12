@@ -1,8 +1,8 @@
 Ext.define("dnet.base.LoginForm", {
-	extend : "Ext.form.Panel",
-	
+	extend : "Ext.form.Panel",	
 	/**
-	 * Action button rendered in the window, given as a reference to be managed from the form.
+	 * Action button rendered in the window, 
+	 * given as a reference to be managed from the form.
 	 * @type 
 	 */
 	actionButton : null,
@@ -143,7 +143,7 @@ Ext.define("dnet.base.LoginForm", {
 	 * @param {} response
 	 * @param {} options
 	 */
-	onLoginFailure : function(response, options) {
+	onActionFailure : function(response, options) {
 		Ext.Msg.show( {
 			title : 'Authentication error',
 			msg : response.responseText,
@@ -159,7 +159,7 @@ Ext.define("dnet.base.LoginForm", {
 	 * @param {} response
 	 * @param {} options
 	 */
-	doLoginSuccess : function(response, options) {
+	onActionSuccess : function(response, options) {
 		var r = Ext.JSON.decode(response.responseText);
 		var u = getApplication().getSession().getUser();
 		var c = getApplication().getSession().getClient();
@@ -189,8 +189,8 @@ Ext.define("dnet.base.LoginForm", {
 		Ext.Ajax.request( {
 			method : "POST",
 			params : p,
-			failure : this.doLoginFailure,
-			success : this.doLoginSuccess,
+			failure : this.onActionFailure,
+			success : this.onActionSuccess,
 			scope : this,
 			url : Dnet.sessionAPI("json").login,
 			timeout : 600000
