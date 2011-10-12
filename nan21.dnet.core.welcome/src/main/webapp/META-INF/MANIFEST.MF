@@ -1,10 +1,10 @@
 Manifest-Version: 1.0
-Export-Package: net.nan21.dnet.core.welcome;version="1.0.0.M2";uses:="
+Export-Package: net.nan21.dnet.core.welcome;version="1.0.0.M3";uses:="
  javax.servlet.http,org.springframework.web.servlet,org.springframewor
  k.web.servlet.mvc"
 Bundle-Vendor: Nan21 
 Bundle-ClassPath: WEB-INF/classes
-Bundle-Version: 1.0.0.M2
+Bundle-Version: 1.0.0.M3
 Tool: Bundlor 1.0.0.RELEASE
 Bundle-Name: DNet Core - welcome
 Bundle-ManifestVersion: 2

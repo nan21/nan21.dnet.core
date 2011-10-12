@@ -1,5 +1,10 @@
 Ext.define("dnet.base.LoginForm", {
 	extend : "Ext.form.Panel",
+	
+	/**
+	 * Action button rendered in the window, given as a reference to be managed from the form.
+	 * @type 
+	 */
 	actionButton : null,
 	initComponent : function(config) {
 		
@@ -23,6 +28,10 @@ Ext.define("dnet.base.LoginForm", {
 		this.callParent(arguments);		
 	},
 
+	/**
+	 * Builder method which constructs the form elements.
+	 * @return {Array}
+	 */
 	_buildItems_ : function() {
 		return [ {
 			xtype : "textfield",
@@ -45,12 +54,7 @@ Ext.define("dnet.base.LoginForm", {
 			width : 150,
 			selectOnFocus : true,
 			allowBlank : false,
-			autoCreate : {
-				tag : "input",
-				type : "password",
-				autocomplete : "off",
-				size : "20"
-			},
+			inputType : "password",
 			listeners : {
 				change : {
 					scope : this,
@@ -93,27 +97,53 @@ Ext.define("dnet.base.LoginForm", {
 		];
 	},
 
+	/**
+	 * Getter for the login button.
+	 * @return {}
+	 */
 	getActionButton : function() {
 		return this.actionButton;
 	},
 
+	/**
+	 * Getter for the username field.
+	 * @return {Ext.form.field.Text} The component (if found)
+	 */
 	getUserField : function() {
 		return this.getComponent("usr");
 	},
 
+	/**
+	 * Getter for the password field
+	 * @return {Ext.form.field.Text} The component (if found)
+	 */
 	getPasswordField : function() {
 		return this.getComponent("pswd");
 	},
 
+	/**
+	 * Getter for the client field
+	 * @return {Ext.form.field.Text} The component (if found)
+	 */
 	getClientField : function() {
 		return this.getComponent("client");
 	},
 
+	/**
+	 * Getter for the language field
+	 * @return {Ext.form.field.ComboBox} The component (if found)
+	 */
 	getLanguageField : function() {
 		return this.getComponent("lang");
 	},
 
-	doLoginFailure : function(response, options) {
+	
+	/**
+	 * Callback invoked on unsuccessful login attempt.
+	 * @param {} response
+	 * @param {} options
+	 */
+	onLoginFailure : function(response, options) {
 		Ext.Msg.show( {
 			title : 'Authentication error',
 			msg : response.responseText,
@@ -121,10 +151,14 @@ Ext.define("dnet.base.LoginForm", {
 			scope : this,
 			icon : Ext.MessageBox.ERROR
 		});
-
 		this.getActionButton().enable();
 	},
-
+	
+	/**
+	 * Callback invoked on successful login.
+	 * @param {} response
+	 * @param {} options
+	 */
 	doLoginSuccess : function(response, options) {
 		var r = Ext.JSON.decode(response.responseText);
 		var u = getApplication().getSession().getUser();
@@ -134,6 +168,11 @@ Ext.define("dnet.base.LoginForm", {
 		getApplication().onLoginSuccess();
 	},
 
+	/**
+	 * Execute login action. The login button click handler.
+	 * @param {} btn
+	 * @param {} evnt
+	 */
 	doLogin : function(btn, evnt) {
 		var s = getApplication().getSession();
 		var u = s.getUser();
@@ -159,6 +198,9 @@ Ext.define("dnet.base.LoginForm", {
 		this.getActionButton().disable();
 	},
 
+	/**
+	 * Clear the form fields.
+	 */
 	clearFields : function() {
 		this.items.each(function(item) {
 			item.setValue(null);
@@ -170,6 +212,9 @@ Ext.define("dnet.base.LoginForm", {
 		this.getClientField().clearInvalid();
 	},
 
+	/**
+	 * Apply states on form elements after logout.
+	 */
 	applyState_Logout : function() {
 		this.getUserField().enable();
 
@@ -185,6 +230,9 @@ Ext.define("dnet.base.LoginForm", {
 		this.getActionButton().disable();
 	},
 
+	/**
+	 * Apply states on form elements after lock session. 
+	 */
 	applyState_LockSession : function() {
 		this.getUserField().disable();
 		this.getPasswordField().setValue(null);
@@ -194,10 +242,18 @@ Ext.define("dnet.base.LoginForm", {
 		this.getActionButton().disable();
 	},
 
+	/**
+	 * Setter for the user-name field value.
+	 * @param {} v
+	 */
 	setUserName : function(v) {
 		this.getUserField().setValue(v);
 	},
 
+ 
+	/**
+	 * Enable disable action button.
+	 */
 	enableAction : function() {
 		if (this.getForm().isValid()) {
 			this.getActionButton().enable();
@@ -239,35 +295,71 @@ Ext.define("dnet.base.LoginWindow", {
 		this.callParent(arguments);
 	},
 
+	/**
+	 * Getter for the login form.
+	 * @return {}
+	 */
 	getLoginForm : function() {
 		return this.items.getAt(0);
 	},
 
+	/**
+	 * Wrapper around the login-form action button getter.
+	 * @return {}
+	 */ 
 	getActionButton : function() {
 		return this.getLoginForm().getActionButton();
 	},
 
+	/**
+	 * Wrapper around the login-form user field getter.
+	 * @return {}
+	 */
 	getUserField : function() {
 		return this.getLoginForm().getUserField();
 	},
+	
+	/**
+	 * Wrapper around the login-form password field getter.
+	 * @return {}
+	 */
 	getPasswordField : function() {
 		return this.getLoginForm().getPasswordField();
 	},
+	
+	/**
+	 * Wrapper around the login-form client field getter.
+	 * @return {}
+	 */
 	getClientField : function() {
 		return this.getLoginForm().getClientField();
 	},
+	
+	/**
+	 * Wrapper around the login-form language field getter.
+	 * @return {}
+	 */
 	getLanguageField : function() {
 		return this.getLoginForm().getLanguageField();
 	},
 
+	/**
+	 * Wrapper around the login-form applyState_Logout function.
+	 */
 	applyState_Logout : function() {
 		this.getLoginForm().applyState_Logout();
 	},
 
+	/**
+	 * Wrapper around the login-form applyState_LockSession function.
+	 */
 	applyState_LockSession : function() {
 		this.getLoginForm().applyState_LockSession();
 	},
 
+	/**
+	 * Wrapper around the login-form clearInvalid function.
+	 */
 	clearInvalid : function() {
 		this.getLoginForm().clearInvalid();
 	}
