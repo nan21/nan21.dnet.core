@@ -74,6 +74,11 @@ dnet.base.ApplicationMenu$Items = [
 										      ,closable: true , modal:true , resizable:false
 											})).show();
 								 }
+							  },
+							  {text: Dnet.translate("appmenuitem", "frameInspector__lbl") 
+							 	, handler:function() {
+									( new dnet.base.FrameInspector({})).show();
+								 }
 							  }
 				        ]
 				   	})

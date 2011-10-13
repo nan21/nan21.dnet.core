@@ -70,6 +70,7 @@ dnet.Translation = Ext.apply({},{
 
 		,help__lbl : "Help"
 		,about__lbl : "About DNet"
+		,frameInspector__lbl : "Frame inspector"
 		,version__lbl : "Version"
 		
 		,calendar__lbl : "Calendar"

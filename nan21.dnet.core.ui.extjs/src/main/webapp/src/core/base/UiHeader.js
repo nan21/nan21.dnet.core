@@ -1,4 +1,7 @@
 
+/**
+ * Application header view. 
+ */
 Ext.define("dnet.base.UiHeader", {
 	extend:  "Ext.toolbar.Toolbar" ,
  
@@ -33,6 +36,7 @@ Ext.define("dnet.base.UiHeader", {
 	,setTitle: function(v) {
 		this.items.itemAt(1).setText(v);
 	}
+	
 	,setCanvas: function(v) {
 		this.items.itemAt(3).setText(v);
 	}
