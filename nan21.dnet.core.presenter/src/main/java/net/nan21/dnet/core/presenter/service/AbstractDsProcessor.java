@@ -12,6 +12,7 @@ import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
+import net.nan21.dnet.core.api.SystemConfig;
 import net.nan21.dnet.core.api.service.IDsService;
 import net.nan21.dnet.core.api.service.IDsServiceFactory;
 import net.nan21.dnet.core.api.service.IEntityService;
@@ -22,6 +23,8 @@ public class AbstractDsProcessor<M, P> {
 	@Autowired
 	protected ApplicationContext appContext;
 
+	protected SystemConfig systemConfig;
+	
 	protected List<IEntityServiceFactory> entityServiceFactories;
 	protected List<IDsServiceFactory> dsServiceFactories;
 
@@ -117,5 +120,15 @@ public class AbstractDsProcessor<M, P> {
 	public void setDsServiceFactories(List<IDsServiceFactory> dsServiceFactories) {
 		this.dsServiceFactories = dsServiceFactories;
 	}
+
+	public SystemConfig getSystemConfig() {
+		return systemConfig;
+	}
+
+	public void setSystemConfig(SystemConfig systemConfig) {
+		this.systemConfig = systemConfig;
+	}
+	
+	
 
 }

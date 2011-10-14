@@ -9,6 +9,7 @@ import java.io.InputStream;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
+import net.nan21.dnet.core.api.SystemConfig;
 import net.nan21.dnet.core.api.session.Params;
 import net.nan21.dnet.core.api.session.Session;
 import net.nan21.dnet.core.api.session.User;
@@ -31,6 +32,9 @@ public class AbstractDataController {
 	@Autowired
 	protected WebApplicationContext webappContext;
 
+	protected SystemConfig systemConfig;
+	
+	
 	final static Logger logger = LoggerFactory.getLogger(AbstractDataController.class);
 	protected final static int FILE_TRANSFER_BUFFER_SIZE = 4 * 1024;
 	
@@ -80,6 +84,16 @@ public class AbstractDataController {
 
 	public void setWebappContext(WebApplicationContext webappContext) {
 		this.webappContext = webappContext;
+	}
+	
+	
+
+	public SystemConfig getSystemConfig() {
+		return systemConfig;
+	}
+
+	public void setSystemConfig(SystemConfig systemConfig) {
+		this.systemConfig = systemConfig;
 	}
 
 	@ExceptionHandler(value=Exception.class) 

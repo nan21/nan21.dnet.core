@@ -25,12 +25,16 @@
 	</bean>
 	
 	<bean id="application_uiExtjsSettings" class="net.nan21.dnet.core.web.settings.UiExtjsSettings"
-		scope="request">
+		scope="singleton">
 		<property name="urlUiExtjs" value="${url.ui.extjs}" />
 		<property name="urlUiExtjsCore" value="${url.ui.extjs.core}" />
 		<property name="urlUiExtjsLibExtjs" value="${url.ui.extjs.lib.extjs}" />
 	</bean>
 	
+	<bean id="systemConfig" class="net.nan21.dnet.core.api.SystemConfig"
+		scope="singleton">
+		<property name="disableFetchGroups" value="${sys.disableFetchGroups}" />	 
+	</bean>
 	 
 	
 	<context:annotation-config />

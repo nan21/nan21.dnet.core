@@ -16,11 +16,13 @@
     	class="net.nan21.dnet.core.web.controller.data.BaseDsController" >
     	<property name="serviceFactories" ref="osgiDsServiceFactories"></property>
     	<property name="authorizeActionService" ref="authorizeDsActionService"></property>
+    	<property name="systemConfig" ref="systemConfig"></property>
     </bean>     
     
   	<bean name="baseAsgnController" scope="request"
     	class="net.nan21.dnet.core.web.controller.data.BaseAsgnController" >
     	<property name="serviceFactories" ref="osgiAsgnServiceFactories"></property>
+    	<property name="systemConfig" ref="systemConfig"></property>
     </bean> 
  
  	<bean name="authorizeDsActionService" scope="request"

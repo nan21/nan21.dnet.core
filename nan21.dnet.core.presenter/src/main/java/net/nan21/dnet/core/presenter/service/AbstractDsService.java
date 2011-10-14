@@ -655,6 +655,7 @@ public class AbstractDsService<M, P, E>
 		qb.setFilterClass(this.getModelClass());
 		qb.setParamClass(this.getParamClass());
 		qb.setDescriptor(this.descriptor);
+		qb.setSystemConfig(this.systemConfig);
 		if(qb instanceof QueryBuilderWithJpql) {
 			QueryBuilderWithJpql jqb = (QueryBuilderWithJpql)qb;
 			jqb.setEntityManager(this.getEntityService().getEntityManager());

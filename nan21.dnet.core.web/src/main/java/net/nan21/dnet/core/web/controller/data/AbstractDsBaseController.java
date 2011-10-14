@@ -43,6 +43,7 @@ public class AbstractDsBaseController<M, P>
 				srv = f.create(dsName + "Service");
 				if (srv != null) {
 					srv.setDsServiceFactories(serviceFactories);
+					srv.setSystemConfig(this.systemConfig);
 					return srv;
 				}
 			} catch (NoSuchBeanDefinitionException e) {
