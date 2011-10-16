@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.nan21.dnet.core.api.session.IChangePasswordService;
+import net.nan21.dnet.core.api.session.Params;
 import net.nan21.dnet.core.api.session.User;
 import net.nan21.dnet.core.security.DefaultLoginAuthParams;
 import net.nan21.dnet.core.security.SessionUser;
@@ -55,12 +56,13 @@ public class SessionController {
 			SecurityContextHolder.getContext().setAuthentication(authResponse);
 			
 			User u = ((SessionUser)authResponse.getPrincipal()).getUser();
+			Params params =((SessionUser)authResponse.getPrincipal()).getParams();
 			
 			request.getSession().setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, 
 					SecurityContextHolder.getContext());
 			return "{ \"success\": true , \"data\": { \"name\":\""
             + u.getDisplayName() + "\",\"code\":\"" + u.getUsername()
-            + "\", \"clientId\":\"" + u.getClientId() + "\"  }  }";
+            + "\", \"clientId\":\"" + u.getClientId() + "\" , \"systemClient\":" + params.isSystemClient() + "  }  }";
 		} catch (Exception e) {
 			return this.handleException(e, response);
 		}

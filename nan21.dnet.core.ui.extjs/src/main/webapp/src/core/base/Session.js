@@ -22,7 +22,8 @@ dnet.base.Session = {
 	 */
 	client : {
 		id : null,
-		code : null
+		code : null,
+		systemClient: false
 	},
 
 	/**

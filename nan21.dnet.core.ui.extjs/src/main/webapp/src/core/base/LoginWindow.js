@@ -163,8 +163,10 @@ Ext.define("dnet.base.LoginForm", {
 		var r = Ext.JSON.decode(response.responseText);
 		var u = getApplication().getSession().getUser();
 		var c = getApplication().getSession().getClient();
+		 
 		u.name = r.data.name;
 		c.id = r.data.clientId;
+		c.systemClient =  r.data.systemClient;
 		getApplication().onLoginSuccess();
 	},
 

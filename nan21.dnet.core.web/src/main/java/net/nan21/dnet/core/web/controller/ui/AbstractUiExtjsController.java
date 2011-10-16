@@ -48,6 +48,7 @@ public abstract class AbstractUiExtjsController  extends AbstractController  {
 		String userDisplayName = "";
 		String userClientCode = "";
 		String userClientId = "";
+		boolean userSystemClient = false;
 		
 		try {
 			SessionUser su = (SessionUser) SecurityContextHolder.getContext()
@@ -58,6 +59,8 @@ public abstract class AbstractUiExtjsController  extends AbstractController  {
 			userDisplayName = user.getDisplayName();
 			userClientCode = user.getClientCode();
 			userClientId = user.getClientId().toString(); 
+			userSystemClient = params.isSystemClient();
+			
         } catch (ClassCastException e) {
             // not authenticated 
         }
@@ -74,7 +77,8 @@ public abstract class AbstractUiExtjsController  extends AbstractController  {
 		this.model.put("userDisplayName", userDisplayName);
 		this.model.put("userClientCode", userClientCode);
 		this.model.put("userClientId", userClientId);
-		  
+		this.model.put("userSystemClient", userSystemClient);  
+		 
 		this.model.put("urlUiExtjs", uiExtjsSettings.getUrlUiExtjs() );
 		this.model.put("urlUiExtjsCore", uiExtjsSettings.getUrlUiExtjsCore() );
 		this.model.put("urlUiExtjsLibExtjs", uiExtjsSettings.getUrlUiExtjsLibExtjs() );

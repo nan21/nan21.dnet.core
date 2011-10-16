@@ -55,7 +55,7 @@ public class AbstractDsWriteController<M, P>
 			List<M> list = marshaller.readListFromString(dataString);
 			P params = marshaller.readParamsFromString(paramString); 	
 			
-			service.insert(list);
+			service.insert(list, params);
 			
 			IActionResultSave result = this.packResult(list, params); 
 			return marshaller.writeResultToString(result);
@@ -101,7 +101,7 @@ public class AbstractDsWriteController<M, P>
 			List<M> list = marshaller.readListFromString(dataString);
 			P params = marshaller.readParamsFromString(paramString); 	
 			
-			service.update(list);
+			service.update(list, params);
 
 			IActionResultSave result = this.packResult(list, params); 
 			return marshaller.writeResultToString(result);

@@ -215,6 +215,11 @@ dnet.base.Application = {
 			this.view.getLayout().setActiveItem(1);
 			this.menu.setUserText(this.session.user.name);
 			this.menu.setClientText(this.session.client.code);
+			if (this.session.client.systemClient) {
+				this.menu.addSystemClientMenu();
+			} else {
+				this.menu.removeSystemClientMenu();
+			}	
 		}
 	},
 	
@@ -228,6 +233,12 @@ dnet.base.Application = {
 
 		this.menu.setUserText(this.session.user.name);
 		this.menu.setClientText(this.session.client.code);
+		
+		if (this.session.client.systemClient) {
+			this.menu.addSystemClientMenu();
+		} else {
+			this.menu.removeSystemClientMenu();
+		}		
 	},
 	
 	/**

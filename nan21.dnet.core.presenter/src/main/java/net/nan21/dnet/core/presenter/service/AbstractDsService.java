@@ -120,7 +120,7 @@ public class AbstractDsService<M, P, E>
 	 * @param ds
 	 * @throws Exception
 	 */
-	protected void preInsert(M ds) throws Exception{
+	protected void preInsert(M ds, P params) throws Exception{
 	}
 	
 	/**
@@ -129,7 +129,7 @@ public class AbstractDsService<M, P, E>
 	 * @param e
 	 * @throws Exception
 	 */
-	protected void preInsert(M ds, E e) throws Exception{
+	protected void preInsert(M ds, E e, P params) throws Exception{
 	}
 	/**
 	 * Post-insert event. The entity has been persisted by the <code>entityManager</code>, 
@@ -139,7 +139,7 @@ public class AbstractDsService<M, P, E>
 	 * @param e
 	 * @throws Exception
 	 */
-	protected void postInsertBeforeModel(M ds, E e) throws Exception{
+	protected void postInsertBeforeModel(M ds, E e, P params) throws Exception{
 	}
 	/**
 	 * Post-insert event. The entity has been persisted by the <code>entityManager</code>, 
@@ -149,7 +149,7 @@ public class AbstractDsService<M, P, E>
 	 * @param e
 	 * @throws Exception
 	 */
-	protected void postInsertAfterModel(M ds, E e) throws Exception{
+	protected void postInsertAfterModel(M ds, E e, P params) throws Exception{
 	}
 	/**
 	 * Insert event. The steps performed during this phase are:
@@ -161,7 +161,7 @@ public class AbstractDsService<M, P, E>
 	 * @param ds
 	 * @throws Exception
 	 */
-	public void insert(M ds) throws Exception {
+	public void insert(M ds, P params) throws Exception {
 		if (this.noInsert) {
 			throw new ActionNotSupportedException("Insert not allowed.");
 		}
@@ -169,26 +169,30 @@ public class AbstractDsService<M, P, E>
 		if(ds instanceof IModelWithClientId) {
 			((IModelWithClientId)ds).setClientId(Session.user.get().getClientId());
 		}
-		this.preInsert(ds);
+		this.preInsert(ds, params);
 		E e = (E)this.getEntityService().create();		 
 		this.getConverter().modelToEntity(ds, e);
-		this.preInsert(ds,e);
-		this.getEntityService().insert(e);
-		postInsertBeforeModel(ds, e);
+		this.preInsert(ds,e, params);
+		this.onInsert(ds, e, params);
+		postInsertBeforeModel(ds, e, params);
 		this.getConverter().entityToModel(e, ds);
-		postInsertAfterModel(ds, e);
+		postInsertAfterModel(ds, e, params);
 	}
 	
+	
+	protected void onInsert(M ds, E e, P params) throws Exception {
+		this.getEntityService().insert(e);
+	}
 	/**
 	 * Template method for <code>pre-insert</code>.
 	 * @param list
 	 * @throws Exception
 	 */
-	public void preInsert(List<M> list) throws Exception {
+	public void preInsert(List<M> list, P params) throws Exception {
 		 
 	}
 	
-	public void insert(List<M> list) throws Exception {
+	public void insert(List<M> list, P params) throws Exception {
 		if (this.noInsert) {
 			throw new ActionNotSupportedException("Insert not allowed.");
 		} 	
@@ -198,32 +202,38 @@ public class AbstractDsService<M, P, E>
 				((IModelWithClientId)ds).setClientId(Session.user.get().getClientId());
 			}
 		}
-		this.preInsert(list);
+		this.preInsert(list, params);
 		// add entities in a queue and then try to insert them all in one transaction
 		List<E> entities = new ArrayList<E>();
 		for(M ds: list) {
-			this.preInsert(ds);
+			this.preInsert(ds, params);
 			E e = (E)this.getEntityService().create();			
 			entities.add(e);
 			((AbstractDsModel<E>) ds)._setEntity_(e);
 			this.getConverter().modelToEntity(ds, e);
-			this.preInsert(ds,e);			
+			this.preInsert(ds,e, params);			
 		}	
-		this.getEntityService().insert(entities);
+		//this.getEntityService().insert(entities);
+		this.onInsert(list, entities, params);
 		for(M ds: list) {	
 			E e = ((AbstractDsModel<E>) ds)._getEntity_();
-			postInsertBeforeModel(ds, e);
+			postInsertBeforeModel(ds, e, params);
 			this.getConverter().entityToModel(e, ds);
-			postInsertAfterModel(ds, e);
+			postInsertAfterModel(ds, e, params);
 		}			
-		this.postInsert(list);
+		this.postInsert(list, params);
 	}
+	
+	protected void onInsert(List<M> list, List<E> entities, P params) throws Exception {
+		this.getEntityService().insert(entities);
+	}
+	
 	/**
 	 * Template method for <code>post-insert</code>.
 	 * @param list
 	 * @throws Exception
 	 */
-	public void postInsert(List<M> list) throws Exception {
+	public void postInsert(List<M> list, P params) throws Exception {
 		 
 	}
 	  
@@ -235,7 +245,7 @@ public class AbstractDsService<M, P, E>
 	 * @param ds
 	 * @throws Exception
 	 */
-	protected void preUpdate(M ds) throws Exception{
+	protected void preUpdate(M ds, P params) throws Exception{
 	}
 	
 	/**
@@ -245,7 +255,7 @@ public class AbstractDsService<M, P, E>
 	 * @param e
 	 * @throws Exception
 	 */
-	protected void preUpdateBeforeEntity(M ds, E e) throws Exception{
+	protected void preUpdateBeforeEntity(M ds, E e, P params) throws Exception{
 	}
 	/**
 	 * Pre-insert event with data-source and the corresponding source entity has been found.
@@ -254,7 +264,7 @@ public class AbstractDsService<M, P, E>
 	 * @param e
 	 * @throws Exception
 	 */
-	protected void preUpdateAfterEntity(M ds, E e) throws Exception{
+	protected void preUpdateAfterEntity(M ds, E e, P params) throws Exception{
 	}
 	/**
 	 * Post-update event. The entity has been merged by the <code>entityManager</code>, 
@@ -264,7 +274,7 @@ public class AbstractDsService<M, P, E>
 	 * @param e
 	 * @throws Exception
 	 */
-	protected void postUpdateBeforeModel(M ds, E e) throws Exception{
+	protected void postUpdateBeforeModel(M ds, E e, P params) throws Exception{
 	}
 	
 	/**
@@ -275,7 +285,7 @@ public class AbstractDsService<M, P, E>
 	 * @param e
 	 * @throws Exception
 	 */
-	protected void postUpdateAfterModel(M ds, E e) throws Exception{
+	protected void postUpdateAfterModel(M ds, E e, P params) throws Exception{
 	}
 	
 	/**
@@ -288,20 +298,20 @@ public class AbstractDsService<M, P, E>
 	 * @param ds
 	 * @throws Exception
 	 */
-	public void update(M ds) throws Exception {
+	public void update(M ds, P params) throws Exception {
 		if (this.noUpdate) {
 			throw new ActionNotSupportedException("Update not allowed.");
 		}
 		
-		this.preUpdate(ds);
+		this.preUpdate(ds, params);
 		E e = (E)this.getEntityService().findById(((IModelWithId)ds).getId());	
-		this.preUpdateBeforeEntity(ds, e);
+		this.preUpdateBeforeEntity(ds, e, params);
 		this.getConverter().modelToEntity(ds, e);
-		this.preUpdateAfterEntity(ds, e);
+		this.preUpdateAfterEntity(ds, e, params);
 		this.getEntityService().update(e);
-		postUpdateBeforeModel(ds, e);		
+		postUpdateBeforeModel(ds, e, params);		
 		this.getConverter().entityToModel(e, ds);
-		postUpdateAfterModel(ds, e);	
+		postUpdateAfterModel(ds, e, params);	
 	}
 	
 	/**
@@ -309,24 +319,24 @@ public class AbstractDsService<M, P, E>
 	 * @param list
 	 * @throws Exception
 	 */
-	public void preUpdate(List<M> list) throws Exception {		 
+	public void preUpdate(List<M> list, P params) throws Exception {		 
 	}
 	
 	
-	public void update(List<M> list) throws Exception {
+	public void update(List<M> list, P params) throws Exception {
 		if (this.noUpdate) {
 			throw new ActionNotSupportedException("Update not allowed.");
 		} 		 
-		this.preUpdate(list);
+		this.preUpdate(list, params);
 		List<E> entities = this.getEntityService().findByIds(this.collectIds(list));
 
 		for(M ds: list) {
-			this.preUpdate(ds);
+			this.preUpdate(ds, params);
 			//TODO: optimize me 
 			E e = lookupEntityById(entities, ((IModelWithId)ds).getId() );
-			this.preUpdateBeforeEntity(ds, e);			
+			this.preUpdateBeforeEntity(ds, e, params);			
 			this.getConverter().modelToEntity(ds, e);
-			this.preUpdateAfterEntity(ds, e);			 
+			this.preUpdateAfterEntity(ds, e, params);			 
 		}	
 		//System.out.println("--------AbstractDsService.update before this.getEntityService().update(entities)");
 		this.getEntityService().update(entities);
@@ -334,11 +344,11 @@ public class AbstractDsService<M, P, E>
 		//entities = this.getEntityService().findByIds(this.collectIds(list));
 		for(M ds: list) {	
 			E e = this.getEntityService().getEntityManager().find(this.getEntityClass(), ((IModelWithId)ds).getId());
-			postUpdateBeforeModel(ds, e);
+			postUpdateBeforeModel(ds, e, params);
 			this.getConverter().entityToModel(e, ds);
-			postUpdateAfterModel(ds, e);
+			postUpdateAfterModel(ds, e, params);
 		}					
-		this.postUpdate(list);
+		this.postUpdate(list, params);
 	}
 	
 	private E lookupEntityById(List<E> list, Object id) {
@@ -354,7 +364,7 @@ public class AbstractDsService<M, P, E>
 	 * @param list
 	 * @throws Exception
 	 */
-	public void postUpdate(List<M> list) throws Exception {
+	public void postUpdate(List<M> list, P params) throws Exception {
 		 
 	}
 	
@@ -421,7 +431,7 @@ public class AbstractDsService<M, P, E>
 		//TODO: check type-> csv, json, etc
 		DsCsvLoader l = new DsCsvLoader();
 		List<M> list = l.run(file, this.modelClass, null);
-		this.insert(list);
+		this.insert(list, null);
 	}
 	
 	public void doExport(M filter, P params,

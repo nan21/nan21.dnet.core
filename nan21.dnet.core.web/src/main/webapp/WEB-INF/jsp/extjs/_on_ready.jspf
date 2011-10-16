@@ -5,4 +5,5 @@
 		dnet.base.Session.user.name = '${userDisplayName}';
 		dnet.base.Session.client.code = '${userClientCode}';
 		dnet.base.Session.client.id = '${userClientId}';
+		dnet.base.Session.client.systemClient = ${userSystemClient};
 		dnet.base.Session.locked = false;

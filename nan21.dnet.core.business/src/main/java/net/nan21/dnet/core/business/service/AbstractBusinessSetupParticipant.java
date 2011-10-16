@@ -35,4 +35,10 @@ public abstract class AbstractBusinessSetupParticipant extends AbstractSetupPart
 		return (List<IInitDataProviderFactory>)this.appContext.getBean("osgiInitDataProviderFactories");
 	}
 	 
+	public <T extends AbstractBusinessDelegate> T getBusinessDelegate(Class<T> clazz) throws Exception {
+		T delegate = clazz.newInstance();
+		//delegate.setAppContext(this.appContext);
+		delegate.setEntityManager(this.em);
+		return delegate;
+	}
 }

@@ -251,7 +251,7 @@ dnet.Translation = Ext.apply({},{
 	   ,ImportMapItem_UI: "Fisiere import"
 	   ,ImportMap_UI: "Seturi fisiere import"
 	   ,ImportJob_UI: "Procese import"
-	   ,Client_UI:"Client"
+	   ,MyClient_UI: "Info client"
        ,SysDataSources_UI : "Componente sistem: Surse de date"
        ,Reports_UI : "Rapoarte"
 	   ,ReportServers_UI : "Servere raportare"

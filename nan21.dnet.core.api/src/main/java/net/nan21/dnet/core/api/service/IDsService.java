@@ -15,7 +15,6 @@ import net.nan21.dnet.core.api.marshall.IDsMarshaller;
  * 
  * @param <M>
  * @param <P>
- * @param <E>
  */
 public interface IDsService<M, P> {
 
@@ -25,7 +24,7 @@ public interface IDsService<M, P> {
 	 * @param ds
 	 *            data-source instance
 	 */
-	public void insert(M ds) throws Exception;
+	public void insert(M ds, P params) throws Exception;
 
 	/**
 	 * Handler for insert event.
@@ -33,7 +32,7 @@ public interface IDsService<M, P> {
 	 * @param list
 	 *            data-source instances list
 	 */
-	public void insert(List<M> list) throws Exception;
+	public void insert(List<M> list, P params) throws Exception;
 
 	/**
 	 * Handler for update event.
@@ -41,7 +40,7 @@ public interface IDsService<M, P> {
 	 * @param ds
 	 *            data-source instance
 	 */
-	public void update(M ds) throws Exception;
+	public void update(M ds, P params) throws Exception;
 
 	/**
 	 * Handler for update event.
@@ -49,7 +48,7 @@ public interface IDsService<M, P> {
 	 * @param list
 	 *            data-source instances list
 	 */
-	public void update(List<M> list) throws Exception;
+	public void update(List<M> list, P params) throws Exception;
 
 	// public void delete(M id) throws Exception;
 	// public void delete(List<M> list) throws Exception;

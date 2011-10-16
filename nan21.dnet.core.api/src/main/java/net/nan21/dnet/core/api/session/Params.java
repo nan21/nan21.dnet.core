@@ -16,6 +16,7 @@ public class Params {
     private String defaultExportPath;
     private String tempPath;
     private String adminRole;
+    private boolean systemClient;
     
     private String serverDateFormatMask;
     private SimpleDateFormat serverDateFormat;
@@ -97,6 +98,13 @@ public class Params {
 	public void setServerDateFormat(SimpleDateFormat serverDateFormat) {
 		this.serverDateFormat = serverDateFormat;
 	}
-    
-    
+
+	public boolean isSystemClient() {
+		return systemClient;
+	}
+
+	public void setSystemClient(boolean systemClient) {
+		this.systemClient = systemClient;
+	}
+     
 }
