@@ -200,10 +200,13 @@ Ext.define("dnet.base.AbstractDc", {
 
 		// this.RecordModel = Ext.data.Record.create(this.recordFields);
 		// this.ParamModel = Ext.data.Record.create(this.paramFields);
-
+		
 		this.setFilter(this.newFilterInstance()); // Ext.create(this.recordModel,
 													// {})
 		this.setParams(Ext.create(this.paramModel, {}));
+		
+		
+		
 		// this.setFilter(new this.RecordModel(this
 		// .emptyFilterData(this.recordFields)));
 		// this.setParams(new this.ParamModel(this

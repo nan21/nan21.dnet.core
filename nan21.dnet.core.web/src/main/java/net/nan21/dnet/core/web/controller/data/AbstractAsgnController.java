@@ -395,6 +395,7 @@ public class AbstractAsgnController<M,P> extends AbstractDataController {
 				srv = f.create(asgnName + "AsgnService");
 				if (srv != null) {
 					//srv.setDsServiceFactories(serviceFactories);
+					srv.setSystemConfig(this.systemConfig);
 					return srv;
 				}
 			} catch (NoSuchBeanDefinitionException e) {

@@ -8,9 +8,12 @@ Ext.define("dnet.base.DcvFormBuilder", {
 
 	addTextField : function(config) {
 		config.xtype = "textfield";
-		Ext.applyIf(config, {
-			enforceMaxLength : true
-		});
+		if (config.maxLength) {
+			config.enforceMaxLength = true;
+		}
+//		Ext.applyIf(config, {
+//			enforceMaxLength : true
+//		});
 		if (config.caseRestriction ) {
 			config.fieldStyle = "text-transform:"+config.caseRestriction+";";
 		}
@@ -180,11 +183,28 @@ Ext.define("dnet.base.DcvFormBuilder", {
 			config.listeners[en] = {};
 		}
 
-		if (config._isParam_ === true) {
+		if (config.paramIndex) {
 			var fn = function(f, nv, ov, eopts) {
-
+				if (!f.isValid()) {
+					return;
+				}
+				var r = this._dcView_._controller_.getParams();
+				if (!r)
+					return;
+				var rv = r.get(f.paramIndex);
+				if (Ext.isDate(rv)) {
+					var rd = Ext.Date.parse(Ext.Date.format(rv, f.format),
+							f.format);
+					if (!r.isEqual(rd, nv)) {
+						r.set(f.paramIndex, nv);
+					}
+				} else {
+					if (!r.isEqual(rv, nv)) {
+						r.set(f.paramIndex, nv);
+					}
+				}
 			};
-		} else {
+		} else if (config.dataIndex) {
 			var fn = function(f, nv, ov, eopts) {
 				if (!f.isValid()) {
 					return;

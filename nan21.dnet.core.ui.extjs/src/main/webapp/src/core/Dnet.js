@@ -195,9 +195,13 @@ Dnet = {
 		if (item.dataIndex != undefined && mrb != null && mrb[ item.dataIndex+'__lbl']) {				
 			item.fieldLabel = mrb[ item.dataIndex+'__lbl'];
 			return true;
+		} 
+		if (item.paramIndex != undefined && mrb != null && mrb[ item.paramIndex+'__lbl']) {				
+			item.fieldLabel = mrb[ item.paramIndex+'__lbl'];
+			return true;
 		}
 		// try to translate from the shared resource-bundle
-		item.fieldLabel = Dnet.translate("ds",item.dataIndex); 
+		item.fieldLabel = Dnet.translate("ds",item.dataIndex || item.paramIndex); 
 	}
 	,translateColumn: function(vrb, mrb, item) {
 		// check if the view has its own resource bundle 

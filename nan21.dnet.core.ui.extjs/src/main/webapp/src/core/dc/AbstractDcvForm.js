@@ -126,10 +126,10 @@ Ext.define("dnet.base.AbstractDcvForm", {
  
 	,onBind:function(record) {
 		//this.getForm().reset();
-		var msg = "null";
-		if (record) {
-			msg = record.data.name + ", dirty = "+record.dirty; 
-		}
+//		var msg = "null";
+//		if (record) {
+//			msg = record.data.name + ", dirty = "+record.dirty; 
+//		}
 		//dnet.base.Logger.debug("dnet.base.AbstractDcvForm.onBind => " + msg);
 		
 		if (record) {
@@ -146,16 +146,18 @@ Ext.define("dnet.base.AbstractDcvForm", {
 	}
 	,onUnbind:function(record) {
 		//this.getForm().reset();
-		var msg = "null";
-		if (record) {
-			msg = record.data.name+ ", dirty = "+record.dirty; 
-		}
+//		var msg = "null";
+//		if (record) {
+//			msg = record.data.name+ ", dirty = "+record.dirty; 
+//		}
 		//dnet.base.Logger.debug("dnet.base.AbstractDcvForm.onUnbind => " +msg);
 		 
 		
 		this.getForm().getFields().each(function(field) {
-			field.setRawValue(null);
-			field.clearInvalid();
+			if (field.dataIndex) {
+				field.setRawValue(null);
+				field.clearInvalid();				
+			}
 			field.disable();
 			}); 
   
@@ -170,7 +172,7 @@ Ext.define("dnet.base.AbstractDcvForm", {
 	,updateBound:function(record) {
 		var msg = "null";
 		if (record) {
-			msg = record.data.name+ ", dirty = "+record.dirty; 
+			//msg = record.data.name+ ", dirty = "+record.dirty; 
 			//dnet.base.Logger.debug("dnet.base.AbstractDcvForm.updateBound => " +msg );
 			this.getForm().loadRecord(record);
 		}		

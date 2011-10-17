@@ -2,6 +2,7 @@ package net.nan21.dnet.core.api.service;
 
 import java.util.List;
 
+import net.nan21.dnet.core.api.SystemConfig;
 import net.nan21.dnet.core.api.action.IQueryBuilder;
 import net.nan21.dnet.core.api.marshall.IDsMarshaller;
 
@@ -90,5 +91,17 @@ public interface IAsgnService<M, P> {
 	public Long getObjectId();
 	public void setObjectId(Long objectId) ;
 	
-	
+	/**
+	 * Getter for system configuration.
+	 * 
+	 * @return
+	 */
+	public SystemConfig getSystemConfig();
+
+	/**
+	 * Setter for system configuration.
+	 * 
+	 * @param systemConfig
+	 */
+	public void setSystemConfig(SystemConfig systemConfig);
 }

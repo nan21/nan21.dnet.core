@@ -5,10 +5,12 @@ import java.util.List;
 
 import javax.persistence.Query;
 
+import net.nan21.dnet.core.api.SystemConfig;
 import net.nan21.dnet.core.api.action.IQueryBuilder;
 import net.nan21.dnet.core.api.marshall.IDsMarshaller;
 import net.nan21.dnet.core.api.service.IAsgnTxService;
 import net.nan21.dnet.core.api.service.IAsgnTxServiceFactory;
+import net.nan21.dnet.core.api.session.Session;
 import net.nan21.dnet.core.presenter.action.QueryBuilderWithJpql;
 import net.nan21.dnet.core.presenter.marshaller.JsonMarshaller;
 import net.nan21.dnet.core.presenter.model.AsgnDescriptor;
@@ -37,7 +39,7 @@ public abstract class AbstractAsgnService<M, P, E> {
 	protected String leftPkField = "id";
 	protected String rightObjectIdField;
 	protected String rightItemIdField;
-	
+	protected SystemConfig systemConfig;
 	protected String asgnTxFactoryName;
 	
 	protected List<IAsgnTxServiceFactory> asgnTxServiceFactories;
@@ -166,13 +168,14 @@ public abstract class AbstractAsgnService<M, P, E> {
 			IQueryBuilder<M, P> builder) throws Exception {
 		QueryBuilderWithJpql<M, P> bld = (QueryBuilderWithJpql<M, P>) builder;		
 		
-		bld.addFilterCondition("e."+this.leftPkField+" not in (select x.itemId from TempAsgnLine x where x.selectionId = :pSelectionId)"); 
+		bld.addFilterCondition(" e.clientId = :pClientId and e."+this.leftPkField+" not in (select x.itemId from TempAsgnLine x where x.selectionId = :pSelectionId)"); 
 		
 		bld.setFilter(filter);
 		bld.setParams(params);
 		 
 		List<M> result = new ArrayList<M>(); 
 		Query q = bld.createQuery();	
+		q.setParameter("pClientId", Session.user.get().getClientId());
 		q.setParameter("pSelectionId", this.selectionId);
 		List<E> list = q
 			.setFirstResult(bld.getResultStart())
@@ -239,7 +242,7 @@ public abstract class AbstractAsgnService<M, P, E> {
 		qb.setParamClass(this.getParamClass());
 		qb.setDescriptor(this.descriptor);	 
 		qb.setEntityManager(this.getTxService().getEntityManager());
-		 
+		qb.setSystemConfig(this.systemConfig); 
 		if(qb instanceof QueryBuilderWithJpql) {
 			QueryBuilderWithJpql jqb = (QueryBuilderWithJpql)qb;			
 			jqb.setBaseEql("select e from "+this.getEntityClass().getSimpleName()+" e");
@@ -365,5 +368,11 @@ public abstract class AbstractAsgnService<M, P, E> {
 		this.asgnTxFactoryName = asgnTxFactoryName;
 	}
 	
-	
+	public SystemConfig getSystemConfig() {
+		return systemConfig;
+	}
+
+	public void setSystemConfig(SystemConfig systemConfig) {
+		this.systemConfig = systemConfig;
+	}
 }

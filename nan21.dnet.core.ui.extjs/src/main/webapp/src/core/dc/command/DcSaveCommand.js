@@ -27,6 +27,7 @@ Ext.define("dnet.base.DcSaveCommand", {
 	
 	
 	onExecute: function() {	
+		this.dc.store.proxy.extraParams.params=Ext.JSON.encode(this.dc.params.data);
 		this.dc.store.sync(); 		 	
 	},
 	
