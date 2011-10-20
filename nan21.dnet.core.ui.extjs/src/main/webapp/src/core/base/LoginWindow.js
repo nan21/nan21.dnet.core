@@ -163,11 +163,14 @@ Ext.define("dnet.base.LoginForm", {
 		var r = Ext.JSON.decode(response.responseText);
 		var u = getApplication().getSession().getUser();
 		var c = getApplication().getSession().getClient();
-		 
+		var accountChange = false;
+		if (c.id != r.data.clientId || u.name!= r.data.name) {
+			accountChange = true;
+		}
 		u.name = r.data.name;
 		c.id = r.data.clientId;
 		c.systemClient =  r.data.systemClient;
-		getApplication().onLoginSuccess();
+		getApplication().onLoginSuccess(accountChange);
 	},
 
 	/**

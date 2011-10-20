@@ -118,6 +118,11 @@ dnet.base.ApplicationMenu$Items = [
 	text : Dnet.translate("appmenuitem", "help__lbl"),
 	menu : new Ext.menu.Menu({
 		items : [{
+			text : Dnet.translate("appmenuitem", "frameInspector__lbl"),
+			handler : function() {
+				(new dnet.base.FrameInspector({})).show();
+			}
+		},"-",{
 			text : Dnet.translate("appmenuitem", "about__lbl"),
 			handler : function() {
 				(new Ext.Window({
@@ -134,12 +139,7 @@ dnet.base.ApplicationMenu$Items = [
 							resizable : false
 						})).show();
 			}
-		}, {
-			text : Dnet.translate("appmenuitem", "frameInspector__lbl"),
-			handler : function() {
-				(new dnet.base.FrameInspector({})).show();
-			}
-		}]
+		} ]
 	})
 
 }
@@ -168,24 +168,7 @@ Ext.define("dnet.base.ApplicationMenu", {
 		items = items.concat(dnet.base.ApplicationMenu$Items);
 		items = items.concat(productInfo);
 
-		this.systemClientMenu = Ext.create('Ext.button.Split', {
-			xtype : "splitbutton",
-			text : "Tools",
-			menu : new Ext.menu.Menu({
-				items : [{
-					text : "Clients management",
-					handler : function() {
-						var bundle = "nan21.dnet.module.ad.ui.extjs";
-						var frame = "net.nan21.dnet.module.ad.client.frame.Client_UI";
-						var path = Dnet.buildUiPath(bundle, frame, false);
-						getApplication().showFrame(frame, {
-									url : path
-								});
-					}
-				}]
-			})
-		});
-
+		 
 		this.systemClientMenuAdded = false;
 
 		var cfg = {
@@ -218,14 +201,38 @@ Ext.define("dnet.base.ApplicationMenu", {
 	
 	addSystemClientMenu: function() {
 		if (!this.systemClientMenuAdded) {
+			this.createSystemClientMenu();
 			this.insert(8,this.systemClientMenu);
+			this.systemClientMenuAdded = true;
 		}
 	},
 	
 	removeSystemClientMenu: function() {
 		if(this.systemClientMenuAdded) {
 			this.remove(this.systemClientMenu);
+			this.systemClientMenuAdded = false;
+			this.systemClientMenu = null;
 		}
+	},
+	
+	createSystemClientMenu: function() {
+		this.systemClientMenu = Ext.create('Ext.button.Split', {
+			xtype : "splitbutton",
+			text : "Tools",
+			menu : new Ext.menu.Menu({
+				items : [{
+					text : "Clients management",
+					handler : function() {
+						var bundle = "nan21.dnet.module.ad.ui.extjs";
+						var frame = "net.nan21.dnet.module.ad.client.frame.Client_UI";
+						var path = Dnet.buildUiPath(bundle, frame, false);
+						getApplication().showFrame(frame, {
+									url : path
+								});
+					}
+				}]
+			})
+		});
 	}
 	
 });

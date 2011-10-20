@@ -255,9 +255,8 @@ public abstract class AbstractEntityService <E>  {
 	protected void postUpdate(List<E> list) throws Exception {		
 	}
 	
-	
-	
-	public int executeUpdate(String jpqlStatement, Map<String, Object> parameters) throws Exception {
+	 
+	public int update(String jpqlStatement, Map<String, Object> parameters) throws Exception {
 		Query q = this.getEntityManager()
 			.createQuery(jpqlStatement);
 		

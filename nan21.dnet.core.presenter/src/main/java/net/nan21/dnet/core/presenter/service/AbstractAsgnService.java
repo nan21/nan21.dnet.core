@@ -193,13 +193,14 @@ public abstract class AbstractAsgnService<M, P, E> {
 			IQueryBuilder<M, P> builder) throws Exception {
 		QueryBuilderWithJpql<M, P> bld = (QueryBuilderWithJpql<M, P>) builder;
   
-		bld.addFilterCondition("e."+this.leftPkField+" in (select x.itemId from TempAsgnLine x where x.selectionId = :pSelectionId)"); 
+		bld.addFilterCondition(" e.clientId = :pClientId and e."+this.leftPkField+" in (select x.itemId from TempAsgnLine x where x.selectionId = :pSelectionId)"); 
 		bld.setFilter(filter);
 		bld.setParams(params);
 		 
 		List<M> result = new ArrayList<M>(); 
 				 
 		Query q = bld.createQuery();	
+		q.setParameter("pClientId", Session.user.get().getClientId());
 		q.setParameter("pSelectionId", this.selectionId);
 		List<E> list = q
 			.setFirstResult(bld.getResultStart())

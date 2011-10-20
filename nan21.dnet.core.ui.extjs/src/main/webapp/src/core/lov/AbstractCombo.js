@@ -46,11 +46,19 @@ Ext.define("dnet.base.AbstractCombo", {
 		if (this.retFieldMapping == null) {
 			this.retFieldMapping = [];
 		}
-		//TODO: handle if it is binded to a parameter
-		this.retFieldMapping[this.retFieldMapping.length] = {
+		 
+		if (this.dataIndex) {
+			this.retFieldMapping[this.retFieldMapping.length] = {
 				lovField:this.displayField,
 				dsField: this.dataIndex
-		};		
+			};
+		} else if (this.paramIndex) {
+			this.retFieldMapping[this.retFieldMapping.length] = {
+				lovField:this.displayField,
+				dsParam: this.paramIndex
+			};
+		}
+		 			
 	    this.callParent(arguments);	
 	},	 
 	

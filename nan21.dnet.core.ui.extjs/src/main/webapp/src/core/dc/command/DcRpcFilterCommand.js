@@ -35,12 +35,13 @@ Ext.define("dnet.base.DcRpcFilterCommand", {
 		var serviceName = options.name;
 		var s = options || {};
 		var p = {
-			data : Ext.encode(dc.filter.data)
+			data : Ext.encode(dc.filter.data),
+			params : Ext.encode(dc.params.data)
 		};
 		p[Dnet.requestParam.SERVICE_NAME_PARAM] = serviceName;
 		p["rpcType"] = "filter";
 		if (s.modal) {
-			Ext.Msg.progress('Working...');
+			Ext.Msg.wait("Working...");
 		}
 		Ext.Ajax.request( {
 			url : Dnet.dsAPI(dc.dsName, "json").service,
@@ -112,9 +113,11 @@ Ext.define("dnet.base.DcRpcFilterCommand", {
 		var dc = this.dc;
 		if (s.callbacks && s.callbacks.failureFn) {
 			s.callbacks.failureFn.call(s.callbacks.failureScope || dc, dc,
-					response, serviceName, specs);
+					response, serviceName, options);
+		} else {
+			dc.showAjaxErrors(response,options);
 		}
-		if (!(specs.callbacks && specs.callbacks.silentFailure === true)) {
+		if (!(s.callbacks && s.callbacks.silentFailure === true)) {
 			dc.fireEvent("afterDoServiceFilterFailure", dc, response, name,
 					options);
 		}

@@ -227,7 +227,10 @@ dnet.base.Application = {
 	 * On login success hide the login window and show the application canvas.
 	 * Add whatever else is necessary.
 	 */
-	onLoginSuccess : function() {
+	onLoginSuccess : function(accountChange) {
+		if (accountChange) {
+			this.getViewBody().plugins[0].onCloseAll(); //.removeAll(true);
+		}
 		this.showMainApplicationView();
 		this.loginWindow.hide();
 

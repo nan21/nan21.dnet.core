@@ -8,9 +8,9 @@ Ext.define("dnet.base.DcvFilterFormBuilder", {
 
 	addTextField : function(config) {
 		config.xtype = "textfield";
-		Ext.applyIf(config, {
-			enforceMaxLength : true
-		});
+		if (config.maxLength) {
+			config.enforceMaxLength = true;
+		}
 		if (config.caseRestriction ) {
 			config.fieldStyle = "text-transform:"+config.caseRestriction+";";
 		}
@@ -28,7 +28,7 @@ Ext.define("dnet.base.DcvFilterFormBuilder", {
 
 	addCheckbox : function(config) {
 		config.xtype = "checkbox";
-		this.applyModelUpdater(config, "check");
+		this.applyModelUpdater(config );
 		this.applySharedConfig(config);
 		return this;
 	},
@@ -142,22 +142,65 @@ Ext.define("dnet.base.DcvFilterFormBuilder", {
 			config.listeners[en] = {};
 		}
 
-		if (config._isParam_ === true) {
-			var fn = function(f, nv, ov) {
-				f._dcView_._controller_.setParamValue(f.dataIndex,
-						f.getValue(), true);
+		var fn=null;
+		if (config.paramIndex) {
+			fn = function(f, nv, ov) {
+				if (!f.isValid()) {
+					return;
+				}
+				var r = f._dcView_._controller_.getParams();
+				if (!r)
+					return;
+				var rv = r.get(f.paramIndex);
+				if (Ext.isDate(rv)) {
+					var rd = Ext.Date.parse(Ext.Date.format(rv, f.format),
+							f.format);
+					if (!r.isEqual(rd, nv)) {
+						r.set(f.paramIndex, nv);
+					}
+				} else {
+					if (!r.isEqual(rv, nv)) {
+						r.set(f.paramIndex, nv);
+					}
+				}
+//				f._dcView_._controller_.setParamValue(f.paramIndex,
+//						f.getValue(), true);
 			};
-		} else {
-			var fn = function(f, nv, ov) {
-				f._dcView_._controller_.getFilter().set(f.dataIndex,
-						f.getValue());
+		} else if (config.dataIndex) {
+			fn = function(f, nv, ov) {
+				
+				if (!f.isValid()) {
+					return;
+				}
+				var r = f._dcView_._controller_.getFilter();
+				if (!r)
+					return;
+				var rv = r.get(f.dataIndex);
+				if (Ext.isDate(rv)) {
+					var rd = Ext.Date.parse(Ext.Date.format(rv, f.format),
+							f.format);
+					if (!r.isEqual(rd, nv)) {
+						r.set(f.dataIndex, nv);
+					}
+				} else {
+					if (!r.isEqual(rv, nv)) {
+						r.set(f.dataIndex, nv);
+					}
+				}
+				
+				
+//				f._dcView_._controller_.getFilter().set(f.dataIndex,
+//						f.getValue());
 			};
 		}
-		if (config.listeners[en].fn) {
-			Ext.Function.createInterceptor(config.listeners[en].fn, fn);
-		} else {
-			config.listeners[en]["fn"] = fn;
+		if(fn!=null) {
+			if (config.listeners[en].fn) {
+				config.listeners[en].fn = Ext.Function.createInterceptor(config.listeners[en].fn, fn);
+			} else {
+				config.listeners[en]["fn"] = fn;
+			}
 		}
+		
 	},
 
 	applySharedConfig : function(config) {

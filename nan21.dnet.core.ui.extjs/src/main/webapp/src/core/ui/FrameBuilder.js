@@ -190,10 +190,16 @@ Ext.define("dnet.base.FrameBuilder" , {
 		Ext.applyIf(config,{ id:Ext.id(), objectIdField: "id"  } );
 		this.frame._elems_.add(config.name, config);
 		return this;
-	} 
+	},  
+	
+	addWindow: function(config) {
+		Ext.applyIf(config,{ id:Ext.id(),_window_:true} );
+		this.frame._elems_.add(config.name, config);
+		return this;
+	}
 	,add: function(config) {
 		Ext.applyIf(config,{ id:Ext.id()} );
-		this.frame._elems_.add(name, config);
+		this.frame._elems_.add(config.name, config);
 		return this;
 	}
 	,merge: function(name, config) {

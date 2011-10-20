@@ -116,6 +116,25 @@ public class AbstractDsService<M, P, E>
 	// ======================== Insert ===========================
 	
 	/**
+	 * Provide custom logic to decide if the action can be executed.
+	 * @param list
+	 * @param params
+	 * @return
+	 */
+	protected boolean canInsert(M ds, P params) {
+		return true;
+	}
+	
+	/**
+	 * Provide custom logic to decide if the action can be executed.
+	 * @param list
+	 * @param params
+	 * @return
+	 */
+	protected boolean canInsert(List<M> list, P params) {
+		return true;
+	}
+	/**
 	 * Pre-insert event with the data-source values as received from client.
 	 * @param ds
 	 * @throws Exception
@@ -162,9 +181,9 @@ public class AbstractDsService<M, P, E>
 	 * @throws Exception
 	 */
 	public void insert(M ds, P params) throws Exception {
-		if (this.noInsert) {
+		if (this.noInsert || !this.canInsert(ds, params)) {
 			throw new ActionNotSupportedException("Insert not allowed.");
-		}
+		}		 
 		// add the client 
 		if(ds instanceof IModelWithClientId) {
 			((IModelWithClientId)ds).setClientId(Session.user.get().getClientId());
@@ -188,7 +207,7 @@ public class AbstractDsService<M, P, E>
 	 * @param list
 	 * @throws Exception
 	 */
-	public void preInsert(List<M> list, P params) throws Exception {
+	protected void preInsert(List<M> list, P params) throws Exception {
 		 
 	}
 	
@@ -239,6 +258,26 @@ public class AbstractDsService<M, P, E>
 	  
 	
 	// ======================== Update ===========================
+	
+	/**
+	 * Provide custom logic to decide if the action can be executed.
+	 * @param list
+	 * @param params
+	 * @return
+	 */
+	protected boolean canUpdate(M ds, P params) {
+		return true;
+	}
+	
+	/**
+	 * Provide custom logic to decide if the action can be executed.
+	 * @param list
+	 * @param params
+	 * @return
+	 */
+	protected boolean canUpdate(List<M> list, P params) {
+		return true;
+	}
 	
 	/**
 	 * Pre-insert event with the data-source values.
@@ -299,7 +338,7 @@ public class AbstractDsService<M, P, E>
 	 * @throws Exception
 	 */
 	public void update(M ds, P params) throws Exception {
-		if (this.noUpdate) {
+		if (this.noUpdate || !this.canUpdate(ds, params)) {
 			throw new ActionNotSupportedException("Update not allowed.");
 		}
 		
@@ -324,7 +363,7 @@ public class AbstractDsService<M, P, E>
 	
 	
 	public void update(List<M> list, P params) throws Exception {
-		if (this.noUpdate) {
+		if (this.noUpdate || ! this.canUpdate(list, params)) {
 			throw new ActionNotSupportedException("Update not allowed.");
 		} 		 
 		this.preUpdate(list, params);
@@ -338,10 +377,7 @@ public class AbstractDsService<M, P, E>
 			this.getConverter().modelToEntity(ds, e);
 			this.preUpdateAfterEntity(ds, e, params);			 
 		}	
-		//System.out.println("--------AbstractDsService.update before this.getEntityService().update(entities)");
 		this.getEntityService().update(entities);
-		//System.out.println("--------AbstractDsService.update after this.getEntityService().update(entities)");
-		//entities = this.getEntityService().findByIds(this.collectIds(list));
 		for(M ds: list) {	
 			E e = this.getEntityService().getEntityManager().find(this.getEntityClass(), ((IModelWithId)ds).getId());
 			postUpdateBeforeModel(ds, e, params);
@@ -371,6 +407,22 @@ public class AbstractDsService<M, P, E>
 	 
 	// ======================== Delete ===========================
 	
+	
+	/**
+	 * Provide custom logic to decide if the action can be executed.
+	 */
+	protected boolean canDelete(Object id) {
+		return true;
+	}
+	
+	/**
+	 * Provide custom logic to decide if the action can be executed.
+	 */
+	protected boolean canDelete(List<Object> ids) {
+		return true;
+	}
+	
+	
 	/**
 	 * Template method for <code>pre-delete</code>. 
 	 */
@@ -388,7 +440,7 @@ public class AbstractDsService<M, P, E>
 	 * @throws Exception
 	 */
 	public void deleteById(Object id) throws Exception {
-		if (this.noDelete) {
+		if (this.noDelete || !this.canDelete(id)) {
 			throw new ActionNotSupportedException("Delete not allowed.");
 		}
 		preDelete(id);
@@ -409,7 +461,7 @@ public class AbstractDsService<M, P, E>
 	 * @throws Exception
 	 */
 	public void deleteByIds(List<Object> ids) throws Exception {
-		if (this.noDelete) {
+		if (this.noDelete || !this.canDelete(ids)) {
 			throw new ActionNotSupportedException("Delete not allowed.");
 		}
 		preDelete(ids);
@@ -488,8 +540,19 @@ public class AbstractDsService<M, P, E>
 		delegate.setEntityServiceFactories(entityServiceFactories);
 		delegate.setDsServiceFactories(dsServiceFactories);
 		
-		Method m = def.getDelegateClass().getMethod(def.getMethodName() ,getModelClass() );
-		m.invoke(delegate, ds);
+		Method m = null;
+		boolean withParams = false;
+		try {
+			m = def.getDelegateClass().getMethod(def.getMethodName() ,getModelClass(), getParamClass() );
+			withParams = true;
+		} catch (NoSuchMethodException e) {
+			m = def.getDelegateClass().getMethod(def.getMethodName() ,getModelClass() );
+		}
+		if (withParams) {
+			m.invoke(delegate, ds, params);
+		} else {
+			m.invoke(delegate, ds);
+		} 
 		//delegate.execute(ds);		
 	}
 
@@ -502,9 +565,22 @@ public class AbstractDsService<M, P, E>
 		delegate.setAppContext(this.appContext);
 		delegate.setEntityServiceFactories(entityServiceFactories);
 		delegate.setDsServiceFactories(dsServiceFactories);
-		
-		Method m = def.getDelegateClass().getMethod(def.getMethodName() ,getModelClass() );
-		InputStream result = (InputStream)m.invoke(delegate, ds);
+		 
+		Method m = null;
+		boolean withParams = false;
+		try {
+			m = def.getDelegateClass().getMethod(def.getMethodName() ,getModelClass(), getParamClass() );
+			withParams = true;
+		} catch (NoSuchMethodException e) {
+			m = def.getDelegateClass().getMethod(def.getMethodName() ,getModelClass() );
+		}
+		InputStream result = null;
+		if (withParams) {
+			result = (InputStream)m.invoke(delegate, ds, params);
+		} else {
+			result = (InputStream)m.invoke(delegate, ds);
+		} 
+	 
 		//delegate.execute(ds);
 		return result;
 	}
@@ -521,8 +597,20 @@ public class AbstractDsService<M, P, E>
 		delegate.setAppContext(this.appContext);
 		delegate.setEntityServiceFactories(entityServiceFactories);
 		delegate.setDsServiceFactories(dsServiceFactories);
-		Method m = def.getDelegateClass().getMethod(def.getMethodName() ,getModelClass() );
-		m.invoke(delegate, filter);
+		Method m = null;
+		boolean withParams = false;
+		try {
+			m = def.getDelegateClass().getMethod(def.getMethodName() ,getModelClass(), getParamClass() );
+			withParams = true;
+		} catch (NoSuchMethodException e) {
+			m = def.getDelegateClass().getMethod(def.getMethodName() ,getModelClass() );
+		}
+		if (withParams) {
+			m.invoke(delegate, filter, params);
+		} else {
+			m.invoke(delegate, filter);
+		} 
+		 
 		//delegate.execute(filter);		
 	}
 	public InputStream rpcFilterStream(String procedureName, M filter, P params) throws Exception {
@@ -534,9 +622,21 @@ public class AbstractDsService<M, P, E>
 		delegate.setAppContext(this.appContext);
 		delegate.setEntityServiceFactories(entityServiceFactories);
 		delegate.setDsServiceFactories(dsServiceFactories);
-		Method m = def.getDelegateClass().getMethod(def.getMethodName() ,getModelClass() );
-		InputStream result = (InputStream)m.invoke(delegate, filter);
-		//delegate.execute(ds);
+		Method m = null;
+		boolean withParams = false;
+		try {
+			m = def.getDelegateClass().getMethod(def.getMethodName() ,getModelClass(), getParamClass() );
+			withParams = true;
+		} catch (NoSuchMethodException e) {
+			m = def.getDelegateClass().getMethod(def.getMethodName() ,getModelClass() );
+		}
+		InputStream result = null;
+		if (withParams) {
+			result = (InputStream)m.invoke(delegate, filter, params);
+		} else {
+			result = (InputStream)m.invoke(delegate, filter);
+		} 
+ 
 		return result;	
 	} 
 	public void rpcData(String procedureName, List<M> list, P params) throws Exception {

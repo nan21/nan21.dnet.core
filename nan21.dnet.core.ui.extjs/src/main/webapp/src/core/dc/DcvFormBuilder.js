@@ -11,9 +11,6 @@ Ext.define("dnet.base.DcvFormBuilder", {
 		if (config.maxLength) {
 			config.enforceMaxLength = true;
 		}
-//		Ext.applyIf(config, {
-//			enforceMaxLength : true
-//		});
 		if (config.caseRestriction ) {
 			config.fieldStyle = "text-transform:"+config.caseRestriction+";";
 		}
@@ -182,9 +179,9 @@ Ext.define("dnet.base.DcvFormBuilder", {
 		if (!config.listeners[en]) {
 			config.listeners[en] = {};
 		}
-
+		var fn = null;
 		if (config.paramIndex) {
-			var fn = function(f, nv, ov, eopts) {
+			fn = function(f, nv, ov, eopts) {
 				if (!f.isValid()) {
 					return;
 				}
@@ -205,7 +202,7 @@ Ext.define("dnet.base.DcvFormBuilder", {
 				}
 			};
 		} else if (config.dataIndex) {
-			var fn = function(f, nv, ov, eopts) {
+			fn = function(f, nv, ov, eopts) {
 				if (!f.isValid()) {
 					return;
 				}
@@ -226,12 +223,15 @@ Ext.define("dnet.base.DcvFormBuilder", {
 				}
 			}
 		}
-		if (config.listeners[en].fn) {
-			config.listeners[en].fn = config.listeners[en].fn
-					.createInterceptor(fn);
-		} else {
-			config.listeners[en]["fn"] = fn;
+		
+		if(fn!=null) {
+			if (config.listeners[en].fn) {
+				config.listeners[en].fn = Ext.Function.createInterceptor(config.listeners[en].fn, fn);
+			} else {
+				config.listeners[en]["fn"] = fn;
+			}
 		}
+		
 	},
 
 	applySharedConfig : function(config) {

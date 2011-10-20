@@ -607,7 +607,7 @@ Ext.define("dnet.base.AbstractDc", {
 		if (ov != v) {
 			this.params.set(n, v);
 			if (!(silent === true)) {
-				this.fireEvent("parameterValueChanged", this, name, ov, v);
+				this.fireEvent("parameterValueChanged", this, n, ov, v);
 			}
 		}
 	},
@@ -797,7 +797,7 @@ Ext.define("dnet.base.AbstractDc", {
 			msg = "No response received from server.";
 		}
 		var alertCfg = {
-			title :response.statusText,	
+			title : "Server message",	
 			msg : msg,
 			scope : this,
 			icon : Ext.MessageBox.ERROR,
@@ -934,7 +934,7 @@ Ext.define("dnet.base.AbstractDc", {
 		p[Dnet.requestParam.SERVICE_NAME_PARAM] = serviceName;
 		p["rpcType"] = "data";
 		if (s.modal) {
-			Ext.Msg.progress('Working...');
+			Ext.Msg.wait('Working...');
 		}
 		return Dnet.dsAPI(this.dsName, "stream").service + "&"
 				+ Ext.urlEncode(p);// + method:"POST", params: p

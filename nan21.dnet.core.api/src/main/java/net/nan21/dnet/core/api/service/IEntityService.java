@@ -25,11 +25,12 @@ public interface IEntityService<E> {
 	
 	public void update(E e)  throws Exception;
 	public void update(List<E> list)  throws Exception;
+	public int update(String jpqlStatement, Map<String, Object> parameters) throws Exception ;
 	
 	//public void remove(E e)  throws Exception;
 	//public void remove(List<E> list) throws Exception;
 	
 	public E create() throws Exception;
-	public int executeUpdate(String jpqlStatement, Map<String, Object> parameters) throws Exception ;
+	
 	
 }
