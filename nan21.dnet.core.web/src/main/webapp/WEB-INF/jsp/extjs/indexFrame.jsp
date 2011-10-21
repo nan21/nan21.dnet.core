@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head> 
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />	 
@@ -22,7 +23,7 @@
 </head>
 <body  onUnload="javascript: onContentPanelClose('_ALL_'); ">
 	
-	<!-- <%@ include file="_loading_mask.jspf" %>  -->
+	<%@ include file="_loading_mask.jspf" %> 
 
     <script type="text/javascript">
     	if(document &&  document.getElementById('n21-loading-msg')) {
@@ -30,7 +31,12 @@
         }
 	</script> 
         
-	<%@ include file="_includes_dev.jspf" %>
+	<c:if test="${sysCfg_workingMode == 'dev'}">
+		<%@ include file="_includes_dev.jspf" %>	
+	</c:if>
+	<c:if test="${sysCfg_workingMode == 'prod'}">
+		<%@ include file="_includes_prod.jspf" %>	
+	</c:if>
 	
 	<%@ include file="_dnet_params.jspf" %> 
 	
@@ -63,7 +69,7 @@
     	//__theViewport__.doLayout(); 
 	});
 
-    /* <%@ include file="_loading_mask_remove.jspf" %> */ 
+    <%@ include file="_loading_mask_remove.jspf" %>
     
   </script>
 </body> 

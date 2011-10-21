@@ -1,0 +1,10 @@
+
+    <!-- Extjs  --> 
+    <link rel="stylesheet" type="text/css" href="${urlUiExtjsLibExtjs}/resources/css/ext-all-${theme}.css"/>
+    <script type="text/javascript" src="${urlUiExtjsLibExtjs}/ext-all.js"></script>   
+    <script type="text/javascript" src="${urlUiExtjsCore}/resources/locale/${shortLanguage}/Dnet.js"></script>
+ 
+   <script type="text/javascript" src="${urlUiExtjsCore}/dnet-ui-extjs-core-all-debug.js"></script>   
+	<link rel="stylesheet" type="text/css" href="${urlUiExtjsCore}/resources/css/dnet-xtheme-${theme}.css"/>
+      
+        

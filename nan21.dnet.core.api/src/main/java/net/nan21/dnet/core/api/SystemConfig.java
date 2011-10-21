@@ -15,6 +15,14 @@ public class SystemConfig {
 	 * When using Oracle database should set to true, possibly with other databases.
 	 */
 	private boolean disableFetchGroups;
+	
+	/**
+	 * Specify working mode as development or production.
+	 */
+	private String workingMode;
+	
+	public final static String WORKING_MODE_DEV = "dev";
+	public final static String WORKING_MODE_PROD = "prod";
 
 	public boolean isDisableFetchGroups() {
 		return disableFetchGroups;
@@ -22,6 +30,14 @@ public class SystemConfig {
 
 	public void setDisableFetchGroups(boolean disableFetchGroups) {
 		this.disableFetchGroups = disableFetchGroups;
+	}
+
+	public String getWorkingMode() {
+		return workingMode;
+	}
+
+	public void setWorkingMode(String workingMode) {
+		this.workingMode = workingMode;
 	}
 	
 	

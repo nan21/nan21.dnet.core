@@ -1,0 +1,71 @@
+<project name="dnet-ui-extjs-core" default="pack" basedir=".">
+	<description>
+		Pack the javascript files
+    </description>
+
+	<property name="targetFileCore" value="dnet-ui-extjs-core-all-debug.js" />
+	<property name="targetFileCoreMinimized" value="dnet-ui-extjs-core-all.js" />
+	<property name="targetPathCore" value="src/main/webapp" />
+	<property name="sourcePathCore" value="src/main/webapp/src/core" />
+
+	<property name="yui" value="yuicompressor-2.4.2.jar" />
+
+	<target name="pack" depends="packCore">
+		<echo>Done.</echo>
+	</target>
+
+	<!-- ================================= Javascripts ================================== -->
+
+	<target name="packCore">
+		<echo>[CORE] Packing javascript files in dnet-ui-extjs-core... </echo>
+		<concat destfile="${targetPathCore}/${targetFileCore}">
+
+			<filelist dir="${sourcePathCore}" files="Dnet.js" />
+			
+			<filelist dir="${sourcePathCore}/../.." files="extjs-extend.js,extjs-ux-extend.js" />
+ 
+			<filelist dir="${sourcePathCore}/asgn" files="AbstractAsgn.js,AbstractAsgnGrid.js,AbstractAsgnUi.js,AsgnGridBuilder.js,AsgnUiBuilder.js" />
+
+			<filelist dir="${sourcePathCore}/base" files="NavigationTree.js,TemplateRepository.js,Session.js,Application.js,ApplicationMenu.js,LoginWindow.js,ChangePasswordWindow.js,FrameInspector.js" />
+
+			<filelist dir="${sourcePathCore}/base" files="HomePanel.js,UrlBuilder.js,UiHeader.js,FrameNavigatorWithIframe.js,FrameNavigator.js,FileUploadWindow.js,WorkflowFormWithHtmlWindow.js,WorkflowFormWithExtjsWindow.js,WorkflowFormFactory.js" />
+
+			<filelist dir="${sourcePathCore}/dc" files="AbstractDc.js,AbstractDcvGrid.js,AbstractDcvEditableGrid.js,AbstractDcvForm.js,AbstractDcvTree.js,AbstractDcvFilterForm.js,DcvFilterFormBuilder.js,DcvFormBuilder.js,DcvGridBuilder.js,DcvEditableGridBuilder.js" />
+
+
+			<filelist dir="${sourcePathCore}/dc/command" files="AbstractDcCommand.js,AbstractDcAsyncCommand.js,AbstractDcSyncCommand.js,DcCommandFactory.js" />
+
+			<filelist dir="${sourcePathCore}/dc/command" files="DcQueryCommand.js,DcNewCommand.js,DcCopyCommand.js,DcSaveCommand.js,DcCancelCommand.js,DcEditInCommand.js,DcEditOutCommand.js" />
+
+			<filelist dir="${sourcePathCore}/dc/command" files="DcClearQueryCommand.js,DcDeleteCommand.js,DcReloadRecCommand.js,DcPrevRecCommand.js,DcNextRecCommand.js,DcRpcDataCommand.js,DcRpcFilterCommand.js" />
+
+
+			<filelist dir="${sourcePathCore}/ui" files="FrameBuilder.js,ActionBuilder.js,FrameButtonStateManager.js,AbstractUi.js" />
+
+			<filelist dir="${sourcePathCore}/dc" files="DcActionsFactory.js,DcActionsStateManager.js,DcContext.js,DcExceptions.js,DataExportWindow.js,DataImportWindow.js,GridLayoutManager.js" />
+
+			<filelist dir="${sourcePathCore}/lov" files="AbstractRemoteCombo.js,AbstractCombo.js,AbstractLov.js" />
+
+
+		</concat>
+	</target>
+
+
+	<target name="minDnetUiExtjsCore" description="Minimize file.">
+		<echo message="Minimizing file..." />
+		<apply executable="java" parallel="false" verbose="true" dest="${targetPath}/${targetFileCoreMinimized}">
+			<fileset dir="${targetPath}">
+				<include name="${targetFileCore}" />
+			</fileset>
+			<arg line="-jar" />
+			<arg path="${yui}" />
+			<arg value="--charset" />
+			<arg value="ANSI" />
+			<arg value="-o" />
+			<targetfile />
+			<mapper type="glob" from="${targetFileCore}" to="${targetFileCoreMinimized}" />
+		</apply>
+		<echo message="Done." />
+	</target>
+
+</project>

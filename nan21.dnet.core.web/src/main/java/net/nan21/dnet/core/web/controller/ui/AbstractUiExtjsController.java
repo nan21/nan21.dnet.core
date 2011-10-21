@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.nan21.dnet.core.api.IProductInfo;
+import net.nan21.dnet.core.api.SystemConfig;
 import net.nan21.dnet.core.api.session.Params;
 import net.nan21.dnet.core.api.session.User;
 import net.nan21.dnet.core.security.SessionUser;
@@ -33,7 +34,9 @@ public abstract class AbstractUiExtjsController  extends AbstractController  {
 	protected String uiUrl;
 	protected Map<String, Object> model;
 	protected UiExtjsSettings uiExtjsSettings;
-	  
+	protected SystemConfig systemConfig;
+	
+	 
 	protected void _prepare(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		 
@@ -85,6 +88,7 @@ public abstract class AbstractUiExtjsController  extends AbstractController  {
 		
 		this.model.put("shortLanguage", this.resolveLang(request, response) );		 
 		this.model.put("theme", this.resolveTheme(request, response) );		
+		this.model.put("sysCfg_workingMode", this.systemConfig.getWorkingMode());
 	}
 	
 	
@@ -175,8 +179,15 @@ public abstract class AbstractUiExtjsController  extends AbstractController  {
 	public void setUiExtjsSettings(UiExtjsSettings uiExtjsSettings) {
 		this.uiExtjsSettings = uiExtjsSettings;
 	}
-	
-	
-	
-	
+
+
+	public SystemConfig getSystemConfig() {
+		return systemConfig;
+	}
+
+
+	public void setSystemConfig(SystemConfig systemConfig) {
+		this.systemConfig = systemConfig;
+	}
+	 
 }

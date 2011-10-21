@@ -12,9 +12,7 @@ Ext.define('dnet.base.NavigationTree$Model', {
 	}, {
 		name : '_bundle_',
 		type : 'string'
-	},
-
-	]
+	}]
 });
 
 Ext.define("dnet.base.NavigationTree", {

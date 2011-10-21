@@ -33,7 +33,8 @@
 	
 	<bean id="systemConfig" class="net.nan21.dnet.core.api.SystemConfig"
 		scope="singleton">
-		<property name="disableFetchGroups" value="${sys.disableFetchGroups}" />	 
+		<property name="disableFetchGroups" value="${sys.disableFetchGroups}" />
+		<property name="workingMode" value="${sys.workingMode}" />
 	</bean>
 	 
 	

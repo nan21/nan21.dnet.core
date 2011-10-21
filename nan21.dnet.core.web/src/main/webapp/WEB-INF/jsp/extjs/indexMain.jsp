@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head> 
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />	 
@@ -30,9 +31,13 @@
         	document.getElementById('n21-loading-msg').innerHTML = 'Loading...';
         }
 	</script> 
-         
-	<%@ include file="_includes_dev.jspf" %>
-
+	<c:if test="${sysCfg_workingMode == 'dev'}">
+		<%@ include file="_includes_dev.jspf" %>	
+	</c:if>
+	<c:if test="${sysCfg_workingMode == 'prod'}">
+		<%@ include file="_includes_prod.jspf" %>	
+	</c:if>
+	
 	<%@ include file="_dnet_params.jspf" %>
 	
  	${extensions}
