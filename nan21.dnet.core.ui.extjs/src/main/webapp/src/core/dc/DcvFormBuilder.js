@@ -66,65 +66,13 @@ Ext.define("dnet.base.DcvFormBuilder", {
 		
 		Ext.applyIf(config, {			
 			_validateListValue_ : true
-		});
-//		this.applyModelUpdater(config);
-		 
+		});		 
 		this.applySharedConfig(config);
 		return this;
 	},
 
-	// TODO:  remove the updater and create an AbstractLocalCombo
 	addCombo : function(config) {
-//		Ext.applyIf(config, {			
-//			checkChangeBuffer : 600
-//		});
-		//this.applyModelUpdater(config, "select");
-		 
-//		var en = "change";
-//		if (!config.listeners) {
-//			config.listeners = {};
-//		}
-//		if (!config.listeners[en]) {
-//			config.listeners[en] = {};
-//		}
-//
-//		if (config._isParam_ === true) {
-//			var fn = function(f, nv, ov, eopts) {
-//
-//			};
-//		} else {
-//			var fn = function(f, nv, ov, eopts) {
-//				if(f._processedValue_.length > 0) {
-//			    	var r = this._dcView_._controller_.getRecord();
-//					if (r) {
-//						var rv = r.get(f.dataIndex);				  
-//						if (!r.isEqual(rv, f._processedValue_[0])) {
-//							r.set(f.dataIndex, f._processedValue_[0]);
-//						}
-//					}
-//					 
-//			    }
-//					
-////				if (!f.isValid()) {
-////					return false;
-////				}
-////				var r = this._dcView_._controller_.getRecord();
-////				if (!r)
-////					return;
-////				var rv = r.get(f.dataIndex);				  
-////				if (!r.isEqual(rv, nv)) {
-////					r.set(f.dataIndex, nv);
-////				}				 
-//			}
-//		}
-//		if (config.listeners[en].fn) {
-//			config.listeners[en].fn = config.listeners[en].fn
-//					.createInterceptor(fn);
-//		} else {
-//			config.listeners[en]["fn"] = fn;
-//		}
-		
-		
+		this.applyModelUpdater(config);
 		this.applySharedConfig(config);
 		return this;
 	},
@@ -132,9 +80,9 @@ Ext.define("dnet.base.DcvFormBuilder", {
 	addPanel : function(config) {
 		Ext.applyIf(config, this.dcv.defaults);
 		Ext.applyIf(config, {
-			defaults : this.dcv.defaults
+			defaults : this.dcv.defaults,
+			id: Ext.id()
 		});
-
 		this.dcv._elems_.add(config.name, config);
 		return this;
 	},
@@ -170,22 +118,67 @@ Ext.define("dnet.base.DcvFormBuilder", {
 
 	// private
 
-	applyModelUpdater : function(config, eventName) {
+	applyModelUpdater : function(config) {
 
-		var en = eventName || "change";
+		var en = "change";		
+		var fn = null;
+		
+		if(config.xtype == "checkbox") {			 
+			fn = this.createModelUpdaterCheckbox(config);
+		} else {
+			fn = this.createModelUpdaterField(config);		
+		}
+		
 		if (!config.listeners) {
 			config.listeners = {};
 		}
 		if (!config.listeners[en]) {
 			config.listeners[en] = {};
 		}
+		
+		if(fn!=null) {
+			if (config.listeners[en].fn) {
+				config.listeners[en].fn = Ext.Function.createInterceptor(config.listeners[en].fn, fn);
+			} else {
+				config.listeners[en]["fn"] = fn;
+			}
+		}
+		
+	},
+
+	createModelUpdaterCheckbox: function(config) {
+		var fn = null;
+		if (config.paramIndex) {
+			fn = function(f, nv, ov, eopts) {				 
+				var r = f._dcView_._controller_.getParams();
+				if (!r)
+					return;
+				var rv = r.get(f.paramIndex);				 
+				if (!r.isEqual(rv, nv)) {
+					r.set(f.paramIndex, nv);
+				}				
+			};
+		} else if (config.dataIndex) {
+			fn = function(f, nv, ov, eopts) {				 
+				var r = f._dcView_._controller_.getRecord();
+				if (!r)
+					return;
+				var rv = r.get(f.dataIndex);				 
+				if (!r.isEqual(rv, nv)) {
+					r.set(f.dataIndex, nv);
+				}				 
+			}
+		}
+		return fn;
+	},
+	createModelUpdaterField: function(config) {
 		var fn = null;
 		if (config.paramIndex) {
 			fn = function(f, nv, ov, eopts) {
 				if (!f.isValid()) {
 					return;
 				}
-				var r = this._dcView_._controller_.getParams();
+				var r = f._dcView_._controller_.getParams();
 				if (!r)
 					return;
 				var rv = r.get(f.paramIndex);
@@ -206,7 +199,7 @@ Ext.define("dnet.base.DcvFormBuilder", {
 				if (!f.isValid()) {
 					return;
 				}
-				var r = this._dcView_._controller_.getRecord();
+				var r = f._dcView_._controller_.getRecord();
 				if (!r)
 					return;
 				var rv = r.get(f.dataIndex);
@@ -223,17 +216,11 @@ Ext.define("dnet.base.DcvFormBuilder", {
 				}
 			}
 		}
-		
-		if(fn!=null) {
-			if (config.listeners[en].fn) {
-				config.listeners[en].fn = Ext.Function.createInterceptor(config.listeners[en].fn, fn);
-			} else {
-				config.listeners[en]["fn"] = fn;
-			}
-		}
-		
+		return fn;
 	},
-
+	
+	
+	
 	applySharedConfig : function(config) {
 		Ext.applyIf(config, {
 			id : Ext.id(),

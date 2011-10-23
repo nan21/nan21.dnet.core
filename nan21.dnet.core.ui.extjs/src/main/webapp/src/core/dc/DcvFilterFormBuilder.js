@@ -97,7 +97,7 @@ Ext.define("dnet.base.DcvFilterFormBuilder", {
 		} else {
 			config.defaults = this.dcv.defaults;
 		}
-
+		config.id = Ext.id();
 		this.dcv._elems_.add(config.name, config);
 		return this;
 	},

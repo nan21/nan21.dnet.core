@@ -633,6 +633,8 @@ Ext.define("dnet.base.AbstractDc", {
 	setRecord : function(p) {
 		if (!this.multiEdit) {
 			if (this.isCurrentRecordDirty()) {
+				//console.error("DIRTY_DATA_FOUND");
+				//console.dir(this.record.data);
 				throw (dnet.base.DcExceptions.DIRTY_DATA_FOUND);
 			}
 		}

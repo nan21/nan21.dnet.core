@@ -105,11 +105,15 @@ Ext.define("dnet.base.AbstractDcvForm", {
 			if ( this._controller_&& this._controller_.getRecord()) { 
 				this.onBind(this._controller_.getRecord()); 
 			} else { 
-				this.onUnbind(null);} 
+				this.onUnbind(null);
+			}
+			this._afterRender_();
 			}, this);
 		
 	}
  
+	,_afterRender_: function() {
+	}
     ,_startDefine_: function () {}
     ,_endDefine_: function () {}
     ,_getController_: function() { return this._controller_;}
@@ -223,8 +227,23 @@ Ext.define("dnet.base.AbstractDcvForm", {
 		} else {
 			return k; 
 		}
+	} 
+
+	 ,_showStackedViewElement_: function(svn, idx) {
+		if (Ext.isNumber(idx) ) {
+    		this._getElement_(svn).getLayout().setActiveItem(idx);
+		} else {
+			var ct = this._getElement_(svn);
+			var cmp = this._getElement_(idx);
+			if(cmp) {
+				ct.getLayout().setActiveItem(cmp);
+			} else {				
+				ct.getLayout().setActiveItem( ct.items.indexOfKey(idx));
+			}
+			  
+		}
 	}
- 
+	
 	,_isValid_: function() { 
 
 		if (this.getForm().isValid()) {
@@ -240,10 +259,15 @@ Ext.define("dnet.base.AbstractDcvForm", {
 	      return false;
 		}
 	}
+	
+	
 	,_getBuilder_: function() {
 		if (this._builder_ == null) {
 			this._builder_ = new dnet.base.DcvFormBuilder({dcv: this});
 		}	
 		return this._builder_;
 	}
+	
+	
+	
 });

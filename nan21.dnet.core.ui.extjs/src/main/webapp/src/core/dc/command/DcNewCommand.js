@@ -3,14 +3,20 @@ Ext.define("dnet.base.DcNewCommand", {
 
 	onExecute : function() {
 		var dc = this.dc;
-		var r = Ext.create(dc.recordModel, {});
+		//console.log("new: 1-store.getCount() = "+dc.store.getCount() );
+		//console.log("new: 1-count dirty  = "+dc.store.data.filterBy(function(e) { return e.dirty}).getCount()  );
 
+		var r = Ext.create(dc.recordModel, {});
+		r.dirty = true;
 		if (dc.dcContext) {
 			dc.dcContext._applyContextData_(r);
 		}
-		dc.store.add(r);
-
 		dc.setRecord(r);
+		dc.store.add(r);
+ 
+		//console.log("new: 2-store.getCount() = "+dc.store.getCount() );
+		//console.log("new: 2-count dirty  = "+dc.store.data.filterBy(function(e) { return e.dirty}).getCount()  );
+		
 		//dc.setSelectedRecords( [ dc.record ]);
 		dc.fireEvent("afterDoNew", {
 			dc : dc

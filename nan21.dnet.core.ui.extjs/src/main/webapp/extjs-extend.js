@@ -18,23 +18,31 @@ Ext.MODEL_DATE_FORMAT = "Y-m-d\\TH:i:s.uO";
 Ext.override(Ext.form.field.Base, {
 	_setRawValue_: function(v) {		
 		this.setRawValue(v);
-	},
+	} 
 
+});
+
+Ext.override(Ext.form.field.Text, { 
 	getRawValue: function() {
-        var me = this,
-            v = (me.inputEl ? me.inputEl.getValue() : Ext.value(me.rawValue, ''));
-        if (this.caseRestriction) {
+		var me = this,
+            v = me.callParent();
+        if (v === me.emptyText) {
+            v = '';
+        }
+        if (this.caseRestriction && v!= '' ) {
         	if ( this.caseRestriction == "uppercase") {
         		v = v.toUpperCase();
         	} else {
         		v = v.toLowerCase();
-        	}			
-		}
+        	}
+        }
         me.rawValue = v;
-        return v;
+        return v; 
     }
-
 });
+
+
+
 Ext.override(Ext.form.field.Date, {
 	_setRawValue_: function(v) {
 		this.setRawValue(this.valueToRaw(v));

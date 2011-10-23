@@ -76,10 +76,21 @@ Ext.define("dnet.base.FrameBuilder" , {
  
 	,addPanel:function(config) {
 		config.listeners = config.listeners || {};
-//		Ext.applyIf(config.listeners, {			 
-//			 activate:{scope:this,fn:function(p){p.doLayout(false,true);}  }
-//		});
-		//this.fireEvent('canvaschange', p); for canvas
+		if (config.onActivateDoLayoutFor) {
+			var onActivateDoLayoutFor = config.onActivateDoLayoutFor;
+			delete config.onActivateDoLayoutFor;
+			var activate = {
+				scope:this.frame,
+				fn:function(cmp,opt){ 
+					for (var i=0;i<onActivateDoLayoutFor.length;i++) {  
+						this._getElement_(onActivateDoLayoutFor[i]).doLayout();  
+					} 
+				}
+			}	
+			if (!config.listeners.activate) {
+				config.listeners.activate = activate;
+			}
+		}
 		this.applyViewSharedConfig(config);	
 		return this;
 	}
