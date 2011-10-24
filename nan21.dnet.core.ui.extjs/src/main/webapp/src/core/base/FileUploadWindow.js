@@ -1,6 +1,16 @@
  
 Ext.define("dnet.base.FileUploadWindow" , {
 	extend:"Ext.Window",
+	
+	_nameFieldValue_: null, 
+	_uploadUrl_: null,
+	
+	_p1Value_: null,
+	_p2Value_: null,
+	
+	_succesCallbackFn_:null,
+	_succesCallbackScope_:null,
+	
 	 initComponent: function(config) {
 		var cfg = {
 				title:Dnet.translate("msg", "upload_title")
@@ -17,19 +27,19 @@ Ext.define("dnet.base.FileUploadWindow" , {
 					,items: [{
 						xtype:"form"
 						,padding:5	
-						,labelAlign:"right"
-						,labelWidth:"90"
+						,fieldDefaults:{
+						  	   labelAlign:"right",
+						  	   labelWidth:90  
+						  	}
+					 
 						,frame:true
 						,fileUpload: true
 						,buttonAlign:"center"
 						,items:[
-					      {xtype:"textfield", name:"name", fieldLabel:Dnet.translate("msg", "upload_name"), width:200, selectOnFocus: true, allowBlank: true					    	  
-					    	  ,listeners: {change: {scope:this, fn:this.enableAction }}   }
-					     ,{xtype:"fileuploadfield", name:"file", fieldLabel:Dnet.translate("msg", "upload_file"), width:200, selectOnFocus: true, allowBlank: false					    	 
-					     	,listeners: {change: {scope:this, fn:this.enableAction }}   }
-					     ,{xtype:"hidden", name:"p1" }
-					     ,{xtype:"hidden", name:"p2" }
-
+					      {xtype:"textfield", value:this._nameFieldValue_, name:"name", fieldLabel:Dnet.translate("msg", "upload_name"), anchor:"-10" , selectOnFocus: true, allowBlank: true}
+					     ,{xtype:"fileuploadfield", name:"file", fieldLabel:Dnet.translate("msg", "upload_file"), anchor:"-10" , selectOnFocus: true, allowBlank: false }
+					     ,{xtype:"hidden", name:"p1", value:this._p1Value_}
+					     ,{xtype:"hidden", name:"p2", value:this._p2Value_}
 					 ]
 					}]
 				    ,buttons:[
@@ -65,12 +75,15 @@ Ext.define("dnet.base.FileUploadWindow" , {
 	,doUpload: function(btn, evnt) {
          if(this.getForm().isValid()){
             this.getForm().submit({
-                url: '/nan21.dnet.core.web/upload/deployUploadedWorkflow',
+                url: this._uploadUrl_,
                 waitMsg: 'Uploading...',
-                success: function(fp, o){
+                scope: this,
+                success: function(form, action){
             		Ext.Msg.hide();
-            		alert(o.response.responseText);
-            		
+            		this.close();
+            		if (this._succesCallbackFn_ != null ) {
+            			this._succesCallbackFn_.call(this._succesCallbackScope_ || this);
+            		}             		
                 }
                 ,failure: function(form, action) {
                 	Ext.Msg.hide();
@@ -87,7 +100,7 @@ Ext.define("dnet.base.FileUploadWindow" , {
 			    }
             });
         } else {
-        	Ext.Msg.show('No file selected. Nothing to upload');
+        	Ext.Msg.alert("",'No file selected. Nothing to upload');
         }
         
 	}

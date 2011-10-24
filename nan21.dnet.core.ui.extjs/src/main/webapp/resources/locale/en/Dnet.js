@@ -270,6 +270,7 @@ dnet.Translation = Ext.apply({},{
 	   ,MyBookmark_UI : "My bookmarks"
 	   ,WorkflowAdmin_UI: "Workflow admin console"
 	   ,WorkflowDef_UI : "Workflow definition"
+	   ,AttachmentType_UI : "Attachment types"
        //CRM
        ,CalendarEventTypeDef_UI : "Calendar event definitions"       
        ,MyCalendarEvent_UI : "Calendar events"
