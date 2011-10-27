@@ -71,7 +71,10 @@
 
     function __prepare() {
         __CURRENT_THEME__ = readCookie(__COOKIE_CURRENT_THEME__); 
-    	if(!__CURRENT_THEME__) {__CURRENT_THEME__ = __DEFAULT_THEME__; createCookie(__COOKIE_CURRENT_THEME__, __CURRENT_THEME__, 100);}
+    	if(!__CURRENT_THEME__) {
+    		__CURRENT_THEME__ = __DEFAULT_THEME__; 
+    		createCookie(__COOKIE_CURRENT_THEME__, __CURRENT_THEME__, 100);
+    	}
 	   // __SERVER_DOMAIN_URL__ = __resolveServerDomain();
 	}
 

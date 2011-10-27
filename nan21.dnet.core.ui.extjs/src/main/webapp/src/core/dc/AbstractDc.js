@@ -51,6 +51,12 @@ Ext.define("dnet.base.AbstractDc", {
 	recordModel : null,
 
 	/**
+	 * Filter model signature - filter constructor.
+	 * Defaults to recordModel if not specified.
+	 */
+	filterModel : null,
+	
+	/**
 	 * Parameters model signature - record constructor.
 	 */
 	paramModel : null,
@@ -192,25 +198,17 @@ Ext.define("dnet.base.AbstractDc", {
 	},
 
 	_setup_ : function() {
-		
-		
-		
+		 
 		this._trl_ = Ext.create(this.recordModel +"$Trl");
 		// this.dsName = this.ds.dsName;
-
-		// this.RecordModel = Ext.data.Record.create(this.recordFields);
-		// this.ParamModel = Ext.data.Record.create(this.paramFields);
-		
+ 
+		if(Ext.isEmpty(this.filterModel)) {
+			this.filterModel = this.recordModel;
+		}
 		this.setFilter(this.newFilterInstance()); // Ext.create(this.recordModel,
 													// {})
 		this.setParams(Ext.create(this.paramModel, {}));
-		
-		
-		
-		// this.setFilter(new this.RecordModel(this
-		// .emptyFilterData(this.recordFields)));
-		// this.setParams(new this.ParamModel(this
-		// .emptyParamData(this.paramFields)));
+ 
 
 		this.actionNames = dnet.base.DcActionsFactory.actionNames();
 		this.commandNames = dnet.base.DcCommandFactory.commandNames();
@@ -277,19 +275,9 @@ Ext.define("dnet.base.AbstractDc", {
 		// ************************************************
 
 		this.store.on("write", function(store, operation, eopts) {
-			/* after write extjs replaces the record instance from the store 
-			 * with the new record instance created by the result reader,
-			 *  so our record is an orphan item. Selection is also lost 
-			 *   -> handle this until is fixed in extjs
-			 *   If this.record is a new one than get it from the last position in store, 
-			 *   no other information is available ( DcNewCommand places it to the last position ) */
-			
+			  
 			if(this.record) {				
-				if (this.record.phantom) {
-					this.record = this.store.getAt(this.store.getCount()-1);	
-				} else {
-					this.record = this.store.data.get(this.record.data.id);	
-				}				 
+				this.record = operation.resultSet.records[0];				 				
 				if (!this.multiEdit) {
 					try {
 						this.setSelectedRecords([this.record]);
@@ -761,7 +749,7 @@ Ext.define("dnet.base.AbstractDc", {
 	 * Creates a new record instance and initialize it
 	 */
 	newRecordInstance : function() {
-		var o = Ext.create(this.filterModel, {});
+		var o = Ext.create(this.recordModel, {});
 		o.data["clientId"] = getApplication().getSession().client.id;
 		return o;
 	},
@@ -770,7 +758,7 @@ Ext.define("dnet.base.AbstractDc", {
 	 * Creates a new filter instance and initialize it
 	 */
 	newFilterInstance : function() {
-		var o = Ext.create(this.recordModel, {});
+		var o = Ext.create(this.filterModel, {});
 		o.data["clientId"] = getApplication().getSession().client.id;
 		return o;
 	},
@@ -951,10 +939,10 @@ Ext.define("dnet.base.AbstractDc", {
 		var o = options.options || {};
 		if (o.action) {
 			if (o.action == "doQuery") {
-				this.afterDoQueryFailure();
+				this.afterDoQuerySuccess();
 			}
 			if (o.action == "doSave") {
-				this.afterDoSaveFailure();
+				this.afterDoSaveSuccess();
 			}
 			if (o.action == "doService") {
 				this.afterDoServiceSuccess(response, o.serviceName, o.specs);

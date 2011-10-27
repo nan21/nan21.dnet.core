@@ -58,7 +58,7 @@ Ext.override(Ext.data.Store, {
 
 		Ext.each(this.getNewRecords(), function(rec) {
 			rec.commit();
-			rec.phantom = false;
+			//rec.phantom = false;
 		});
 
 		this.removed = [];

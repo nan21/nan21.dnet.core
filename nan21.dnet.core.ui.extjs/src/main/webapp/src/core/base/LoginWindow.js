@@ -20,7 +20,7 @@ Ext.define("dnet.base.LoginForm", {
 				msgTarget : 'side'
 			},
 			defaults : {
-				anchor : '80%'
+				anchor : '-20'
 			},
 			items : this._buildItems_()
 		};

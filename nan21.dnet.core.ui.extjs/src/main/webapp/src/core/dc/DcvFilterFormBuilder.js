@@ -41,7 +41,12 @@ Ext.define("dnet.base.DcvFilterFormBuilder", {
 
 		var yesNoStore = Ext.create('Ext.data.Store', {
 			fields : [ "bv", "tv" ],
-			data : [ {
+			data : [ 
+//			{
+//				"bv" : null,
+//				"tv" : "*"
+//			},
+				{
 				"bv" : true,
 				"tv" : Dnet.translate("msg", "bool_true")
 			}, {

@@ -335,7 +335,8 @@ dnet.Translation = Ext.apply({},{
         ,ProductAccountGroup_UI : "Product account groups"
         ,ProductAttributeDefs_UI : "Product attributes"
         ,InvTransactions_UI : "Inventory transactions"
-        ,InvBalance_UI: "Stocks"	
+        ,InvBalance_UI: "Stocks"
+        ,InvOperations_UI: "Inventory operations"
           //SD
         ,SalesOrderBaseData_UI : "Base data(Sales orders)"
         //,SalesOrderType_UI : "Order type"

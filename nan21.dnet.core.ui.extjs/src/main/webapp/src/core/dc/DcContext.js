@@ -132,14 +132,16 @@ Ext.define("dnet.base.DcContext", {
 		}
 
 		if (changed) {
-			dnet.base.DcActionsStateManager.applyStates(this.childDc);
+			//dnet.base.DcActionsStateManager.applyStates(this.childDc);
 			this._updateChildFilter_();
-			this.fireEvent("dataContextChanged", this);
+			//this.fireEvent("dataContextChanged", this);
 
 			this.childDc.setRecord(null);
 
 			this.childDc.store.loadData( [], false);
 
+			this.fireEvent("dataContextChanged", this);
+			
 			if (this.relation.fetchMode == "auto" && this.parentDc.getRecord()
 					&& !this.parentDc.getRecord().phantom) {
 

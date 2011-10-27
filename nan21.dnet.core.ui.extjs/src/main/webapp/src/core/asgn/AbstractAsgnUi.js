@@ -304,7 +304,7 @@ Ext.define("dnet.base.AbstractAsgnUi", {
 				},
 				{
 					xtype : "button",
-					iconCls : 'icon-action-assign_moveright',
+					//iconCls : 'icon-action-assign_moveright',
 					text : ">",
 					tooltip : "Add selected",
 					scope : this,
@@ -320,7 +320,7 @@ Ext.define("dnet.base.AbstractAsgnUi", {
 				},
 				{
 					xtype : "button",
-					iconCls : 'icon-action-assign_moveleft',
+					//iconCls : 'icon-action-assign_moveleft',
 					text : "<",
 					tooltip : "Remove selected",
 					scope : this,
@@ -334,7 +334,7 @@ Ext.define("dnet.base.AbstractAsgnUi", {
 					height : 25
 				}, {
 					xtype : "button",
-					iconCls : 'icon-action-assign_moverightall',
+					//iconCls : 'icon-action-assign_moverightall',
 					text : ">>",
 					tooltip : "Add all",
 					scope : this,
@@ -346,7 +346,7 @@ Ext.define("dnet.base.AbstractAsgnUi", {
 					height : 5
 				}, {
 					xtype : "button",
-					iconCls : 'icon-action-assign_moveleftall',
+					//iconCls : 'icon-action-assign_moveleftall',
 					text : "<<",
 					tooltip : "Remove all",
 					scope : this,

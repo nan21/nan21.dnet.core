@@ -71,11 +71,20 @@ Ext.define("dnet.base.AbstractDcvForm", {
 			this.updateBound(rec);
 		}, this);
 		
+		/**
+		 * use the first record from the result list as reference 
+		 * see Store on write event handler defined in AbstractDc.
+		 */
+		this._controller_.store.on("write", function(store, operation, eopts) {	
+			if (operation.action == "create") {
+				this._applyContextRules_(operation.resultSet.records[0]);
+			}
+		}, this);
 		
 		this._controller_.store.on("datachanged", function(store, eopts) {	
 			//dnet.base.Logger.debug("dnet.base.AbstractDcvForm. store.on.datachanged" );	 
 			if(this.getForm().getRecord()) {
-				this.updateBound(this.getForm().getRecord());
+				this.updateBound(this._controller_.getRecord());
 			}			
 		}, this);
 		
@@ -92,15 +101,7 @@ Ext.define("dnet.base.AbstractDcvForm", {
 			} 
 		}, this);	 
 		
-//		this._controller_.store.on("write", function(store, action, result, txResult, rs) {
-//				this.updateBound(this._controller_.getRecord());
-//			} , this);
-//		
-//		this.on({  scope: this ,afterrender: function() { 
-//			this.updateBound(this._controller_.getRecord()); 
-//		}   });
-//		
-//		this._controller_.addBindedView(this.id,this._dcViewType_);	 
+ 
 		this.on("afterrender", function() { 
 			if ( this._controller_&& this._controller_.getRecord()) { 
 				this.onBind(this._controller_.getRecord()); 
@@ -145,7 +146,7 @@ Ext.define("dnet.base.AbstractDcvForm", {
 			this._applyContextRules_(record);
 			//this.enable();
 		}
-		
+		this._afterBind_(record);
 	//}			
 	}
 	,onUnbind:function(record) {
@@ -164,8 +165,13 @@ Ext.define("dnet.base.AbstractDcvForm", {
 			}
 			field.disable();
 			}); 
-  
+  		//???
+  		//this.getForm().record = null;
+		this._afterUnbind_(record);	
 	}
+	
+	,_afterBind_: function(record) {}
+	,_afterUnbind_: function(record) {}
 	,afterEdit:function(record) { 
 		this.updateBound(record); 
 	}
@@ -191,6 +197,9 @@ Ext.define("dnet.base.AbstractDcvForm", {
     	,_afterLinkElements_: function () {}
  
 	,_applyContextRules_: function(record) {
+		if(record == null || record == undefined) {
+			return ;
+		}
 		var c = null; // component might not be rendered yet
 		if (record.phantom) {
 			this.getForm().getFields().each(function(item, index, length) {

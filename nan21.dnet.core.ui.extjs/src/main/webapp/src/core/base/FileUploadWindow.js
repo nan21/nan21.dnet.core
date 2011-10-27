@@ -13,8 +13,8 @@ Ext.define("dnet.base.FileUploadWindow" , {
 	
 	 initComponent: function(config) {
 		var cfg = {
-				title:Dnet.translate("msg", "upload_title")
-					,border: true
+				title:Dnet.translate("msg", "upload_title"),
+					border: true
 					,width: 400
 					,height:140
 					,resizable: true					 

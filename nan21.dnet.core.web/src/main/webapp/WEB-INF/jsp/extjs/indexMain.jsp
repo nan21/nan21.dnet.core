@@ -65,7 +65,9 @@
 			,forceLayout:true
 			,items:[
 				 { html:"" } 
-			   	,{ xtype:"container", padding:0
+			   	  
+			   	 
+			   	 ,{ xtype:"container", padding:0
 			    	,layout:'border'
 				    ,forceLayout:true
 				    ,items:[
@@ -87,7 +89,8 @@
 				    	,__application__.menu 
 				    	          								    	        
 				    ]
-				}  
+				}   
+				 
 			]			 			  
       	});   
 		

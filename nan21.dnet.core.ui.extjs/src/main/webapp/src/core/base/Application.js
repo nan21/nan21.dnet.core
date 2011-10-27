@@ -5,7 +5,7 @@ function getApplication() {
 	}
 	return (__application__) ? __application__ : window.parent.__application__;
 }
-
+Ext.ns("dnet.base");
 dnet.base.Application = {
 
 	/**
@@ -51,7 +51,7 @@ dnet.base.Application = {
 	 * communication.
 	 */
 	frameCallbacks : new Ext.util.MixedCollection(),
-	frameRefs : new Ext.util.MixedCollection(),
+	//frameRefs : new Ext.util.MixedCollection(),
 	type : null,
 
 	/**

@@ -34,6 +34,7 @@ Ext.define("dnet.base.AbstractDcvFilterForm", {
 	},
 
 	initComponent : function(config) {
+		 
 		this._elems_ = new Ext.util.MixedCollection();
 		this._startDefine_();
 

@@ -334,7 +334,7 @@ dnet.Translation = Ext.apply({},{
 	    ,ProductAttributeDefs_UI : "Atribute articol"		
 	    ,InvTransactions_UI : "Tranzactii gestiune" 
 	    ,InvBalance_UI: "Stocuri"	
-	    	
+	    ,InvOperations_UI: "Operatii gestiuni"	
 	    //SD
 	    ,SalesOrderBaseData_UI : "Definiţii (facturi)"
         //,SalesOrderStatus_UI : "Stări comenzi"

@@ -16,10 +16,10 @@ dnet.base.FrameNavigatorWithIframe = {
 	 * @return {}
 	 */
 	getFrameInstance : function(frame) {
-		var theFrame = window.frames[__CmpId__.FRAME_IFRAME_PREFIX + frame];
+		var theIFrame = window.frames[__CmpId__.FRAME_IFRAME_PREFIX + frame];
 		var theFrameInstance = null;
-		if (theFrame) {
-			theFrameInstance = theFrame.theFrameInstance;
+		if (theIFrame) {
+			theFrameInstance = theIFrame.theFrameInstance;
 		}
 		return theFrameInstance;
 	},
@@ -113,6 +113,7 @@ dnet.base.FrameNavigatorWithIframe = {
 				id : tabID,
 				n21_iframeID : ifrID,
 				autoScroll : true,
+				 
 				layout : 'fit',
 				closable : true,
 				html : '<div style="width:100%;height:100%;overflow: hidden;" id="div_'
@@ -127,8 +128,9 @@ dnet.base.FrameNavigatorWithIframe = {
 				listeners : {
 					beforeclose : {
 						scope : this,
-						fn : function(panel) {
-							onContentPanelClose(panel.initialConfig.n21_iframeID);
+						fn : function(tab, options) {
+							//onContentPanelClose(panel.initialConfig.n21_iframeID);
+							return true;
 						}
 					}
 				}
