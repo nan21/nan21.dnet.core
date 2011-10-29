@@ -1,22 +1,22 @@
 Manifest-Version: 1.0
-Export-Package: net.nan21.dnet.core.api;version="1.0.0.M3",net.nan21.d
- net.core.api.action;version="1.0.0.M3";uses:="net.nan21.dnet.core.api
+Export-Package: net.nan21.dnet.core.api;version="1.0.0.M4",net.nan21.d
+ net.core.api.action;version="1.0.0.M4";uses:="net.nan21.dnet.core.api
  ,net.nan21.dnet.core.api.descriptor",net.nan21.dnet.core.api.annotati
- on;version="1.0.0.M3",net.nan21.dnet.core.api.converter;version="1.0.
- 0.M3";uses:="javax.persistence",net.nan21.dnet.core.api.descriptor;ve
- rsion="1.0.0.M3",net.nan21.dnet.core.api.exceptions;version="1.0.0.M3
- ",net.nan21.dnet.core.api.marshall;version="1.0.0.M3";uses:="net.nan2
+ on;version="1.0.0.M4",net.nan21.dnet.core.api.converter;version="1.0.
+ 0.M4";uses:="javax.persistence",net.nan21.dnet.core.api.descriptor;ve
+ rsion="1.0.0.M4",net.nan21.dnet.core.api.exceptions;version="1.0.0.M4
+ ",net.nan21.dnet.core.api.marshall;version="1.0.0.M4";uses:="net.nan2
  1.dnet.core.api.action",net.nan21.dnet.core.api.model;version="1.0.0.
- M3",net.nan21.dnet.core.api.service;version="1.0.0.M3";uses:="javax.p
+ M4",net.nan21.dnet.core.api.service;version="1.0.0.M4";uses:="javax.p
  ersistence,net.nan21.dnet.core.api,net.nan21.dnet.core.api.action,net
  .nan21.dnet.core.api.marshall,org.springframework.web.multipart",net.
- nan21.dnet.core.api.session;version="1.0.0.M3",net.nan21.dnet.core.ap
- i.setup;version="1.0.0.M3";uses:="org.springframework.beans.factory.a
+ nan21.dnet.core.api.session;version="1.0.0.M4",net.nan21.dnet.core.ap
+ i.setup;version="1.0.0.M4";uses:="org.springframework.beans.factory.a
  nnotation,org.springframework.context",net.nan21.dnet.core.api.ui.ext
- js;version="1.0.0.M3",net.nan21.dnet.core.api.ui.extjs.impl;version="
- 1.0.0.M3";uses:="net.nan21.dnet.core.api.ui.extjs"
+ js;version="1.0.0.M4",net.nan21.dnet.core.api.ui.extjs.impl;version="
+ 1.0.0.M4";uses:="net.nan21.dnet.core.api.ui.extjs"
 Bundle-Vendor: Nan21 
-Bundle-Version: 1.0.0.M3
+Bundle-Version: 1.0.0.M4
 Tool: Bundlor 1.0.0.RELEASE
 Bundle-Name: DNet Core - api
 Bundle-ManifestVersion: 2

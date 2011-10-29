@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Export-Package: net.nan21.dnet.core.domain.eventhandler;version="1.0.0
- .M3";uses:="org.eclipse.persistence.config,org.eclipse.persistence.de
- scriptors",net.nan21.dnet.core.domain.validation;version="1.0.0.M3"
+ .M4";uses:="org.eclipse.persistence.config,org.eclipse.persistence.de
+ scriptors",net.nan21.dnet.core.domain.validation;version="1.0.0.M4"
 Bundle-Vendor: Nan21 
-Bundle-Version: 1.0.0.M3
+Bundle-Version: 1.0.0.M4
 Tool: Bundlor 1.0.0.RELEASE
 Bundle-Name: DNet Core - domain
 Bundle-ManifestVersion: 2

@@ -346,12 +346,12 @@ dnet.Translation = Ext.apply({},{
         ,SalesInvoiceBaseData_UI : "Definiţii (comenzi)"
         ,SalesInvoice_UI: "Facturi"
 
-
-        //PJ
-        ,ProjectType_UI: "Tipuri proiect"
-        ,ProjectTaskType_UI: "Tipuri activităţi"
+ 
+ 		//PJ
+        ,ItemBaseData_UI: "Definiţii defecte"
+        ,ProjectBaseData_UI: "Definiţii proiecte"
         ,Projects_UI: "Proiecte"
-		,ProjectTasks_UI: "Activităţi"
+		,Items_UI: "Defecte/activităţi"
 
 	}
 

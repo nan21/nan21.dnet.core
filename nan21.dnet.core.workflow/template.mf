@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: DNet Core - workflow
 Bundle-SymbolicName: nan21.dnet.core.workflow
 Bundle-Vendor: Nan21 
-Bundle-Version: 1.0.0.M3
+Bundle-Version: 1.0.0.M4
 Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.html
 Import-Package: 
  org.springframework.context;version="[3.0,3.1)",

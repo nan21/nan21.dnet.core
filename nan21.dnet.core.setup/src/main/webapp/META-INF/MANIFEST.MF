@@ -1,11 +1,11 @@
 Manifest-Version: 1.0
-Export-Package: net.nan21.dnet.core.setup;version="1.0.0.M3";uses:="ja
+Export-Package: net.nan21.dnet.core.setup;version="1.0.0.M4";uses:="ja
  vax.servlet.http,org.springframework.beans.factory.annotation,org.spr
  ingframework.stereotype,org.springframework.web.bind.annotation,org.s
  pringframework.web.context,org.springframework.web.servlet"
 Bundle-Vendor: Nan21 
 Bundle-ClassPath: WEB-INF/classes
-Bundle-Version: 1.0.0.M3
+Bundle-Version: 1.0.0.M4
 Tool: Bundlor 1.0.0.RELEASE
 Bundle-Name: DNet Core - setup
 Bundle-ManifestVersion: 2
@@ -14,9 +14,9 @@ Bundle-SymbolicName: nan21.dnet.core.setup
 Import-Package: javax.persistence;version="[2.0,2.1)",javax.persistenc
  e.criteria;version="[2.0,2.1)",javax.servlet.http,javax.servlet.jsp.j
  stl.core;version="[1.2,2.0)",net.nan21.dnet.core.api.service;version=
- "[1.0.0.M3,1.0.0.M3]",net.nan21.dnet.core.api.session;version="[1.0.0
- .M3,1.0.0.M3]",net.nan21.dnet.core.api.setup;version="[1.0.0.M3,1.0.0
- .M3]",org.apache.taglibs.standard;version="[1.1.2,2.0)",org.apache.ta
+ "[1.0.0.M4,1.0.0.M4]",net.nan21.dnet.core.api.session;version="[1.0.0
+ .M4,1.0.0.M4]",net.nan21.dnet.core.api.setup;version="[1.0.0.M4,1.0.0
+ .M4]",org.apache.taglibs.standard;version="[1.1.2,2.0)",org.apache.ta
  glibs.standard.extra.spath;version="[1.1.2,2.0)",org.apache.taglibs.s
  tandard.functions;version="[1.1.2,2.0)",org.apache.taglibs.standard.l
  ang.jstl;version="[1.1.2,2.0)",org.apache.taglibs.standard.lang.jstl.
