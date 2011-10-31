@@ -1,6 +1,6 @@
  
 .x-item-disabled {
-    color: #000 !important;
+	opacity:0.7;    
 }
 .documentTotalField {
 	font-weight:bold !important;

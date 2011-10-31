@@ -7,8 +7,9 @@
 
   
 .x-item-disabled {
-    color: #000 !important;
+	opacity:0.75;    
 }
+ 
 .documentTotalField {
 	font-weight:bold !important;
 }

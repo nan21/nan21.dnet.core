@@ -265,6 +265,7 @@ dnet.Translation = Ext.apply({},{
 		,UserTypes_UI : "Tipuri utilizator"
 	   ,Role_UI : "Roluri"
        ,AccessControl_UI : "Drepturi de acces"
+       ,Assignables_UI : "Resurse alocabile"
        ,MyBookmark_UI : "Marcajele mele"
        ,WorkflowAdmin_UI: "Administrare Workflow"
         ,WorkflowDef_UI : "Definire Workflow"
@@ -348,11 +349,11 @@ dnet.Translation = Ext.apply({},{
 
  
  		//PJ
-        ,ItemBaseData_UI: "Definiţii defecte"
+        ,ItemBaseData_UI: "Definiţii incidente"
         ,ProjectBaseData_UI: "Definiţii proiecte"
         ,Projects_UI: "Proiecte"
-		,Items_UI: "Defecte/activităţi"
-
+		,Items_UI: "Incidente"
+		,ItemTask_UI:"Activităţi"
 	}
 
 

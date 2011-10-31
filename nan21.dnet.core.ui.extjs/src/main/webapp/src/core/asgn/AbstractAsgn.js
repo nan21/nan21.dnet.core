@@ -497,17 +497,15 @@ Ext.define("dnet.base.AbstractAsgn", {
 		});
 	},
 
-	proxyException : function(dataProxy, type, action, options, response, arg) {
-		if (type == "response") {
+	proxyException : function(dataProxy, response, operation, eopts) {
+		 
 			Ext.Msg.show( {
 				title : 'HTTP:' + response.status + ' ' + response.statusText,
 				msg : response.responseText.substr(0, 1500),
 				buttons : Ext.Msg.OK,
 				icon : Ext.MessageBox.ERROR
 			});
-		} else {
-			alert(response.message.substr(0, 1500));
-		}
+		 
 	}
 
 });
