@@ -55,7 +55,7 @@ public abstract class AbstractEntityService <E>  {
 	public E findById(Object object) {
 		return this.em.find(getEntityClass(), object);
 	}
-	
+	 
 	/**
 	 * Find entities by ids.
 	 */

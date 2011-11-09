@@ -496,8 +496,18 @@ public class AbstractDsService<M, P, E>
 		bld.setEntityManager(lem);
 		
 		try {
-			bld.setFilter(filter);
-			bld.setParams(params);
+			
+			if (filter!=null) {
+				bld.setFilter(filter);
+			} else {
+				bld.setFilter(getModelClass().newInstance());
+			}
+			if (params!=null) {
+				bld.setParams(params);
+			} else {
+				bld.setParams(getParamClass().newInstance());
+			}
+			
 			 
 			List<M> result = new ArrayList<M>(); 
 			

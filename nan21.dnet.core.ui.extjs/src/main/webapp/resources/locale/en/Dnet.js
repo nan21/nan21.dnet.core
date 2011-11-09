@@ -253,6 +253,11 @@ dnet.Translation = Ext.apply({},{
 	   ,ImportMapItem_UI: "Import files"
        ,ImportMap_UI: "Import file-sets"
        ,ImportJob_UI: "Import jobs"
+       
+       ,CsvExport_UI: "CSV export"
+       ,ExportMap_UI: "Export file-sets"
+       ,ExportJob_UI: "Export jobs"
+       
        ,MyClient_UI:"Client info"
        ,Client_UI:"Clients management"
 	   ,SysDataSources_UI : "System components: Data-sources"
@@ -347,7 +352,8 @@ dnet.Translation = Ext.apply({},{
         //,SalesInvoiceType_UI : "Invoice type"
         ,SalesInvoiceBaseData_UI : "Base data(Sales invoice)"	
         ,SalesInvoice_UI: "Invoices"
-        
+        ,OpportunityBaseData_UI: "Opportunity base data" 
+        ,Opportunity_UI: "Opportunities" 
         
         //PJ
         ,ItemBaseData_UI: "Items base data"

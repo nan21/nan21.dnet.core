@@ -8,6 +8,13 @@ Ext.define("dnet.base.DcvFormBuilder", {
 
 	addTextField : function(config) {
 		config.xtype = "textfield";
+		
+		// focus is moved to the end of a textfield in some browsers (Chrome)
+		// when editing inside the text - applies to text/date/number field. Doesn't happen with textarea
+		// Not sure what is the cause, temporarily do this hack but should be analyzed
+//		config.xtype = "textarea";
+//		config.rows = 1;
+//		config.enterIsSpecial = true;
 		if (config.maxLength) {
 			config.enforceMaxLength = true;
 		}
@@ -211,7 +218,9 @@ Ext.define("dnet.base.DcvFormBuilder", {
 					}
 				} else {
 					if (!r.isEqual(rv, nv)) {
+						//r.beginEdit();
 						r.set(f.dataIndex, nv);
+						//r.endEdit();
 					}
 				}
 			}
@@ -226,6 +235,7 @@ Ext.define("dnet.base.DcvFormBuilder", {
 			id : Ext.id(),
 			itemId : config.name,
 			selectOnFocus : true,
+			checkChangeBuffer : 80,
 			_dcView_ : this.dcv
 		});
 		if (config.allowBlank === false) {

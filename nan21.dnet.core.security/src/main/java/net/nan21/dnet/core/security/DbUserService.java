@@ -133,7 +133,7 @@ public class DbUserService extends JdbcDaoImpl {
                                 params.setDefaultAccessAllow(true);
                             }
                             params.setDefaultImportPath(defaultImportPath);
-                            params.setDefaultImportPath(defaultExportPath);
+                            params.setDefaultExportPath(defaultExportPath);
                             params.setTempPath(tempPath);
                             params.setAdminRole(adminRole);   
                             params.setSystemClient(systemClient);

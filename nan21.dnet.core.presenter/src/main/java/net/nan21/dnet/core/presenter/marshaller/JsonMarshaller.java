@@ -1,7 +1,9 @@
 package net.nan21.dnet.core.presenter.marshaller;
 
 import java.io.OutputStream;
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.TimeZone;
 
 import net.nan21.dnet.core.api.action.IActionResultFind;
 import net.nan21.dnet.core.api.action.IActionResultRpcData;
@@ -35,6 +37,10 @@ public class JsonMarshaller<M, P> extends AbstractMarshaller<M, P>
                 DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES,
                 false);
         
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss"); 
+        //sdf.setTimeZone(TimeZone.getTimeZone("Europe/Bucharest"));
+        this.mapper.getDeserializationConfig().setDateFormat(sdf);
+        this.mapper.getSerializationConfig().setDateFormat(sdf);
 	}
 	 
 	@Override

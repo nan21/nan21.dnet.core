@@ -251,6 +251,11 @@ dnet.Translation = Ext.apply({},{
 	   ,ImportMapItem_UI: "Fisiere import"
 	   ,ImportMap_UI: "Seturi fisiere import"
 	   ,ImportJob_UI: "Procese import"
+	   
+	   ,CsvExport_UI: "Export CSV"
+       ,ExportMap_UI: "Seturi fisiere export"
+       ,ExportJob_UI: "Procese export"
+       
 	   ,MyClient_UI: "Info client"
 	    ,Client_UI:"Administrare clienţi"
        ,SysDataSources_UI : "Componente sistem: Surse de date"
@@ -346,7 +351,8 @@ dnet.Translation = Ext.apply({},{
         //,SalesInvoiceType_UI : "Tipuri factura"
         ,SalesInvoiceBaseData_UI : "Definiţii (comenzi)"
         ,SalesInvoice_UI: "Facturi"
-
+		,OpportunityBaseData_UI: "Definiţii oportunităţi" 
+        ,Opportunity_UI: "Oportunităţi" 
  
  		//PJ
         ,ItemBaseData_UI: "Definiţii incidente"

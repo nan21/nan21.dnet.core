@@ -12,7 +12,7 @@ Ext.form.field.Date.prototype.altFormats = "j|j.n|d|d.m";
 // Ext.NUMBER_FORMAT_INT = "0,000";
 //
 //
-Ext.MODEL_DATE_FORMAT = "Y-m-d\\TH:i:s.uO";
+Ext.MODEL_DATE_FORMAT = "Y-m-d\\TH:i:s";
 
 
 Ext.override(Ext.form.field.Base, {
