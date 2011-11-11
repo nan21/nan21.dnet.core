@@ -69,6 +69,7 @@ Ext.define("dnet.base.AbstractDcvForm", {
 		this._controller_.store.on("update", function(store, rec, op, eopts) {	
 			//dnet.base.Logger.debug("dnet.base.AbstractDcvForm. store.on.update" );	 
 			this.updateBound(rec);
+			//this._controller_.commands["doSave"].locked = !this.getForm().isValid();
 		}, this);
 		
 		/**
@@ -111,6 +112,27 @@ Ext.define("dnet.base.AbstractDcvForm", {
 			this._afterRender_();
 			}, this);
 		
+		if (this._controller_.commands.doSave ) {
+			this._controller_.commands.doSave.beforeExecute = Ext.Function.createInterceptor(
+				this._controller_.commands.doSave.beforeExecute,
+				function() {
+					if(!this.getForm().isValid()) {
+						Ext.Msg.show({
+							title : "Validation info",	
+							msg : "Form contains invalid data.<br> Please fix the errors then try again.",
+							scope : this,
+							icon : Ext.MessageBox.ERROR,
+							buttons : Ext.MessageBox.OK
+						});
+						return false;
+					} else {
+						return true;	
+					}					
+				},this, -1 );
+		}
+//		this.getForm().on("validitychange", function(form, isValid, eopts) {
+//			this._controller_.commands["doSave"].locked = !isValid;
+//		}, this);
 	}
  
 	,_afterRender_: function() {
@@ -143,7 +165,9 @@ Ext.define("dnet.base.AbstractDcvForm", {
 					field._setRawValue_(record.data[field.dataIndex]);
 				}						
 				}); 
+				
 			this._applyContextRules_(record);
+			this.getForm().isValid();
 			//this.enable();
 		}
 		this._afterBind_(record);

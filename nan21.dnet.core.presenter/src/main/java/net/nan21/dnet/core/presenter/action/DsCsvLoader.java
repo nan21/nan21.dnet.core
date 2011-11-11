@@ -7,6 +7,7 @@ import java.util.List;
 
 import net.nan21.dnet.core.presenter.model.AbstractDsModel;
 import net.nan21.dnet.core.presenter.propertyeditors.BooleanEditor;
+import net.nan21.dnet.core.presenter.propertyeditors.DateEditor;
 import net.nan21.dnet.core.presenter.propertyeditors.IntegerEditor;
 import net.nan21.dnet.core.presenter.propertyeditors.LongEditor;
 
@@ -30,6 +31,9 @@ public class DsCsvLoader {
 		PropertyEditorManager.registerEditor(
                 java.lang.Integer.class, 
                 IntegerEditor.class ); 
+		PropertyEditorManager.registerEditor(
+				java.util.Date.class, 
+                DateEditor.class );
 	}
 	
 	
@@ -56,7 +60,15 @@ public class DsCsvLoader {
             	list = csv.parse(strategy, reader);	
             }		
             return list;            
-        } finally {
+        } catch(Exception e) {
+        	String msg = "Error loading data from file: "+file.getPath()+"/"+file.getName()+ ". \n Reason is: ";
+        	if (e.getCause() != null) {
+        		msg = msg + e.getCause().getLocalizedMessage();
+        	} else {
+        		msg = msg + e.getLocalizedMessage();
+        	}        	 
+        	throw new Exception(msg, e);
+        }finally {
             if (reader != null ) {
                 reader.close();              
             }

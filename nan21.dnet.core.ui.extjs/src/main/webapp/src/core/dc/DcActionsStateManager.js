@@ -19,10 +19,14 @@ dnet.base.DcActionsStateManager = {
 		}
 		for ( var i = 0, l = names.length; i < l; i++) {
 			var n = names[i];
-			var b = this["_is" + n + "Disabled"](flags);
-			dc.actions["do" + n].setDisabled(b);
+			var an = "do" + n;
+			if(dc.commands[an].locked === true) {
+				dc.actions[an].setDisabled(true);
+			} else {
+				var b = this["_is" + n + "Disabled"](flags);
+				dc.actions[an].setDisabled(b);
+			}			
 		}
-
 	},
 
 	disableAll : function(dc, names) {

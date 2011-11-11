@@ -16,6 +16,8 @@ Ext.define("dnet.base.AbstractDcCommand", {
 	 */
 	confirmByUser : false,
 
+	locked: false,
+	
 	/**
 	 * User confirmation message title.
 	 */
@@ -94,8 +96,12 @@ Ext.define("dnet.base.AbstractDcCommand", {
 		options = options || {};
 		this.checkActionState();
 
-		if (this.beforeExecute() === false) {
-			return false;
+		/* workaround to enable createInterceptor return false beeing handled correctly
+		 * Seems that returnValue=false in Ext.Function.createInterceptor returns null not the specified false
+		 * Used by AbstractDcvForm to inject its own form validation result.
+		 * */
+		if (this.beforeExecute() === false || this.beforeExecute() == -1 ) {
+			return false; 
 		}
 
 		if (this.needsConfirm() && options.confirmed !== true) {
