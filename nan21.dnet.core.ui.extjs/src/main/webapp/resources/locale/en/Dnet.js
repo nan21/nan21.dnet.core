@@ -356,11 +356,11 @@ dnet.Translation = Ext.apply({},{
         ,Opportunity_UI: "Opportunities" 
         
         //PJ
-        ,ItemBaseData_UI: "Items base data"
+        ,IssueBaseData_UI: "Issues base data"
         ,ProjectBaseData_UI: "Project base data"
         ,Projects_UI: "Projects"
-		,Items_UI: "Issues"
-		,ItemTask_UI:"Tasks"
+		,Issues_UI: "Issues"
+		,IssueTask_UI:"Tasks"
 
 
 	}

@@ -288,7 +288,7 @@ Ext.define("dnet.base.AbstractDc", {
 			}
 			
 			this.updateActionsState();
-			if (operation.action == "update" || operation.action == "insert") {
+			if (operation.action == "update" || operation.action == "create") {
 				this.afterDoSaveSuccess();
 			}
 			
