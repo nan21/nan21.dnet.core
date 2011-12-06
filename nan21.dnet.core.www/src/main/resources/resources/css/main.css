@@ -1,0 +1,384 @@
+/* ================   reset ===============  */
+* {
+	margin: 0;
+	padding: 0;
+	border: 0;
+}
+
+/* ================   tags ===============  */
+body {
+	border: 0;
+	font: 12px Arial, Helvetica, sans-serif;
+	color: #363636;
+	line-height:16px;
+	background: url(../images/header-bg.png) top repeat-x #fff;
+}
+
+li {
+	list-style: none
+}
+
+a {
+	color: #CA0002;
+	text-decoration: underline
+}
+
+a:hover {
+	text-decoration: none
+}
+
+h1 {
+	font-size: 28px;
+	color: #6c6c6c;
+	line-height: normal;
+	padding-top: 12px;
+	padding-bottom: 12px;
+}
+
+h2 {
+	font-size: 24px;
+	color: #4d4d4d;
+	line-height: normal;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+h3 {
+	font-size: 20px;
+	color: #4d4d4d;
+	line-height: normal;
+	padding-top: 8px;
+	padding-bottom: 8px;
+}
+
+h4 {
+	font-size: 16px;
+	color: #4d4d4d;
+	line-height: normal;
+	padding-top: 6px;
+	padding-bottom: 6px;
+}
+
+/* ================   global layout ===============  */
+.main {
+	width: 980px;
+	margin:0 auto;
+	border: 0; /*1px solid #eee*/
+}
+
+/*.main2 {	 
+	margin-left: auto;
+	margin-right: auto; 
+	background:url(../images/footer-bg.jpg) top repeat-x #1f1f1f;
+	height: 130px;
+}*/
+.bottom {
+	background: url(../images/footer-bg.jpg) top repeat-x #1f1f1f;
+	width: 100%;
+	height: 130px;
+	color: #eee;
+	margin:0 auto;
+}
+
+.main2 {
+	width: 980px;
+	margin: auto;
+}
+
+.wrapper {
+	width: 100%;
+	overflow: hidden;
+}
+
+.col1 {
+	width: 550px;
+	float: left;
+	padding-top: 10px;
+}
+
+.col2 {
+	width: 350px;
+	float: left;
+	padding-top: 10px;
+}
+
+.col150 {
+	width: 150px;
+	float: left;
+	padding-top: 10px;
+}
+.col250 {
+	width: 250px;
+	float: left;
+	padding-top: 10px;
+}
+.col200 {
+	width: 200px;
+	float: left;
+	padding-top: 10px;
+}
+.section-title {	
+	width:100%;
+	padding: 20 0 5 0px;
+	border-bottom: 1px solid #ddd;
+}
+/* ================   header ===============  */
+.header h1,.header h1 a {
+	padding-top: 2px;
+	padding-bottom: 0px;
+}
+ 
+.header h4 {
+	padding-top: 0px;
+	padding-bottom: 2px;
+}
+
+
+#wrapper-header {
+	width: 980px;
+	margin-left: auto;
+	margin-right: auto;
+	padding-top: 30px;
+}
+
+#wrapper-header .menu {
+	float: right;
+	padding-top: 4px;
+	padding-right: 17px;
+}
+#wrapper-header .menu li {
+	float: left;
+}
+#wrapper-header .menu li a {
+	display: block;
+	color: #666;
+	font-size:10px;
+	text-transform: uppercase;
+	line-height: normal;
+	margin-left: 10px;
+	margin-right: 10px;
+	text-align: center;
+	text-decoration: none;
+	font-weight: 400;
+	text-transform: uppercase;
+}
+ 
+#wrapper-header .menu2 {	  
+	margin-top: 15px;
+	 
+	padding-right: 17px;
+	height:25px;
+	
+	 
+}
+#wrapper-header .menu2 li {
+	float: left;
+}
+#wrapper-header .menu2 li a {
+	display: block;
+	color: #666;
+	font-weight:bold;
+	text-transform: uppercase;
+	line-height: normal;
+	padding: 10 20 10 20px;
+	text-align: center;
+	text-decoration: underline; 
+}
+#wrapper-header .menu2 li a:hover {
+	display: block;
+	color: #CA0002;
+	 
+	text-transform: uppercase;
+	line-height: normal;
+	padding: 10 20 10 20px;
+	font-weight:bold;
+	text-align: center;
+	text-decoration: none;
+ 
+}
+
+/* ================   content ===============  */
+#wrapper-content {
+	width: 980px;
+	margin-left: auto;
+	margin-right: auto;
+	padding-top: 40px;
+	padding-bottom: 50px;
+	
+}
+
+/* ================   footer ===============  */
+#wrapper-footer {
+	width: 980px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.footer-column {
+	float: right;
+	width: 300px;
+}
+
+.footer-column h4 {
+	padding-top: 8px;
+	padding-bottom: 4px;
+	color: #dedede;
+}
+.footer-column a {	 
+	color: #999;
+}
+.copyright {
+	padding-top: 20px;
+}
+
+.copyright p {
+	line-height: 20px;
+}
+
+/* ==================   MM styles ->  to be moved into the MM css file*/
+.categories {
+	width: 250px;
+}
+
+.categories li a {
+	display: block;
+	padding-top: 4px;
+	padding-left: 14px;
+	height: 25px;
+	background: url(../images/marker_2.jpg) top left no-repeat;
+	background-position: 0px 9px;
+}
+
+.categories li {
+	
+}
+
+p.attr-title {
+	width: 130px;
+	padding: 3px 0px 0px 0px;
+	margin: 0px;
+	float: left;
+	line-height: 14px;
+}
+
+p.attr-value {
+	width: 220px;
+	padding: 3px 0px 0px 0px;
+	margin: 0px;
+	float: left;
+	line-height: 14px;
+}
+
+p.prod-attr-type {
+	width: 350px;
+	float: left;
+	font-weight: bold;
+	border-bottom: 1px solid #ccc;
+	padding-top:25px;
+}
+
+.prod-list-item {
+	
+}
+
+/* The Nivo Slider styles */
+#slider {
+	position: relative;
+	width: 500px;
+	height: 500px;
+	z-index: 88;
+	left: 0px;
+	top: 0px;
+	overflow: hidden;
+	border: solid 1px #f3f3f3;
+	background-color: #fff;
+}
+
+/* If an image is wrapped in a link */
+.nivoSlider a.nivo-imageLink {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: 100%;
+	border: 0;
+	padding: 0;
+	margin: 0;
+	z-index: 60;
+	display: none;
+}
+
+/* The slices in the Slider */
+.nivo-slice {
+	display: block;
+	position: absolute;
+	z-index: 50;
+	height: 100%;
+}
+
+/* Direction nav styles (e.g. Next & Prev) */
+.nivo-directionNav a {
+	position: absolute;
+	bottom: 25px;
+	z-index: 99;
+	cursor: pointer;
+	text-indent: -5000px;
+	width: 5px;
+	height: 9px;
+	display: block;
+}
+
+.nivo-prevNav {
+	left: 36px;
+	background: url(../images/marker_left.gif) 0 0 no-repeat
+}
+
+.nivo-prevNav:hover {
+	background-position: bottom
+}
+
+.nivo-nextNav {
+	left: 119px;
+	background: url(../images/marker_right.gif) no-repeat
+}
+
+.nivo-nextNav:hover {
+	background-position: bottom
+}
+
+/* Control nav styles (e.g. 1,2,3...) */
+.nivo-controlNav {
+	position: absolute;
+	z-index: 99;
+	left: 51px;
+	bottom: 23px;
+}
+
+.nivo-controlNav a {
+	position: relative;
+	z-index: 99;
+	cursor: pointer;
+	text-indent: -5000px;
+	width: 13px;
+	height: 13px;
+	float: left;
+	margin-right: 2px;
+	background: url(../images/buttons.gif) right 0 no-repeat
+}
+
+.nivo-controlNav a.active,.nivo-controlNav a:hover {
+	background-position: left
+}
+
+/* Caption styles */
+.nivo-caption {
+	position: relative;
+	top: 0px;
+	left: 10px;
+	z-index: 99;
+	overflow: hidden;
+}
+
+.nivo-html-caption {
+	
+}

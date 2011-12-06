@@ -34,8 +34,9 @@ public interface IQueryBuilder<F,P> {
 	 * Add sort information. 
 	 * @param sortTokens The sort tokens E.g. {"name", "code desc", "id asc"}
 	 * @return this
+	 * @throws Exception 
 	 */
-	public IQueryBuilder<F,P> addSortInfo(String[] sortTokens);
+	public IQueryBuilder<F,P> addSortInfo(String[] sortTokens) throws Exception;
 	 
 	/**
 	 * Add sort information. 

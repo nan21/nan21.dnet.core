@@ -29,6 +29,9 @@ public class AbstractDsModel<E> {
 		if ( val instanceof Integer ){
 			return Long.valueOf((Integer)val);
 		} 
+		if ( val instanceof String ){
+			return Long.valueOf((String)val);
+		}
 		return (Long) val;
 	}	 
 }

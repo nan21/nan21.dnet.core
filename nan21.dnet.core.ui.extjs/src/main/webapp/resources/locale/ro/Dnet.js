@@ -66,6 +66,8 @@ dnet.Translation = Ext.apply({},{
 		,bookmark__lbl : "Marcaje"
 		,managebookmark__lbl : "Gestionare"
 		,theme__lbl : "Stil"
+		,theme_capuccino__lbl : "Capuccino"
+		,theme_aqua__lbl : "Aqua"
 		,theme_blue__lbl : "Albastru"
 		,theme_gray__lbl : "Gri"
 		,theme_access__lbl : "Negru"

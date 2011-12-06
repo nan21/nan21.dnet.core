@@ -7,9 +7,10 @@ public final class ViewModelDescriptorManager {
 
 	private static Map<String, AbstractViewModelDescriptor<?>> store = new HashMap<String, AbstractViewModelDescriptor<?>>();
 	
-	public static <M> DsDescriptor<M> getDsDescriptor(Class<M> modelClass) throws Exception {
 	 
-		boolean useCache = false;
+	public static <M> DsDescriptor<M> getDsDescriptor(Class<M> modelClass, boolean useCache) throws Exception {
+	 
+		//boolean useCache = false;
 		if (useCache) {
 			String key = modelClass.getCanonicalName();
 			if ( !store.containsKey(key)) {
@@ -22,8 +23,8 @@ public final class ViewModelDescriptorManager {
 				 
 	}
 	
-	public static <M> AsgnDescriptor<M> getAsgnDescriptor(Class<M> modelClass) throws Exception {
-		boolean useCache = false;
+	public static <M> AsgnDescriptor<M> getAsgnDescriptor(Class<M> modelClass, boolean useCache) throws Exception {
+		//boolean useCache = false;
 		if (useCache) {
 			String key = modelClass.getCanonicalName();
 			if ( !store.containsKey(key)) {

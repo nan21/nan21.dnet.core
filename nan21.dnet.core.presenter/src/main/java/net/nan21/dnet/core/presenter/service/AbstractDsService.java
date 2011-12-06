@@ -26,6 +26,7 @@ import net.nan21.dnet.core.api.service.IEntityService;
 import net.nan21.dnet.core.api.session.Session;
 import net.nan21.dnet.core.presenter.action.DsCsvLoader;
 import net.nan21.dnet.core.presenter.action.QueryBuilderWithJpql;
+import net.nan21.dnet.core.presenter.converter.AbstractDsConverter;
 import net.nan21.dnet.core.presenter.converter.BaseDsConverter;
 import net.nan21.dnet.core.presenter.exception.ActionNotSupportedException;
 import net.nan21.dnet.core.presenter.marshaller.JsonMarshaller;
@@ -49,7 +50,7 @@ public class AbstractDsService<M, P, E>
 	protected Class<?> queryBuilderClass;
 	protected IDsConverter<M, E> converter;
 	
-	protected DsDescriptor<M> descriptor;
+	private DsDescriptor<M> descriptor;
 	
 	private IEntityService<E> entityService;
 	//
@@ -78,8 +79,13 @@ public class AbstractDsService<M, P, E>
 	
 	public List<M> find(M filter, P params,
 			IQueryBuilder<M, P> builder) throws Exception {
-		QueryBuilderWithJpql<M, P> bld = (QueryBuilderWithJpql<M, P>) builder;
-		
+		QueryBuilderWithJpql<M, P> bld = null;
+		if (builder != null ) {
+			bld = (QueryBuilderWithJpql<M, P>) builder;
+		} else {
+			bld = (QueryBuilderWithJpql<M, P>) this.createQueryBuilder();
+		}
+		  
 		bld.setFilter(filter);
 		bld.setParams(params);
 		 
@@ -104,8 +110,15 @@ public class AbstractDsService<M, P, E>
 	 
 	  
 	public M findById(Object id) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		Method setter = this.getModelClass().getDeclaredMethod("setId", Object.class);
+		M filter = this.getModelClass().newInstance();
+		setter.invoke(filter, id);		
+		List<M> result = this.find(filter, null, null); 
+		if (result.size() == 0) {
+			return null;
+		} else {
+			return result.get(0);
+		}
 	}
  
 	public List<M> findByIds(List<Object> ids) throws Exception {
@@ -671,8 +684,7 @@ public class AbstractDsService<M, P, E>
 	}
 
 	public void setModelClass(Class<M> modelClass) throws Exception {
-		this.modelClass = modelClass;
-		this.descriptor = ViewModelDescriptorManager.getDsDescriptor(this.modelClass);
+		this.modelClass = modelClass;		
 	}
 
 	public Class<P> getParamClass() {
@@ -710,6 +722,10 @@ public class AbstractDsService<M, P, E>
 			this.converter = (IDsConverter<M, E>)this.converterClass.newInstance();
 			this.converter.setEntityManager(this.getEntityService().getEntityManager());
 			this.converter.setEntityServiceFactories(this.entityServiceFactories);
+			
+			((AbstractDsConverter<M, E>)this.converter).setDescriptor(this.getDescriptor());
+			((AbstractDsConverter<M, E>)this.converter).setEntityClass(this.getEntityClass());
+			((AbstractDsConverter<M, E>)this.converter).setModelClass(this.getModelClass());
 		}
 		return this.converter;
 	} 	
@@ -721,7 +737,10 @@ public class AbstractDsService<M, P, E>
 		this.descriptor = descriptor;
 	}
 	
-	public DsDescriptor<M> getDescriptor() {
+	public DsDescriptor<M> getDescriptor() throws Exception {
+		if (this.descriptor == null) {
+			this.descriptor = ViewModelDescriptorManager.getDsDescriptor(this.modelClass, this.systemConfig.shouldCacheDescriptor());
+		}
 		return descriptor;
 	}
 	
@@ -774,7 +793,7 @@ public class AbstractDsService<M, P, E>
 	private void _prepareQueryBuilder(IQueryBuilder<M,P> qb) throws Exception {
 		qb.setFilterClass(this.getModelClass());
 		qb.setParamClass(this.getParamClass());
-		qb.setDescriptor(this.descriptor);
+		qb.setDescriptor(this.getDescriptor());
 		qb.setSystemConfig(this.systemConfig);
 		if(qb instanceof QueryBuilderWithJpql) {
 			QueryBuilderWithJpql jqb = (QueryBuilderWithJpql)qb;
@@ -782,8 +801,8 @@ public class AbstractDsService<M, P, E>
 			jqb.setBaseEql("select e from "+this.getEntityClass().getSimpleName()+" e");
 			jqb.setBaseEqlCount("select count(1) from "+this.getEntityClass().getSimpleName()+" e");
 			if(this.getDescriptor().isWorksWithJpql()) {
-				jqb.setDefaultWhere(this.descriptor.getJpqlDefaultWhere() );
-				jqb.setDefaultSort(this.descriptor.getJpqlDefaultSort());
+				jqb.setDefaultWhere(this.getDescriptor().getJpqlDefaultWhere() );
+				jqb.setDefaultSort(this.getDescriptor().getJpqlDefaultSort());
 			}
 		}
 	}

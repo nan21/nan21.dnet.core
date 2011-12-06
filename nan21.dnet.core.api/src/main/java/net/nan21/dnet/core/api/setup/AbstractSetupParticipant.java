@@ -3,6 +3,8 @@ package net.nan21.dnet.core.api.setup;
 import java.util.Iterator;
 import java.util.List;
 
+import net.nan21.dnet.core.api.SystemConfig;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
@@ -14,6 +16,8 @@ public abstract class AbstractSetupParticipant {
 	protected String targetName;
 	protected List<ISetupTask> tasks;
 
+	protected SystemConfig systemConfig;
+	
 	protected int ranking;
 
 	public boolean hasWorkToDo() {
@@ -90,4 +94,15 @@ public abstract class AbstractSetupParticipant {
 	public int compareTo(ISetupParticipant sp) {
 		return sp.getRanking() - this.ranking;
 	}
+
+	public SystemConfig getSystemConfig() {
+		return systemConfig;
+	}
+
+	public void setSystemConfig(SystemConfig systemConfig) {
+		this.systemConfig = systemConfig;
+	}
+	
+	
+	
 }

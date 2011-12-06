@@ -11,8 +11,21 @@ import net.nan21.dnet.core.api.descriptor.IViewModelDescriptor;
 
 public class AbstractViewModelDescriptor<M> implements IViewModelDescriptor<M> {
 	
-	private Class<M> modelClass;	 
+	private Class<M> modelClass;
+	
+	/**
+	 * Holds the mapping from a data-source field to the corresponding entity property as a navigation path expression.
+	 * Used by the base converter to populate the view model instances from the source entity.
+	 * Example: dsFieldName => entityField or dsFieldName => entityRefField.entityRefField.entityAttribute
+	 */
 	private Map<String, String> refPaths;
+	/**
+	 * Holds the reversed mapping only for the root entity attributes.
+	 * Used in the base converter to update the root entity attributes from the view model instance.
+	 * Example: entityField => dsFieldName.
+	 */
+	private Map<String, String> attributeMap;
+	
 	private Map<String, String> jpqlFieldFilterRules;
 	
 	private Map<String, String> fetchJoins;
@@ -53,6 +66,7 @@ public class AbstractViewModelDescriptor<M> implements IViewModelDescriptor<M> {
 	protected void buildElements() {
 		if (this.refPaths == null) {
 			this.refPaths = new HashMap<String, String>();
+			this.attributeMap = new HashMap<String, String>();
 			this.jpqlFieldFilterRules = new HashMap<String, String>();
 			this.fetchJoins = new HashMap<String, String>();
 			this.nestedFetchJoins = new HashMap<String, String>();
@@ -72,6 +86,8 @@ public class AbstractViewModelDescriptor<M> implements IViewModelDescriptor<M> {
 							} else {
 								this.nestedFetchJoins.put("e."+path.substring(0, path.lastIndexOf(".")), field.getAnnotation(DsField.class).join());
 							}						
+						} else {
+							this.attributeMap.put(path, field.getName());
 						}
 					}					
 					String jpqlFieldFilterRule = field.getAnnotation(DsField.class).jpqlFilter();
@@ -120,6 +136,10 @@ public class AbstractViewModelDescriptor<M> implements IViewModelDescriptor<M> {
 
 	public Map<String, String> getNestedFetchJoins() {
 		return nestedFetchJoins;
+	}
+
+	public Map<String, String> getAttributeMap() {
+		return attributeMap;
 	}
 	 
 	

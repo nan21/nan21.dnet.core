@@ -62,9 +62,11 @@ dnet.Translation = Ext.apply({},{
 		,bookmark__lbl : "Bookmarks"
 		,managebookmark__lbl : "Manage"
 		,theme__lbl : "Theme"
+		,theme_capuccino__lbl : "Capuccino"
+		,theme_aqua__lbl : "Aqua"
 		,theme_blue__lbl : "Blue"
 		,theme_gray__lbl : "Gray"
-		,theme_access__lbl : "Black"
+		,theme_access__lbl : "Black"		 
 		,lang__lbl : "Language"
 
 

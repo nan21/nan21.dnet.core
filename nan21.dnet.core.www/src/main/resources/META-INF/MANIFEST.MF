@@ -1,0 +1,38 @@
+Manifest-Version: 1.0
+Import-Bundle: org.eclipse.virgo.snaps.api;version="[3.0,4.0)"
+Bundle-Vendor: Nan21 
+Bundle-Version: 1.0.0.M5
+Tool: Bundlor 1.0.0.RELEASE
+Bundle-Name: DNet Core - www
+Bundle-ManifestVersion: 2
+Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.html
+Bundle-SymbolicName: nan21.dnet.core.www
+Web-ContextPath: /nan21.dnet.core.www
+Import-Package: javax.servlet.jsp.jstl.core;version="[1.2,2.0)",org.ap
+ ache.taglibs.standard;version="[1.1.2,2.0)",org.apache.taglibs.standa
+ rd.extra.spath;version="[1.1.2,2.0)",org.apache.taglibs.standard.func
+ tions;version="[1.1.2,2.0)",org.apache.taglibs.standard.lang.jstl;ver
+ sion="[1.1.2,2.0)",org.apache.taglibs.standard.lang.jstl.parser;versi
+ on="[1.1.2,2.0)",org.apache.taglibs.standard.lang.jstl.test;version="
+ [1.1.2,2.0)",org.apache.taglibs.standard.lang.jstl.test.beans;version
+ ="[1.1.2,2.0)",org.apache.taglibs.standard.lang.support;version="[1.1
+ .2,2.0)",org.apache.taglibs.standard.resources;version="[1.1.2,2.0)",
+ org.apache.taglibs.standard.tag.common.core;version="[1.1.2,2.0)",org
+ .apache.taglibs.standard.tag.common.fmt;version="[1.1.2,2.0)",org.apa
+ che.taglibs.standard.tag.common.sql;version="[1.1.2,2.0)",org.apache.
+ taglibs.standard.tag.common.xml;version="[1.1.2,2.0)",org.apache.tagl
+ ibs.standard.tag.el.core;version="[1.1.2,2.0)",org.apache.taglibs.sta
+ ndard.tag.el.fmt;version="[1.1.2,2.0)",org.apache.taglibs.standard.ta
+ g.el.sql;version="[1.1.2,2.0)",org.apache.taglibs.standard.tag.el.xml
+ ;version="[1.1.2,2.0)",org.apache.taglibs.standard.tag.rt.core;versio
+ n="[1.1.2,2.0)",org.apache.taglibs.standard.tag.rt.fmt;version="[1.1.
+ 2,2.0)",org.apache.taglibs.standard.tag.rt.sql;version="[1.1.2,2.0)",
+ org.apache.taglibs.standard.tag.rt.xml;version="[1.1.2,2.0)",org.apac
+ he.taglibs.standard.tei;version="[1.1.2,2.0)",org.apache.taglibs.stan
+ dard.tlv;version="[1.1.2,2.0)",org.eclipse.virgo.snaps.core;version="
+ [3.0,4.0)",org.springframework.beans.factory.config;version="[3.0,3.1
+ )",org.springframework.web.servlet;version="[3.0,3.1)",org.springfram
+ ework.web.servlet.handler;version="[3.0,3.1)",org.springframework.web
+ .servlet.mvc;version="[3.0,3.1)",org.springframework.web.servlet.view
+ ;version="[3.0,3.1)"
+

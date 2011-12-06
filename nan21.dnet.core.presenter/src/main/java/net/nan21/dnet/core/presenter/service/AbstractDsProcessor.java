@@ -42,6 +42,7 @@ public class AbstractDsProcessor<M, P> {
 			try {
 				srv = f.create(dsName + "Service");
 				if (srv != null) {
+					srv.setSystemConfig(systemConfig);
 					return srv;
 				}
 			} catch (NoSuchBeanDefinitionException e) {

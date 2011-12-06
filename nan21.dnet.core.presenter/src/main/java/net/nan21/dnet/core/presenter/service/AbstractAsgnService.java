@@ -293,7 +293,7 @@ public abstract class AbstractAsgnService<M, P, E> {
 
 	public void setModelClass(Class<M> modelClass) throws Exception {
 		this.modelClass = modelClass;
-		this.descriptor = ViewModelDescriptorManager.getAsgnDescriptor(this.modelClass);
+		this.descriptor = ViewModelDescriptorManager.getAsgnDescriptor(this.modelClass, this.systemConfig.shouldCacheDescriptor());
 	}
 
 	public Class<P> getParamClass() {

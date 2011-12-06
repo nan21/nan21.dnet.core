@@ -1,24 +1,25 @@
 Manifest-Version: 1.0
-Export-Package: net.nan21.dnet.core.presenter.action;version="1.0.0.M4
+Export-Package: net.nan21.dnet.core.presenter.action;version="1.0.0.M5
  ";uses:="javax.persistence,net.nan21.dnet.core.api,net.nan21.dnet.cor
  e.api.action,net.nan21.dnet.core.api.descriptor",net.nan21.dnet.core.
- presenter.converter;version="1.0.0.M4";uses:="javax.persistence,net.n
- an21.dnet.core.api.converter,net.nan21.dnet.core.api.service",net.nan
- 21.dnet.core.presenter.exception;version="1.0.0.M4",net.nan21.dnet.co
- re.presenter.marshaller;version="1.0.0.M4";uses:="net.nan21.dnet.core
- .api.action,net.nan21.dnet.core.api.marshall",net.nan21.dnet.core.pre
- senter.model;version="1.0.0.M4";uses:="net.nan21.dnet.core.api.descri
- ptor,org.springframework.beans.factory.annotation,org.springframework
- .context",net.nan21.dnet.core.presenter.propertyeditors;version="1.0.
- 0.M4",net.nan21.dnet.core.presenter.service;version="1.0.0.M4";uses:=
- "net.nan21.dnet.core.api,net.nan21.dnet.core.api.action,net.nan21.dne
- t.core.api.converter,net.nan21.dnet.core.api.marshall,net.nan21.dnet.
- core.api.service,net.nan21.dnet.core.api.setup,net.nan21.dnet.core.pr
- esenter.model,org.activiti.engine,org.springframework.beans.factory.a
- nnotation,org.springframework.context,org.springframework.transaction
- .annotation"
+ presenter.converter;version="1.0.0.M5";uses:="javax.persistence,net.n
+ an21.dnet.core.api.converter,net.nan21.dnet.core.api.service,net.nan2
+ 1.dnet.core.presenter.model,org.springframework.expression.spel.suppo
+ rt",net.nan21.dnet.core.presenter.exception;version="1.0.0.M5",net.na
+ n21.dnet.core.presenter.marshaller;version="1.0.0.M5";uses:="net.nan2
+ 1.dnet.core.api.action,net.nan21.dnet.core.api.marshall",net.nan21.dn
+ et.core.presenter.model;version="1.0.0.M5";uses:="net.nan21.dnet.core
+ .api.descriptor,org.springframework.beans.factory.annotation,org.spri
+ ngframework.context",net.nan21.dnet.core.presenter.propertyeditors;ve
+ rsion="1.0.0.M5",net.nan21.dnet.core.presenter.service;version="1.0.0
+ .M5";uses:="net.nan21.dnet.core.api,net.nan21.dnet.core.api.action,ne
+ t.nan21.dnet.core.api.converter,net.nan21.dnet.core.api.marshall,net.
+ nan21.dnet.core.api.service,net.nan21.dnet.core.api.setup,net.nan21.d
+ net.core.presenter.model,org.activiti.engine,org.springframework.bean
+ s.factory.annotation,org.springframework.context,org.springframework.
+ transaction.annotation"
 Bundle-Vendor: Nan21 
-Bundle-Version: 1.0.0.M4
+Bundle-Version: 1.0.0.M5
 Tool: Bundlor 1.0.0.RELEASE
 Bundle-Name: DNet Core - presenter
 Bundle-ManifestVersion: 2
@@ -27,13 +28,13 @@ Bundle-SymbolicName: nan21.dnet.core.presenter
 Import-Package: au.com.bytecode.opencsv;version="[2.0,3.0)",au.com.byt
  ecode.opencsv.bean;version="[2.0,3.0)",javax.persistence;version="[2.
  0,2.1)",javax.sql,net.nan21.dnet.core.api,net.nan21.dnet.core.api.act
- ion;version="[1.0.0.M4,1.0.0.M4]",net.nan21.dnet.core.api.annotation;
- version="[1.0.0.M4,1.0.0.M4]",net.nan21.dnet.core.api.converter;versi
- on="[1.0.0.M4,1.0.0.M4]",net.nan21.dnet.core.api.descriptor;version="
- [1.0.0.M4,1.0.0.M4]",net.nan21.dnet.core.api.marshall;version="[1.0.0
- .M4,1.0.0.M4]",net.nan21.dnet.core.api.model;version="[1.0.0.M4,1.0.0
- .M4]",net.nan21.dnet.core.api.service;version="[1.0.0.M4,1.0.0.M4]",n
- et.nan21.dnet.core.api.session;version="[1.0.0.M4,1.0.0.M4]",net.nan2
+ ion;version="[1.0.0.M5,1.0.0.M5]",net.nan21.dnet.core.api.annotation;
+ version="[1.0.0.M5,1.0.0.M5]",net.nan21.dnet.core.api.converter;versi
+ on="[1.0.0.M5,1.0.0.M5]",net.nan21.dnet.core.api.descriptor;version="
+ [1.0.0.M5,1.0.0.M5]",net.nan21.dnet.core.api.marshall;version="[1.0.0
+ .M5,1.0.0.M5]",net.nan21.dnet.core.api.model;version="[1.0.0.M5,1.0.0
+ .M5]",net.nan21.dnet.core.api.service;version="[1.0.0.M5,1.0.0.M5]",n
+ et.nan21.dnet.core.api.session;version="[1.0.0.M5,1.0.0.M5]",net.nan2
  1.dnet.core.api.setup,org.activiti.engine;version="[5.6,6.0)",org.act
  iviti.engine.impl.el;version="[5.6,6.0)",org.activiti.spring;version=
  "[5.6,6.0)",org.codehaus.jackson;version="[1.4,2.0)",org.codehaus.jac
@@ -44,7 +45,8 @@ Import-Package: au.com.bytecode.opencsv;version="[2.0,3.0)",au.com.byt
  .1)",org.springframework.beans.factory;version="[3.0,3.1)",org.spring
  framework.beans.factory.annotation;version="[3.0,3.1)",org.springfram
  ework.context;version="[3.0,3.1)",org.springframework.context.config;
- version="[3.0,3.1)",org.springframework.jdbc.datasource,org.springfra
- mework.transaction.annotation;version="[3.0,3.1)",org.springframework
- .util
+ version="[3.0,3.1)",org.springframework.expression,org.springframewor
+ k.expression.spel.standard,org.springframework.expression.spel.suppor
+ t,org.springframework.jdbc.datasource,org.springframework.transaction
+ .annotation;version="[3.0,3.1)",org.springframework.util
 

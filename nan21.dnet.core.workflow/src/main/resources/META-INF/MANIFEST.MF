@@ -1,8 +1,8 @@
 Manifest-Version: 1.0
-Export-Package: net.nan21.dnet.core.workflow;version="1.0.0.M4";uses:=
+Export-Package: net.nan21.dnet.core.workflow;version="1.0.0.M5";uses:=
  "org.activiti.engine"
 Bundle-Vendor: Nan21 
-Bundle-Version: 1.0.0.M4
+Bundle-Version: 1.0.0.M5
 Tool: Bundlor 1.0.0.RELEASE
 Bundle-Name: DNet Core - workflow
 Bundle-ManifestVersion: 2

@@ -73,6 +73,19 @@ dnet.base.ApplicationMenu$Items = [
 	menu : new Ext.menu.Menu({
 				items : [{
 							text : Dnet.translate("appmenuitem",
+									"theme_capuccino__lbl"),
+							handler : function() {
+								getApplication().changeCurrentTheme("capuccino");
+							}
+						}
+						,{
+							text : Dnet.translate("appmenuitem",
+									"theme_aqua__lbl"),
+							handler : function() {
+								getApplication().changeCurrentTheme("aqua");
+							}
+						},{
+							text : Dnet.translate("appmenuitem",
 									"theme_gray__lbl"),
 							handler : function() {
 								getApplication().changeCurrentTheme("gray");
@@ -149,6 +162,7 @@ dnet.base.ApplicationMenu$Items = [
 Ext.define("dnet.base.ApplicationMenu", {
 	extend : "Ext.toolbar.Toolbar",
 	padding : 0,
+	height: 50,
 	systemClientMenu : null,
 	systemClientMenuAdded : null,
 	initComponent : function(config) {

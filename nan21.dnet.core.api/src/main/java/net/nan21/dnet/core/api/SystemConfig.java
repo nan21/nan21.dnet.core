@@ -40,6 +40,8 @@ public class SystemConfig {
 		this.workingMode = workingMode;
 	}
 	
-	
+	public boolean shouldCacheDescriptor() {
+		return workingMode.equals(WORKING_MODE_PROD);
+	}
 	
 }

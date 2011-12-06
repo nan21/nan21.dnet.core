@@ -1,15 +1,20 @@
 Manifest-Version: 1.0
 Export-Package: net.nan21.dnet.core.domain.eventhandler;version="1.0.0
- .M4";uses:="org.eclipse.persistence.config,org.eclipse.persistence.de
- scriptors",net.nan21.dnet.core.domain.validation;version="1.0.0.M4"
+ .M5";uses:="org.eclipse.persistence.config,org.eclipse.persistence.de
+ scriptors",net.nan21.dnet.core.domain.model;version="1.0.0.M5";uses:=
+ "javax.persistence,javax.validation.constraints,org.hibernate.validat
+ or.constraints",net.nan21.dnet.core.domain.validation;version="1.0.0.
+ M5"
 Bundle-Vendor: Nan21 
-Bundle-Version: 1.0.0.M4
+Bundle-Version: 1.0.0.M5
 Tool: Bundlor 1.0.0.RELEASE
 Bundle-Name: DNet Core - domain
 Bundle-ManifestVersion: 2
 Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.html
 Bundle-SymbolicName: nan21.dnet.core.domain
-Import-Package: org.eclipse.persistence.config,org.eclipse.persistence
- .descriptors,org.springframework.context.config;version="[3.0,3.1)",o
- rg.springframework.orm.jpa;version="[3.0,3.1)"
+Import-Package: javax.persistence;version="[2.0,2.1)",javax.validation
+ .constraints,org.eclipse.persistence.config,org.eclipse.persistence.d
+ escriptors,org.hibernate.validator.constraints,org.springframework.co
+ ntext.config;version="[3.0,3.1)",org.springframework.orm.jpa;version=
+ "[3.0,3.1)"
 

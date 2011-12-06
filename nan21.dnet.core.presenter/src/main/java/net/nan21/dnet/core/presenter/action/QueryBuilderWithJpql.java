@@ -190,7 +190,7 @@ public class QueryBuilderWithJpql<F, P> extends AbstractQueryBuilder<F, P> {
 	}
 
 	private void buildSort() {
-		if (this.sortColumnNames != null) {
+		if (this.sortColumnNames != null && this.sortColumnNames.length > 0) {
 			this.sort = new StringBuffer();
 			for (int i = 0; i < this.sortColumnNames.length; i++) {
 				if (i > 0) {

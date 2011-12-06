@@ -34,6 +34,18 @@ public class ServiceLocator {
 	}
 	
 	/**
+	 * Find a data-source service given the data-source model class. 
+	 * @param <M>
+	 * @param <P>
+	 * @param modelClass
+	 * @return
+	 * @throws Exception
+	 */
+	public <M, P> IDsService<M, P> findDsService(Class<?> modelClass) throws Exception {
+		return this.findDsService(modelClass.getSimpleName(),this.getOsgiDsServiceFactories());
+	}
+	
+	/**
 	 * Find a data-source service given the data-source name and a list of factories.
 	 * @param <M>
 	 * @param <P>

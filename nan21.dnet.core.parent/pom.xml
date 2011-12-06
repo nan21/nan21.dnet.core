@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.nan21.dnet</groupId>
 	<artifactId>nan21.dnet.core.parent</artifactId>
-	<version>1.0.0.M4</version>
+	<version>1.0.0.M5</version>
 	<name>DNet Core - parent maven</name>	
 	<description>DNet Core - parent maven project.</description>
 	<packaging>pom</packaging>	
@@ -31,6 +31,11 @@
 			<id>Nan21</id>
 			<name>Nan21</name>
 			<url>http://dnet.nan21.net/maven2repo</url>
+		</repository>
+		<repository>
+			<id>Virgo</id>
+			<name>Virgo</name>
+			<url>http://build.eclipse.org/rt/virgo/maven/bundles/release</url>
 		</repository>
 		<repository>
 			<id>com.springsource.repository.bundle.external</id>

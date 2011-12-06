@@ -69,7 +69,23 @@ public abstract class AbstractQueryBuilder<F, P> implements IQueryBuilder<F,P> {
 	}
 
 	 
-	public IQueryBuilder<F,P> addSortInfo(String[] sortTokens) {		
+	public IQueryBuilder<F,P> addSortInfo(String[] sortTokens) throws Exception {
+		int len = sortTokens.length;
+		this.sortColumnNames = new String[len];
+		this.sortColumnSense = new String[len];
+		for (int i=0; i< len; i++) {
+			String[] tmp = sortTokens[i].split(" ");
+			int l = tmp.length;
+			if (l==1) {
+				this.sortColumnNames[i] = tmp[0];
+				this.sortColumnSense[i] = "asc";
+			} else if (l==2) {
+				this.sortColumnNames[i] = tmp[0];
+				this.sortColumnSense[i] = tmp[1];
+			} else {
+				throw new Exception("Invalid sort token: " + sortTokens[i]); 
+			}			
+		}
 		return this;
 	}
 
