@@ -3,13 +3,10 @@ package net.nan21.dnet.core.web.controller.upload;
 import java.io.IOException;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.nan21.dnet.core.api.SystemConfig;
+import net.nan21.dnet.core.api.ISystemConfig;
 import net.nan21.dnet.core.api.action.IFileUploadResult;
-import net.nan21.dnet.core.api.service.IDsService;
-import net.nan21.dnet.core.api.service.IDsServiceFactory;
 import net.nan21.dnet.core.api.service.IFileUploadService;
 import net.nan21.dnet.core.api.service.IFileUploadServiceFactory;
 import net.nan21.dnet.core.api.session.Params;
@@ -22,7 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.ClassUtils;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -107,7 +103,7 @@ public class FileUploadController {
 			try {
 				srv = f.create(dsName + "Service");
 				if (srv != null) {
-					srv.setSystemConfig(this.webappContext.getBean(SystemConfig.class));
+					srv.setSystemConfig(this.webappContext.getBean(ISystemConfig.class));
 					return srv;
 				}
 			} catch (NoSuchBeanDefinitionException e) {

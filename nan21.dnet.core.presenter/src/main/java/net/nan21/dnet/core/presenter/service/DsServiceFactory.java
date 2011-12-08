@@ -22,7 +22,7 @@ public class DsServiceFactory implements IDsServiceFactory {
 	@Override
 	public <M, P> IDsService<M, P> create(String key) {
 		IDsService<M, P> s = (IDsService<M, P>) this.appContext.getBean(key);
-		s.setEntityServiceFactories(entityServiceFactories);
+		//s.setEntityServiceFactories(entityServiceFactories);
 		return s;
 	}
 

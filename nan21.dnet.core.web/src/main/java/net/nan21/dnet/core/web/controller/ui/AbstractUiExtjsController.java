@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.nan21.dnet.core.api.IProductInfo;
-import net.nan21.dnet.core.api.SystemConfig;
+import net.nan21.dnet.core.api.ISystemConfig;
 import net.nan21.dnet.core.api.session.Params;
 import net.nan21.dnet.core.api.session.User;
 import net.nan21.dnet.core.security.SessionUser;
@@ -34,7 +34,7 @@ public abstract class AbstractUiExtjsController  extends AbstractController  {
 	protected String uiUrl;
 	protected Map<String, Object> model;
 	protected UiExtjsSettings uiExtjsSettings;
-	protected SystemConfig systemConfig;
+	protected ISystemConfig systemConfig;
 	
 	 
 	protected void _prepare(HttpServletRequest request,
@@ -181,12 +181,12 @@ public abstract class AbstractUiExtjsController  extends AbstractController  {
 	}
 
 
-	public SystemConfig getSystemConfig() {
+	public ISystemConfig getSystemConfig() {
 		return systemConfig;
 	}
 
 
-	public void setSystemConfig(SystemConfig systemConfig) {
+	public void setSystemConfig(ISystemConfig systemConfig) {
 		this.systemConfig = systemConfig;
 	}
 	 

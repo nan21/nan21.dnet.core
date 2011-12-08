@@ -3,7 +3,7 @@ package net.nan21.dnet.core.api.service;
 import java.io.InputStream;
 import java.util.List;
 
-import net.nan21.dnet.core.api.SystemConfig;
+import net.nan21.dnet.core.api.ISystemConfig;
 import net.nan21.dnet.core.api.action.IDsExport;
 import net.nan21.dnet.core.api.action.IQueryBuilder;
 import net.nan21.dnet.core.api.marshall.IDsMarshaller;
@@ -107,14 +107,14 @@ public interface IDsService<M, P> {
 
 	public Class<P> getParamClass();
 
-	public List<IEntityServiceFactory> getEntityServiceFactories();
+	//public List<IEntityServiceFactory> getEntityServiceFactories();
 
-	public void setEntityServiceFactories(
-			List<IEntityServiceFactory> entityServiceFactories);
+	//public void setEntityServiceFactories(
+	//		List<IEntityServiceFactory> entityServiceFactories);
 
-	public List<IDsServiceFactory> getDsServiceFactories();
+	//public List<IDsServiceFactory> getDsServiceFactories();
 
-	public void setDsServiceFactories(List<IDsServiceFactory> dsServiceFactories);
+	//public void setDsServiceFactories(List<IDsServiceFactory> dsServiceFactories);
 
 	public void rpcFilter(String procedureName, M filter, P params)
 			throws Exception;
@@ -138,12 +138,12 @@ public interface IDsService<M, P> {
 	 * 
 	 * @return
 	 */
-	public SystemConfig getSystemConfig();
+	public ISystemConfig getSystemConfig();
 
 	/**
 	 * Setter for system configuration.
 	 * 
 	 * @param systemConfig
 	 */
-	public void setSystemConfig(SystemConfig systemConfig);
+	public void setSystemConfig(ISystemConfig systemConfig);
 }

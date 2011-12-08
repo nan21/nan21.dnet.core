@@ -2,7 +2,7 @@ package net.nan21.dnet.core.api.service;
 
 import java.util.List;
 
-import net.nan21.dnet.core.api.SystemConfig;
+import net.nan21.dnet.core.api.ISystemConfig;
 import net.nan21.dnet.core.api.action.IQueryBuilder;
 import net.nan21.dnet.core.api.marshall.IDsMarshaller;
 
@@ -96,12 +96,12 @@ public interface IAsgnService<M, P> {
 	 * 
 	 * @return
 	 */
-	public SystemConfig getSystemConfig();
+	public ISystemConfig getSystemConfig();
 
 	/**
 	 * Setter for system configuration.
 	 * 
 	 * @param systemConfig
 	 */
-	public void setSystemConfig(SystemConfig systemConfig);
+	public void setSystemConfig(ISystemConfig systemConfig);
 }

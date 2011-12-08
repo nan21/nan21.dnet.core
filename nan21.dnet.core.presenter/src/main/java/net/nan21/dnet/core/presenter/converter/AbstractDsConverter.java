@@ -1,46 +1,54 @@
 package net.nan21.dnet.core.presenter.converter;
 
 import java.lang.reflect.Method;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 import javax.persistence.EntityManager;
 
-import org.springframework.beans.factory.NoSuchBeanDefinitionException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 import org.springframework.util.StringUtils;
 
+import net.nan21.dnet.core.api.ISystemConfig;
 import net.nan21.dnet.core.api.converter.IDsConverter;
-import net.nan21.dnet.core.api.descriptor.IViewModelDescriptor;
 import net.nan21.dnet.core.api.service.IEntityService;
-import net.nan21.dnet.core.api.service.IEntityServiceFactory;
 import net.nan21.dnet.core.presenter.model.DsDescriptor;
+import net.nan21.dnet.core.presenter.service.ServiceLocator;
 
 public abstract class AbstractDsConverter<M, E> implements IDsConverter<M, E>{
 
-	protected EntityManager em;
-	private List<IEntityServiceFactory> entityServiceFactories;
-	ExpressionParser parser;
+	@Autowired
+	protected ApplicationContext appContext;
+
+	@Autowired
+	private ISystemConfig systemConfig;
+	 
+	@Autowired
+	private ServiceLocator serviceLocator;
+	
+	protected EntityManager em;	
+	
+	protected ExpressionParser parser;
+	
 	protected DsDescriptor<M> descriptor;
+	
 	protected Class<M> modelClass;
+	
 	protected Class<E> entityClass;
 	
 	public AbstractDsConverter() {
 		this.parser = new SpelExpressionParser();
 	}
 	
-	
-	
-	
+	 
 	public void entityToModel(E e, M m) throws Exception {
+		
 		StandardEvaluationContext context = new StandardEvaluationContext(e);
-//		this.entityToModelAttributes(e, m, context);
-//		this.entityToModelReferences(e, m, context);
-		Map<String, String> refpaths = this.descriptor.getRefPaths();
-		Method[] methods = this.getModelClass().getDeclaredMethods();
+		Map<String, String> refpaths = this.descriptor.getE2mConv();
+		Method[] methods = this.getModelClass().getMethods();
 		for (Method method : methods) {
 			if (method.getName().startsWith("set")) {
 				String fn = StringUtils.uncapitalize(method.getName().substring(3));
@@ -48,24 +56,22 @@ public abstract class AbstractDsConverter<M, E> implements IDsConverter<M, E>{
 					method.invoke(m, parser.parseExpression(refpaths.get(fn)).getValue(context));
 				} catch(Exception exc) {
 					
-				}
-				
+				}				
 			}		 	
 		}	
 	}
-	protected void entityToModelAttributes(E e, M m, StandardEvaluationContext context) throws Exception {	 
-	}
-	protected void entityToModelReferences(E e, M m, StandardEvaluationContext context)  throws Exception {		 
-	} 
+	 
 	
 	public void modelToEntity(M m, E e) throws Exception  {
 		this.modelToEntityAttributes(m, e);
 		this.modelToEntityReferences(m, e);
 	}
+	
+	
 	protected void modelToEntityAttributes(M m, E e)  throws Exception  {
 		StandardEvaluationContext context = new StandardEvaluationContext(m);
-		Map<String, String> attrmap = this.descriptor.getAttributeMap();
-		Method[] methods = this.getEntityClass().getDeclaredMethods();
+		Map<String, String> attrmap = this.descriptor.getM2eConv();
+		Method[] methods = this.getEntityClass().getMethods();
 		for (Method method : methods) {
 			if (method.getName().startsWith("set")) {
 				String fn = StringUtils.uncapitalize(method.getName().substring(3));
@@ -84,28 +90,20 @@ public abstract class AbstractDsConverter<M, E> implements IDsConverter<M, E>{
 		 	
 	}
 
+	 
 	
-	protected IEntityService<?> getService(Class<? extends IEntityService<?>> service) throws Exception {
-		
-		//TODO: enhance to use a bundleID instead of iterating 
-		//through all the available entityServiceFactories
-		// extract it .. -> See also AbstractDsConverter
-		
-		for(IEntityServiceFactory esf: entityServiceFactories) {
-			try {
-				IEntityService<?> es = esf.create(service);
-				if (es != null) {
-					 
-					return es;
-				}					
-			} catch(NoSuchBeanDefinitionException e) {
-				// service not found in this factory, ignore 		
-			}				
-		}
-		throw new Exception (service.getCanonicalName() + " not found ");
-
+	/**
+	 * Lookup an entity service.
+	 * @param <E>
+	 * @param entityClass
+	 * @return
+	 * @throws Exception
+	 */
+	public <T> IEntityService<T> findEntityService(Class<T> entityClass)
+			throws Exception {
+		return this.getServiceLocator().findEntityService(entityClass);
 	}
-	
+ 
 	public EntityManager getEntityManager() {
 		return this.em;
 	}
@@ -113,40 +111,113 @@ public abstract class AbstractDsConverter<M, E> implements IDsConverter<M, E>{
 	public void setEntityManager(EntityManager em) {
 		this.em = em;
 	}
-	public List<IEntityServiceFactory> getEntityServiceFactories() {
-		return entityServiceFactories;
-	}
-	public void setEntityServiceFactories(
-			List<IEntityServiceFactory> entityServiceFactories) {
-		this.entityServiceFactories = entityServiceFactories;
-	}
-	
+	 
+	/**
+	 * Get the data-source class.
+	 * @return
+	 */
 	public Class<M> getModelClass() {
 		return this.modelClass;
 	}
 	 
+	/**
+	 * Set the data-source class.
+	 * @param clazz
+	 */
 	public void setModelClass(Class<M> clazz) {
 		this.modelClass = clazz;
 	}
 	
-	
+	/**
+	 * Get the entity class.
+	 * @return
+	 */
 	public Class<E> getEntityClass() {
 		return entityClass;
 	}
  
+	/**
+	 * Set the entity class.
+	 * @param entityClass
+	 */
 	public void setEntityClass(Class<E> entityClass) {
 		this.entityClass = entityClass;
 	}
 
-
-
-
+ 
+	/**
+	 * Set the data-source descriptor.
+	 * @param descriptor
+	 */
 	public void setDescriptor(DsDescriptor<M> descriptor) {
 		this.descriptor = descriptor;
 	}
 	
+	
+	/**
+	 * Get the data-source descriptor.
+	 * @return
+	 */
 	public DsDescriptor<M> getDescriptor() {
 		return descriptor;
+	}
+	
+	
+
+	/**
+	 * Get application context.
+	 * @return
+	 */
+	public ApplicationContext getAppContext() {
+		return appContext;
+	}
+
+	/**
+	 * Set application context.
+	 * @param appContext
+	 */
+	public void setAppContext(ApplicationContext appContext) {
+		this.appContext = appContext;
+	}
+
+	/**
+	 * Get system configuration object. If it is null attempts to retrieve it
+	 * from Spring context.
+	 * @return
+	 */
+	public ISystemConfig getSystemConfig() {
+		if (this.systemConfig == null) {
+			this.systemConfig = this.appContext.getBean(ISystemConfig.class);
+		}
+		return systemConfig;
+	}
+
+	/**
+	 * Set system configuration object
+	 * @param systemConfig
+	 */
+	public void setSystemConfig(ISystemConfig systemConfig) {
+		this.systemConfig = systemConfig;
+	}
+	
+	/**
+	 * Get presenter service locator. If it is null attempts to retrieve it
+	 * from Spring context.
+	 * @return
+	 */
+	public ServiceLocator getServiceLocator()  {
+		if (this.serviceLocator == null) {
+			this.serviceLocator = this.appContext.getBean(ServiceLocator.class);
+		}
+		return serviceLocator;
+	}
+
+	/**
+	 * Set presenter service locator.
+	 * @param serviceLocator
+	 */
+	public void setServiceLocator(ServiceLocator serviceLocator) {
+		this.serviceLocator = serviceLocator;
 	}
 	
 }

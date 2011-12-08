@@ -2,7 +2,6 @@ package net.nan21.dnet.core.web.controller.data;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -63,7 +62,7 @@ public class AbstractDsReadController<M, P> extends
 			authorizeActionService.authorize(resourceName.substring(0,
 					resourceName.length() - 2), "find");
 
-			IDsService<M, P> service = getDsService(this.resourceName);
+			IDsService<M, P> service = this.findDsService(this.resourceName);
 			IDsMarshaller<M, P> marshaller = service
 					.createMarshaller(dataFormat);
 
@@ -136,7 +135,7 @@ public class AbstractDsReadController<M, P> extends
 			authorizeActionService.authorize(resourceName.substring(0,
 					resourceName.length() - 2), "export");
 
-			IDsService<M, P> service = getDsService(this.resourceName);
+			IDsService<M, P> service = this.findDsService(this.resourceName);
 			IQueryBuilder<M, P> builder = service.createQueryBuilder()
 					.addFetchLimit(resultStart, resultSize);
 			IDsMarshaller<M, P> marshaller = service.createMarshaller("json");

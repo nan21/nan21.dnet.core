@@ -1,74 +1,65 @@
 package net.nan21.dnet.core.presenter.service;
 
-import java.util.List;
-
 import org.activiti.engine.FormService;
 import org.activiti.engine.HistoryService;
 import org.activiti.engine.ProcessEngine;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
-import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
-import net.nan21.dnet.core.api.SystemConfig;
+import net.nan21.dnet.core.api.ISystemConfig;
 import net.nan21.dnet.core.api.service.IDsService;
-import net.nan21.dnet.core.api.service.IDsServiceFactory;
 import net.nan21.dnet.core.api.service.IEntityService;
-import net.nan21.dnet.core.api.service.IEntityServiceFactory;
 
 public class AbstractDsProcessor<M, P> {
 
 	@Autowired
 	protected ApplicationContext appContext;
 
-	protected SystemConfig systemConfig;
+	@Autowired
+	private ISystemConfig systemConfig;
 	
-	protected List<IEntityServiceFactory> entityServiceFactories;
-	protected List<IDsServiceFactory> dsServiceFactories;
-
-	// private ProcessEngine workflowEngine;
-
+	 
+	@Autowired
+	private ServiceLocator serviceLocator;
+	
+	/**
+	 * Lookup a data-source service.
+	 * @param dsName
+	 * @return
+	 * @throws Exception
+	 */
 	public IDsService<M, P> findDsService(String dsName) throws Exception {
-		IDsService<M, P> srv = null;
-
-		if (dsServiceFactories == null) {
-			dsServiceFactories = (List<IDsServiceFactory>) this.appContext
-					.getBean("osgiDsServiceFactories");
-		}
-
-		for (IDsServiceFactory f : dsServiceFactories) {
-			try {
-				srv = f.create(dsName + "Service");
-				if (srv != null) {
-					srv.setSystemConfig(systemConfig);
-					return srv;
-				}
-			} catch (NoSuchBeanDefinitionException e) {
-				// service not found in this factory, ignore
-			}
-		}
-		throw new Exception(dsName + "Service not found !");
+		return this.getServiceLocator().findDsService(dsName);
 	}
 
+	/**
+	 * Lookup an entity service.
+	 * @param <E>
+	 * @param entityClass
+	 * @return
+	 * @throws Exception
+	 */
 	public <E> IEntityService<E> findEntityService(Class<E> entityClass)
 			throws Exception {
-		for (IEntityServiceFactory esf : entityServiceFactories) {
-			try {
-				IEntityService<E> es = esf.create(entityClass.getSimpleName()
-						+ "Service"); // this.getEntityClass()
-				if (es != null) {
-					return es;
-				}
-			} catch (NoSuchBeanDefinitionException e) {
-				// service not found in this factory, ignore
-			}
-		}
-		throw new Exception(entityClass.getSimpleName() + "Service"
-				+ " not found ");
+		return this.getServiceLocator().findEntityService(entityClass);
 	}
 
+	/**
+	 * Prepare a data-source delegate. Inject all required dependencies marked
+	 * with <code>@Autowired</code> for which there is no attempt to auto-load 
+	 * on-demand from the spring-context.
+	 */
+	protected void prepareDelegate(AbstractDsDelegate<M, P> delegate) {
+		delegate.setAppContext(this.appContext);
+		// delegate.setEntityServiceFactories(this.getEntityServiceFactories());
+		// delegate.setDsServiceFactories(this.getDsServiceFactories());
+		// delegate.setSystemConfig(this.getSystemConfig());
+		// delegate.setServiceLocator(this.getServiceLocator());
+	}
+	
 	public ProcessEngine getWorkflowEngine() {
 		// if (this.workflowEngine == null ) {
 		return (ProcessEngine) this.getAppContext().getBean(
@@ -97,39 +88,63 @@ public class AbstractDsProcessor<M, P> {
 		return this.getWorkflowEngine().getFormService();
 	}
 
-	public List<IEntityServiceFactory> getEntityServiceFactories() {
-		return entityServiceFactories;
-	}
+	
 
-	public void setEntityServiceFactories(
-			List<IEntityServiceFactory> entityServiceFactories) {
-		this.entityServiceFactories = entityServiceFactories;
-	}
-
+	/**
+	 * Get application context.
+	 * @return
+	 */
 	public ApplicationContext getAppContext() {
 		return appContext;
 	}
 
+	/**
+	 * Set application context.
+	 * @param appContext
+	 */
 	public void setAppContext(ApplicationContext appContext) {
 		this.appContext = appContext;
 	}
 
-	public List<IDsServiceFactory> getDsServiceFactories() {
-		return dsServiceFactories;
-	}
-
-	public void setDsServiceFactories(List<IDsServiceFactory> dsServiceFactories) {
-		this.dsServiceFactories = dsServiceFactories;
-	}
-
-	public SystemConfig getSystemConfig() {
+	/**
+	 * Get system configuration object. If it is null attempts to retrieve it
+	 * from Spring context.
+	 * @return
+	 */
+	public ISystemConfig getSystemConfig() {
+		if (this.systemConfig == null) {
+			this.systemConfig = this.appContext.getBean(ISystemConfig.class);
+		}
 		return systemConfig;
 	}
 
-	public void setSystemConfig(SystemConfig systemConfig) {
+	/**
+	 * Set system configuration object
+	 * @param systemConfig
+	 */
+	public void setSystemConfig(ISystemConfig systemConfig) {
 		this.systemConfig = systemConfig;
 	}
-	
-	
 
+	
+	/**
+	 * Get presenter service locator. If it is null attempts to retrieve it
+	 * from Spring context.
+	 * @return
+	 */
+	public ServiceLocator getServiceLocator()  {
+		if (this.serviceLocator == null) {
+			this.serviceLocator = this.appContext.getBean(ServiceLocator.class);
+		}
+		return serviceLocator;
+	}
+
+	/**
+	 * Set presenter service locator.
+	 * @param serviceLocator
+	 */
+	public void setServiceLocator(ServiceLocator serviceLocator) {
+		this.serviceLocator = serviceLocator;
+	}
+	
 }

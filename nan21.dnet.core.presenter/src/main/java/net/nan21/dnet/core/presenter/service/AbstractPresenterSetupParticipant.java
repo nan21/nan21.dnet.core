@@ -1,42 +1,60 @@
 package net.nan21.dnet.core.presenter.service;
 
-import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import org.springframework.beans.factory.NoSuchBeanDefinitionException;
-
+import net.nan21.dnet.core.api.service.IDsService;
 import net.nan21.dnet.core.api.service.IEntityService;
-import net.nan21.dnet.core.api.service.IEntityServiceFactory;
 import net.nan21.dnet.core.api.setup.AbstractSetupParticipant;
 
 public abstract class AbstractPresenterSetupParticipant extends
 		AbstractSetupParticipant {
 
-	protected List<IEntityServiceFactory> entityServiceFactories;
+	@Autowired
+	private ServiceLocator serviceLocator;	
+	 
+	/**
+	 * Lookup a data-source service.
+	 * @param dsName
+	 * @return
+	 * @throws Exception
+	 */
+	public <M, P> IDsService<M, P> findDsService(String dsName) throws Exception {
+		return this.getServiceLocator().findDsService(dsName);
+	}
 
+	/**
+	 * Lookup an entity service.
+	 * @param <E>
+	 * @param entityClass
+	 * @return
+	 * @throws Exception
+	 */
 	public <E> IEntityService<E> findEntityService(Class<E> entityClass)
 			throws Exception {
+		return this.getServiceLocator().findEntityService(entityClass);
+	}
+ 
 
-		for (IEntityServiceFactory esf : getEntityServiceFactories()) {
-			try {
-				IEntityService<E> es = esf.create(entityClass.getSimpleName()
-						+ "Service"); // this.getEntityClass()
-				if (es != null) {
-					return es;
-				}
-			} catch (NoSuchBeanDefinitionException e) {
-				// service not found in this factory, ignore
-			}
+ 
+	/**
+	 * Get presenter service locator. If it is null attempts to retrieve it
+	 * from Spring context.
+	 * @return
+	 */
+	public ServiceLocator getServiceLocator()  {
+		if (this.serviceLocator == null) {
+			this.serviceLocator = this.appContext.getBean(ServiceLocator.class);
 		}
-		throw new Exception(entityClass.getSimpleName() + "Service"
-				+ " not found ");
+		return serviceLocator;
 	}
 
-	public List<IEntityServiceFactory> getEntityServiceFactories() {
-		if (entityServiceFactories == null) {
-			entityServiceFactories = (List<IEntityServiceFactory>) appContext
-					.getBean("osgiEntityServiceFactories");
-		}
-		return entityServiceFactories;
+	/**
+	 * Set presenter service locator.
+	 * @param serviceLocator
+	 */
+	public void setServiceLocator(ServiceLocator serviceLocator) {
+		this.serviceLocator = serviceLocator;
 	}
-
+	
+	  
 }

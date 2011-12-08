@@ -3,7 +3,7 @@ package net.nan21.dnet.core.api.setup;
 import java.util.Iterator;
 import java.util.List;
 
-import net.nan21.dnet.core.api.SystemConfig;
+import net.nan21.dnet.core.api.ISystemConfig;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -12,12 +12,13 @@ public abstract class AbstractSetupParticipant {
 
 	@Autowired
 	protected ApplicationContext appContext;
-
+ 
+	@Autowired
+	private ISystemConfig systemConfig;
+	
+	
 	protected String targetName;
 	protected List<ISetupTask> tasks;
-
-	protected SystemConfig systemConfig;
-	
 	protected int ranking;
 
 	public boolean hasWorkToDo() {
@@ -59,14 +60,7 @@ public abstract class AbstractSetupParticipant {
 		return null;
 	}
 
-	public ApplicationContext getAppContext() {
-		return appContext;
-	}
-
-	public void setAppContext(ApplicationContext appContext) {
-		this.appContext = appContext;
-	}
-
+	
 	protected void beforeExecute() throws Exception {
 
 	}
@@ -78,7 +72,6 @@ public abstract class AbstractSetupParticipant {
 	}
 
 	protected void afterExecute() throws Exception {
-
 	}
 
 	protected abstract void onExecute() throws Exception;
@@ -95,14 +88,44 @@ public abstract class AbstractSetupParticipant {
 		return sp.getRanking() - this.ranking;
 	}
 
-	public SystemConfig getSystemConfig() {
+	
+	/**
+	 * Get system configuration object. If it is null attempts to retrieve it
+	 * from Spring context.
+	 * 
+	 * @return
+	 */
+	public ISystemConfig getSystemConfig() {
+		if (this.systemConfig == null) {
+			this.systemConfig = this.appContext.getBean(ISystemConfig.class);
+		}
 		return systemConfig;
 	}
 
-	public void setSystemConfig(SystemConfig systemConfig) {
+	/**
+	 * Set system configuration object.
+	 * @param systemConfig
+	 */
+	public void setSystemConfig(ISystemConfig systemConfig) {
 		this.systemConfig = systemConfig;
 	}
-	
+
+	/**
+	 * Get application context.
+	 * @return
+	 */
+	public ApplicationContext getAppContext() {
+		return appContext;
+	}
+
+	/**
+	 * Set application context.
+	 * @param appContext
+	 */
+	public void setAppContext(ApplicationContext appContext) {
+		this.appContext = appContext;
+	}
+
 	
 	
 }

@@ -9,12 +9,11 @@ import java.io.InputStream;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
-import net.nan21.dnet.core.api.SystemConfig;
+import net.nan21.dnet.core.api.ISystemConfig;
 import net.nan21.dnet.core.api.session.Params;
 import net.nan21.dnet.core.api.session.Session;
 import net.nan21.dnet.core.api.session.User;
 import net.nan21.dnet.core.security.SessionUser;
-import net.nan21.dnet.core.web.controller.workflow.AbstractWorkflowController;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,10 +28,14 @@ public class AbstractDataController {
   
 	protected String resourceName;
 	protected String dataFormat;
+	
 	@Autowired
-	protected WebApplicationContext webappContext;
-
-	protected SystemConfig systemConfig;
+	private WebApplicationContext webappContext;
+	
+	@Autowired
+	private ISystemConfig systemConfig;
+	
+	
 	
 	
 	final static Logger logger = LoggerFactory.getLogger(AbstractDataController.class);
@@ -88,13 +91,28 @@ public class AbstractDataController {
 	
 	
 
-	public SystemConfig getSystemConfig() {
+	/**
+	 * Get system configuration object. If it is null attempts to retrieve it
+	 * from Spring context.
+	 * @return
+	 */
+	public ISystemConfig getSystemConfig() {
+		if (this.systemConfig == null) {
+			this.systemConfig = this.getWebappContext().getBean(ISystemConfig.class);
+		}
 		return systemConfig;
 	}
 
-	public void setSystemConfig(SystemConfig systemConfig) {
+	/**
+	 * Set system configuration object
+	 * @param systemConfig
+	 */
+	public void setSystemConfig(ISystemConfig systemConfig) {
 		this.systemConfig = systemConfig;
 	}
+
+	
+	
 
 	@ExceptionHandler(value=Exception.class) 
 	protected String handleException(Exception e, HttpServletResponse response)  throws IOException {

@@ -15,7 +15,7 @@ import org.eclipse.persistence.config.HintValues;
 import org.eclipse.persistence.config.QueryHints;
 import org.eclipse.persistence.jpa.JpaQuery;
 import org.eclipse.persistence.queries.Cursor;
- 
+
 import net.nan21.dnet.core.api.action.IDsExport;
 import net.nan21.dnet.core.api.action.IQueryBuilder;
 import net.nan21.dnet.core.api.converter.IDsConverter;
@@ -36,100 +36,96 @@ import net.nan21.dnet.core.presenter.model.EmptyParam;
 import net.nan21.dnet.core.presenter.model.RpcDefinition;
 import net.nan21.dnet.core.presenter.model.ViewModelDescriptorManager;
 
-public class AbstractDsService<M, P, E> 
-		extends AbstractDsProcessor<M, P> {
- 
-	protected boolean noInsert = false; 
+public class AbstractDsService<M, P, E> extends AbstractDsProcessor<M, P> {
+
+	protected boolean noInsert = false;
 	protected boolean noUpdate = false;
 	protected boolean noDelete = false;
- 
+
 	protected Class<M> modelClass;
 	protected Class<P> paramClass;
 	protected Class<E> entityClass;
-	protected Class<?> converterClass; //? extends AbstractDsConverter<M, E>
+	protected Class<?> converterClass; // ? extends AbstractDsConverter<M, E>
 	protected Class<?> queryBuilderClass;
 	protected IDsConverter<M, E> converter;
-	
+
 	private DsDescriptor<M> descriptor;
-	
+
 	private IEntityService<E> entityService;
 	//
-	//private List<IEntityServiceFactory> entityServiceFactories;
- 
+	// private List<IEntityServiceFactory> entityServiceFactories;
+
 	private Map<String, RpcDefinition> rpcData = new HashMap<String, RpcDefinition>();
 	private Map<String, RpcDefinition> rpcFilter = new HashMap<String, RpcDefinition>();
-	 
-	
+
 	// ======================== Find ===========================
-	
-	public Long count(M filter, P params,
-			IQueryBuilder<M, P> builder) throws Exception {
+
+	public Long count(M filter, P params, IQueryBuilder<M, P> builder)
+			throws Exception {
 		QueryBuilderWithJpql<M, P> bld = (QueryBuilderWithJpql<M, P>) builder;
-		Object count = bld.createQueryCount().getSingleResult(); 
+		Object count = bld.createQueryCount().getSingleResult();
 		if (count instanceof Integer) {
 			return ((Integer) count).longValue();
 		} else {
 			return (Long) count;
 		}
 	}
-	
-	protected void preFind(M filter, P params,
-			IQueryBuilder<M, P> builder) throws Exception{
+
+	protected void preFind(M filter, P params, IQueryBuilder<M, P> builder)
+			throws Exception {
 	}
-	
-	public List<M> find(M filter, P params,
-			IQueryBuilder<M, P> builder) throws Exception {
+
+	public List<M> find(M filter, P params, IQueryBuilder<M, P> builder)
+			throws Exception {
 		QueryBuilderWithJpql<M, P> bld = null;
-		if (builder != null ) {
+		if (builder != null) {
 			bld = (QueryBuilderWithJpql<M, P>) builder;
 		} else {
 			bld = (QueryBuilderWithJpql<M, P>) this.createQueryBuilder();
 		}
-		  
+
 		bld.setFilter(filter);
 		bld.setParams(params);
-		 
-		List<M> result = new ArrayList<M>(); 
-				 
-		List<E> list = bld.createQuery()
-			.setFirstResult(bld.getResultStart())
-			.setMaxResults(bld.getResultSize())
-			.getResultList();		
-		for(E e : list) {
+
+		List<M> result = new ArrayList<M>();
+
+		List<E> list = bld.createQuery().setFirstResult(bld.getResultStart())
+				.setMaxResults(bld.getResultSize()).getResultList();
+		for (E e : list) {
 			M m = this.getModelClass().newInstance();
 			this.getConverter().entityToModel(e, m);
 			result.add(m);
-		}		
+		}
 		return result;
 	}
-	
-	protected void postFind(M filter, P params,
-			IQueryBuilder<M, P> builder) throws Exception{
+
+	protected void postFind(M filter, P params, IQueryBuilder<M, P> builder)
+			throws Exception {
 	}
-	
-	 
-	  
+
 	public M findById(Object id) throws Exception {
-		Method setter = this.getModelClass().getDeclaredMethod("setId", Object.class);
+		Method setter = this.getModelClass().getDeclaredMethod("setId",
+				Object.class);
 		M filter = this.getModelClass().newInstance();
-		setter.invoke(filter, id);		
-		List<M> result = this.find(filter, null, null); 
+		setter.invoke(filter, id);
+		List<M> result = this.find(filter, null, null);
 		if (result.size() == 0) {
 			return null;
 		} else {
 			return result.get(0);
 		}
 	}
- 
+
 	public List<M> findByIds(List<Object> ids) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
 	// ======================== Insert ===========================
-	
+
 	/**
 	 * Provide custom logic to decide if the action can be executed.
+	 * 
 	 * @param list
 	 * @param params
 	 * @return
@@ -137,9 +133,10 @@ public class AbstractDsService<M, P, E>
 	protected boolean canInsert(M ds, P params) {
 		return true;
 	}
-	
+
 	/**
 	 * Provide custom logic to decide if the action can be executed.
+	 * 
 	 * @param list
 	 * @param params
 	 * @return
@@ -147,133 +144,149 @@ public class AbstractDsService<M, P, E>
 	protected boolean canInsert(List<M> list, P params) {
 		return true;
 	}
+
 	/**
 	 * Pre-insert event with the data-source values as received from client.
+	 * 
 	 * @param ds
 	 * @throws Exception
 	 */
-	protected void preInsert(M ds, P params) throws Exception{
+	protected void preInsert(M ds, P params) throws Exception {
 	}
-	
+
 	/**
-	 * Pre-insert event with data-source and a new entity instance populated from the data-source.
-	 * @param ds
-	 * @param e
-	 * @throws Exception
-	 */
-	protected void preInsert(M ds, E e, P params) throws Exception{
-	}
-	/**
-	 * Post-insert event. The entity has been persisted by the <code>entityManager</code>, 
-	 * but the possible changes which might alter the entity during its persist phase 
-	 * are not applied yet to the data-source.  
+	 * Pre-insert event with data-source and a new entity instance populated
+	 * from the data-source.
+	 * 
 	 * @param ds
 	 * @param e
 	 * @throws Exception
 	 */
-	protected void postInsertBeforeModel(M ds, E e, P params) throws Exception{
+	protected void preInsert(M ds, E e, P params) throws Exception {
 	}
+
 	/**
-	 * Post-insert event. The entity has been persisted by the <code>entityManager</code>, 
-	 * and the possible changes which might alter the entity during its persist phase 
-	 * are applied to the data-source.  
+	 * Post-insert event. The entity has been persisted by the
+	 * <code>entityManager</code>, but the possible changes which might alter
+	 * the entity during its persist phase are not applied yet to the
+	 * data-source.
+	 * 
 	 * @param ds
 	 * @param e
 	 * @throws Exception
 	 */
-	protected void postInsertAfterModel(M ds, E e, P params) throws Exception{
+	protected void postInsertBeforeModel(M ds, E e, P params) throws Exception {
 	}
+
 	/**
-	 * Insert event. The steps performed during this phase are:
-	 * <li> Check if action is allowed.
-	 * <li> Create a new backing entity for the data-source.
-	 * <li> Apply the new values from the data-source and call the <code>pre-insert</code> events 
-	 * <li> Delegate execution of insert to the business-service.
-	 * <li> Call the <code>post-insert</code> event.
+	 * Post-insert event. The entity has been persisted by the
+	 * <code>entityManager</code>, and the possible changes which might alter
+	 * the entity during its persist phase are applied to the data-source.
+	 * 
+	 * @param ds
+	 * @param e
+	 * @throws Exception
+	 */
+	protected void postInsertAfterModel(M ds, E e, P params) throws Exception {
+	}
+
+	/**
+	 * Insert event. The steps performed during this phase are: <li>Check if
+	 * action is allowed. <li>Create a new backing entity for the data-source.
+	 * <li>Apply the new values from the data-source and call the
+	 * <code>pre-insert</code> events <li>Delegate execution of insert to the
+	 * business-service. <li>Call the <code>post-insert</code> event.
+	 * 
 	 * @param ds
 	 * @throws Exception
 	 */
 	public void insert(M ds, P params) throws Exception {
 		if (this.noInsert || !this.canInsert(ds, params)) {
 			throw new ActionNotSupportedException("Insert not allowed.");
-		}		 
-		// add the client 
-		if(ds instanceof IModelWithClientId) {
-			((IModelWithClientId)ds).setClientId(Session.user.get().getClientId());
+		}
+		// add the client
+		if (ds instanceof IModelWithClientId) {
+			((IModelWithClientId) ds).setClientId(Session.user.get()
+					.getClientId());
 		}
 		this.preInsert(ds, params);
-		E e = (E)this.getEntityService().create();		 
+		E e = (E) this.getEntityService().create();
 		this.getConverter().modelToEntity(ds, e);
-		this.preInsert(ds,e, params);
+		this.preInsert(ds, e, params);
 		this.onInsert(ds, e, params);
 		postInsertBeforeModel(ds, e, params);
 		this.getConverter().entityToModel(e, ds);
 		postInsertAfterModel(ds, e, params);
 	}
-	
-	
+
 	protected void onInsert(M ds, E e, P params) throws Exception {
 		this.getEntityService().insert(e);
 	}
+
 	/**
 	 * Template method for <code>pre-insert</code>.
+	 * 
 	 * @param list
 	 * @throws Exception
 	 */
 	protected void preInsert(List<M> list, P params) throws Exception {
-		 
+
 	}
-	
+
 	public void insert(List<M> list, P params) throws Exception {
 		if (this.noInsert) {
 			throw new ActionNotSupportedException("Insert not allowed.");
-		} 	
-		// add the client 
-		for(M ds: list) {
-			if(ds instanceof IModelWithClientId) {
-				((IModelWithClientId)ds).setClientId(Session.user.get().getClientId());
+		}
+		// add the client
+		for (M ds : list) {
+			if (ds instanceof IModelWithClientId) {
+				((IModelWithClientId) ds).setClientId(Session.user.get()
+						.getClientId());
 			}
 		}
 		this.preInsert(list, params);
-		// add entities in a queue and then try to insert them all in one transaction
+		// add entities in a queue and then try to insert them all in one
+		// transaction
 		List<E> entities = new ArrayList<E>();
-		for(M ds: list) {
+		for (M ds : list) {
 			this.preInsert(ds, params);
-			E e = (E)this.getEntityService().create();			
+			E e = (E) this.getEntityService().create();
 			entities.add(e);
 			((AbstractDsModel<E>) ds)._setEntity_(e);
 			this.getConverter().modelToEntity(ds, e);
-			this.preInsert(ds,e, params);			
-		}	
-		//this.getEntityService().insert(entities);
+			this.preInsert(ds, e, params);
+		}
+		// this.getEntityService().insert(entities);
 		this.onInsert(list, entities, params);
-		for(M ds: list) {	
+		for (M ds : list) {
 			E e = ((AbstractDsModel<E>) ds)._getEntity_();
 			postInsertBeforeModel(ds, e, params);
 			this.getConverter().entityToModel(e, ds);
 			postInsertAfterModel(ds, e, params);
-		}			
+		}
 		this.postInsert(list, params);
 	}
-	
-	protected void onInsert(List<M> list, List<E> entities, P params) throws Exception {
+
+	protected void onInsert(List<M> list, List<E> entities, P params)
+			throws Exception {
 		this.getEntityService().insert(entities);
 	}
-	
+
 	/**
 	 * Template method for <code>post-insert</code>.
+	 * 
 	 * @param list
 	 * @throws Exception
 	 */
 	public void postInsert(List<M> list, P params) throws Exception {
-		 
+
 	}
-	  
-	
+
 	// ======================== Update ===========================
-	
+
 	/**
 	 * Provide custom logic to decide if the action can be executed.
+	 * 
 	 * @param list
 	 * @param params
 	 * @return
@@ -281,9 +294,10 @@ public class AbstractDsService<M, P, E>
 	protected boolean canUpdate(M ds, P params) {
 		return true;
 	}
-	
+
 	/**
 	 * Provide custom logic to decide if the action can be executed.
+	 * 
 	 * @param list
 	 * @param params
 	 * @return
@@ -291,62 +305,72 @@ public class AbstractDsService<M, P, E>
 	protected boolean canUpdate(List<M> list, P params) {
 		return true;
 	}
-	
+
 	/**
 	 * Pre-insert event with the data-source values.
+	 * 
 	 * @param ds
 	 * @throws Exception
 	 */
-	protected void preUpdate(M ds, P params) throws Exception{
+	protected void preUpdate(M ds, P params) throws Exception {
 	}
-	
+
 	/**
-	 * Pre-insert event with data-source and the corresponding source entity has been found.
-	 * The entity has not been yet populated with the new values from the data-source.
-	 * @param ds
-	 * @param e
-	 * @throws Exception
-	 */
-	protected void preUpdateBeforeEntity(M ds, E e, P params) throws Exception{
-	}
-	/**
-	 * Pre-insert event with data-source and the corresponding source entity has been found.
-	 * The new values from the data-source are already applied to the entity.
+	 * Pre-insert event with data-source and the corresponding source entity has
+	 * been found. The entity has not been yet populated with the new values
+	 * from the data-source.
+	 * 
 	 * @param ds
 	 * @param e
 	 * @throws Exception
 	 */
-	protected void preUpdateAfterEntity(M ds, E e, P params) throws Exception{
+	protected void preUpdateBeforeEntity(M ds, E e, P params) throws Exception {
 	}
+
 	/**
-	 * Post-update event. The entity has been merged by the <code>entityManager</code>, 
-	 * but the possible changes which might alter the entity during its merging phase 
-	 * are not applied yet to the data-source.  
+	 * Pre-insert event with data-source and the corresponding source entity has
+	 * been found. The new values from the data-source are already applied to
+	 * the entity.
+	 * 
 	 * @param ds
 	 * @param e
 	 * @throws Exception
 	 */
-	protected void postUpdateBeforeModel(M ds, E e, P params) throws Exception{
+	protected void preUpdateAfterEntity(M ds, E e, P params) throws Exception {
 	}
-	
+
 	/**
-	 * Post-update event. The entity has been merged by the <code>entityManager</code>, 
-	 * and the possible changes which might alter the entity during its merging phase 
-	 * are applied to the data-source.  
+	 * Post-update event. The entity has been merged by the
+	 * <code>entityManager</code>, but the possible changes which might alter
+	 * the entity during its merging phase are not applied yet to the
+	 * data-source.
+	 * 
 	 * @param ds
 	 * @param e
 	 * @throws Exception
 	 */
-	protected void postUpdateAfterModel(M ds, E e, P params) throws Exception{
+	protected void postUpdateBeforeModel(M ds, E e, P params) throws Exception {
 	}
-	
+
 	/**
-	 * Update event. The steps performed during this phase are:
-	 * <li> Check if action is allowed.
-	 * <li> Find the backing entity of the data-source.
-	 * <li> Apply the new values from the data-source and call the <code>pre-update</code> events 
-	 * <li> Delegate execution of update to the business-service.
-	 * <li> Call the <code>post-update</code> event.
+	 * Post-update event. The entity has been merged by the
+	 * <code>entityManager</code>, and the possible changes which might alter
+	 * the entity during its merging phase are applied to the data-source.
+	 * 
+	 * @param ds
+	 * @param e
+	 * @throws Exception
+	 */
+	protected void postUpdateAfterModel(M ds, E e, P params) throws Exception {
+	}
+
+	/**
+	 * Update event. The steps performed during this phase are: <li>Check if
+	 * action is allowed. <li>Find the backing entity of the data-source. <li>
+	 * Apply the new values from the data-source and call the
+	 * <code>pre-update</code> events <li>Delegate execution of update to the
+	 * business-service. <li>Call the <code>post-update</code> event.
+	 * 
 	 * @param ds
 	 * @throws Exception
 	 */
@@ -354,52 +378,54 @@ public class AbstractDsService<M, P, E>
 		if (this.noUpdate || !this.canUpdate(ds, params)) {
 			throw new ActionNotSupportedException("Update not allowed.");
 		}
-		
+
 		this.preUpdate(ds, params);
-		E e = (E)this.getEntityService().findById(((IModelWithId)ds).getId());	
+		E e = (E) this.getEntityService().findById(((IModelWithId) ds).getId());
 		this.preUpdateBeforeEntity(ds, e, params);
 		this.getConverter().modelToEntity(ds, e);
 		this.preUpdateAfterEntity(ds, e, params);
 		this.getEntityService().update(e);
-		postUpdateBeforeModel(ds, e, params);		
+		postUpdateBeforeModel(ds, e, params);
 		this.getConverter().entityToModel(e, ds);
-		postUpdateAfterModel(ds, e, params);	
+		postUpdateAfterModel(ds, e, params);
 	}
-	
+
 	/**
 	 * Template method for <code>pre-update</code>.
+	 * 
 	 * @param list
 	 * @throws Exception
 	 */
-	public void preUpdate(List<M> list, P params) throws Exception {		 
+	public void preUpdate(List<M> list, P params) throws Exception {
 	}
-	
-	
-	public void update(List<M> list, P params) throws Exception {
-		if (this.noUpdate || ! this.canUpdate(list, params)) {
-			throw new ActionNotSupportedException("Update not allowed.");
-		} 		 
-		this.preUpdate(list, params);
-		List<E> entities = this.getEntityService().findByIds(this.collectIds(list));
 
-		for(M ds: list) {
+	public void update(List<M> list, P params) throws Exception {
+		if (this.noUpdate || !this.canUpdate(list, params)) {
+			throw new ActionNotSupportedException("Update not allowed.");
+		}
+		this.preUpdate(list, params);
+		List<E> entities = this.getEntityService().findByIds(
+				this.collectIds(list));
+
+		for (M ds : list) {
 			this.preUpdate(ds, params);
-			//TODO: optimize me 
-			E e = lookupEntityById(entities, ((IModelWithId)ds).getId() );
-			this.preUpdateBeforeEntity(ds, e, params);			
+			// TODO: optimize me
+			E e = lookupEntityById(entities, ((IModelWithId) ds).getId());
+			this.preUpdateBeforeEntity(ds, e, params);
 			this.getConverter().modelToEntity(ds, e);
-			this.preUpdateAfterEntity(ds, e, params);			 
-		}	
+			this.preUpdateAfterEntity(ds, e, params);
+		}
 		this.getEntityService().update(entities);
-		for(M ds: list) {	
-			E e = this.getEntityService().getEntityManager().find(this.getEntityClass(), ((IModelWithId)ds).getId());
+		for (M ds : list) {
+			E e = this.getEntityService().getEntityManager().find(
+					this.getEntityClass(), ((IModelWithId) ds).getId());
 			postUpdateBeforeModel(ds, e, params);
 			this.getConverter().entityToModel(e, ds);
 			postUpdateAfterModel(ds, e, params);
-		}					
+		}
 		this.postUpdate(list, params);
 	}
-	
+
 	private E lookupEntityById(List<E> list, Object id) {
 		for (E e : list) {
 			if (((IModelWithId) e).getId().equals(id)) {
@@ -408,47 +434,48 @@ public class AbstractDsService<M, P, E>
 		}
 		return null;
 	}
+
 	/**
 	 * Template method for <code>post-update</code>.
+	 * 
 	 * @param list
 	 * @throws Exception
 	 */
 	public void postUpdate(List<M> list, P params) throws Exception {
-		 
+
 	}
-	
-	 
+
 	// ======================== Delete ===========================
-	
-	
+
 	/**
 	 * Provide custom logic to decide if the action can be executed.
 	 */
 	protected boolean canDelete(Object id) {
 		return true;
 	}
-	
+
 	/**
 	 * Provide custom logic to decide if the action can be executed.
 	 */
 	protected boolean canDelete(List<Object> ids) {
 		return true;
 	}
-	
-	
+
 	/**
-	 * Template method for <code>pre-delete</code>. 
+	 * Template method for <code>pre-delete</code>.
 	 */
 	protected void preDelete(Object id) {
 	}
+
 	/**
-	 * Template method for <code>post-delete</code>. 
+	 * Template method for <code>post-delete</code>.
 	 */
 	protected void postDelete(Object id) {
 	}
 
 	/**
 	 * Delete by id.
+	 * 
 	 * @param id
 	 * @throws Exception
 	 */
@@ -461,15 +488,15 @@ public class AbstractDsService<M, P, E>
 		postDelete(id);
 	}
 
-	
 	protected void preDelete(List<Object> ids) throws Exception {
 	}
 
-	protected void postDelete(List<Object> ids) throws Exception  {
+	protected void postDelete(List<Object> ids) throws Exception {
 	}
 
 	/**
 	 * Delete by list of ids
+	 * 
 	 * @param ids
 	 * @throws Exception
 	 */
@@ -481,200 +508,209 @@ public class AbstractDsService<M, P, E>
 		this.getEntityService().deleteByIds(ids);
 		postDelete(ids);
 	}
-	
-	
+
 	// ======================== Import/Export ===========================
-	
+
 	public void doImport(String absoluteFileName) throws Exception {
-		this.doImport( new File(absoluteFileName) );
+		this.doImport(new File(absoluteFileName));
 	}
+
 	public void doImport(String relativeFileName, String path) throws Exception {
-		this.doImport( new File(path + "/"+ relativeFileName ) );
+		this.doImport(new File(path + "/" + relativeFileName));
 	}
-	
+
 	private void doImport(File file) throws Exception {
-		//TODO: check type-> csv, json, etc
+		// TODO: check type-> csv, json, etc
 		DsCsvLoader l = new DsCsvLoader();
 		List<M> list = l.run(file, this.modelClass, null);
 		this.insert(list, null);
 	}
-	
-	public void doExport(M filter, P params,
-			IQueryBuilder<M, P> builder, IDsExport<M> writer) throws Exception {
-		
+
+	public void doExport(M filter, P params, IQueryBuilder<M, P> builder,
+			IDsExport<M> writer) throws Exception {
+
 		QueryBuilderWithJpql<M, P> bld = (QueryBuilderWithJpql<M, P>) builder;
 		bld.setForExport(true);
-		
-		EntityManager lem = bld.getEntityManager().getEntityManagerFactory().createEntityManager();
+
+		EntityManager lem = bld.getEntityManager().getEntityManagerFactory()
+				.createEntityManager();
 		bld.setEntityManager(lem);
-		
+
 		try {
-			
-			if (filter!=null) {
+
+			if (filter != null) {
 				bld.setFilter(filter);
 			} else {
 				bld.setFilter(getModelClass().newInstance());
 			}
-			if (params!=null) {
+			if (params != null) {
 				bld.setParams(params);
 			} else {
 				bld.setParams(getParamClass().newInstance());
 			}
-			
-			 
-			List<M> result = new ArrayList<M>(); 
-			
-			Query q = bld.createQuery()
-				.setHint(QueryHints.CURSOR, true)
-				.setHint(QueryHints.CURSOR_INITIAL_SIZE, 30)
-				.setHint(QueryHints.CURSOR_PAGE_SIZE, 30)
-				.setHint(QueryHints.READ_ONLY, HintValues.TRUE)
-				.setFirstResult(bld.getResultStart())
-				.setMaxResults(bld.getResultSize());
-			
-			Cursor c = q.unwrap(JpaQuery.class).getResultCursor();		
-			  
-			M ds ;
+
+			List<M> result = new ArrayList<M>();
+
+			Query q = bld.createQuery().setHint(QueryHints.CURSOR, true)
+					.setHint(QueryHints.CURSOR_INITIAL_SIZE, 30).setHint(
+							QueryHints.CURSOR_PAGE_SIZE, 30).setHint(
+							QueryHints.READ_ONLY, HintValues.TRUE)
+					.setFirstResult(bld.getResultStart()).setMaxResults(
+							bld.getResultSize());
+
+			Cursor c = q.unwrap(JpaQuery.class).getResultCursor();
+
+			M ds;
 			writer.begin();
 			boolean isFirst = true;
 			while (c.hasMoreElements()) {
 				ds = getModelClass().newInstance();
-				this.getConverter().entityToModel((E)c.nextElement(), ds);
+				this.getConverter().entityToModel((E) c.nextElement(), ds);
 				writer.write(ds, isFirst);
 				isFirst = false;
 			}
 			writer.end();
 			c.close();
-		}finally {
+		} finally {
 			lem.close();
 		}
-		 
+
 	}
-	
+
 	// ======================== RPC ===========================
+
 	
+
 	public void rpcData(String procedureName, M ds, P params) throws Exception {
 		if (!rpcData.containsKey(procedureName)) {
-			throw new Exception("No such procedure defined: "+procedureName);
+			throw new Exception("No such procedure defined: " + procedureName);
 		}
-		RpcDefinition def =  rpcData.get(procedureName);
-		AbstractDsDelegate<M, P> delegate = def.getDelegateClass().newInstance();
-		delegate.setAppContext(this.appContext);
-		delegate.setEntityServiceFactories(entityServiceFactories);
-		delegate.setDsServiceFactories(dsServiceFactories);
-		
+		RpcDefinition def = rpcData.get(procedureName);
+		AbstractDsDelegate<M, P> delegate = def.getDelegateClass()
+				.newInstance();
+		this.prepareDelegate(delegate);
 		Method m = null;
 		boolean withParams = false;
 		try {
-			m = def.getDelegateClass().getMethod(def.getMethodName() ,getModelClass(), getParamClass() );
+			m = def.getDelegateClass().getMethod(def.getMethodName(),
+					getModelClass(), getParamClass());
 			withParams = true;
 		} catch (NoSuchMethodException e) {
-			m = def.getDelegateClass().getMethod(def.getMethodName() ,getModelClass() );
+			m = def.getDelegateClass().getMethod(def.getMethodName(),
+					getModelClass());
 		}
 		if (withParams) {
 			m.invoke(delegate, ds, params);
 		} else {
 			m.invoke(delegate, ds);
-		} 
-		//delegate.execute(ds);		
+		}
+		// delegate.execute(ds);
 	}
 
-	public InputStream rpcDataStream(String procedureName, M ds, P params) throws Exception {
+	public InputStream rpcDataStream(String procedureName, M ds, P params)
+			throws Exception {
 		if (!rpcData.containsKey(procedureName)) {
-			throw new Exception("No such procedure defined: "+procedureName);
+			throw new Exception("No such procedure defined: " + procedureName);
 		}
-		RpcDefinition def =  rpcData.get(procedureName);
-		AbstractDsDelegate<M, P> delegate = def.getDelegateClass().newInstance();
-		delegate.setAppContext(this.appContext);
-		delegate.setEntityServiceFactories(entityServiceFactories);
-		delegate.setDsServiceFactories(dsServiceFactories);
-		 
+		RpcDefinition def = rpcData.get(procedureName);
+		AbstractDsDelegate<M, P> delegate = def.getDelegateClass()
+				.newInstance();
+		this.prepareDelegate(delegate);
+
 		Method m = null;
 		boolean withParams = false;
 		try {
-			m = def.getDelegateClass().getMethod(def.getMethodName() ,getModelClass(), getParamClass() );
+			m = def.getDelegateClass().getMethod(def.getMethodName(),
+					getModelClass(), getParamClass());
 			withParams = true;
 		} catch (NoSuchMethodException e) {
-			m = def.getDelegateClass().getMethod(def.getMethodName() ,getModelClass() );
+			m = def.getDelegateClass().getMethod(def.getMethodName(),
+					getModelClass());
 		}
 		InputStream result = null;
 		if (withParams) {
-			result = (InputStream)m.invoke(delegate, ds, params);
+			result = (InputStream) m.invoke(delegate, ds, params);
 		} else {
-			result = (InputStream)m.invoke(delegate, ds);
-		} 
-	 
-		//delegate.execute(ds);
+			result = (InputStream) m.invoke(delegate, ds);
+		}
+
+		// delegate.execute(ds);
 		return result;
 	}
-	 
-	
-	
-	
-	public void rpcFilter(String procedureName, M filter, P params) throws Exception {
+
+	public void rpcFilter(String procedureName, M filter, P params)
+			throws Exception {
 		if (!rpcFilter.containsKey(procedureName)) {
-			throw new Exception("No such procedure defined: "+procedureName);
+			throw new Exception("No such procedure defined: " + procedureName);
 		}
-		RpcDefinition def =  rpcFilter.get(procedureName);
-		AbstractDsDelegate<M, P> delegate = def.getDelegateClass().newInstance();
-		delegate.setAppContext(this.appContext);
-		delegate.setEntityServiceFactories(entityServiceFactories);
-		delegate.setDsServiceFactories(dsServiceFactories);
+		RpcDefinition def = rpcFilter.get(procedureName);
+		AbstractDsDelegate<M, P> delegate = def.getDelegateClass()
+				.newInstance();
+		this.prepareDelegate(delegate);
 		Method m = null;
 		boolean withParams = false;
 		try {
-			m = def.getDelegateClass().getMethod(def.getMethodName() ,getModelClass(), getParamClass() );
+			m = def.getDelegateClass().getMethod(def.getMethodName(),
+					getModelClass(), getParamClass());
 			withParams = true;
 		} catch (NoSuchMethodException e) {
-			m = def.getDelegateClass().getMethod(def.getMethodName() ,getModelClass() );
+			m = def.getDelegateClass().getMethod(def.getMethodName(),
+					getModelClass());
 		}
 		if (withParams) {
 			m.invoke(delegate, filter, params);
 		} else {
 			m.invoke(delegate, filter);
-		} 
-		 
-		//delegate.execute(filter);		
-	}
-	public InputStream rpcFilterStream(String procedureName, M filter, P params) throws Exception {
-		if (!rpcFilter.containsKey(procedureName)) {
-			throw new Exception("No such procedure defined: "+procedureName);
 		}
-		RpcDefinition def =  rpcFilter.get(procedureName);
-		AbstractDsDelegate<M, P> delegate = def.getDelegateClass().newInstance();
-		delegate.setAppContext(this.appContext);
-		delegate.setEntityServiceFactories(entityServiceFactories);
-		delegate.setDsServiceFactories(dsServiceFactories);
+
+		// delegate.execute(filter);
+	}
+
+	public InputStream rpcFilterStream(String procedureName, M filter, P params)
+			throws Exception {
+		if (!rpcFilter.containsKey(procedureName)) {
+			throw new Exception("No such procedure defined: " + procedureName);
+		}
+		RpcDefinition def = rpcFilter.get(procedureName);
+		AbstractDsDelegate<M, P> delegate = def.getDelegateClass()
+				.newInstance();
+		this.prepareDelegate(delegate);
 		Method m = null;
 		boolean withParams = false;
 		try {
-			m = def.getDelegateClass().getMethod(def.getMethodName() ,getModelClass(), getParamClass() );
+			m = def.getDelegateClass().getMethod(def.getMethodName(),
+					getModelClass(), getParamClass());
 			withParams = true;
 		} catch (NoSuchMethodException e) {
-			m = def.getDelegateClass().getMethod(def.getMethodName() ,getModelClass() );
+			m = def.getDelegateClass().getMethod(def.getMethodName(),
+					getModelClass());
 		}
 		InputStream result = null;
 		if (withParams) {
-			result = (InputStream)m.invoke(delegate, filter, params);
+			result = (InputStream) m.invoke(delegate, filter, params);
 		} else {
-			result = (InputStream)m.invoke(delegate, filter);
-		} 
- 
-		return result;	
-	} 
-	public void rpcData(String procedureName, List<M> list, P params) throws Exception {
+			result = (InputStream) m.invoke(delegate, filter);
+		}
+
+		return result;
+	}
+
+	public void rpcData(String procedureName, List<M> list, P params)
+			throws Exception {
 		throw new Exception("Not implemented yet");
 	}
-	public InputStream rpcDataStream(String procedureName, List<M> list, P params) throws Exception {
+
+	public InputStream rpcDataStream(String procedureName, List<M> list,
+			P params) throws Exception {
 		throw new Exception("Not implemented yet");
 	}
 
 	// ======================== Getters-setters ===========================
- 
+
 	public Class<E> getEntityClass() {
 		return entityClass;
 	}
- 
+
 	public void setEntityClass(Class<E> entityClass) {
 		this.entityClass = entityClass;
 	}
@@ -684,12 +720,12 @@ public class AbstractDsService<M, P, E>
 	}
 
 	public void setModelClass(Class<M> modelClass) throws Exception {
-		this.modelClass = modelClass;		
+		this.modelClass = modelClass;
 	}
 
 	public Class<P> getParamClass() {
 		if (this.paramClass == null) {
-			this.paramClass =( Class<P> )EmptyParam.class;
+			this.paramClass = (Class<P>) EmptyParam.class;
 		}
 		return paramClass;
 	}
@@ -697,7 +733,7 @@ public class AbstractDsService<M, P, E>
 	public void setParamClass(Class<P> paramClass) {
 		this.paramClass = paramClass;
 	}
- 
+
 	public Class<?> getQueryBuilderClass() {
 		return queryBuilderClass;
 	}
@@ -713,57 +749,61 @@ public class AbstractDsService<M, P, E>
 	public void setConverterClass(Class<?> converterClass) {
 		this.converterClass = converterClass;
 	}
-	
+
 	protected IDsConverter<M, E> getConverter() throws Exception {
 		if (this.converter == null) {
-			if (this.converterClass == null ) {
+			if (this.converterClass == null) {
 				this.converterClass = BaseDsConverter.class;
 			}
-			this.converter = (IDsConverter<M, E>)this.converterClass.newInstance();
-			this.converter.setEntityManager(this.getEntityService().getEntityManager());
-			this.converter.setEntityServiceFactories(this.entityServiceFactories);
-			
-			((AbstractDsConverter<M, E>)this.converter).setDescriptor(this.getDescriptor());
-			((AbstractDsConverter<M, E>)this.converter).setEntityClass(this.getEntityClass());
-			((AbstractDsConverter<M, E>)this.converter).setModelClass(this.getModelClass());
+			this.converter = (IDsConverter<M, E>) this.converterClass
+					.newInstance();
+			this.converter.setEntityManager(this.getEntityService()
+					.getEntityManager());
+//			this.converter
+//					.setEntityServiceFactories(this.getEntityServiceFactories());
+			AbstractDsConverter<M, E> cnv = (AbstractDsConverter<M, E>) this.converter;
+			cnv.setAppContext(this.getAppContext());
+			cnv.setDescriptor(this.getDescriptor());
+			cnv.setEntityClass(this.getEntityClass());
+			cnv.setModelClass(this.getModelClass());
+			cnv.setServiceLocator(this.getServiceLocator());
 		}
 		return this.converter;
-	} 	
+	}
+
 	public void setConverter(IDsConverter<M, E> converter) {
 		this.converter = converter;
 	}
-	 
+
 	public void setDescriptor(DsDescriptor<M> descriptor) {
 		this.descriptor = descriptor;
 	}
-	
+
 	public DsDescriptor<M> getDescriptor() throws Exception {
 		if (this.descriptor == null) {
-			this.descriptor = ViewModelDescriptorManager.getDsDescriptor(this.modelClass, this.systemConfig.shouldCacheDescriptor());
+			this.descriptor = ViewModelDescriptorManager.getDsDescriptor(
+					this.modelClass, this.getSystemConfig().shouldCacheDescriptor());
 		}
 		return descriptor;
 	}
-	
-	 
-	public IEntityService<E> getEntityService() throws Exception {	
-		if ( this.entityService == null) {
+
+	public IEntityService<E> getEntityService() throws Exception {
+		if (this.entityService == null) {
 			this.entityService = this.findEntityService(this.getEntityClass());
-		}		
-		return this.entityService;		
+		}
+		return this.entityService;
 	}
-	  
-	
+
 	// ======================== Helpers ===========================
-	 
-	 
+
 	protected List<Object> collectIds(List<M> list) {
 		List<Object> ids = new ArrayList<Object>();
-		for (M ds: list) {
-			ids.add( ((IModelWithId)ds).getId());
+		for (M ds : list) {
+			ids.add(((IModelWithId) ds).getId());
 		}
 		return ids;
 	}
- 
+
 	public Map<String, RpcDefinition> getRpcData() {
 		return rpcData;
 	}
@@ -780,40 +820,44 @@ public class AbstractDsService<M, P, E>
 		this.rpcFilter = rpcFilter;
 	}
 
-	public IQueryBuilder<M,P> createQueryBuilder() throws Exception {
-		IQueryBuilder<M,P> qb = null;
+	public IQueryBuilder<M, P> createQueryBuilder() throws Exception {
+		IQueryBuilder<M, P> qb = null;
 		if (this.queryBuilderClass == null) {
-			qb = new QueryBuilderWithJpql<M,P>();			 
-		} else {								 
-			qb = (IQueryBuilder<M,P>)this.queryBuilderClass.newInstance();			 
+			qb = new QueryBuilderWithJpql<M, P>();
+		} else {
+			qb = (IQueryBuilder<M, P>) this.queryBuilderClass.newInstance();
 		}
 		this._prepareQueryBuilder(qb);
-		return qb;	 
+		return qb;
 	}
-	private void _prepareQueryBuilder(IQueryBuilder<M,P> qb) throws Exception {
+
+	private void _prepareQueryBuilder(IQueryBuilder<M, P> qb) throws Exception {
 		qb.setFilterClass(this.getModelClass());
 		qb.setParamClass(this.getParamClass());
 		qb.setDescriptor(this.getDescriptor());
-		qb.setSystemConfig(this.systemConfig);
-		if(qb instanceof QueryBuilderWithJpql) {
-			QueryBuilderWithJpql jqb = (QueryBuilderWithJpql)qb;
+		qb.setSystemConfig(this.getSystemConfig());
+		if (qb instanceof QueryBuilderWithJpql) {
+			QueryBuilderWithJpql jqb = (QueryBuilderWithJpql) qb;
 			jqb.setEntityManager(this.getEntityService().getEntityManager());
-			jqb.setBaseEql("select e from "+this.getEntityClass().getSimpleName()+" e");
-			jqb.setBaseEqlCount("select count(1) from "+this.getEntityClass().getSimpleName()+" e");
-			if(this.getDescriptor().isWorksWithJpql()) {
-				jqb.setDefaultWhere(this.getDescriptor().getJpqlDefaultWhere() );
+			jqb.setBaseEql("select e from "
+					+ this.getEntityClass().getSimpleName() + " e");
+			jqb.setBaseEqlCount("select count(1) from "
+					+ this.getEntityClass().getSimpleName() + " e");
+			if (this.getDescriptor().isWorksWithJpql()) {
+				jqb.setDefaultWhere(this.getDescriptor().getJpqlDefaultWhere());
 				jqb.setDefaultSort(this.getDescriptor().getJpqlDefaultSort());
 			}
 		}
 	}
-	public IDsMarshaller<M, P> createMarshaller(
-			String dataFormat) throws Exception {
-		IDsMarshaller<M, P>  marshaller = null;
+
+	public IDsMarshaller<M, P> createMarshaller(String dataFormat)
+			throws Exception {
+		IDsMarshaller<M, P> marshaller = null;
 		if (dataFormat.equals(IDsMarshaller.JSON)) {
-			marshaller = new JsonMarshaller<M, P>(this.getModelClass(),
-					this.getParamClass());
-		}		 
+			marshaller = new JsonMarshaller<M, P>(this.getModelClass(), this
+					.getParamClass());
+		}
 		return marshaller;
 	}
-	
+
 }

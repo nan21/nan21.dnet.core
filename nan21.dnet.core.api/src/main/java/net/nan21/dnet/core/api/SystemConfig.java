@@ -6,7 +6,7 @@ package net.nan21.dnet.core.api;
  * @author amathe
  *
  */
-public class SystemConfig {
+public class SystemConfig implements ISystemConfig{
 
 	/**
 	 * Disable the use of fetch groups. 

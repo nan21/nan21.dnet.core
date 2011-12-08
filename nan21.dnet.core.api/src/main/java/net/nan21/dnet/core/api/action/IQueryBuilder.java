@@ -2,7 +2,7 @@ package net.nan21.dnet.core.api.action;
 
 import java.util.List;
 
-import net.nan21.dnet.core.api.SystemConfig;
+import net.nan21.dnet.core.api.ISystemConfig;
 import net.nan21.dnet.core.api.descriptor.IViewModelDescriptor;
 
 public interface IQueryBuilder<F,P> {
@@ -65,12 +65,12 @@ public interface IQueryBuilder<F,P> {
 	 * Getter for system configuration.
 	 * @return
 	 */
-	public SystemConfig getSystemConfig();
+	public ISystemConfig getSystemConfig();
 
 	/**
 	 * Setter for system configuration.
 	 * @param systemConfig
 	 */
-	public void setSystemConfig(SystemConfig systemConfig) ;
+	public void setSystemConfig(ISystemConfig systemConfig) ;
  
 }

@@ -5,7 +5,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.beans.factory.NoSuchBeanDefinitionException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,17 +16,16 @@ import net.nan21.dnet.core.api.action.IActionResultFind;
 import net.nan21.dnet.core.api.action.IQueryBuilder;
 import net.nan21.dnet.core.api.marshall.IDsMarshaller;
 import net.nan21.dnet.core.api.service.IAsgnService;
-import net.nan21.dnet.core.api.service.IAsgnServiceFactory;
+import net.nan21.dnet.core.presenter.service.ServiceLocator;
 import net.nan21.dnet.core.web.result.ActionResultFind;
 
-public class AbstractAsgnController<M,P> extends AbstractDataController {
+public class AbstractAsgnController<M, P> extends AbstractDataController {
 
 	protected Class<M> modelClass;
 	protected Class<P> paramClass;
 
-	protected List<IAsgnServiceFactory> serviceFactories;
-	
-	 
+	@Autowired
+	private ServiceLocator serviceLocator;
 
 	/**
 	 * Default handler for find action.
@@ -48,7 +47,7 @@ public class AbstractAsgnController<M,P> extends AbstractDataController {
 			@PathVariable String resourceName,
 			@PathVariable String dataFormat,
 			@RequestParam(value = "objectId", required = true) Long objectId,
-			@RequestParam(value = "selectionId", required = true) String selectionId,		
+			@RequestParam(value = "selectionId", required = true) String selectionId,
 			@RequestParam(value = "data", required = false, defaultValue = "{}") String dataString,
 			@RequestParam(value = "params", required = false, defaultValue = "{}") String paramString,
 			@RequestParam(value = "resultStart", required = false, defaultValue = "0") int resultStart,
@@ -60,14 +59,15 @@ public class AbstractAsgnController<M,P> extends AbstractDataController {
 			this.prepareRequest();
 			this.resourceName = resourceName;
 			this.dataFormat = dataFormat;
-			IAsgnService<M, P> service = getAsgnService(this.resourceName);
-			
+			IAsgnService<M, P> service = this.findAsgnService(this
+					.serviceNameFromResourceName(this.resourceName));
+
 			service.setObjectId(objectId);
 			service.setSelectionId(selectionId);
-			
-			IQueryBuilder<M,P> builder = service.createQueryBuilder().addFetchLimit(
-					resultStart, resultSize).addSortInfo(orderByCol,
-					orderBySense);
+
+			IQueryBuilder<M, P> builder = service.createQueryBuilder()
+					.addFetchLimit(resultStart, resultSize).addSortInfo(
+							orderByCol, orderBySense);
 
 			IDsMarshaller<M, P> marshaller = service
 					.createMarshaller(dataFormat);
@@ -76,10 +76,12 @@ public class AbstractAsgnController<M,P> extends AbstractDataController {
 			P params = marshaller.readParamsFromString(paramString);
 
 			List<M> list = service.findLeft(filter, params, builder);
-			long totalCount = service.countLeft(filter, params, builder); // service.count(filter, params, builder);
+			long totalCount = service.countLeft(filter, params, builder); // service.count(filter,
+																			// params,
+																			// builder);
 
-			IActionResultFind result = this
-					.packfindResult(list, params, totalCount);
+			IActionResultFind result = this.packfindResult(list, params,
+					totalCount);
 			return marshaller.writeResultToString(result);
 		} catch (Exception e) {
 			return this.handleException(e, response);
@@ -88,6 +90,7 @@ public class AbstractAsgnController<M,P> extends AbstractDataController {
 		}
 
 	}
+
 	/**
 	 * Default handler for find action.
 	 * 
@@ -108,7 +111,7 @@ public class AbstractAsgnController<M,P> extends AbstractDataController {
 			@PathVariable String resourceName,
 			@PathVariable String dataFormat,
 			@RequestParam(value = "objectId", required = true) Long objectId,
-			@RequestParam(value = "selectionId", required = true) String selectionId,		
+			@RequestParam(value = "selectionId", required = true) String selectionId,
 			@RequestParam(value = "data", required = false, defaultValue = "{}") String dataString,
 			@RequestParam(value = "params", required = false, defaultValue = "{}") String paramString,
 			@RequestParam(value = "resultStart", required = false, defaultValue = "0") int resultStart,
@@ -120,14 +123,15 @@ public class AbstractAsgnController<M,P> extends AbstractDataController {
 			this.prepareRequest();
 			this.resourceName = resourceName;
 			this.dataFormat = dataFormat;
-			IAsgnService<M, P> service = getAsgnService(this.resourceName);
-			
+			IAsgnService<M, P> service = this.findAsgnService(this
+					.serviceNameFromResourceName(this.resourceName));
+
 			service.setObjectId(objectId);
 			service.setSelectionId(selectionId);
-			
-			IQueryBuilder<M,P> builder = service.createQueryBuilder().addFetchLimit(
-					resultStart, resultSize).addSortInfo(orderByCol,
-					orderBySense);
+
+			IQueryBuilder<M, P> builder = service.createQueryBuilder()
+					.addFetchLimit(resultStart, resultSize).addSortInfo(
+							orderByCol, orderBySense);
 
 			IDsMarshaller<M, P> marshaller = service
 					.createMarshaller(dataFormat);
@@ -136,10 +140,12 @@ public class AbstractAsgnController<M,P> extends AbstractDataController {
 			P params = marshaller.readParamsFromString(paramString);
 
 			List<M> list = service.findRight(filter, params, builder);
-			long totalCount = service.countRight(filter, params, builder); // service.count(filter, params, builder);
+			long totalCount = service.countRight(filter, params, builder); // service.count(filter,
+																			// params,
+																			// builder);
 
-			IActionResultFind result = this
-					.packfindResult(list, params, totalCount);
+			IActionResultFind result = this.packfindResult(list, params,
+					totalCount);
 			return marshaller.writeResultToString(result);
 		} catch (Exception e) {
 			return this.handleException(e, response);
@@ -147,6 +153,7 @@ public class AbstractAsgnController<M,P> extends AbstractDataController {
 			this.finishRequest();
 		}
 	}
+
 	/**
 	 * 
 	 * @param resourceName
@@ -163,15 +170,16 @@ public class AbstractAsgnController<M,P> extends AbstractDataController {
 			@PathVariable String resourceName,
 			@PathVariable String dataFormat,
 			@RequestParam(value = "objectId", required = true) Long objectId,
-			@RequestParam(value = "selectionId", required = true) String selectionId,			
+			@RequestParam(value = "selectionId", required = true) String selectionId,
 			HttpServletResponse response) throws Exception {
 		try {
 			this.prepareRequest();
 			this.resourceName = resourceName;
 			this.dataFormat = dataFormat;
-			IAsgnService<M, P> service = getAsgnService(this.resourceName);
+			IAsgnService<M, P> service = this.findAsgnService(this
+					.serviceNameFromResourceName(this.resourceName));
 			service.setObjectId(objectId);
-			 
+
 			return service.setup(this.resourceName);
 		} catch (Exception e) {
 			return this.handleException(e, response);
@@ -179,9 +187,8 @@ public class AbstractAsgnController<M,P> extends AbstractDataController {
 			this.finishRequest();
 		}
 
-	} 
-	
-	
+	}
+
 	/**
 	 * 
 	 * @param resourceName
@@ -199,23 +206,24 @@ public class AbstractAsgnController<M,P> extends AbstractDataController {
 			@PathVariable String dataFormat,
 			@RequestParam(value = "objectId", required = true) Long objectId,
 			@RequestParam(value = "selectionId", required = true) String selectionId,
-			@RequestParam(value = "p_selected_ids", required = true) String selectedIds,	
+			@RequestParam(value = "p_selected_ids", required = true) String selectedIds,
 			HttpServletResponse response) throws Exception {
 		try {
 			this.prepareRequest();
 			this.resourceName = resourceName;
 			this.dataFormat = dataFormat;
-			IAsgnService<M, P> service = getAsgnService(this.resourceName);
+			IAsgnService<M, P> service = this.findAsgnService(this
+					.serviceNameFromResourceName(this.resourceName));
 
 			service.setObjectId(objectId);
-			service.setSelectionId(selectionId);			
+			service.setSelectionId(selectionId);
 			String[] tmp = selectedIds.split(",");
 			List<Long> ids = new ArrayList<Long>();
-			for(String i: tmp) {
+			for (String i : tmp) {
 				ids.add(new Long(i));
 			}
-			service.moveLeft( ids ); 
-	 
+			service.moveLeft(ids);
+
 			return "";
 		} catch (Exception e) {
 			return this.handleException(e, response);
@@ -223,8 +231,8 @@ public class AbstractAsgnController<M,P> extends AbstractDataController {
 			this.finishRequest();
 		}
 
-	} 
-	
+	}
+
 	/**
 	 * 
 	 * @param resourceName
@@ -237,28 +245,29 @@ public class AbstractAsgnController<M,P> extends AbstractDataController {
 	 */
 	@RequestMapping(method = RequestMethod.POST, params = "action=moveRight")
 	@ResponseBody
-	public String moveRight( 
+	public String moveRight(
 			@PathVariable String resourceName,
 			@PathVariable String dataFormat,
 			@RequestParam(value = "objectId", required = true) Long objectId,
 			@RequestParam(value = "selectionId", required = true) String selectionId,
-			@RequestParam(value = "p_selected_ids", required = true) String selectedIds,	
+			@RequestParam(value = "p_selected_ids", required = true) String selectedIds,
 			HttpServletResponse response) throws Exception {
 		try {
 			this.prepareRequest();
 			this.resourceName = resourceName;
 			this.dataFormat = dataFormat;
-			IAsgnService<M, P> service = getAsgnService(this.resourceName);
+			IAsgnService<M, P> service = this.findAsgnService(this
+					.serviceNameFromResourceName(this.resourceName));
 
 			service.setObjectId(objectId);
-			service.setSelectionId(selectionId);			
+			service.setSelectionId(selectionId);
 			String[] tmp = selectedIds.split(",");
 			List<Long> ids = new ArrayList<Long>();
-			for(String i: tmp) {
+			for (String i : tmp) {
 				ids.add(new Long(i));
 			}
-			service.moveRight( ids ); 
-	 
+			service.moveRight(ids);
+
 			return "";
 		} catch (Exception e) {
 			return this.handleException(e, response);
@@ -266,26 +275,27 @@ public class AbstractAsgnController<M,P> extends AbstractDataController {
 			this.finishRequest();
 		}
 	}
-	
+
 	@RequestMapping(method = RequestMethod.POST, params = "action=moveLeftAll")
 	@ResponseBody
-	public String moveLeftAll( 
+	public String moveLeftAll(
 			@PathVariable String resourceName,
 			@PathVariable String dataFormat,
 			@RequestParam(value = "objectId", required = true) Long objectId,
-			@RequestParam(value = "selectionId", required = true) String selectionId,			 
+			@RequestParam(value = "selectionId", required = true) String selectionId,
 			HttpServletResponse response) throws Exception {
 		try {
 			this.prepareRequest();
 			this.resourceName = resourceName;
 			this.dataFormat = dataFormat;
-			IAsgnService<M, P> service = getAsgnService(this.resourceName);
+			IAsgnService<M, P> service = this.findAsgnService(this
+					.serviceNameFromResourceName(this.resourceName));
 
 			service.setObjectId(objectId);
-			service.setSelectionId(selectionId);			
-			 
-			service.moveLeftAll(); 
-	 
+			service.setSelectionId(selectionId);
+
+			service.moveLeftAll();
+
 			return "";
 		} catch (Exception e) {
 			return this.handleException(e, response);
@@ -293,27 +303,27 @@ public class AbstractAsgnController<M,P> extends AbstractDataController {
 			this.finishRequest();
 		}
 	}
-	
- 
+
 	@RequestMapping(method = RequestMethod.POST, params = "action=moveRightAll")
 	@ResponseBody
-	public String moveRightAll( 
+	public String moveRightAll(
 			@PathVariable String resourceName,
 			@PathVariable String dataFormat,
 			@RequestParam(value = "objectId", required = true) Long objectId,
-			@RequestParam(value = "selectionId", required = true) String selectionId,			 
+			@RequestParam(value = "selectionId", required = true) String selectionId,
 			HttpServletResponse response) throws Exception {
 		try {
 			this.prepareRequest();
 			this.resourceName = resourceName;
 			this.dataFormat = dataFormat;
-			IAsgnService<M, P> service = getAsgnService(this.resourceName);
+			IAsgnService<M, P> service = this.findAsgnService(this
+					.serviceNameFromResourceName(this.resourceName));
 
 			service.setObjectId(objectId);
-			service.setSelectionId(selectionId);			
-			 
-			service.moveRightAll(); 
-	 
+			service.setSelectionId(selectionId);
+
+			service.moveRightAll();
+
 			return "";
 		} catch (Exception e) {
 			return this.handleException(e, response);
@@ -322,24 +332,24 @@ public class AbstractAsgnController<M,P> extends AbstractDataController {
 		}
 
 	}
-	
-	
+
 	@RequestMapping(method = RequestMethod.POST, params = "action=reset")
 	@ResponseBody
 	public String reset(
 			@PathVariable String resourceName,
 			@PathVariable String dataFormat,
 			@RequestParam(value = "objectId", required = true) Long objectId,
-			@RequestParam(value = "selectionId", required = true) String selectionId,			
+			@RequestParam(value = "selectionId", required = true) String selectionId,
 			HttpServletResponse response) throws Exception {
 		try {
 			this.prepareRequest();
 			this.resourceName = resourceName;
 			this.dataFormat = dataFormat;
-			IAsgnService<M, P> service = getAsgnService(this.resourceName);
-			
+			IAsgnService<M, P> service = this.findAsgnService(this
+					.serviceNameFromResourceName(this.resourceName));
+
 			service.setObjectId(objectId);
-			service.setSelectionId(selectionId);	
+			service.setSelectionId(selectionId);
 			service.reset();
 			return "";
 		} catch (Exception e) {
@@ -347,25 +357,25 @@ public class AbstractAsgnController<M,P> extends AbstractDataController {
 		} finally {
 			this.finishRequest();
 		}
-	} 
-	
-	
+	}
+
 	@RequestMapping(method = RequestMethod.POST, params = "action=save")
 	@ResponseBody
 	public String save(
 			@PathVariable String resourceName,
 			@PathVariable String dataFormat,
 			@RequestParam(value = "objectId", required = true) Long objectId,
-			@RequestParam(value = "selectionId", required = true) String selectionId,			
+			@RequestParam(value = "selectionId", required = true) String selectionId,
 			HttpServletResponse response) throws Exception {
 		try {
 			this.prepareRequest();
 			this.resourceName = resourceName;
 			this.dataFormat = dataFormat;
-			IAsgnService<M, P> service = getAsgnService(this.resourceName);
-			
+			IAsgnService<M, P> service = this.findAsgnService(this
+					.serviceNameFromResourceName(this.resourceName));
+
 			service.setObjectId(objectId);
-			service.setSelectionId(selectionId);	
+			service.setSelectionId(selectionId);
 			service.save();
 			return "";
 		} catch (Exception e) {
@@ -373,38 +383,27 @@ public class AbstractAsgnController<M,P> extends AbstractDataController {
 		} finally {
 			this.finishRequest();
 		}
-	} 
-	
-	
-	
-	
-	public IActionResultFind packfindResult(List<M> data, P params, long totalCount) {
+	}
+
+	protected String serviceNameFromResourceName(String resourceName) {
+		return resourceName + "AsgnService";
+	}
+
+	public IActionResultFind packfindResult(List<M> data, P params,
+			long totalCount) {
 		IActionResultFind pack = new ActionResultFind();
 		pack.setData(data);
 		pack.setParams(params);
 		pack.setTotalCount(totalCount);
 		return pack;
 	}
-	
-	
-	
-	protected IAsgnService<M, P> getAsgnService(String asgnName) throws Exception {
-		IAsgnService<M, P> srv = null;
-		for (IAsgnServiceFactory f : serviceFactories) {
-			try {
-				srv = f.create(asgnName + "AsgnService");
-				if (srv != null) {
-					//srv.setDsServiceFactories(serviceFactories);
-					srv.setSystemConfig(this.systemConfig);
-					return srv;
-				}
-			} catch (NoSuchBeanDefinitionException e) {
-				// service not found in this factory, ignore
-			}
-		}
-		throw new Exception(asgnName + "Service not found !");
+
+	public IAsgnService<M, P> findAsgnService(String asgnName) throws Exception {
+		return this.getServiceLocator().findAsgnService(asgnName);
 	}
-	// =====================  getters-setters ============================
+
+	// ===================== getters-setters ============================
+
 	protected Class<P> getParamClass() {
 		return this.paramClass;
 	}
@@ -413,12 +412,27 @@ public class AbstractAsgnController<M,P> extends AbstractDataController {
 		return this.modelClass;
 	}
 
-	public List<IAsgnServiceFactory> getServiceFactories() {
-		return serviceFactories;
+	/**
+	 * Get presenter service locator. If it is null attempts to retrieve it from
+	 * Spring context.
+	 * 
+	 * @return
+	 */
+	public ServiceLocator getServiceLocator() {
+		if (this.serviceLocator == null) {
+			this.serviceLocator = this.getWebappContext().getBean(
+					ServiceLocator.class);
+		}
+		return serviceLocator;
 	}
 
-	public void setServiceFactories(List<IAsgnServiceFactory> serviceFactories) {
-		this.serviceFactories = serviceFactories;
+	/**
+	 * Set presenter service locator.
+	 * 
+	 * @param serviceLocator
+	 */
+	public void setServiceLocator(ServiceLocator serviceLocator) {
+		this.serviceLocator = serviceLocator;
 	}
-	 
+
 }

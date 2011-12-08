@@ -1,6 +1,6 @@
 package net.nan21.dnet.core.api.service;
 
-import net.nan21.dnet.core.api.SystemConfig;
+import net.nan21.dnet.core.api.ISystemConfig;
 import net.nan21.dnet.core.api.action.IFileUploadResult;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -14,12 +14,12 @@ public interface IFileUploadService {
 	 * 
 	 * @return
 	 */
-	public SystemConfig getSystemConfig();
+	public ISystemConfig getSystemConfig();
 
 	/**
 	 * Setter for system configuration.
 	 * 
 	 * @param systemConfig
 	 */
-	public void setSystemConfig(SystemConfig systemConfig);
+	public void setSystemConfig(ISystemConfig systemConfig);
 }

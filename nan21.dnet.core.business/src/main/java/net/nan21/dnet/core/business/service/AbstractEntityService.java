@@ -3,12 +3,13 @@ package net.nan21.dnet.core.business.service;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.Map.Entry;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+
+import net.nan21.dnet.core.api.ISystemConfig;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -24,6 +25,9 @@ public abstract class AbstractEntityService<E> {
 
 	protected abstract Class<E> getEntityClass();
 
+	@Autowired
+	protected ISystemConfig systemConfig;
+	
 	@PersistenceContext
 	@Autowired
 	protected EntityManager em;
@@ -350,4 +354,15 @@ public abstract class AbstractEntityService<E> {
 		delegate.setEntityManager(this.em);
 		return delegate;
 	}
+
+	public ISystemConfig getSystemConfig() {		 
+		return systemConfig;
+	}
+
+	public void setSystemConfig(ISystemConfig systemConfig) {
+		this.systemConfig = systemConfig;
+	}
+	
+	
+	
 }

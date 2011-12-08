@@ -24,7 +24,9 @@ public class AbstractViewModelDescriptor<M> implements IViewModelDescriptor<M> {
 	 * Used in the base converter to update the root entity attributes from the view model instance.
 	 * Example: entityField => dsFieldName.
 	 */
-	private Map<String, String> attributeMap;
+	private Map<String, String> m2eConv;
+	
+	private Map<String, String> e2mConv;
 	
 	private Map<String, String> jpqlFieldFilterRules;
 	
@@ -66,7 +68,8 @@ public class AbstractViewModelDescriptor<M> implements IViewModelDescriptor<M> {
 	protected void buildElements() {
 		if (this.refPaths == null) {
 			this.refPaths = new HashMap<String, String>();
-			this.attributeMap = new HashMap<String, String>();
+			this.m2eConv = new HashMap<String, String>();
+			this.e2mConv = new HashMap<String, String>();
 			this.jpqlFieldFilterRules = new HashMap<String, String>();
 			this.fetchJoins = new HashMap<String, String>();
 			this.nestedFetchJoins = new HashMap<String, String>();
@@ -77,6 +80,7 @@ public class AbstractViewModelDescriptor<M> implements IViewModelDescriptor<M> {
 					if (path.equals("")) {
 						path = field.getName();
 					}
+					this.e2mConv.put(field.getName(), path);
 					if (field.getAnnotation(DsField.class).fetch()) {
 						this.refPaths.put(field.getName(), path);
 						int firstDot = path.indexOf(".");
@@ -87,7 +91,7 @@ public class AbstractViewModelDescriptor<M> implements IViewModelDescriptor<M> {
 								this.nestedFetchJoins.put("e."+path.substring(0, path.lastIndexOf(".")), field.getAnnotation(DsField.class).join());
 							}						
 						} else {
-							this.attributeMap.put(path, field.getName());
+							this.m2eConv.put(path, field.getName());
 						}
 					}					
 					String jpqlFieldFilterRule = field.getAnnotation(DsField.class).jpqlFilter();
@@ -138,8 +142,12 @@ public class AbstractViewModelDescriptor<M> implements IViewModelDescriptor<M> {
 		return nestedFetchJoins;
 	}
 
-	public Map<String, String> getAttributeMap() {
-		return attributeMap;
+	public Map<String, String> getM2eConv() {
+		return m2eConv;
+	}
+
+	public Map<String, String> getE2mConv() {
+		return e2mConv;
 	}
 	 
 	

@@ -49,7 +49,7 @@ public class AbstractDsWriteController<M, P>
 				dataString = "[" + dataString + "]";
 			}
 			
-			IDsService<M, P> service = getDsService(this.resourceName);		
+			IDsService<M, P> service = this.findDsService(this.resourceName);		
 			IDsMarshaller<M, P> marshaller = service.createMarshaller(dataFormat);
 			
 			List<M> list = marshaller.readListFromString(dataString);
@@ -95,7 +95,7 @@ public class AbstractDsWriteController<M, P>
 			if (!dataString.startsWith("[")) {
 				dataString = "[" + dataString + "]";
 			}
-			IDsService<M, P> service = getDsService(this.resourceName);
+			IDsService<M, P> service = this.findDsService(this.resourceName);
 			IDsMarshaller<M, P> marshaller = service.createMarshaller(dataFormat);
 			
 			List<M> list = marshaller.readListFromString(dataString);
@@ -143,7 +143,7 @@ public class AbstractDsWriteController<M, P>
 			if (!dataString.startsWith("[")) {
 				dataString = "[" + dataString + "]";
 			}
-			IDsService<M, P> service = getDsService(this.resourceName);
+			IDsService<M, P> service = this.findDsService(this.resourceName);
 			IDsMarshaller<M, P> marshaller = service.createMarshaller(dataFormat);
 			
 			List<M> list = marshaller.readListFromString(dataString);
@@ -195,7 +195,7 @@ public class AbstractDsWriteController<M, P>
 			if (!idsString.startsWith("[")) {
 				idsString = "[" + idsString + "]";
 			}
-			IDsService<M, P> service = getDsService(this.resourceName);
+			IDsService<M, P> service = this.findDsService(this.resourceName);
 			IDsMarshaller<M, P> marshaller = service.createMarshaller(dataFormat);
 			
 			List<Object> list = marshaller.readListFromString(idsString, Object.class );

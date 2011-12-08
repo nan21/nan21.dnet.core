@@ -4,7 +4,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 
-import net.nan21.dnet.core.api.SystemConfig;
+import net.nan21.dnet.core.api.ISystemConfig;
 import net.nan21.dnet.core.api.action.IQueryBuilder;
 import net.nan21.dnet.core.api.action.SortToken;
 import net.nan21.dnet.core.api.descriptor.IViewModelDescriptor;
@@ -26,7 +26,7 @@ public abstract class AbstractQueryBuilder<F, P> implements IQueryBuilder<F,P> {
 	protected IViewModelDescriptor<F> descriptor;
 	protected EntityManager em;	
 	
-	protected SystemConfig systemConfig;
+	protected ISystemConfig systemConfig;
 	
 	public IQueryBuilder<F,P> addFetchLimit(int resultStart, int resultSize) {
 		this.resultSize = resultSize;
@@ -170,12 +170,12 @@ public abstract class AbstractQueryBuilder<F, P> implements IQueryBuilder<F,P> {
 	}
 
 
-	public SystemConfig getSystemConfig() {
+	public ISystemConfig getSystemConfig() {
 		return systemConfig;
 	}
 
 
-	public void setSystemConfig(SystemConfig systemConfig) {
+	public void setSystemConfig(ISystemConfig systemConfig) {
 		this.systemConfig = systemConfig;
 	}
 

@@ -37,10 +37,14 @@
 		<property name="workingMode" value="${sys.workingMode}" />
 	</bean>
 	 
+	<bean id="serviceLocator" class="net.nan21.dnet.core.presenter.service.ServiceLocator">
+	</bean> 
 	
 	<context:annotation-config />
 	
 	<!--  Osgi  -->
+	
+	<osgi:service ref="systemConfig" interface="net.nan21.dnet.core.api.ISystemConfig"/>
 	
 	<osgi:reference id="osgiDataSource" cardinality="0..1"
 		interface="javax.sql.DataSource" />

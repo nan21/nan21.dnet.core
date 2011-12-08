@@ -2,6 +2,7 @@ package net.nan21.dnet.core.business.service;
 
 import java.util.List;
 
+import net.nan21.dnet.core.api.ISystemConfig;
 import net.nan21.dnet.core.api.service.IEntityService;
 import net.nan21.dnet.core.api.service.IEntityServiceFactory;
 
@@ -18,7 +19,9 @@ public class ServiceLocatorBusiness {
 	@Autowired
 	protected ApplicationContext appContext;
  
-  
+	@Autowired
+	protected ISystemConfig systemConfig;
+	
 	/**
 	 * Find an entity service given the entity class and a list of factories.
 	 * @param <E>
@@ -31,10 +34,11 @@ public class ServiceLocatorBusiness {
 			throws Exception {
 		for (IEntityServiceFactory esf : factories) {
 			try {
-				IEntityService<E> es = esf.create(entityClass.getSimpleName()
+				IEntityService<E> srv = esf.create(entityClass.getSimpleName()
 						+ "Service"); // this.getEntityClass()
-				if (es != null) {
-					return es;
+				if (srv != null) {
+					srv.setSystemConfig(this.systemConfig);
+					return srv;
 				}
 			} catch (NoSuchBeanDefinitionException e) {
 				// service not found in this factory, ignore
@@ -62,4 +66,16 @@ public class ServiceLocatorBusiness {
 	public void setAppContext(ApplicationContext appContext) {
 		this.appContext = appContext;
 	}
+
+ 
+	public ISystemConfig getSystemConfig() {
+		return systemConfig;
+	}
+ 
+	public void setSystemConfig(ISystemConfig systemConfig) {
+		this.systemConfig = systemConfig;
+	}
+	
+	
+	
 }

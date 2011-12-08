@@ -46,7 +46,7 @@ public class AbstractDsRpcController<M, P>
 			this.dataFormat = dataFormat;
 	 
 			if (this.dataFormat.equals("stream")) {
-				IDsService<M, P> service = getDsService(this.resourceName);
+				IDsService<M, P> service = this.findDsService(this.resourceName);
 				IDsMarshaller<M, P> marshaller = service.createMarshaller("json");
 				
 				M data = marshaller.readDataFromString(dataString);
@@ -56,7 +56,7 @@ public class AbstractDsRpcController<M, P>
 				this.sendFile(s, response.getOutputStream() );
 				return "";
 			} else {
-				IDsService<M, P> service = getDsService(this.resourceName);
+				IDsService<M, P> service = this.findDsService(this.resourceName);
 				IDsMarshaller<M, P> marshaller = service.createMarshaller(dataFormat);
 				
 				M data = marshaller.readDataFromString(dataString);
@@ -98,7 +98,7 @@ public class AbstractDsRpcController<M, P>
 			this.resourceName = resourceName;		
 			this.dataFormat = dataFormat;
  
-			IDsService<M, P> service = getDsService(this.resourceName);
+			IDsService<M, P> service = this.findDsService(this.resourceName);
 			IDsMarshaller<M, P> marshaller = service.createMarshaller(dataFormat);
 			
 			M filter = marshaller.readDataFromString(dataString);
