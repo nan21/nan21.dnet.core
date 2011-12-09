@@ -2,10 +2,16 @@ package net.nan21.dnet.core.presenter.model;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+
+import javax.persistence.QueryHint;
+
+import org.eclipse.persistence.config.QueryHints;
 
 import net.nan21.dnet.core.api.annotation.Ds;
 import net.nan21.dnet.core.api.annotation.DsField;
+import net.nan21.dnet.core.api.annotation.DsQueryHints;
 import net.nan21.dnet.core.api.annotation.SortField;
 import net.nan21.dnet.core.api.descriptor.IViewModelDescriptor;
 
@@ -31,8 +37,10 @@ public class AbstractViewModelDescriptor<M> implements IViewModelDescriptor<M> {
 	private Map<String, String> jpqlFieldFilterRules;
 	
 	private Map<String, String> fetchJoins;
-	private Map<String, String> nestedFetchJoins;
+	//private Map<String, String> nestedFetchJoins;
 	
+	
+	private Map<String, Object> queryHints;
 	
 	private boolean worksWithJpql = true;
 	private String jpqlDefaultWhere; 
@@ -52,7 +60,7 @@ public class AbstractViewModelDescriptor<M> implements IViewModelDescriptor<M> {
 			SortField[] sf = this.modelClass.getAnnotation(Ds.class).sort();
 			if (sf != null && sf.length > 0) {
 				StringBuffer sb = new StringBuffer();
-				for (int i=0; i<sf.length; i++) {
+				for (int i=0, len = sf.length; i<len ; i++) {
 					if (i>0) {
 						sb.append(",");
 					}
@@ -61,7 +69,16 @@ public class AbstractViewModelDescriptor<M> implements IViewModelDescriptor<M> {
 				this.jpqlDefaultSort = sb.toString();
 			} else {
 				this.jpqlDefaultSort = this.modelClass.getAnnotation(Ds.class).jpqlSort();
-			}			 
+			}
+			// query hints
+			if (this.modelClass.isAnnotationPresent(DsQueryHints.class)) {
+				queryHints = new HashMap<String, Object>();
+				QueryHint[] hints = this.modelClass.getAnnotation(DsQueryHints.class).value();
+				for( int i=0, len = hints.length; i<len ; i++) {
+					queryHints.put(hints[i].name(), hints[i].value());
+				}				
+			}
+			
 		}
 	}
 	
@@ -72,7 +89,12 @@ public class AbstractViewModelDescriptor<M> implements IViewModelDescriptor<M> {
 			this.e2mConv = new HashMap<String, String>();
 			this.jpqlFieldFilterRules = new HashMap<String, String>();
 			this.fetchJoins = new HashMap<String, String>();
-			this.nestedFetchJoins = new HashMap<String, String>();
+			
+			boolean createHintsForNestedFetchJoins = false;
+			if (queryHints == null) {
+				queryHints = new HashMap<String, Object>();
+			}
+			//this.nestedFetchJoins = new HashMap<String, String>();
 			Field[] fields = this.modelClass.getDeclaredFields();
 			for (Field field : fields) {
 				if(field.isAnnotationPresent(DsField.class)) {					 
@@ -88,7 +110,29 @@ public class AbstractViewModelDescriptor<M> implements IViewModelDescriptor<M> {
 							if (firstDot == path.lastIndexOf(".")) {
 								this.fetchJoins.put("e."+path.substring(0, path.lastIndexOf(".")), field.getAnnotation(DsField.class).join());
 							} else {
-								this.nestedFetchJoins.put("e."+path.substring(0, path.lastIndexOf(".")), field.getAnnotation(DsField.class).join());
+								if (createHintsForNestedFetchJoins) {
+									String p = "e."+path.substring(0, path.lastIndexOf("."));
+									String type = field.getAnnotation(DsField.class).join();
+									if (type != null && type.equals("left")) {
+										this.queryHints.put(QueryHints.LEFT_FETCH, p);										 
+									} else {
+										this.queryHints.put(QueryHints.FETCH, p);										 
+									}									
+								}
+//								String p = "e."+path.substring(0, path.lastIndexOf("."));
+								// check if this path is already registered by a sub-path
+//								Iterator<String> it = this.nestedFetchJoins.keySet().iterator();
+//								boolean addIt = true;
+//								while (it.hasNext()) {
+//									String registeredPath = it.next();
+//									if (registeredPath.startsWith(p)) {										
+//										addIt = false;
+//										break;
+//									}
+//								}
+//								if (addIt) {
+//									this.nestedFetchJoins.put(p, field.getAnnotation(DsField.class).join());
+								//}
 							}						
 						} else {
 							this.m2eConv.put(path, field.getName());
@@ -138,12 +182,16 @@ public class AbstractViewModelDescriptor<M> implements IViewModelDescriptor<M> {
 		return fetchJoins;
 	}
 
-	public Map<String, String> getNestedFetchJoins() {
-		return nestedFetchJoins;
-	}
+//	public Map<String, String> getNestedFetchJoins() {
+//		return nestedFetchJoins;
+//	}
 
 	public Map<String, String> getM2eConv() {
 		return m2eConv;
+	}
+
+	public Map<String, Object> getQueryHints() {
+		return queryHints;
 	}
 
 	public Map<String, String> getE2mConv() {

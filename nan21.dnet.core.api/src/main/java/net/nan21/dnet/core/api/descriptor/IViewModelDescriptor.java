@@ -11,6 +11,6 @@ public interface IViewModelDescriptor<M> {
 	public String getJpqlDefaultSort() ;
 	public Map<String, String> getJpqlFieldFilterRules();
 	public Map<String, String> getFetchJoins();
-	public Map<String, String> getNestedFetchJoins();
+	public Map<String, Object> getQueryHints();
 	
 }

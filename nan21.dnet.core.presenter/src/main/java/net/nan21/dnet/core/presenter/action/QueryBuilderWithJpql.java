@@ -329,18 +329,22 @@ public class QueryBuilderWithJpql<F, P> extends AbstractQueryBuilder<F, P> {
 	public Query createQuery() throws Exception {
 		String jpql = this.buildQueryStatement();
 		Query q = this.em.createQuery(jpql);
-		if (this.descriptor.getNestedFetchJoins() != null) {
-			Map<String, String> nestedFetchJoins = this.descriptor
-					.getNestedFetchJoins();
-			Iterator<String> it = nestedFetchJoins.keySet().iterator();
-			while (it.hasNext()) {
+		if (this.descriptor.getQueryHints() != null) {
+			Map<String, Object> queryHints = this.descriptor
+					.getQueryHints();
+			Iterator<String> it = queryHints.keySet().iterator();
+			while (it.hasNext()) { 
 				String p = it.next();
-				String type = nestedFetchJoins.get(p);
-				if (type != null && type.equals("left")) {
-					q.setHint(QueryHints.LEFT_FETCH, p);
-				} else {
-					q.setHint(QueryHints.FETCH, p);
-				}
+				q.setHint(p, queryHints.get(p));
+				
+//				if(p!=null && !p.equals("")) {
+//					String type = nestedFetchJoins.get(p);
+//					if (type != null && type.equals("left")) {
+//						q.setHint(QueryHints.LEFT_FETCH, p);
+//					} else {
+//						q.setHint(QueryHints.FETCH, p);
+//					}
+//				}				
 			}
 		}
 		addFetchGroup(q);
