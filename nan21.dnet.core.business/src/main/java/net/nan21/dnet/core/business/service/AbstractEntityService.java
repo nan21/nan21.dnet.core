@@ -10,8 +10,10 @@ import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 import net.nan21.dnet.core.api.ISystemConfig;
+import net.nan21.dnet.core.api.service.IEntityService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 
 /**
  * Abstract class for entity service implementations.
@@ -23,15 +25,23 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 public abstract class AbstractEntityService<E> {
 
-	protected abstract Class<E> getEntityClass();
-
+	@Autowired
+	protected ApplicationContext appContext;
+	 
 	@Autowired
 	protected ISystemConfig systemConfig;
+	
+	@Autowired
+	private ServiceLocatorBusiness serviceLocator;
 	
 	@PersistenceContext
 	@Autowired
 	protected EntityManager em;
 
+	 
+	
+	protected abstract Class<E> getEntityClass();
+	
 	/*
 	 * @return the entity manager
 	 */
@@ -49,8 +59,9 @@ public abstract class AbstractEntityService<E> {
 	/**
 	 * Find all entities.
 	 */
+	@SuppressWarnings("unchecked")
 	public List<E> findAll() {
-		return this.em.createQuery(
+		return (List<E>) this.em.createQuery(
 				"select e from " + getEntityClass().getSimpleName() + " e")
 				.getResultList();
 	}
@@ -65,6 +76,7 @@ public abstract class AbstractEntityService<E> {
 	/**
 	 * Find entities by ids.
 	 */
+	@SuppressWarnings("unchecked")
 	public List<E> findByIds(List<Object> ids) {
 		// TypedQuery<E> q =
 		// (TypedQuery<E>)this.em.createQuery("select e from "+getEntityClass().getSimpleName()+" e where e.id in :pIds ",this.getEntityClass());
@@ -337,6 +349,14 @@ public abstract class AbstractEntityService<E> {
 	protected void postUpdate(List<E> list) throws Exception {
 	}
 
+	
+	/**
+	 * Execute a JPQL update statement. 
+	 * @param jpqlStatement
+	 * @param parameters
+	 * @return
+	 * @throws Exception
+	 */
 	public int update(String jpqlStatement, Map<String, Object> parameters)
 			throws Exception {
 		Query q = this.getEntityManager().createQuery(jpqlStatement);
@@ -347,22 +367,92 @@ public abstract class AbstractEntityService<E> {
 		return q.executeUpdate();
 	}
 
+	/**
+	 * Return a new instance of a business delegate by the given class.
+	 * @param <T>
+	 * @param clazz
+	 * @return
+	 * @throws Exception
+	 */
 	public <T extends AbstractBusinessDelegate> T getBusinessDelegate(
 			Class<T> clazz) throws Exception {
 		T delegate = clazz.newInstance();
-		// delegate.setAppContext(this.appContext);
+		delegate.setAppContext(this.appContext);
 		delegate.setEntityManager(this.em);
 		return delegate;
 	}
 
-	public ISystemConfig getSystemConfig() {		 
+	
+	/**
+	 * Lookup an entity service.
+	 * @param <T>
+	 * @param entityClass
+	 * @return
+	 * @throws Exception
+	 */
+	public <T> IEntityService<T> findEntityService(Class<T> entityClass)
+			throws Exception {
+		return this.getServiceLocator().findEntityService(entityClass);
+	}
+	
+	/**
+	 * Get spring application context.
+	 * @return
+	 */
+	public ApplicationContext getAppContext() {
+		return appContext;
+	}
+
+	
+	/**
+	 * Set spring application context.
+	 * @param appContext
+	 */
+	public void setAppContext(ApplicationContext appContext) {
+		this.appContext = appContext;
+	}
+
+
+	/**
+	 * Get system configuration object. If it is null attempts to retrieve it
+	 * from Spring context.
+	 * 
+	 * @return
+	 */
+	public ISystemConfig getSystemConfig() {		
+		if (this.systemConfig == null) {
+			this.systemConfig = this.appContext.getBean(ISystemConfig.class);
+		}
 		return systemConfig;
 	}
 
+	/**
+	 * Set system configuration object.
+	 * @param systemConfig
+	 */
 	public void setSystemConfig(ISystemConfig systemConfig) {
 		this.systemConfig = systemConfig;
 	}
 	
 	
 	
+	/**
+	 * Get business service locator. If it is null attempts to retrieve it
+	 * @return
+	 */
+	public ServiceLocatorBusiness getServiceLocator() {
+		if (this.serviceLocator == null) {
+			this.serviceLocator = this.appContext.getBean(ServiceLocatorBusiness.class);
+		}
+		return serviceLocator;
+	}
+
+	/**
+	 * Set business service locator.
+	 * @param serviceLocator
+	 */
+	public void setServiceLocator(ServiceLocatorBusiness serviceLocator) {
+		this.serviceLocator = serviceLocator;
+	}
+
 }

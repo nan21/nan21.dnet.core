@@ -32,7 +32,7 @@ public class ServiceLocator {
 	private List<IDsServiceFactory> dsServiceFactories;
 
 	private List<IAsgnServiceFactory> asgnServiceFactories;
-	
+
 	/**
 	 * Find a data-source service given the data-source name.
 	 * 
@@ -132,22 +132,24 @@ public class ServiceLocator {
 				+ " not found ");
 	}
 
-	
 	/**
 	 * Find an assignment service given the service name.
+	 * 
 	 * @param <M>
 	 * @param <P>
 	 * @param asgnName
 	 * @return
 	 * @throws Exception
 	 */
-	public <M, P> IAsgnService<M, P> findAsgnService(String asgnName) throws Exception {
+	public <M, P> IAsgnService<M, P> findAsgnService(String asgnName)
+			throws Exception {
 		return this.findAsgnService(asgnName, this.getAsgnServiceFactories());
 	}
-	
-	
+
 	/**
-	 * Find an assignment service given the service name and the list of factories.
+	 * Find an assignment service given the service name and the list of
+	 * factories.
+	 * 
 	 * @param <M>
 	 * @param <P>
 	 * @param asgnName
@@ -189,6 +191,28 @@ public class ServiceLocator {
 	 */
 	public void setAppContext(ApplicationContext appContext) {
 		this.appContext = appContext;
+	}
+
+	/**
+	 * Get system configuration object. If it is null attempts to retrieve it
+	 * from Spring context.
+	 * 
+	 * @return
+	 */
+	public ISystemConfig getSystemConfig() {
+		if (this.systemConfig == null) {
+			this.systemConfig = this.appContext.getBean(ISystemConfig.class);
+		}
+		return systemConfig;
+	}
+
+	/**
+	 * Set system configuration object.
+	 * 
+	 * @param systemConfig
+	 */
+	public void setSystemConfig(ISystemConfig systemConfig) {
+		this.systemConfig = systemConfig;
 	}
 
 	/**
@@ -240,10 +264,10 @@ public class ServiceLocator {
 		this.dsServiceFactories = dsServiceFactories;
 	}
 
-	
 	/**
-	 * Get assignment factories. If it is null attempts to retrieve it
-	 * from Spring context by <code>osgiAsgnServiceFactories</code> alias.
+	 * Get assignment factories. If it is null attempts to retrieve it from
+	 * Spring context by <code>osgiAsgnServiceFactories</code> alias.
+	 * 
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
@@ -257,6 +281,7 @@ public class ServiceLocator {
 
 	/**
 	 * Set assignment factories.
+	 * 
 	 * @param asgnServiceFactories
 	 */
 	public void setAsgnServiceFactories(
@@ -264,8 +289,4 @@ public class ServiceLocator {
 		this.asgnServiceFactories = asgnServiceFactories;
 	}
 
-	
-	
-	
-	
 }
