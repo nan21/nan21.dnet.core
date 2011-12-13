@@ -344,6 +344,7 @@ dnet.Translation = Ext.apply({},{
         ,ProductAttributeValue_UI : "Product atributes"
         ,PriceList_UI: "Price-lists"
         ,ProductPrice_UI: "Product prices"
+        ,ProductPriceReport_UI : "Price report"
         ,ProductAccountGroup_UI : "Product account groups"
         ,ProductAttributeDefs_UI : "Attributes definition"
         ,InvTransactions_UI : "Inventory transactions"
