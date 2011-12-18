@@ -237,20 +237,18 @@ h4 {
 
 /* ==================   MM styles ->  to be moved into the MM css file*/
 .categories {
-	width: 250px;
+	
 }
 
 .categories li a {
-	display: block;
-	padding-top: 4px;
-	padding-left: 14px;
-	height: 25px;
+	padding-left: 14px;  
 	background: url(../images/marker_2.jpg) top left no-repeat;
-	background-position: 0px 9px;
+	background-position: 0px 4px;
 }
 
 .categories li {
-	
+	padding-top: 4px;	
+	height: 25px;
 }
 
 p.attr-title {
@@ -278,107 +276,45 @@ p.prod-attr-type {
 }
 
 .prod-list-item {
+	padding:20px;
+	width:200px;
+	 
+	float:left;
+	margin:auto;
+	text-align:center;
+}
+.prod-list-item h4{
+	font-size:14px;	
+} 
+
+
+
+/* jQuery lightBox plugin - Gallery style  */
+
+	#gallery {
+		background-color: #fff;
+		padding: 10px;
+		width: 520px;
+	}
+
+	#gallery ul { list-style: none; }
+
+	#gallery ul li { display: inline; }
+
+	#gallery ul img {
+		border: 5px solid #e3e3e3;
+		border-width: 5px 5px 20px;
+	}
+
+	#gallery ul a:hover img {
+
+		border: 5px solid #ccc;
+
+		border-width: 5px 5px 20px;
+
+		color: #fff;
+
+	}
+
+	#gallery ul a:hover { color: #fff; }
 	
-}
-
-/* The Nivo Slider styles */
-#slider {
-	position: relative;
-	width: 500px;
-	height: 500px;
-	z-index: 88;
-	left: 0px;
-	top: 0px;
-	overflow: hidden;
-	border: solid 1px #f3f3f3;
-	background-color: #fff;
-}
-
-/* If an image is wrapped in a link */
-.nivoSlider a.nivo-imageLink {
-	position: absolute;
-	top: 0px;
-	left: 0px;
-	width: 100%;
-	height: 100%;
-	border: 0;
-	padding: 0;
-	margin: 0;
-	z-index: 60;
-	display: none;
-}
-
-/* The slices in the Slider */
-.nivo-slice {
-	display: block;
-	position: absolute;
-	z-index: 50;
-	height: 100%;
-}
-
-/* Direction nav styles (e.g. Next & Prev) */
-.nivo-directionNav a {
-	position: absolute;
-	bottom: 25px;
-	z-index: 99;
-	cursor: pointer;
-	text-indent: -5000px;
-	width: 5px;
-	height: 9px;
-	display: block;
-}
-
-.nivo-prevNav {
-	left: 36px;
-	background: url(../images/marker_left.gif) 0 0 no-repeat
-}
-
-.nivo-prevNav:hover {
-	background-position: bottom
-}
-
-.nivo-nextNav {
-	left: 119px;
-	background: url(../images/marker_right.gif) no-repeat
-}
-
-.nivo-nextNav:hover {
-	background-position: bottom
-}
-
-/* Control nav styles (e.g. 1,2,3...) */
-.nivo-controlNav {
-	position: absolute;
-	z-index: 99;
-	left: 51px;
-	bottom: 23px;
-}
-
-.nivo-controlNav a {
-	position: relative;
-	z-index: 99;
-	cursor: pointer;
-	text-indent: -5000px;
-	width: 13px;
-	height: 13px;
-	float: left;
-	margin-right: 2px;
-	background: url(../images/buttons.gif) right 0 no-repeat
-}
-
-.nivo-controlNav a.active,.nivo-controlNav a:hover {
-	background-position: left
-}
-
-/* Caption styles */
-.nivo-caption {
-	position: relative;
-	top: 0px;
-	left: 10px;
-	z-index: 99;
-	overflow: hidden;
-}
-
-.nivo-html-caption {
-	
-}

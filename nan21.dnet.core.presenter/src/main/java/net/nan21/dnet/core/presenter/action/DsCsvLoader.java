@@ -5,9 +5,9 @@ import java.io.File;
 import java.io.FileReader;
 import java.util.List;
 
-import net.nan21.dnet.core.presenter.model.AbstractDsModel;
 import net.nan21.dnet.core.presenter.propertyeditors.BooleanEditor;
 import net.nan21.dnet.core.presenter.propertyeditors.DateEditor;
+import net.nan21.dnet.core.presenter.propertyeditors.FloatEditor;
 import net.nan21.dnet.core.presenter.propertyeditors.IntegerEditor;
 import net.nan21.dnet.core.presenter.propertyeditors.LongEditor;
 
@@ -31,6 +31,9 @@ public class DsCsvLoader {
 		PropertyEditorManager.registerEditor(
                 java.lang.Integer.class, 
                 IntegerEditor.class ); 
+		PropertyEditorManager.registerEditor(
+                java.lang.Float.class,
+                FloatEditor.class );
 		PropertyEditorManager.registerEditor(
 				java.util.Date.class, 
                 DateEditor.class );

@@ -10,10 +10,10 @@
 	<link rel="stylesheet" href="<c:url value="/styles/local.css"  />" type="text/css" />
 	<link rel="stylesheet" href="<c:url value="/styles/print.css"  />" type="text/css" media="print" />
 	
-	<script src="http://www.dnet-ebusiness-suite.com/www/pub/skins/dnet/js/jquery-1.4.2.js" type="text/javascript"></script>
-	<script type="text/javascript" src="http://www.dnet-ebusiness-suite.com/www/pub/skins/dnet/js/jquery.nivo.slider.pack.js"></script>
-	<script type="text/javascript" src="http://www.dnet-ebusiness-suite.com/www/pub/skins/dnet/js/jquery.easing.1.3.js"></script>
- 		 
+	<script src="/nan21.dnet.core.www/resources/jquery/jquery.js" type="text/javascript"></script>
+	<script src="/nan21.dnet.core.www/resources/jquery-lightbox/js/jquery.lightbox-0.5.min.js" type="text/javascript"></script>
+	<link  href="/nan21.dnet.core.www/resources/jquery-lightbox/css/jquery.lightbox-0.5.css"  rel="stylesheet" type="text/css"  media="screen" />
+	 
 </head>
 
 <body>

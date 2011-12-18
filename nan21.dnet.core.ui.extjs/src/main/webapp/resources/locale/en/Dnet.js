@@ -263,6 +263,8 @@ dnet.Translation = Ext.apply({},{
        ,MyClient_UI:"Client info"
        ,Client_UI:"Clients management"
 	   ,SysDataSources_UI : "System components: Data-sources"
+	   ,SysParam_UI: "System parameters"
+	   
 	   ,Reports_UI : "Reports"
 	   ,ReportServers_UI : "Report servers"
 
