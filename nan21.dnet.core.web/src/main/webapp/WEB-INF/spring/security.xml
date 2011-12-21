@@ -31,8 +31,10 @@
 		class="net.nan21.dnet.core.security.DbUserService">
 		<property name="usersByUsernameQuery"
 			value="select u.code, u.name, u.password, u.active, 0 accountExpired, 0 credentialsExpired,0 accountLocked, u.clientid clientId, c.code clientCode, 
-			c.defaultDsAccessRule, c.defaultImportPath, c.defaultExportPath, c.tempPath, c.adminRole, c.systemClient, '', 0  
-				  from ad_users u join ad_client c on u.clientid = c.id  
+			c.defaultDsAccessRule, c.defaultImportPath, c.defaultExportPath, c.tempPath, c.adminRole, c.systemClient, '', 0, 
+					f.extjsDateFormat, f.extjsTimeFormat, f.extjsDateTimeFormat, f.extjsAltFormats,	f.javaDateFormat, f.javaTimeFormat, f.javaDateTimeFormat ,
+					 u.decimalseparator, u.thousandseparator
+				  from ad_users u join ad_client c on u.clientid = c.id left join ad_sysdateformat f on u.dateformat_id = f.id
 				where u.code = ? and c.code = ?" />
 		<property name="authoritiesByUsernameQuery"
 			value="select u.code , r.name 

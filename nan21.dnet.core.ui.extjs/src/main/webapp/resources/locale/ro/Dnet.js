@@ -59,6 +59,8 @@ dnet.Translation = Ext.apply({},{
 		,client__lbl : "Client"
 		,myaccount__lbl : "Contul meu"
 		,changepswd__lbl : "SchimbÄƒ parola"
+		,mysettings__lbl : "SetÄƒrile mele"
+		
 		,userprefs__lbl : "PreferinÅ£e"
 		,session__lbl : "Sesiune"
 		,logout__lbl : "Ãnchide"
@@ -262,6 +264,8 @@ dnet.Translation = Ext.apply({},{
 	    ,Client_UI:"Administrare clienÅ£i"
        ,SysDataSources_UI : "Componente sistem: Surse de date"
        ,SysParam_UI: "Parametri sistem"
+       ,SysDateFormat_UI: "Formate datƒÅ"
+       ,MyUserSettings_UI:"SetƒÅrile mele"
        
        ,Reports_UI : "Rapoarte"
 	   ,ReportServers_UI : "Servere raportare"

@@ -46,6 +46,17 @@ dnet.base.ApplicationMenu$Items = [
 							handler : function() {
 								(new dnet.base.ChangePasswordWindow({})).show();
 							}
+						},{
+							text : Dnet.translate("appmenuitem",
+									"mysettings__lbl"),
+							handler : function() {
+								var bundle = "nan21.dnet.module.ad.ui.extjs";
+								var frame = "net.nan21.dnet.module.ad.usr.frame.MyUserSettings_UI";
+								var path = Dnet.buildUiPath(bundle, frame, false);
+								getApplication().showFrame(frame, {
+											url : path
+										});
+							}
 						}
 				// , {text: Dnet.translate("appmenuitem", "userprefs__lbl") }
 				]

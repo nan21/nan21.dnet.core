@@ -43,7 +43,7 @@ Ext.define("dnet.base.DcvFormBuilder", {
 	addDateField : function(config) {
 		config.xtype = "datefield";
 		Ext.applyIf(config, {
-			format : Ext.DATE_FORMAT,
+			format : Dnet.DATE_FORMAT,
 			checkChangeBuffer : 600
 		});
 		this.applyModelUpdater(config);
@@ -54,7 +54,7 @@ Ext.define("dnet.base.DcvFormBuilder", {
 	addDateTimeField : function(config) {
 		config.xtype = "datefield";
 		Ext.applyIf(config, {
-			format : Ext.DATETIME_FORMAT
+			format : Dnet.DATETIME_FORMAT
 		});
 		this.applyModelUpdater(config);
 		this.applySharedConfig(config);

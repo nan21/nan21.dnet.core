@@ -3,7 +3,7 @@
  * @type 
  */
 dnet.base.Session = {
-
+ 
 	/**
 	 * Logged in user info.
 	 * 
@@ -25,7 +25,7 @@ dnet.base.Session = {
 		code : null,
 		systemClient: false
 	},
-
+ 
 	/**
 	 * Is the current session locked by user?
 	 * 
@@ -85,4 +85,6 @@ dnet.base.Session = {
 		return (!Ext.isEmpty(this.user.name));
 	}
 
+	
+	
 };

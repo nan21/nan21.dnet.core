@@ -24,10 +24,39 @@ Dnet = {
 	 // configuration variables
 	,config : {
 
-	}
+	},
 
+	DATE_FORMAT 		: 'Y-m-d',
+	TIME_FORMAT 		: 'H:i',
+	DATETIME_FORMAT 	: 'Y-m-d H:i',
+	MONTH_FORMAT 		: 'Y-m',
+	MODEL_DATE_FORMAT 	: "Y-m-d\\TH:i:s",
+	DATE_ALTFORMATS 	: "j|j.n|d|d.m",
+	
+	THOUSAND_SEP 		: ',',
+	DECIMAL_SEP 		: '.',
+	 
+	numberFormats : null,
+	
+	initFormats: function() {
+		Ext.util.Format.decimalSeparator = this.DECIMAL_SEP;
+		Ext.util.Format.thousandSeparator = this.THOUSAND_SEP;
+		this.numberFormats = new Ext.util.MixedCollection();
+		this.numberFormats.add(0, "0,000");
+		for(var i=1; i < 6;i++) {
+			this.numberFormats.add(i, "0,000."+Ext.util.Format.leftPad("0",i,"0"));
+		}		
+	},
+	
+	getNumberFormat: function(decimals) {
+		if (this.numberFormats == null) {
+			this.initFormats();
+		}
+		return this.numberFormats.get(decimals);
+	},
+	
 
-    ,dataFormat: {
+    dataFormat: {
          HTML : "html"
 		,CSV  : "csv"
 		,PDF  : "pdf"
@@ -76,6 +105,7 @@ Dnet = {
              ,lock : this.sessionUrl +'?action=lock'
              ,unlock : this.sessionUrl +'?action=unlock'
              ,changePassword : this.sessionUrl +'?action=changePassword'
+             ,userSettings : this.sessionUrl +'?action=userSettings'
         }
 	}
    	,wfProcessDefinitionAPI: function(processDefinitionId) {

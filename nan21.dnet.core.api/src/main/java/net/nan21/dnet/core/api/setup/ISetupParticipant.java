@@ -1,13 +1,9 @@
 package net.nan21.dnet.core.api.setup;
 
 import java.util.List;
-
-import javax.persistence.EntityManager;
+ 
 
 public interface ISetupParticipant extends Comparable<ISetupParticipant> {
-
-	// public EntityManager getEntityManager();
-	// public void setEntityManager(EntityManager em);
 
 	public List<ISetupTask> getTasks();
 

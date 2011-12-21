@@ -16,4 +16,13 @@
 		Dnet.sessionUrl = "${deploymentUrl}/security/session";
 		Dnet.staticResourceUrl = "${urlUiExtjs}";
 		Dnet.staticResourceUrlCore = "${urlUiExtjsCore}";
+
+		Dnet.DATE_FORMAT 		= "${extjsDateFormat}";
+		Dnet.TIME_FORMAT 		= "${extjsTimeFormat}";
+		Dnet.DATETIME_FORMAT 	= "${extjsDateTimeFormat}"; 
+		Dnet.DATE_ALTFORMATS 	= "${extjsAltFormats}";
+		
+		Dnet.DECIMAL_SEP 		= "${decimalSeparator}";
+		Dnet.THOUSAND_SEP 		= "${thousandSeparator}";
+		  
 </script>		

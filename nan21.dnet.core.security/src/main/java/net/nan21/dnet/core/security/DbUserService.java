@@ -21,7 +21,6 @@ import net.nan21.dnet.core.api.session.UserPreferences;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.authority.GrantedAuthorityImpl;
 
 import org.springframework.security.core.userdetails.UserDetails;
@@ -119,9 +118,33 @@ public class DbUserService extends JdbcDaoImpl {
                              
                             String employeeCode = rs.getString(16);
                             Long employeeId = rs.getLong(17);
+                             
+                            String extjsDateFormat = rs.getString( 18 );
+                            String extjsTimeFormat = rs.getString( 19 );
+                            String extjsDateTimeFormat = rs.getString( 20 );
+                            String extjsAltFormats = rs.getString( 21 );
+                            String javaDateFormat = rs.getString( 22 );
+                            String javaTimeFormat = rs.getString( 23 );
+                            String javaDateTimeFormat = rs.getString( 24 );
+                             
+                            
+                            String decimalSeparator = rs.getString( 25 );
+                            String thousandSeparator = rs.getString( 26 );
                             
                             // build the objects
                             UserPreferences preferences = new UserPreferences();
+                            
+                            preferences.setExtjsDateFormat(extjsDateFormat);
+                            preferences.setExtjsTimeFormat(extjsTimeFormat);
+                            preferences.setExtjsDateTimeFormat(extjsDateTimeFormat);
+                            preferences.setExtjsAltFormats(extjsAltFormats);
+                            preferences.setJavaDateFormat(javaDateFormat);
+                            preferences.setJavaTimeFormat(javaTimeFormat);
+                            preferences.setJavaDateTimeFormat(javaDateTimeFormat);
+                             
+                            preferences.setDecimalSeparator(decimalSeparator);
+                            preferences.setThousandSeparator(thousandSeparator);
+                            
                             User user = new User(code, name, password,
                                     accountExpired, accountLocked,
                                     credentialsExpired, enabled, clientCode,

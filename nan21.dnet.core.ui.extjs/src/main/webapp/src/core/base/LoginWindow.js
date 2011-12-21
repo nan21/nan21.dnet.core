@@ -170,6 +170,29 @@ Ext.define("dnet.base.LoginForm", {
 		u.name = r.data.name;
 		c.id = r.data.clientId;
 		c.systemClient =  r.data.systemClient;
+		
+		if (r.data.extjsDateFormat) {
+			Dnet.DATE_FORMAT = r.data.extjsDateFormat;
+		}
+		if (r.data.extjsTimeFormat) {
+			Dnet.TIME_FORMAT = r.data.extjsTimeFormat;
+		}
+		if (r.data.extjsDateTimeFormat) {
+			Dnet.DATETIME_FORMAT = r.data.extjsDateTimeFormat;
+		}
+		
+		if (r.data.extjsAltFormats) {
+			Dnet.DATE_ALTFORMATS = r.data.extjsAltFormats;
+		}
+		 
+		if (r.data.decimalSeparator) {
+			Dnet.DECIMAL_SEP = r.data.decimalSeparator;
+		}
+		if (r.data.thousandSeparator) {
+			Dnet.THOUSAND_SEP = r.data.thousandSeparator;
+		}
+		Dnet.initFormats(); 
+		
 		getApplication().onLoginSuccess(accountChange);
 	},
 

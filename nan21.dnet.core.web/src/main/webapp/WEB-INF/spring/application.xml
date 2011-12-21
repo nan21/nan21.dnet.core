@@ -35,6 +35,8 @@
 		scope="singleton">
 		<property name="disableFetchGroups" value="${sys.disableFetchGroups}" />
 		<property name="workingMode" value="${sys.workingMode}" />
+		<property name="portalClientCode" value="${sys.portalClientCode}" />
+		<property name="portalClientId" value="${sys.portalClientId}" />
 	</bean>
 	 
 	<bean id="serviceLocator" class="net.nan21.dnet.core.presenter.service.ServiceLocator">
@@ -70,6 +72,9 @@
 	<osgi:list id="osgiSetupParticipants" cardinality="0..N"
 		interface="net.nan21.dnet.core.api.setup.ISetupParticipant"/>
 	
+	<osgi:list id="osgiStartupParticipants" cardinality="0..N"
+		interface="net.nan21.dnet.core.api.setup.IStartupParticipant"/>
+		
 	<osgi:reference id="osgiActivitiProcessEngine" cardinality="0..1"
 			interface="org.activiti.engine.ProcessEngine" /> 
 					

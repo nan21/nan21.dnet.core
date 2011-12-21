@@ -70,7 +70,7 @@ Ext.define("dnet.base.DcvFilterFormBuilder", {
 	addDateField : function(config) {
 		config.xtype = "datefield";
 		Ext.applyIf(config, {
-			format : Ext.DATE_FORMAT
+			format : Dnet.DATE_FORMAT
 		});
 		this.applyModelUpdater(config);
 		this.applySharedConfig(config);

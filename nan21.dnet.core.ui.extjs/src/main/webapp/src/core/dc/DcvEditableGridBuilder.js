@@ -52,7 +52,7 @@ Ext.define("dnet.base.DcvEditableGridBuilder", {
 	addDateColumn : function(config) {
 		config.xtype = "datecolumn";
 		Ext.applyIf(config, {
-			format : Ext.DATE_FORMAT
+			format : Dnet.DATE_FORMAT
 		});
 		this.applySharedConfig(config);
 		return this;
@@ -60,6 +60,7 @@ Ext.define("dnet.base.DcvEditableGridBuilder", {
 
 	addNumberColumn : function(config) {
 		config.xtype = "numbercolumn";
+		config.format = Dnet.getNumberFormat(config.decimals || 0 );
 		Ext.applyIf(config, {
 			align : "right"
 		});

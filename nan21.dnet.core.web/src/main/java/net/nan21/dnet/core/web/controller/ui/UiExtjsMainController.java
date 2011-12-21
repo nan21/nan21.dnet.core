@@ -6,9 +6,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.nan21.dnet.core.api.setup.ISetupParticipant;
+import net.nan21.dnet.core.api.setup.IStartupParticipant;
 import net.nan21.dnet.core.api.ui.extjs.IExtensionProvider;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.ModelAndView;
 
 public class UiExtjsMainController extends AbstractUiExtjsController {
@@ -16,6 +16,7 @@ public class UiExtjsMainController extends AbstractUiExtjsController {
 	List<IExtensionProvider> extensionProviders;
 
 	protected List<ISetupParticipant> setupParticipants;
+	protected List<IStartupParticipant> startupParticipants;
 	
 	@Override
 	protected ModelAndView handleRequestInternal(HttpServletRequest request,
@@ -28,6 +29,13 @@ public class UiExtjsMainController extends AbstractUiExtjsController {
 				return null;
 			}
 		}		
+//		for (IStartupParticipant sp: startupParticipants ) {
+//			if (sp.hasWorkToDo()) {
+//				sp.execute();
+//			}
+//		}	
+		
+		
 		StringBuffer sb = new StringBuffer();
 		for(IExtensionProvider provider : this.extensionProviders) {			
 			sb.append("<script type=\"text/javascript\" src=\""+uiExtjsSettings.getUrlUiExtjs()+"/"+provider.getBundleName()+"/"+provider.getFileName()+"\"></script>\n" );
@@ -53,6 +61,13 @@ public class UiExtjsMainController extends AbstractUiExtjsController {
 		this.setupParticipants = setupParticipants;
 	}
 
-	 
+	public List<IStartupParticipant> getStartupParticipants() {
+		return startupParticipants;
+	}
+
+	public void setStartupParticipants(List<IStartupParticipant> startupParticipants) {
+		this.startupParticipants = startupParticipants;
+	}
+ 
 	
 }

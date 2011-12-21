@@ -21,7 +21,8 @@
     	<property name="jspName" value="extjs/indexMain"/> 
     	<property name="uiExtjsSettings" ref="application_uiExtjsSettings"/> 
     	<property name="extensionProviders" ref="osgiExtensionProviders" />    	
-    	<property name="setupParticipants" ref="osgiSetupParticipants" /> 
+    	<property name="setupParticipants" ref="osgiSetupParticipants" />
+    	<property name="startupParticipants" ref="osgiStartupParticipants" />  
     	<property name="systemConfig" ref="systemConfig"/>    	   
     </bean>
     

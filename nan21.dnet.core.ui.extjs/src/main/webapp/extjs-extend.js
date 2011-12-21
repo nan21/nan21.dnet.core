@@ -1,18 +1,18 @@
 //session_decimalSeparator = ".";
 //session_groupSeparator = ",";
 //
-Ext.DATE_FORMAT = 'd.m.Y';
-Ext.TIME_FORMAT = 'H:i';
-Ext.DATETIME_FORMAT = 'd.m.Y H:i';
-// Ext.MONTH_FORMAT = 'm.Y';
-Ext.form.field.Date.prototype.altFormats = "j|j.n|d|d.m";
-// //Ext.form.field.TimeField.prototype.altFormats = "G|H|G:i";
-//
-// Ext.NUMBER_FORMAT_DEC = "0,000.00";
-// Ext.NUMBER_FORMAT_INT = "0,000";
-//
-//
-Ext.MODEL_DATE_FORMAT = "Y-m-d\\TH:i:s";
+//Ext.DATE_FORMAT = 'd.m.Y';
+//Ext.TIME_FORMAT = 'H:i';
+//Ext.DATETIME_FORMAT = 'd.m.Y H:i';
+//// Ext.MONTH_FORMAT = 'm.Y';
+//Ext.form.field.Date.prototype.altFormats = "j|j.n|d|d.m";
+//// //Ext.form.field.TimeField.prototype.altFormats = "G|H|G:i";
+////
+//// Ext.NUMBER_FORMAT_DEC = "0,000.00";
+//// Ext.NUMBER_FORMAT_INT = "0,000";
+////
+////
+//Ext.MODEL_DATE_FORMAT = "Y-m-d\\TH:i:s";
 
 
 Ext.override(Ext.form.field.Base, {

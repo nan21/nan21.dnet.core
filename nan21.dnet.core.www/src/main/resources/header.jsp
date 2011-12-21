@@ -26,9 +26,9 @@
 		<div class="menu">
 			<ul>
 				<li><a href="/nan21.dnet.core.www">Home</a></li>
-				<li><a href="#">Company</a></li>
-				<li><a href="#">Contact Us</a></li>
-				<li><a href="#">Help</a></li>
+				<li><a href="/nan21.dnet.core.www/aboutUs.jsp">About us</a></li>
+				<li><a href="/nan21.dnet.core.www/contactUs.jsp">Contact us</a></li>
+				<li><a href="/nan21.dnet.core.www/help.jsp">Help</a></li>
 			</ul>
 		</div>
 	</div><!-- end of top nav -->
