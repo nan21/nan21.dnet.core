@@ -485,7 +485,8 @@ Ext.define("dnet.base.AbstractAsgn", {
 	/** ********************************************** */
 
 	afterAjaxFailure : function(response, options) {
-		Ext.MessageBox.hide();
+		//Ext.MessageBox.hide();
+		//Ext.Msg.hide();
 		var msg = (response.responseText) ? response.responseText.substr(0,
 				2000) : "No error message returned from server.";
 		Ext.Msg.show( {

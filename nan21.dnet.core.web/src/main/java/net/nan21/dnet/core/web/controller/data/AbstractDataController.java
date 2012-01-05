@@ -13,6 +13,7 @@ import net.nan21.dnet.core.api.ISystemConfig;
 import net.nan21.dnet.core.api.session.Params;
 import net.nan21.dnet.core.api.session.Session;
 import net.nan21.dnet.core.api.session.User;
+import net.nan21.dnet.core.security.NotAuthorizedRequestException;
 import net.nan21.dnet.core.security.SessionUser;
 
 import org.slf4j.Logger;
@@ -113,18 +114,35 @@ public class AbstractDataController {
 
 	
 	
-
-	@ExceptionHandler(value=Exception.class) 
-	protected String handleException(Exception e, HttpServletResponse response)  throws IOException {
-		logger.error("Exception occured during transactional request execution: ", e.getCause());
-		e.printStackTrace();
-		response.setStatus(500);		
+	@ExceptionHandler(value=NotAuthorizedRequestException.class) 
+	protected String handleException(NotAuthorizedRequestException e, HttpServletResponse response)  throws IOException {
+		//logger.error("Exception occured during transactional request execution: ", e.getCause());
+		//e.printStackTrace();
+		response.setStatus(403);		
 		if (e.getCause() != null ) {
 			response.getOutputStream().print(e.getCause().getMessage());	
 		} else {
 			response.getOutputStream().print(e.getMessage());		
 		}		 
-		return null; //e.getLocalizedMessage();
+		return null; //e.getLocalizedMessage(); 
+	}
+	
+	@ExceptionHandler(value=Exception.class) 
+	protected String handleException(Exception e, HttpServletResponse response)  throws IOException {
+		if (e instanceof NotAuthorizedRequestException) {
+			return this.handleException((NotAuthorizedRequestException)e, response);
+		} else {
+			logger.error("Exception occured during transactional request execution: ", e.getCause());
+			e.printStackTrace();
+			response.setStatus(500);		
+			if (e.getCause() != null ) {
+				response.getOutputStream().print(e.getCause().getMessage());	
+			} else {
+				response.getOutputStream().print(e.getMessage());		
+			}		 
+			return null; //e.getLocalizedMessage();
+		}
+		
 	}
 
 	protected void sendFile(File file, ServletOutputStream stream) throws IOException {  

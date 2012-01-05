@@ -16,6 +16,7 @@ import net.nan21.dnet.core.api.action.IActionResultFind;
 import net.nan21.dnet.core.api.action.IQueryBuilder;
 import net.nan21.dnet.core.api.marshall.IDsMarshaller;
 import net.nan21.dnet.core.api.service.IAsgnService;
+import net.nan21.dnet.core.api.session.IAuthorizeDsAction;
 import net.nan21.dnet.core.presenter.service.ServiceLocator;
 import net.nan21.dnet.core.web.result.ActionResultFind;
 
@@ -25,6 +26,8 @@ public class AbstractAsgnController<M,F,P> extends AbstractDataController {
 	protected Class<F> filterClass;
 	protected Class<P> paramClass;
 
+	protected IAuthorizeDsAction authorizeActionService;
+	
 	@Autowired
 	private ServiceLocator serviceLocator;
 
@@ -60,6 +63,9 @@ public class AbstractAsgnController<M,F,P> extends AbstractDataController {
 			this.prepareRequest();
 			this.resourceName = resourceName;
 			this.dataFormat = dataFormat;
+			
+			this.authorizeAction(resourceName, "find");
+			
 			IAsgnService<M,F,P> service = this.findAsgnService(this
 					.serviceNameFromResourceName(this.resourceName));
 
@@ -124,6 +130,9 @@ public class AbstractAsgnController<M,F,P> extends AbstractDataController {
 			this.prepareRequest();
 			this.resourceName = resourceName;
 			this.dataFormat = dataFormat;
+			
+			this.authorizeAction(resourceName, "find");
+			
 			IAsgnService<M,F,P> service = this.findAsgnService(this
 					.serviceNameFromResourceName(this.resourceName));
 
@@ -177,6 +186,9 @@ public class AbstractAsgnController<M,F,P> extends AbstractDataController {
 			this.prepareRequest();
 			this.resourceName = resourceName;
 			this.dataFormat = dataFormat;
+			
+			this.authorizeAction(resourceName, "find");
+			
 			IAsgnService<M,F,P> service = this.findAsgnService(this
 					.serviceNameFromResourceName(this.resourceName));
 			service.setObjectId(objectId);
@@ -213,6 +225,9 @@ public class AbstractAsgnController<M,F,P> extends AbstractDataController {
 			this.prepareRequest();
 			this.resourceName = resourceName;
 			this.dataFormat = dataFormat;
+			
+			this.authorizeAction(resourceName, "update");
+			
 			IAsgnService<M,F,P> service = this.findAsgnService(this
 					.serviceNameFromResourceName(this.resourceName));
 
@@ -257,6 +272,9 @@ public class AbstractAsgnController<M,F,P> extends AbstractDataController {
 			this.prepareRequest();
 			this.resourceName = resourceName;
 			this.dataFormat = dataFormat;
+			
+			this.authorizeAction(resourceName, "update");
+			
 			IAsgnService<M,F,P> service = this.findAsgnService(this
 					.serviceNameFromResourceName(this.resourceName));
 
@@ -289,6 +307,9 @@ public class AbstractAsgnController<M,F,P> extends AbstractDataController {
 			this.prepareRequest();
 			this.resourceName = resourceName;
 			this.dataFormat = dataFormat;
+			
+			this.authorizeAction(resourceName, "update");
+			
 			IAsgnService<M,F,P> service = this.findAsgnService(this
 					.serviceNameFromResourceName(this.resourceName));
 
@@ -317,6 +338,9 @@ public class AbstractAsgnController<M,F,P> extends AbstractDataController {
 			this.prepareRequest();
 			this.resourceName = resourceName;
 			this.dataFormat = dataFormat;
+			
+			this.authorizeAction(resourceName, "update");
+			
 			IAsgnService<M,F,P> service = this.findAsgnService(this
 					.serviceNameFromResourceName(this.resourceName));
 
@@ -372,6 +396,9 @@ public class AbstractAsgnController<M,F,P> extends AbstractDataController {
 			this.prepareRequest();
 			this.resourceName = resourceName;
 			this.dataFormat = dataFormat;
+			
+			this.authorizeAction(resourceName, "update");
+			
 			IAsgnService<M,F,P> service = this.findAsgnService(this
 					.serviceNameFromResourceName(this.resourceName));
 
@@ -436,4 +463,16 @@ public class AbstractAsgnController<M,F,P> extends AbstractDataController {
 		this.serviceLocator = serviceLocator;
 	}
 
+	public IAuthorizeDsAction getAuthorizeActionService() {
+		return authorizeActionService;
+	}
+
+	public void setAuthorizeActionService(IAuthorizeDsAction authorizeActionService) {
+		this.authorizeActionService = authorizeActionService;
+	}
+	
+	private void authorizeAction(String resourceName, String action) throws Exception {
+		this.authorizeActionService.authorize(resourceName, action);
+	}
+	
 }

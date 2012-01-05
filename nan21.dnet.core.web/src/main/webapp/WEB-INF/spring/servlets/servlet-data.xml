@@ -20,17 +20,25 @@
     </bean>     
     
   	<bean name="baseAsgnController" scope="request"
-    	class="net.nan21.dnet.core.web.controller.data.BaseAsgnController" >    	 
+    	class="net.nan21.dnet.core.web.controller.data.BaseAsgnController" >  
+    	<property name="authorizeActionService" ref="authorizeAsgnActionService"></property>  	 
     	<property name="systemConfig" ref="systemConfig"></property>
     	<property name="serviceLocator" ref="serviceLocator"></property>
     </bean> 
  
+ 	<!-- Authorization services -->
+ 	
  	<bean name="authorizeDsActionService" scope="request"
     	class="net.nan21.dnet.core.security.AuthorizeDsActionService" >
     	<property name="dataSource" ref="osgiDataSource" />
     </bean> 
     
- 	 
+    <bean name="authorizeAsgnActionService" scope="request"
+    	class="net.nan21.dnet.core.security.AuthorizeAsgnActionService" >
+    	<property name="dataSource" ref="osgiDataSource" />
+    </bean> 
+    
+     
     <!-- enable classpath scanning 
 	<context:component-scan base-package="net.nan21.dnet.core.web.controller.data"  />
  	-->

@@ -15,7 +15,7 @@ import net.nan21.dnet.core.security.NotAuthorizedRequestException;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-public class AuthorizeDsActionService  extends JdbcDaoSupport
+public class AuthorizeAsgnActionService  extends JdbcDaoSupport
 		implements IAuthorizeDsAction{
 
      public void authorize(String dsName, String action ) throws Exception {
@@ -44,7 +44,7 @@ public class AuthorizeDsActionService  extends JdbcDaoSupport
     }
     
     private String buildSql(String dsName, String action ) {
-    	String baseSql = "select distinct 1 from AD_ACCESS_CONTROL_DS acl where acl.dsname = ? "
+    	String baseSql = "select distinct 1 from AD_ACCESS_CONTROL_ASGN acl where acl.dsname = ? "
     		+" and exists ( "
     		+" select 1 "
     		+"   from AD_ROLES_ACCESSCTRL rac"
@@ -57,21 +57,9 @@ public class AuthorizeDsActionService  extends JdbcDaoSupport
          int x = 1;
         if (action.equals("find")) {
             sb.append(" and acl.queryAllowed = "+x);
-        }
-        if (action.equals("export")) {
-            sb.append(" and acl.exportAllowed = "+x);
-        }
-        if (action.equals("import")) {
-            sb.append(" and acl.importAllowed = "+x);
-        }
-        if (action.equals("insert")) {
-            sb.append(" and acl.insertAllowed = "+x);
-        }
+        }      
         if (action.equals("update")) {
             sb.append(" and acl.updateAllowed = "+x);
-        }
-        if (action.equals("delete")) {
-            sb.append(" and acl.deleteAllowed = "+x);
         }
         return sb.toString();
     }
