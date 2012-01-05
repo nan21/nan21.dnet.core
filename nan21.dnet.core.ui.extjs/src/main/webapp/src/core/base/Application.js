@@ -133,6 +133,15 @@ dnet.base.Application = {
 	},
 
 	/**
+	 * Show the specified frame
+	 * @param {} name
+	 * @param {} bundle
+	 */
+	showFrameByName : function(bundle, name) {
+		this.showFrame(name, {url:Dnet.buildUiPath(bundle, name, false)});	
+	},
+	
+	/**
 	 * Returns the active tab.
 	 */
 	getActiveTab: function() {

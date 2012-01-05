@@ -280,6 +280,7 @@ dnet.Translation = Ext.apply({},{
 	   ,Role_UI : "Roles"
        ,AccessControl_UI : "Access rights"
        ,DsAccessControl_UI : "Access rights - DS"
+       ,AsgnAccessControl_UI : "Access rights - ASGN"       
        ,Assignables_UI : "Assignable resources"
 	   ,MyBookmark_UI : "My bookmarks"
 	   ,WorkflowAdmin_UI: "Workflow admin console"
