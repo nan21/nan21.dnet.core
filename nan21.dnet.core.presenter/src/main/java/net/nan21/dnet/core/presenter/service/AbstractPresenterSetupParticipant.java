@@ -18,7 +18,7 @@ public abstract class AbstractPresenterSetupParticipant extends
 	 * @return
 	 * @throws Exception
 	 */
-	public <M, P> IDsService<M, P> findDsService(String dsName) throws Exception {
+	public <M,F,P> IDsService<M,F,P> findDsService(String dsName) throws Exception {
 		return this.getServiceLocator().findDsService(dsName);
 	}
 

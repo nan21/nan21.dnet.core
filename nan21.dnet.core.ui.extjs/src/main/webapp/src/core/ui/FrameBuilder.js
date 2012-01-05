@@ -144,7 +144,7 @@ Ext.define("dnet.base.FrameBuilder" , {
 		
 		var config = {
 				name:"_toc_", collapsible: true, layout:"fit", id:Ext.id(),
-				region:"west", title: 'Navigation', width: 250, frame:false
+				region:"west", title: 'Navigation', width: 200, frame:false
 				, items:[{
 					 name: "_toc_items_", xtype: 'gridpanel',id:Ext.id()
 					,hideHeaders:true

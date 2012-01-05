@@ -19,9 +19,10 @@ import net.nan21.dnet.core.api.service.IAsgnService;
 import net.nan21.dnet.core.presenter.service.ServiceLocator;
 import net.nan21.dnet.core.web.result.ActionResultFind;
 
-public class AbstractAsgnController<M, P> extends AbstractDataController {
+public class AbstractAsgnController<M,F,P> extends AbstractDataController {
 
 	protected Class<M> modelClass;
+	protected Class<F> filterClass;
 	protected Class<P> paramClass;
 
 	@Autowired
@@ -59,20 +60,20 @@ public class AbstractAsgnController<M, P> extends AbstractDataController {
 			this.prepareRequest();
 			this.resourceName = resourceName;
 			this.dataFormat = dataFormat;
-			IAsgnService<M, P> service = this.findAsgnService(this
+			IAsgnService<M,F,P> service = this.findAsgnService(this
 					.serviceNameFromResourceName(this.resourceName));
 
 			service.setObjectId(objectId);
 			service.setSelectionId(selectionId);
 
-			IQueryBuilder<M, P> builder = service.createQueryBuilder()
+			IQueryBuilder<M,F,P> builder = service.createQueryBuilder()
 					.addFetchLimit(resultStart, resultSize).addSortInfo(
 							orderByCol, orderBySense);
 
-			IDsMarshaller<M, P> marshaller = service
+			IDsMarshaller<M,F,P> marshaller = service
 					.createMarshaller(dataFormat);
 
-			M filter = marshaller.readDataFromString(dataString);
+			F filter = marshaller.readFilterFromString(dataString);
 			P params = marshaller.readParamsFromString(paramString);
 
 			List<M> list = service.findLeft(filter, params, builder);
@@ -123,20 +124,20 @@ public class AbstractAsgnController<M, P> extends AbstractDataController {
 			this.prepareRequest();
 			this.resourceName = resourceName;
 			this.dataFormat = dataFormat;
-			IAsgnService<M, P> service = this.findAsgnService(this
+			IAsgnService<M,F,P> service = this.findAsgnService(this
 					.serviceNameFromResourceName(this.resourceName));
 
 			service.setObjectId(objectId);
 			service.setSelectionId(selectionId);
 
-			IQueryBuilder<M, P> builder = service.createQueryBuilder()
+			IQueryBuilder<M,F,P> builder = service.createQueryBuilder()
 					.addFetchLimit(resultStart, resultSize).addSortInfo(
 							orderByCol, orderBySense);
 
-			IDsMarshaller<M, P> marshaller = service
+			IDsMarshaller<M,F,P> marshaller = service
 					.createMarshaller(dataFormat);
 
-			M filter = marshaller.readDataFromString(dataString);
+			F filter = marshaller.readFilterFromString(dataString);
 			P params = marshaller.readParamsFromString(paramString);
 
 			List<M> list = service.findRight(filter, params, builder);
@@ -176,7 +177,7 @@ public class AbstractAsgnController<M, P> extends AbstractDataController {
 			this.prepareRequest();
 			this.resourceName = resourceName;
 			this.dataFormat = dataFormat;
-			IAsgnService<M, P> service = this.findAsgnService(this
+			IAsgnService<M,F,P> service = this.findAsgnService(this
 					.serviceNameFromResourceName(this.resourceName));
 			service.setObjectId(objectId);
 
@@ -212,7 +213,7 @@ public class AbstractAsgnController<M, P> extends AbstractDataController {
 			this.prepareRequest();
 			this.resourceName = resourceName;
 			this.dataFormat = dataFormat;
-			IAsgnService<M, P> service = this.findAsgnService(this
+			IAsgnService<M,F,P> service = this.findAsgnService(this
 					.serviceNameFromResourceName(this.resourceName));
 
 			service.setObjectId(objectId);
@@ -256,7 +257,7 @@ public class AbstractAsgnController<M, P> extends AbstractDataController {
 			this.prepareRequest();
 			this.resourceName = resourceName;
 			this.dataFormat = dataFormat;
-			IAsgnService<M, P> service = this.findAsgnService(this
+			IAsgnService<M,F,P> service = this.findAsgnService(this
 					.serviceNameFromResourceName(this.resourceName));
 
 			service.setObjectId(objectId);
@@ -288,7 +289,7 @@ public class AbstractAsgnController<M, P> extends AbstractDataController {
 			this.prepareRequest();
 			this.resourceName = resourceName;
 			this.dataFormat = dataFormat;
-			IAsgnService<M, P> service = this.findAsgnService(this
+			IAsgnService<M,F,P> service = this.findAsgnService(this
 					.serviceNameFromResourceName(this.resourceName));
 
 			service.setObjectId(objectId);
@@ -316,7 +317,7 @@ public class AbstractAsgnController<M, P> extends AbstractDataController {
 			this.prepareRequest();
 			this.resourceName = resourceName;
 			this.dataFormat = dataFormat;
-			IAsgnService<M, P> service = this.findAsgnService(this
+			IAsgnService<M,F,P> service = this.findAsgnService(this
 					.serviceNameFromResourceName(this.resourceName));
 
 			service.setObjectId(objectId);
@@ -345,7 +346,7 @@ public class AbstractAsgnController<M, P> extends AbstractDataController {
 			this.prepareRequest();
 			this.resourceName = resourceName;
 			this.dataFormat = dataFormat;
-			IAsgnService<M, P> service = this.findAsgnService(this
+			IAsgnService<M,F,P> service = this.findAsgnService(this
 					.serviceNameFromResourceName(this.resourceName));
 
 			service.setObjectId(objectId);
@@ -371,7 +372,7 @@ public class AbstractAsgnController<M, P> extends AbstractDataController {
 			this.prepareRequest();
 			this.resourceName = resourceName;
 			this.dataFormat = dataFormat;
-			IAsgnService<M, P> service = this.findAsgnService(this
+			IAsgnService<M,F,P> service = this.findAsgnService(this
 					.serviceNameFromResourceName(this.resourceName));
 
 			service.setObjectId(objectId);
@@ -398,7 +399,7 @@ public class AbstractAsgnController<M, P> extends AbstractDataController {
 		return pack;
 	}
 
-	public IAsgnService<M, P> findAsgnService(String asgnName) throws Exception {
+	public IAsgnService<M,F,P> findAsgnService(String asgnName) throws Exception {
 		return this.getServiceLocator().findAsgnService(asgnName);
 	}
 

@@ -13,7 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
-public class QueryBuilderWithJpql<F, P> extends AbstractQueryBuilder<F, P> {
+public class QueryBuilderWithJpql<M,F,P> extends AbstractQueryBuilder<M,F,P> {
 
 	final static Logger logger = LoggerFactory
 			.getLogger(QueryBuilderWithJpql.class);
@@ -223,36 +223,69 @@ public class QueryBuilderWithJpql<F, P> extends AbstractQueryBuilder<F, P> {
 				.getJpqlFieldFilterRules();
 
 		this.defaultFilterItems = new HashMap<String, Object>();
+		boolean isFrom = false;
+		boolean isTo = false;
+		
 		for (Method m : methods) {
+			isFrom = false;
+			isTo = false;
+			
 			if (m.getName().startsWith("get")) {
-				String fn = StringUtils.uncapitalize(m.getName().substring(3));
+				String fieldName = StringUtils.uncapitalize(m.getName().substring(3));
+				String filterFieldName = fieldName;
+				if (fieldName.endsWith("_From")) {
+					fieldName = fieldName.substring(0, fieldName.length()-5);
+					isFrom = true;
+				}
+				
+				if (fieldName.endsWith("_To")) {
+					fieldName = fieldName.substring(0, fieldName.length()-3);
+					isTo = true;
+				}
+				
 				if (!(this.noFilterItems != null && this.noFilterItems
-						.contains(fn))
+						.contains(fieldName))
 						&& !(this.customFilterItems != null && this.customFilterItems
-								.containsKey(fn))) {
+								.containsKey(filterFieldName))) {
 
 					Object fv = m.invoke(filter);
 					if (fv != null) {
 						if (m.getReturnType() == java.lang.String.class) {
-							if (jpqlFilterRules.containsKey(fn)) {
-								addFilterCondition(jpqlFilterRules.get(fn));
-								this.defaultFilterItems.put(fn, (String) fv);
+							if (jpqlFilterRules.containsKey(fieldName)) {
+								addFilterCondition(jpqlFilterRules.get(fieldName));
+								this.defaultFilterItems.put(fieldName, (String) fv);
 							} else {
-								if (refpaths.containsKey(fn)) {
+								if (refpaths.containsKey(fieldName)) {
 									addFilterCondition(entityAlias + "."
-											+ refpaths.get(fn) + " like :" + fn);
+											+ refpaths.get(fieldName) + " like :" + fieldName);
 									this.defaultFilterItems
-											.put(fn, (String) fv);
+											.put(fieldName, (String) fv);
 								}
 							}
 						} else {
-							if (jpqlFilterRules.containsKey(fn)) {
-								addFilterCondition(jpqlFilterRules.get(fn));
+							if (isFrom || isTo) {								
+								if (isFrom) {
+									this.addFilterCondition(entityAlias + "."
+											+ refpaths.get(fieldName) + " >= :" + filterFieldName);
+								} else {
+									this.addFilterCondition(entityAlias + "."
+											+ refpaths.get(fieldName) + " < :" + filterFieldName);
+								}
+								
+								this.defaultFilterItems.put(filterFieldName, fv);
 							} else {
-								this.addFilterCondition(entityAlias + "."
-										+ refpaths.get(fn) + " = :" + fn);
+								if (jpqlFilterRules.containsKey(fieldName)) {
+									addFilterCondition(jpqlFilterRules.get(fieldName));
+								} else {
+									this.addFilterCondition(entityAlias + "."
+											+ refpaths.get(fieldName) + " = :" + fieldName);
+								}
+								this.defaultFilterItems.put(fieldName, fv);
 							}
-							this.defaultFilterItems.put(fn, fv);
+							
+							
+							
+							
 						}
 					}
 				}

@@ -6,7 +6,7 @@ import net.nan21.dnet.core.api.ISystemConfig;
 import net.nan21.dnet.core.api.action.IQueryBuilder;
 import net.nan21.dnet.core.api.marshall.IDsMarshaller;
 
-public interface IAsgnService<M, P> {
+public interface IAsgnService<M,F,P> {
 
 	/**
 	 * Saves the selection(s).
@@ -71,14 +71,14 @@ public interface IAsgnService<M, P> {
 	
 	 
 	
-	public List<M> findLeft( M filter, P params, IQueryBuilder<M, P> builder) throws Exception;	
-	public List<M> findRight( M filter, P params, IQueryBuilder<M, P> builder) throws Exception;
+	public List<M> findLeft( F filter, P params, IQueryBuilder<M,F,P> builder) throws Exception;	
+	public List<M> findRight( F filter, P params, IQueryBuilder<M,F,P> builder) throws Exception;
  
-	public Long countLeft(M filter, P params, IQueryBuilder<M, P> builder) throws Exception;
-	public Long countRight(M filter, P params, IQueryBuilder<M, P> builder) throws Exception;
+	public Long countLeft(F filter, P params, IQueryBuilder<M,F,P> builder) throws Exception;
+	public Long countRight(F filter, P params, IQueryBuilder<M,F,P> builder) throws Exception;
 	
-	public IQueryBuilder<M, P> createQueryBuilder() throws Exception;
-	public IDsMarshaller<M, P> createMarshaller(String dataFormat) throws Exception;
+	public IQueryBuilder<M,F,P> createQueryBuilder() throws Exception;
+	public IDsMarshaller<M,F,P> createMarshaller(String dataFormat) throws Exception;
 	 
 	public List<IAsgnTxServiceFactory> getAsgnTxServiceFactories();
 	public void setAsgnTxServiceFactories(

@@ -1,6 +1,6 @@
 package net.nan21.dnet.core.presenter.action;
  
 
-public class QueryBuilderWithExpressions<M,P> extends AbstractQueryBuilder<M,P> {
+public class QueryBuilderWithExpressions<M,F,P> extends AbstractQueryBuilder<M,F,P> {
 
 }

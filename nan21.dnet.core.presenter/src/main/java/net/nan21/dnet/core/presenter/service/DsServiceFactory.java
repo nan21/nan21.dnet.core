@@ -20,8 +20,8 @@ public class DsServiceFactory implements IDsServiceFactory {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <M, P> IDsService<M, P> create(String key) {
-		IDsService<M, P> s = (IDsService<M, P>) this.appContext.getBean(key);
+	public <M,F,P> IDsService<M,F,P> create(String key) {
+		IDsService<M,F,P> s = (IDsService<M,F,P>) this.appContext.getBean(key);
 		//s.setEntityServiceFactories(entityServiceFactories);
 		return s;
 	}

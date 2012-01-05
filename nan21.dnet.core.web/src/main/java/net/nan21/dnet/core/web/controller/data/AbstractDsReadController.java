@@ -23,8 +23,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-public class AbstractDsReadController<M, P> extends
-		AbstractDsBaseController<M, P> {
+public class AbstractDsReadController<M,F,P> extends
+		AbstractDsBaseController<M,F,P> {
 
 	/**
 	 * Default handler for find action.
@@ -62,11 +62,11 @@ public class AbstractDsReadController<M, P> extends
 			authorizeActionService.authorize(resourceName.substring(0,
 					resourceName.length() - 2), "find");
 
-			IDsService<M, P> service = this.findDsService(this.resourceName);
-			IDsMarshaller<M, P> marshaller = service
+			IDsService<M,F,P> service = this.findDsService(this.resourceName);
+			IDsMarshaller<M,F,P> marshaller = service
 					.createMarshaller(dataFormat);
 
-			IQueryBuilder<M, P> builder = service.createQueryBuilder()
+			IQueryBuilder<M,F,P> builder = service.createQueryBuilder()
 					.addFetchLimit(resultStart, resultSize);
 
 			if (orderBy != null && !orderBy.equals("")) {
@@ -77,7 +77,7 @@ public class AbstractDsReadController<M, P> extends
 				builder.addSortInfo(orderByCol, orderBySense);
 			}
 
-			M filter = marshaller.readDataFromString(dataString);
+			F filter = marshaller.readFilterFromString(dataString);
 			P params = marshaller.readParamsFromString(paramString);
 
 			List<M> list = service.find(filter, params, builder);
@@ -131,15 +131,15 @@ public class AbstractDsReadController<M, P> extends
 			this.prepareRequest();
 			this.resourceName = resourceName;
 			this.dataFormat = dataFormat;
-
+ 
 			authorizeActionService.authorize(resourceName.substring(0,
 					resourceName.length() - 2), "export");
 
-			IDsService<M, P> service = this.findDsService(this.resourceName);
-			IQueryBuilder<M, P> builder = service.createQueryBuilder()
+			IDsService<M,F,P> service = this.findDsService(this.resourceName);
+			IQueryBuilder<M,F,P> builder = service.createQueryBuilder() 
 					.addFetchLimit(resultStart, resultSize);
-			IDsMarshaller<M, P> marshaller = service.createMarshaller("json");
-
+			IDsMarshaller<M,F,P> marshaller = service.createMarshaller("json");
+  
 			if (orderBy != null && !orderBy.equals("")) {
 				List<SortToken> sortTokens = marshaller.readListFromString(
 						orderBy, SortToken.class);
@@ -148,7 +148,7 @@ public class AbstractDsReadController<M, P> extends
 				builder.addSortInfo(orderByCol, orderBySense);
 			}
 
-			M filter = marshaller.readDataFromString(dataString);
+			F filter = marshaller.readFilterFromString(dataString);
 			P params = marshaller.readParamsFromString(paramString);
 
 			IDsExport<M> writer = null;

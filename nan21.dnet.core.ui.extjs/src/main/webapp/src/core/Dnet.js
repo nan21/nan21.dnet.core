@@ -252,7 +252,7 @@ Dnet = {
 Ext.ns("dnet.base");
 dnet.base.Logger = function() {
 	return {
-		doLogging : (Ext.isDefined(console))? true: false 
+		doLogging : false /*(Ext.isDefined(console))? true: false */ 
 		,info: function(msg) {
 			if (this.doLogging) {
 				console.info(msg);

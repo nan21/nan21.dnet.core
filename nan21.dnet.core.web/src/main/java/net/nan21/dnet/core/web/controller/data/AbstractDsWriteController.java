@@ -16,8 +16,8 @@ import net.nan21.dnet.core.api.model.IModelWithId;
 import net.nan21.dnet.core.api.service.IDsService;
 import net.nan21.dnet.core.web.result.ActionResultSave;
 
-public class AbstractDsWriteController<M, P>
-	extends AbstractDsRpcController<M, P>{
+public class AbstractDsWriteController<M,F,P>
+	extends AbstractDsRpcController<M,F,P>{
 
 	/**
 	 * Default handler for insert action.
@@ -49,8 +49,8 @@ public class AbstractDsWriteController<M, P>
 				dataString = "[" + dataString + "]";
 			}
 			
-			IDsService<M, P> service = this.findDsService(this.resourceName);		
-			IDsMarshaller<M, P> marshaller = service.createMarshaller(dataFormat);
+			IDsService<M,F,P> service = this.findDsService(this.resourceName);		
+			IDsMarshaller<M,F,P> marshaller = service.createMarshaller(dataFormat);
 			
 			List<M> list = marshaller.readListFromString(dataString);
 			P params = marshaller.readParamsFromString(paramString); 	
@@ -95,8 +95,8 @@ public class AbstractDsWriteController<M, P>
 			if (!dataString.startsWith("[")) {
 				dataString = "[" + dataString + "]";
 			}
-			IDsService<M, P> service = this.findDsService(this.resourceName);
-			IDsMarshaller<M, P> marshaller = service.createMarshaller(dataFormat);
+			IDsService<M,F,P> service = this.findDsService(this.resourceName);
+			IDsMarshaller<M,F,P> marshaller = service.createMarshaller(dataFormat);
 			
 			List<M> list = marshaller.readListFromString(dataString);
 			P params = marshaller.readParamsFromString(paramString); 	
@@ -143,8 +143,8 @@ public class AbstractDsWriteController<M, P>
 			if (!dataString.startsWith("[")) {
 				dataString = "[" + dataString + "]";
 			}
-			IDsService<M, P> service = this.findDsService(this.resourceName);
-			IDsMarshaller<M, P> marshaller = service.createMarshaller(dataFormat);
+			IDsService<M,F,P> service = this.findDsService(this.resourceName);
+			IDsMarshaller<M,F,P> marshaller = service.createMarshaller(dataFormat);
 			
 			List<M> list = marshaller.readListFromString(dataString);
 			P params = marshaller.readParamsFromString(paramString); 	
@@ -195,8 +195,8 @@ public class AbstractDsWriteController<M, P>
 			if (!idsString.startsWith("[")) {
 				idsString = "[" + idsString + "]";
 			}
-			IDsService<M, P> service = this.findDsService(this.resourceName);
-			IDsMarshaller<M, P> marshaller = service.createMarshaller(dataFormat);
+			IDsService<M,F,P> service = this.findDsService(this.resourceName);
+			IDsMarshaller<M,F,P> marshaller = service.createMarshaller(dataFormat);
 			
 			List<Object> list = marshaller.readListFromString(idsString, Object.class );
 			P params = marshaller.readParamsFromString(paramString); 	

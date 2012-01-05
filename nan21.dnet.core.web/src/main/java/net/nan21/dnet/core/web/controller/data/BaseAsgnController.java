@@ -7,6 +7,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @Scope(value="request")
 @RequestMapping(value="/java/asgn/{resourceName}.{dataFormat}")
-public class BaseAsgnController<M, P> extends AbstractAsgnController<M, P> {
+public class BaseAsgnController<M,F,P> extends AbstractAsgnController<M,F,P> {
 
 }

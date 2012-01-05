@@ -18,8 +18,8 @@ public class AsgnServiceFactory implements IAsgnServiceFactory {
 	 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <M,P> IAsgnService<M,P> create(String key) {
-		IAsgnService<M,P> s = (IAsgnService<M,P>)this.appContext.getBean(key);
+	public <M,F,P> IAsgnService<M,F,P> create(String key) {
+		IAsgnService<M,F,P> s = (IAsgnService<M,F,P>)this.appContext.getBean(key);
 		s.setAsgnTxServiceFactories(asgnTxServiceFactories);
 		return s; 		 
 	}

@@ -13,7 +13,7 @@ import net.nan21.dnet.core.api.ISystemConfig;
 import net.nan21.dnet.core.api.service.IDsService;
 import net.nan21.dnet.core.api.service.IEntityService;
 
-public class AbstractDsProcessor<M, P> {
+public abstract class AbstractDsProcessor {
 
 	@Autowired
 	protected ApplicationContext appContext;
@@ -21,7 +21,6 @@ public class AbstractDsProcessor<M, P> {
 	@Autowired
 	private ISystemConfig systemConfig;
 	
-	 
 	@Autowired
 	private ServiceLocator serviceLocator;
 	
@@ -31,7 +30,7 @@ public class AbstractDsProcessor<M, P> {
 	 * @return
 	 * @throws Exception
 	 */
-	public IDsService<M, P> findDsService(String dsName) throws Exception {
+	public <M,F,P> IDsService<M,F,P> findDsService(String dsName) throws Exception {
 		return this.getServiceLocator().findDsService(dsName);
 	}
 
@@ -52,7 +51,7 @@ public class AbstractDsProcessor<M, P> {
 	 * with <code>@Autowired</code> for which there is no attempt to auto-load 
 	 * on-demand from the spring-context.
 	 */
-	protected void prepareDelegate(AbstractDsDelegate<M, P> delegate) {
+	protected <M,F,P> void prepareDelegate(AbstractDsDelegate delegate) {
 		delegate.setAppContext(this.appContext);
 		// delegate.setEntityServiceFactories(this.getEntityServiceFactories());
 		// delegate.setDsServiceFactories(this.getDsServiceFactories());

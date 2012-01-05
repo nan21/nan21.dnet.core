@@ -16,7 +16,7 @@ import net.nan21.dnet.core.api.marshall.IDsMarshaller;
  * @param <M>
  * @param <P>
  */
-public interface IDsService<M, P> {
+public interface IDsService<M,F,P> {
 
 	/**
 	 * Handler for insert event.
@@ -71,10 +71,10 @@ public interface IDsService<M, P> {
 
 	public List<M> findByIds(List<Object> ids) throws Exception;
 
-	public List<M> find(M filter, P params, IQueryBuilder<M, P> builder)
+	public List<M> find(F filter, P params, IQueryBuilder<M,F,P> builder)
 			throws Exception;
 
-	public Long count(M filter, P params, IQueryBuilder<M, P> builder)
+	public Long count(F filter, P params, IQueryBuilder<M,F,P> builder)
 			throws Exception;
 
 	/**
@@ -93,40 +93,36 @@ public interface IDsService<M, P> {
 	 */
 	public void doImport(String relativeFileName, String path) throws Exception;
 
-	public void doExport(M filter, P params, IQueryBuilder<M, P> builder,
+	public void doExport(F filter, P params, IQueryBuilder<M,F,P> builder,
 			IDsExport<M> writer) throws Exception;
 
-	public IQueryBuilder<M, P> createQueryBuilder() throws Exception;
+	public IQueryBuilder<M,F,P> createQueryBuilder() throws Exception;
 
-	public IDsMarshaller<M, P> createMarshaller(String dataFormat)
+	public IDsMarshaller<M,F,P> createMarshaller(String dataFormat)
 			throws Exception;
 
 	public Class<?> getEntityClass();
 
 	public Class<M> getModelClass();
+	
+	public Class<F> getFilterClass();
 
 	public Class<P> getParamClass();
-
-	//public List<IEntityServiceFactory> getEntityServiceFactories();
-
-	//public void setEntityServiceFactories(
-	//		List<IEntityServiceFactory> entityServiceFactories);
-
-	//public List<IDsServiceFactory> getDsServiceFactories();
-
-	//public void setDsServiceFactories(List<IDsServiceFactory> dsServiceFactories);
-
-	public void rpcFilter(String procedureName, M filter, P params)
+ 
+	public void rpcFilter(String procedureName, F filter, P params)
 			throws Exception;
 
+	
 	public void rpcData(String procedureName, M ds, P params) throws Exception;
 
 	public void rpcData(String procedureName, List<M> list, P params)
 			throws Exception;
 
-	public InputStream rpcFilterStream(String procedureName, M filter, P params)
+	
+	public InputStream rpcFilterStream(String procedureName, F filter, P params)
 			throws Exception;
 
+	
 	public InputStream rpcDataStream(String procedureName, M ds, P params)
 			throws Exception;
 

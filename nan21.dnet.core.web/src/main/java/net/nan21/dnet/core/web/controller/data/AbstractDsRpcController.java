@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-public class AbstractDsRpcController<M, P>
-		extends AbstractDsReadController<M, P> {
+public class AbstractDsRpcController<M,F,P>
+		extends AbstractDsReadController<M,F,P> {
 
 	/**
 	 * Default handler for remote procedure call on a single value-object.
@@ -46,8 +46,8 @@ public class AbstractDsRpcController<M, P>
 			this.dataFormat = dataFormat;
 	 
 			if (this.dataFormat.equals("stream")) {
-				IDsService<M, P> service = this.findDsService(this.resourceName);
-				IDsMarshaller<M, P> marshaller = service.createMarshaller("json");
+				IDsService<M,F,P> service = this.findDsService(this.resourceName);
+				IDsMarshaller<M,F,P> marshaller = service.createMarshaller("json");
 				
 				M data = marshaller.readDataFromString(dataString);
 				P params = marshaller.readParamsFromString(paramString); 	
@@ -56,8 +56,8 @@ public class AbstractDsRpcController<M, P>
 				this.sendFile(s, response.getOutputStream() );
 				return "";
 			} else {
-				IDsService<M, P> service = this.findDsService(this.resourceName);
-				IDsMarshaller<M, P> marshaller = service.createMarshaller(dataFormat);
+				IDsService<M,F,P> service = this.findDsService(this.resourceName);
+				IDsMarshaller<M,F,P> marshaller = service.createMarshaller(dataFormat);
 				
 				M data = marshaller.readDataFromString(dataString);
 				P params = marshaller.readParamsFromString(paramString); 	
@@ -98,10 +98,10 @@ public class AbstractDsRpcController<M, P>
 			this.resourceName = resourceName;		
 			this.dataFormat = dataFormat;
  
-			IDsService<M, P> service = this.findDsService(this.resourceName);
-			IDsMarshaller<M, P> marshaller = service.createMarshaller(dataFormat);
+			IDsService<M,F,P> service = this.findDsService(this.resourceName);
+			IDsMarshaller<M,F,P> marshaller = service.createMarshaller(dataFormat);
 			
-			M filter = marshaller.readDataFromString(dataString);
+			F filter = marshaller.readFilterFromString(dataString);
 			P params = marshaller.readParamsFromString(paramString); 	
 			
 			service.rpcFilter(rpcName, filter, params);
@@ -119,9 +119,9 @@ public class AbstractDsRpcController<M, P>
 		return pack;
 	}
 	 
-	public IActionResultRpcFilter packRpcFilterResult(M data, P params ) {
+	public IActionResultRpcFilter packRpcFilterResult(F filter, P params ) {
 		IActionResultRpcFilter pack = new ActionResultRpcFilter();
-		pack.setData(data);
+		pack.setData(filter);
 		pack.setParams(params);		 
 		return pack;
 	}

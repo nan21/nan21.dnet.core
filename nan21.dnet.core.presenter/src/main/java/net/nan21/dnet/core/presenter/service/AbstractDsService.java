@@ -36,13 +36,14 @@ import net.nan21.dnet.core.presenter.model.EmptyParam;
 import net.nan21.dnet.core.presenter.model.RpcDefinition;
 import net.nan21.dnet.core.presenter.model.ViewModelDescriptorManager;
 
-public class AbstractDsService<M, P, E> extends AbstractDsProcessor<M, P> {
+public abstract class AbstractDsService<M,F,P,E> extends AbstractDsProcessor  {
 
 	protected boolean noInsert = false;
 	protected boolean noUpdate = false;
 	protected boolean noDelete = false;
 
 	protected Class<M> modelClass;
+	protected Class<F> filterClass;
 	protected Class<P> paramClass;
 	protected Class<E> entityClass;
 	protected Class<?> converterClass; // ? extends AbstractDsConverter<M, E>
@@ -60,9 +61,9 @@ public class AbstractDsService<M, P, E> extends AbstractDsProcessor<M, P> {
 
 	// ======================== Find ===========================
 
-	public Long count(M filter, P params, IQueryBuilder<M, P> builder)
+	public Long count(F filter, P params, IQueryBuilder<M,F,P> builder)
 			throws Exception {
-		QueryBuilderWithJpql<M, P> bld = (QueryBuilderWithJpql<M, P>) builder;
+		QueryBuilderWithJpql<M,F,P> bld = (QueryBuilderWithJpql<M,F,P>) builder;
 		Object count = bld.createQueryCount().getSingleResult();
 		if (count instanceof Integer) {
 			return ((Integer) count).longValue();
@@ -71,17 +72,17 @@ public class AbstractDsService<M, P, E> extends AbstractDsProcessor<M, P> {
 		}
 	}
 
-	protected void preFind(M filter, P params, IQueryBuilder<M, P> builder)
+	protected void preFind(F filter, P params, IQueryBuilder<M,F,P> builder)
 			throws Exception {
 	}
 
-	public List<M> find(M filter, P params, IQueryBuilder<M, P> builder)
+	public List<M> find(F filter, P params, IQueryBuilder<M,F,P> builder)
 			throws Exception {
-		QueryBuilderWithJpql<M, P> bld = null;
+		QueryBuilderWithJpql<M,F,P> bld = null;
 		if (builder != null) {
-			bld = (QueryBuilderWithJpql<M, P>) builder;
+			bld = (QueryBuilderWithJpql<M,F,P>) builder;
 		} else {
-			bld = (QueryBuilderWithJpql<M, P>) this.createQueryBuilder();
+			bld = (QueryBuilderWithJpql<M,F,P>) this.createQueryBuilder();
 		}
 
 		bld.setFilter(filter);
@@ -99,14 +100,14 @@ public class AbstractDsService<M, P, E> extends AbstractDsProcessor<M, P> {
 		return result;
 	}
 
-	protected void postFind(M filter, P params, IQueryBuilder<M, P> builder)
+	protected void postFind(F filter, P params, IQueryBuilder<M,F,P> builder)
 			throws Exception {
 	}
 
 	public M findById(Object id) throws Exception {
 		Method setter = this.getModelClass().getDeclaredMethod("setId",
 				Object.class);
-		M filter = this.getModelClass().newInstance();
+		F filter = this.getFilterClass().newInstance();
 		setter.invoke(filter, id);
 		List<M> result = this.find(filter, null, null);
 		if (result.size() == 0) {
@@ -526,10 +527,10 @@ public class AbstractDsService<M, P, E> extends AbstractDsProcessor<M, P> {
 		this.insert(list, null);
 	}
 
-	public void doExport(M filter, P params, IQueryBuilder<M, P> builder,
+	public void doExport(F filter, P params, IQueryBuilder<M,F,P> builder,
 			IDsExport<M> writer) throws Exception {
 
-		QueryBuilderWithJpql<M, P> bld = (QueryBuilderWithJpql<M, P>) builder;
+		QueryBuilderWithJpql<M,F,P> bld = (QueryBuilderWithJpql<M,F,P>) builder;
 		bld.setForExport(true);
 
 		EntityManager lem = bld.getEntityManager().getEntityManagerFactory()
@@ -541,7 +542,7 @@ public class AbstractDsService<M, P, E> extends AbstractDsProcessor<M, P> {
 			if (filter != null) {
 				bld.setFilter(filter);
 			} else {
-				bld.setFilter(getModelClass().newInstance());
+				bld.setFilter(getFilterClass().newInstance());
 			}
 			if (params != null) {
 				bld.setParams(params);
@@ -586,7 +587,7 @@ public class AbstractDsService<M, P, E> extends AbstractDsProcessor<M, P> {
 			throw new Exception("No such procedure defined: " + procedureName);
 		}
 		RpcDefinition def = rpcData.get(procedureName);
-		AbstractDsDelegate<M, P> delegate = def.getDelegateClass()
+		AbstractDsDelegate delegate = def.getDelegateClass()
 				.newInstance();
 		this.prepareDelegate(delegate);
 		Method m = null;
@@ -613,7 +614,7 @@ public class AbstractDsService<M, P, E> extends AbstractDsProcessor<M, P> {
 			throw new Exception("No such procedure defined: " + procedureName);
 		}
 		RpcDefinition def = rpcData.get(procedureName);
-		AbstractDsDelegate<M, P> delegate = def.getDelegateClass()
+		AbstractDsDelegate delegate = def.getDelegateClass()
 				.newInstance();
 		this.prepareDelegate(delegate);
 
@@ -638,24 +639,24 @@ public class AbstractDsService<M, P, E> extends AbstractDsProcessor<M, P> {
 		return result;
 	}
 
-	public void rpcFilter(String procedureName, M filter, P params)
+	public void rpcFilter(String procedureName, F filter, P params)
 			throws Exception {
 		if (!rpcFilter.containsKey(procedureName)) {
 			throw new Exception("No such procedure defined: " + procedureName);
 		}
 		RpcDefinition def = rpcFilter.get(procedureName);
-		AbstractDsDelegate<M, P> delegate = def.getDelegateClass()
+		AbstractDsDelegate delegate = def.getDelegateClass()
 				.newInstance();
 		this.prepareDelegate(delegate);
 		Method m = null;
 		boolean withParams = false;
 		try {
 			m = def.getDelegateClass().getMethod(def.getMethodName(),
-					getModelClass(), getParamClass());
+					getFilterClass(), getParamClass());
 			withParams = true;
 		} catch (NoSuchMethodException e) {
 			m = def.getDelegateClass().getMethod(def.getMethodName(),
-					getModelClass());
+					getFilterClass());
 		}
 		if (withParams) {
 			m.invoke(delegate, filter, params);
@@ -666,24 +667,24 @@ public class AbstractDsService<M, P, E> extends AbstractDsProcessor<M, P> {
 		// delegate.execute(filter);
 	}
 
-	public InputStream rpcFilterStream(String procedureName, M filter, P params)
+	public InputStream rpcFilterStream(String procedureName, F filter, P params)
 			throws Exception {
 		if (!rpcFilter.containsKey(procedureName)) {
 			throw new Exception("No such procedure defined: " + procedureName);
 		}
 		RpcDefinition def = rpcFilter.get(procedureName);
-		AbstractDsDelegate<M, P> delegate = def.getDelegateClass()
+		AbstractDsDelegate delegate = def.getDelegateClass()
 				.newInstance();
 		this.prepareDelegate(delegate);
 		Method m = null;
 		boolean withParams = false;
 		try {
 			m = def.getDelegateClass().getMethod(def.getMethodName(),
-					getModelClass(), getParamClass());
+					getFilterClass(), getParamClass());
 			withParams = true;
 		} catch (NoSuchMethodException e) {
 			m = def.getDelegateClass().getMethod(def.getMethodName(),
-					getModelClass());
+					getFilterClass());
 		}
 		InputStream result = null;
 		if (withParams) {
@@ -721,6 +722,14 @@ public class AbstractDsService<M, P, E> extends AbstractDsProcessor<M, P> {
 
 	public void setModelClass(Class<M> modelClass) throws Exception {
 		this.modelClass = modelClass;
+	}
+ 
+	public Class<F> getFilterClass() {		
+		return filterClass;
+	}
+
+	public void setFilterClass(Class<F> filterClass) {
+		this.filterClass = filterClass;
 	}
 
 	public Class<P> getParamClass() {
@@ -820,19 +829,20 @@ public class AbstractDsService<M, P, E> extends AbstractDsProcessor<M, P> {
 		this.rpcFilter = rpcFilter;
 	}
 
-	public IQueryBuilder<M, P> createQueryBuilder() throws Exception {
-		IQueryBuilder<M, P> qb = null;
+	public IQueryBuilder<M,F,P> createQueryBuilder() throws Exception {
+		IQueryBuilder<M,F,P> qb = null;
 		if (this.queryBuilderClass == null) {
-			qb = new QueryBuilderWithJpql<M, P>();
+			qb = new QueryBuilderWithJpql<M,F,P>();
 		} else {
-			qb = (IQueryBuilder<M, P>) this.queryBuilderClass.newInstance();
+			qb = (IQueryBuilder<M,F,P>) this.queryBuilderClass.newInstance();
 		}
 		this._prepareQueryBuilder(qb);
 		return qb;
 	}
 
-	private void _prepareQueryBuilder(IQueryBuilder<M, P> qb) throws Exception {
-		qb.setFilterClass(this.getModelClass());
+	private void _prepareQueryBuilder(IQueryBuilder<M,F,P> qb) throws Exception {
+		qb.setModelClass(this.getModelClass());
+		qb.setFilterClass(this.getFilterClass());
 		qb.setParamClass(this.getParamClass());
 		qb.setDescriptor(this.getDescriptor());
 		qb.setSystemConfig(this.getSystemConfig());
@@ -850,11 +860,11 @@ public class AbstractDsService<M, P, E> extends AbstractDsProcessor<M, P> {
 		}
 	}
 
-	public IDsMarshaller<M, P> createMarshaller(String dataFormat)
+	public IDsMarshaller<M,F,P> createMarshaller(String dataFormat)
 			throws Exception {
-		IDsMarshaller<M, P> marshaller = null;
+		IDsMarshaller<M,F,P> marshaller = null;
 		if (dataFormat.equals(IDsMarshaller.JSON)) {
-			marshaller = new JsonMarshaller<M, P>(this.getModelClass(), this
+			marshaller = new JsonMarshaller<M,F,P>(this.getModelClass(), this.getFilterClass(), this
 					.getParamClass());
 		}
 		return marshaller;

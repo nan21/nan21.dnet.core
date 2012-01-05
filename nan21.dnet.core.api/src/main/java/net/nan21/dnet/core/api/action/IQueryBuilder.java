@@ -5,7 +5,7 @@ import java.util.List;
 import net.nan21.dnet.core.api.ISystemConfig;
 import net.nan21.dnet.core.api.descriptor.IViewModelDescriptor;
 
-public interface IQueryBuilder<F,P> {
+public interface IQueryBuilder<M,F,P> {
 
 	/**
 	 * Add fetch limit constraint. <br>
@@ -14,21 +14,21 @@ public interface IQueryBuilder<F,P> {
 	 * @param resultSize
 	 * @return this
 	 */
-	public IQueryBuilder<F,P> addFetchLimit(int resultStart, int resultSize);
+	public IQueryBuilder<M,F,P> addFetchLimit(int resultStart, int resultSize);
 	/**
 	 * Add sort information. The number of elements in the two arrays must be the same.
 	 * @param columnList Array of field names E.g. {"name", "code"}
 	 * @param senseList Array of sense E.g. {"asc", "desc"}
 	 * @return this
 	 */
-	public IQueryBuilder<F,P> addSortInfo(String[] columnList, String[] senseList);
+	public IQueryBuilder<M,F,P> addSortInfo(String[] columnList, String[] senseList);
 	/**
 	 * Add sort information. The number of elements in the strings must be the same.
 	 * @param columns Comma delimited column names E.g. "name,code"
 	 * @param sense Comma delimited column names E.g. "asc,desc"
 	 * @return this
 	 */
-	public IQueryBuilder<F,P> addSortInfo(String columns, String sense);
+	public IQueryBuilder<M,F,P> addSortInfo(String columns, String sense);
 	
 	/**
 	 * Add sort information. 
@@ -36,30 +36,32 @@ public interface IQueryBuilder<F,P> {
 	 * @return this
 	 * @throws Exception 
 	 */
-	public IQueryBuilder<F,P> addSortInfo(String[] sortTokens) throws Exception;
+	public IQueryBuilder<M,F,P> addSortInfo(String[] sortTokens) throws Exception;
 	 
 	/**
 	 * Add sort information. 
 	 * @param sortTokens 
 	 * @return this
 	 */
-	public IQueryBuilder<F,P> addSortInfo(List<SortToken> sortTokens);
+	public IQueryBuilder<M,F,P> addSortInfo(List<SortToken> sortTokens);
+	
+	public Class<M> getModelClass();
+	public void setModelClass(Class<M> modelClass);
 	
 	public Class<F> getFilterClass();
 	public void setFilterClass(Class<F> filterClass);
 	
 	public Class<P> getParamClass();
 	public void setParamClass(Class<P> paramClass);
- 
-	
+  
 	public F getFilter();
 	public void setFilter(F filter);
 
 	public P getParams();
 	public void setParams(P params);
 
-	public IViewModelDescriptor<F> getDescriptor();
-	public void setDescriptor(IViewModelDescriptor<F> descriptor);
+	public IViewModelDescriptor<M> getDescriptor();
+	public void setDescriptor(IViewModelDescriptor<M> descriptor);
 	
 	/**
 	 * Getter for system configuration.

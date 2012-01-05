@@ -278,6 +278,7 @@ dnet.Translation = Ext.apply({},{
 		,UserTypes_UI : "Tipuri utilizator"
 	   ,Role_UI : "Roluri"
        ,AccessControl_UI : "Drepturi de acces"
+       ,DsAccessControl_UI : "Drepturi de acces - DS"
        ,Assignables_UI : "Resurse alocabile"
        ,MyBookmark_UI : "Marcajele mele"
        ,WorkflowAdmin_UI: "Administrare Workflow"

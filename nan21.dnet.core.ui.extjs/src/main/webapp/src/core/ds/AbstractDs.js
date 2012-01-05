@@ -15,6 +15,6 @@ Ext.define("dnet.base.AbstractDs", {
 	paramFields : null,
 	paramModel : null,
 
-	fetchSize : 30,
+	fetchSize : 30
  
 });

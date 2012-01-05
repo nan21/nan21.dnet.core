@@ -1,6 +1,6 @@
 package net.nan21.dnet.core.presenter.model;
  
-public class AbstractDsModel<E> {
+public abstract class AbstractDsModel<E> {
 	
 	/**
 	 * Required when inserting a list of objects to be able to identify the entity as there is no id yet.

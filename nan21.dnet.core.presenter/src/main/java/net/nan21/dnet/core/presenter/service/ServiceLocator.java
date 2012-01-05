@@ -42,7 +42,7 @@ public class ServiceLocator {
 	 * @return
 	 * @throws Exception
 	 */
-	public <M, P> IDsService<M, P> findDsService(String dsName)
+	public <M,F,P> IDsService<M,F,P> findDsService(String dsName)
 			throws Exception {
 		return this.findDsService(dsName, this.getDsServiceFactories());
 	}
@@ -56,7 +56,7 @@ public class ServiceLocator {
 	 * @return
 	 * @throws Exception
 	 */
-	public <M, P> IDsService<M, P> findDsService(Class<?> modelClass)
+	public <M,F,P> IDsService<M,F,P> findDsService(Class<?> modelClass)
 			throws Exception {
 		return this.findDsService(modelClass.getSimpleName(), this
 				.getDsServiceFactories());
@@ -73,11 +73,11 @@ public class ServiceLocator {
 	 * @return
 	 * @throws Exception
 	 */
-	public <M, P> IDsService<M, P> findDsService(String dsName,
+	public <M,F,P> IDsService<M,F,P> findDsService(String dsName,
 			List<IDsServiceFactory> factories) throws Exception {
-		IDsService<M, P> srv = null;
+		IDsService<M,F,P> srv = null;
 		for (IDsServiceFactory f : factories) {
-			try {
+			try { 
 				srv = f.create(dsName + "Service");
 				if (srv != null) {
 					// srv.setDsServiceFactories(factories);
@@ -141,7 +141,7 @@ public class ServiceLocator {
 	 * @return
 	 * @throws Exception
 	 */
-	public <M, P> IAsgnService<M, P> findAsgnService(String asgnName)
+	public <M,F,P> IAsgnService<M,F,P> findAsgnService(String asgnName)
 			throws Exception {
 		return this.findAsgnService(asgnName, this.getAsgnServiceFactories());
 	}
@@ -157,9 +157,9 @@ public class ServiceLocator {
 	 * @return
 	 * @throws Exception
 	 */
-	public <M, P> IAsgnService<M, P> findAsgnService(String asgnName,
+	public <M,F,P> IAsgnService<M,F,P> findAsgnService(String asgnName,
 			List<IAsgnServiceFactory> factories) throws Exception {
-		IAsgnService<M, P> srv = null;
+		IAsgnService<M,F,P> srv = null;
 		for (IAsgnServiceFactory f : factories) {
 			try {
 				srv = f.create(asgnName);

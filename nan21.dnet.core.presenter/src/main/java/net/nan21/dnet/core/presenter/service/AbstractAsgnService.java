@@ -21,11 +21,12 @@ import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
-public abstract class AbstractAsgnService<M, P, E> {
+public abstract class AbstractAsgnService<M,F,P,E> {
 	@Autowired
 	protected ApplicationContext appContext;
 
 	private Class<M> modelClass;
+	private Class<F> filterClass;
 	private Class<P> paramClass;
 	private Class<E> entityClass;
 
@@ -158,9 +159,9 @@ public abstract class AbstractAsgnService<M, P, E> {
 		this.getTxService().reset();
 	}
 
-	public List<M> findLeft(M filter, P params, IQueryBuilder<M, P> builder)
+	public List<M> findLeft(F filter, P params, IQueryBuilder<M,F,P> builder)
 			throws Exception {
-		QueryBuilderWithJpql<M, P> bld = (QueryBuilderWithJpql<M, P>) builder;
+		QueryBuilderWithJpql<M,F,P> bld = (QueryBuilderWithJpql<M,F,P>) builder;
 
 		bld
 				.addFilterCondition(" e.clientId = :pClientId and e."
@@ -184,9 +185,9 @@ public abstract class AbstractAsgnService<M, P, E> {
 		return result;
 	}
 
-	public List<M> findRight(M filter, P params, IQueryBuilder<M, P> builder)
+	public List<M> findRight(F filter, P params, IQueryBuilder<M,F,P> builder)
 			throws Exception {
-		QueryBuilderWithJpql<M, P> bld = (QueryBuilderWithJpql<M, P>) builder;
+		QueryBuilderWithJpql<M,F,P> bld = (QueryBuilderWithJpql<M,F,P>) builder;
 
 		bld
 				.addFilterCondition(" e.clientId = :pClientId and e."
@@ -210,31 +211,31 @@ public abstract class AbstractAsgnService<M, P, E> {
 		return result;
 	}
 
-	public Long countLeft(M filter, P params, IQueryBuilder<M, P> builder)
+	public Long countLeft(F filter, P params, IQueryBuilder<M,F,P> builder)
 			throws Exception {
 		// TODO Auto-generated method stub
 		return 10L;
 	}
 
-	public Long countRight(M filter, P params, IQueryBuilder<M, P> builder)
+	public Long countRight(F filter, P params, IQueryBuilder<M,F,P> builder)
 			throws Exception {
 		// TODO Auto-generated method stub
 		return 10L;
 	}
 
-	public IDsMarshaller<M, P> createMarshaller(String dataFormat)
+	public IDsMarshaller<M,F,P> createMarshaller(String dataFormat)
 			throws Exception {
-		IDsMarshaller<M, P> marshaller = null;
+		IDsMarshaller<M,F,P> marshaller = null;
 		if (dataFormat.equals(IDsMarshaller.JSON)) {
-			marshaller = new JsonMarshaller<M, P>(this.modelClass,
-					this.paramClass);
+			marshaller = new JsonMarshaller<M,F,P>(this.getModelClass(), this.getFilterClass(),
+					this.getParamClass());
 		}
 		return marshaller;
 	}
 
-	public IQueryBuilder<M, P> createQueryBuilder() throws Exception {
-		QueryBuilderWithJpql<M, P> qb = new QueryBuilderWithJpql<M, P>();
-		qb.setFilterClass(this.getModelClass());
+	public IQueryBuilder<M,F,P> createQueryBuilder() throws Exception {
+		QueryBuilderWithJpql<M,F,P> qb = new QueryBuilderWithJpql<M,F,P>();
+		qb.setFilterClass(this.getFilterClass());
 		qb.setParamClass(this.getParamClass());
 		qb.setDescriptor(this.getDescriptor());
 		qb.setEntityManager(this.getTxService().getEntityManager());
@@ -292,6 +293,14 @@ public abstract class AbstractAsgnService<M, P, E> {
 
 	public void setModelClass(Class<M> modelClass) throws Exception {
 		this.modelClass = modelClass;
+	}
+ 
+	public Class<F> getFilterClass() {
+		return filterClass;
+	}
+
+	public void setFilterClass(Class<F> filterClass) {
+		this.filterClass = filterClass;
 	}
 
 	public Class<P> getParamClass() {

@@ -21,7 +21,7 @@
 	   	
    	<bean id="productInfo" class="net.nan21.dnet.core.web.settings.ProductInfo" scope="singleton">
 		<property name="name" value="DNet eBusiness Suite" />
-		<property name="version" value="1.0.0.M5" />
+		<property name="version" value="1.0.0.M6" />
 	</bean>
 	
 	<bean id="application_uiExtjsSettings" class="net.nan21.dnet.core.web.settings.UiExtjsSettings"

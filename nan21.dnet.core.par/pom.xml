@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.nan21.dnet</groupId>
 	<artifactId>nan21.dnet.core.par</artifactId>
-	<version>1.0.0.M5</version>
+	<version>1.0.0.M6</version>
 	<name>DNet Core - par</name>	
 	<description>DNet Core - par</description>
 	<packaging>par</packaging>	
@@ -16,49 +16,49 @@
 		<dependency>
 			<groupId>net.nan21.dnet</groupId>
 			<artifactId>nan21.dnet.core.db</artifactId>
-			<version>1.0.0.M5</version>
+			<version>1.0.0.M6</version>
 			<type>jar</type>
 			<scope>provided</scope>
 		</dependency>	
 		<dependency>
 			<groupId>net.nan21.dnet</groupId>
 			<artifactId>nan21.dnet.core.domain</artifactId>
-			<version>1.0.0.M5</version>
+			<version>1.0.0.M6</version>
 			<type>jar</type>
 			<scope>provided</scope>
 		</dependency>	
 		<dependency>
 			<groupId>net.nan21.dnet</groupId>
 			<artifactId>nan21.dnet.core.business</artifactId>
-			<version>1.0.0.M5</version>
+			<version>1.0.0.M6</version>
 			<type>jar</type>
 			<scope>provided</scope>
 		</dependency>	
 		<dependency>
 			<groupId>net.nan21.dnet</groupId>
 			<artifactId>nan21.dnet.core.presenter</artifactId>
-			<version>1.0.0.M5</version>
+			<version>1.0.0.M6</version>
 			<type>jar</type>
 			<scope>provided</scope>
 		</dependency>	
 		<dependency>
 			<groupId>net.nan21.dnet</groupId>
 			<artifactId>nan21.dnet.core.ui.extjs</artifactId>
-			<version>1.0.0.M5</version>
+			<version>1.0.0.M6</version>
 			<type>war</type>
 			<scope>provided</scope>
 		</dependency>	
 		<dependency>
 			<groupId>net.nan21.dnet</groupId>
 			<artifactId>nan21.dnet.core.web</artifactId>
-			<version>1.0.0.M5</version>
+			<version>1.0.0.M6</version>
 			<type>war</type>
 			<scope>provided</scope>
 		</dependency>	
 		<dependency>
 			<groupId>net.nan21.dnet</groupId>
 			<artifactId>nan21.dnet.core.welcome</artifactId>
-			<version>1.0.0.M5</version>
+			<version>1.0.0.M6</version>
 			<type>war</type>
 			<scope>provided</scope>
 		</dependency>	

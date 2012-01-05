@@ -107,6 +107,20 @@ Ext.define("dnet.base.DcvFilterFormBuilder", {
 		return this;
 	},
 
+	addFieldContainer : function(config) {
+		Ext.applyIf(config, {
+			xtype: 'fieldcontainer',
+			layout: 'hbox',
+			combineErrors: true,
+			defaults: {
+                    flex: 1,
+                    hideLabel: true
+                }
+		});	
+		this.dcv._elems_.add(config.name, config);
+		return this;
+	},
+	
 	addChildrenTo : function(c, list) {
 		var items = this.dcv._elems_.get(c)["items"] || [];
 		for ( var i = 0, len = list.length; i < len; i++) {
@@ -116,6 +130,48 @@ Ext.define("dnet.base.DcvFilterFormBuilder", {
 		return this;
 	},
 
+	addAuditFilter: function() {
+		this
+			.addDateField({ name:"createdAt_From", dataIndex:"createdAt_From" , emptyText:"From" })
+			.addDateField({ name:"createdAt_To", dataIndex:"createdAt_To" , emptyText:"To"  })
+			.addTextField({ name:"createdBy", dataIndex:"createdBy" , flex: 2,emptyText:"By"  })
+		
+			.addDateField({ name:"modifiedAt_From", dataIndex:"modifiedAt_From" , emptyText:"From" })
+			.addDateField({ name:"modifiedAt_To", dataIndex:"modifiedAt_To" , emptyText:"To"  })
+			.addTextField({ name:"modifiedBy", dataIndex:"modifiedBy" , flex: 2,emptyText:"By"  })
+			
+			.add({
+                xtype: 'fieldcontainer',
+                fieldLabel: 'Created',
+                name : 'created',
+                combineErrors: true,
+                msgTarget : 'side',
+                layout: 'hbox',
+                defaults: {
+                	flex: 3,
+                    hideLabel: true
+                } 
+            })
+            .add({
+                xtype: 'fieldcontainer',
+                fieldLabel: 'Modified',
+                name : 'modified',
+                combineErrors: true,
+                msgTarget : 'side',
+                layout: 'hbox',
+                defaults: {
+                    flex: 3,
+                    hideLabel: true
+                } 
+            })
+            .addPanel({ name:"colAudit", xtype:"fieldset", defaults:{labelWidth:70}, title:"Audit", border:true, collapsible: true, layout:"anchor",width:390})
+            .addChildrenTo("colAudit",["created", "modified" ])
+            .addChildrenTo("created",["createdAt_From", "createdAt_To", "createdBy" ])
+			.addChildrenTo("modified",["modifiedAt_From", "modifiedAt_To", "modifiedBy" ])
+			.addChildrenTo("main",["colAudit"])
+			return this;
+	},
+	
 	add : function(config) {
 		this.applySharedConfig(config);
 		return this;

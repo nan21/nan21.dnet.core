@@ -3,7 +3,6 @@ package net.nan21.dnet.core.presenter.marshaller;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.TimeZone;
 
 import net.nan21.dnet.core.api.action.IActionResultFind;
 import net.nan21.dnet.core.api.action.IActionResultRpcData;
@@ -16,14 +15,15 @@ import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.SerializationConfig;
 import org.codehaus.jackson.map.type.TypeFactory;
 
-public class JsonMarshaller<M, P> extends AbstractMarshaller<M, P>
-		implements IDsMarshaller<M, P> {
+public class JsonMarshaller<M,F,P> extends AbstractMarshaller<M,F,P>
+		implements IDsMarshaller<M,F,P> {
 
 	private ObjectMapper mapper;
 	 
-	public JsonMarshaller(Class<M> modelClass, Class<P> paramClass) {
+	public JsonMarshaller(Class<M> modelClass, Class<F> filterClass, Class<P> paramClass) {
 		
 		this.modelClass = modelClass;
+		this.filterClass = filterClass;
 		this.paramClass = paramClass;
 		
 		this.mapper = new ObjectMapper();
@@ -53,6 +53,12 @@ public class JsonMarshaller<M, P> extends AbstractMarshaller<M, P>
 		return this.mapper.readValue(source,
     			TypeFactory.collectionType(List.class, getModelClass()));
 	}	
+	
+	@Override
+	public F readFilterFromString(String source) throws Exception {
+		return this.mapper.readValue(source, getFilterClass());
+	}
+	
 	@Override
 	public P readParamsFromString(String source) throws Exception {
 		if(getParamClass() == null) {
@@ -75,6 +81,12 @@ public class JsonMarshaller<M, P> extends AbstractMarshaller<M, P>
 	public String writeListToString(List<M> list) throws Exception {
 		return this.mapper.writeValueAsString(list);
 	}
+	
+	@Override
+	public String writeFilterToString(F f) throws Exception {
+		return this.mapper.writeValueAsString(f);
+	}
+	
 	@Override
 	public String writeParamsToString(P p) throws Exception {
 		return this.mapper.writeValueAsString(p);
@@ -109,6 +121,12 @@ public class JsonMarshaller<M, P> extends AbstractMarshaller<M, P>
 			throws Exception {
 		this.mapper.writeValue(out, list);
 	}
+	
+	@Override
+	public void writeFilterToStream(F f, OutputStream out) throws Exception {
+		this.mapper.writeValue(out, f);
+	}
+	
 	@Override
 	public void writeParamsToStream(P p, OutputStream out) throws Exception {
 		this.mapper.writeValue(out, p);
@@ -134,5 +152,11 @@ public class JsonMarshaller<M, P> extends AbstractMarshaller<M, P>
 			throws Exception {
 		this.mapper.writeValue(out, result);
 	}
+
+	
+
+	
+
+	
  
 }

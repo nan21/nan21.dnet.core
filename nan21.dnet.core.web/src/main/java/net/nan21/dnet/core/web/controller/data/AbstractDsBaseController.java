@@ -7,10 +7,11 @@ import net.nan21.dnet.core.api.service.IEntityService;
 import net.nan21.dnet.core.api.session.IAuthorizeDsAction;
 import net.nan21.dnet.core.presenter.service.ServiceLocator;
 
-public class AbstractDsBaseController<M, P>
+public class AbstractDsBaseController<M,F,P>
 		extends AbstractDataController  {
 	
 	protected Class<M> modelClass;
+	protected Class<F> filterClass;
 	protected Class<P> paramClass;
 
 	protected IAuthorizeDsAction authorizeActionService;
@@ -27,13 +28,22 @@ public class AbstractDsBaseController<M, P>
 		return this.modelClass;
 	}
  
+	 
+	public Class<F> getFilterClass() {
+		return filterClass;
+	}
+
+	public void setFilterClass(Class<F> filterClass) {
+		this.filterClass = filterClass;
+	}
+
 	/**
 	 * Lookup a data-source service.
 	 * @param dsName
 	 * @return
 	 * @throws Exception
 	 */
-	public IDsService<M, P> findDsService(String dsName) throws Exception {
+	public IDsService<M,F,P> findDsService(String dsName) throws Exception {
 		return this.getServiceLocator().findDsService(dsName);
 	}
 
@@ -48,27 +58,7 @@ public class AbstractDsBaseController<M, P>
 			throws Exception {
 		return this.getServiceLocator().findEntityService(entityClass);
 	}
-	
-	
-//	protected IDsService<M, P> getDsService(String dsName) throws Exception {
-//		IDsService<M, P> srv = null;
-//		for (IDsServiceFactory f : serviceFactories) {
-//			try {
-//				srv = f.create(dsName + "Service");
-//				if (srv != null) {
-//					srv.setDsServiceFactories(serviceFactories);
-//					srv.setSystemConfig(this.systemConfig);
-//					return srv;
-//				}
-//			} catch (NoSuchBeanDefinitionException e) {
-//				// service not found in this factory, ignore
-//			}
-//		}
-//		throw new Exception(dsName + "Service not found !");
-//	}
-//	
-	 
-
+ 
 	public IAuthorizeDsAction getAuthorizeActionService() {
 		return authorizeActionService;
 	}

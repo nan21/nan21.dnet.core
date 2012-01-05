@@ -2,7 +2,6 @@ package net.nan21.dnet.core.presenter.model;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 import javax.persistence.QueryHint;
@@ -15,7 +14,7 @@ import net.nan21.dnet.core.api.annotation.DsQueryHints;
 import net.nan21.dnet.core.api.annotation.SortField;
 import net.nan21.dnet.core.api.descriptor.IViewModelDescriptor;
 
-public class AbstractViewModelDescriptor<M> implements IViewModelDescriptor<M> {
+public abstract class AbstractViewModelDescriptor<M> implements IViewModelDescriptor<M> {
 	
 	private Class<M> modelClass;
 	
