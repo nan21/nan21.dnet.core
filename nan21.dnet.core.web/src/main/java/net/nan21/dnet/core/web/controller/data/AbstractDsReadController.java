@@ -87,7 +87,8 @@ public class AbstractDsReadController<M,F,P> extends
 
 			IActionResultFind result = this.packfindResult(list, params,
 					totalCount);
-			return marshaller.writeResultToString(result);
+			String out = marshaller.writeResultToString(result);
+			return out;
 		} catch (Exception e) {
 			return this.handleException(e, response);
 		} finally {

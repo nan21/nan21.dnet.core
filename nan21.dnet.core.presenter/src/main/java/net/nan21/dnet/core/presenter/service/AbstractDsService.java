@@ -105,7 +105,7 @@ public abstract class AbstractDsService<M,F,P,E> extends AbstractDsProcessor  {
 	}
 
 	public M findById(Object id) throws Exception {
-		Method setter = this.getModelClass().getDeclaredMethod("setId",
+		Method setter = this.getFilterClass().getDeclaredMethod("setId",
 				Object.class);
 		F filter = this.getFilterClass().newInstance();
 		setter.invoke(filter, id);

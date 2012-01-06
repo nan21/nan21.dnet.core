@@ -70,15 +70,25 @@ public class FileUploadController {
        return "{success:true}";
     }
     @ExceptionHandler(value=Exception.class) 
+    @ResponseBody
     protected String handleException(Exception e, HttpServletResponse response)  throws IOException {
-		response.setStatus(500);
-		if (e.getCause() != null ) {
-			response.getOutputStream().print(e.getCause().getLocalizedMessage());	
-		} else {
-			response.getOutputStream().print(e.getLocalizedMessage());		
-		}			 
-		return null;
+		
+    	String msg = "";
+    	
+    	response.setStatus(500);
+    	return this.buildErrorMessage(e.getLocalizedMessage());
+//    	
+//		if (e.getCause() != null ) {
+//			response.getOutputStream().print(this.buildErrorMessage(e.getCause().getLocalizedMessage()));	
+//		} else {
+//			response.getOutputStream().print(this.buildErrorMessage(e.getLocalizedMessage()));		
+//		}			 
+//		return null;
 	}
+    
+    private String buildErrorMessage(String msg) {
+    	return "{ \"success\":false, \"msg\":\""+ msg +"\"}";
+    }
     
 	public WebApplicationContext getWebappContext() {
 		return webappContext;
