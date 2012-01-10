@@ -92,7 +92,7 @@ Ext.define("dnet.base.AbstractUi", {
 		this._title_ = Dnet.translate("ui", this._name_.substring(this._name_.lastIndexOf(".")+1 )  ); //.substr(this._name_.strpos() )
 
     	this.callParent(arguments);
-    	this.addListener("afterlayout", this._onReady_, this);
+    	this.mon(this, "afterlayout", this._onReady_, this);
  
     }
 	 
@@ -263,7 +263,26 @@ Ext.define("dnet.base.AbstractUi", {
 		aw.show();
 		aw._controller_.params.objectId = objectId ;
 		aw._controller_.initAssignement();				
-    }
+    },
+    
+    
+    beforeDestroy: function() {//alert("sdfsd");
+		this._elems_.each(this.destroyElement, this);	
+		this._tlbitms_.each(function(item) { try { Ext.destroy(item); } catch(e) { alert(e);} } );	
+		this._tlbs_.each(function(item) { try { Ext.destroy(item); } catch(e) { alert(e);} } );	
+		this._dcs_.each(function(item) { try { Ext.destroy(item); } catch(e) { alert(e);} } );		
+	},
+//	
+	destroyElement: function(elemCfg) {
+		try{			 
+			var c =  Ext.getCmp( elemCfg.id );
+			if (c) {
+				Ext.destroy(c);
+			}			
+		} catch(e) {
+			alert(e);
+		}
+	}
 });
 /*
 	define the key as one of the following:

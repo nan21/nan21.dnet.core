@@ -135,49 +135,76 @@ Ext.define("dnet.base.AbstractDcvGrid", {
 
 		this.callParent(arguments);
 
-		this._controller_.store.on("load", function(store, records, options) {
-			this._onStoreLoad_(store, records, options);
-		}, this);
-
-		this._controller_.on("selectionChange", function(evnt) { // return ;
-					var s = evnt.dc.getSelectedRecords();
-					if (s != this.getSelectionModel().getSelection()) {
-						this.getSelectionModel().suspendEvents();
-						this.getSelectionModel().select(s, false);
-						this.getSelectionModel().resumeEvents();
-					}
-				}, this);
-	}
-
-	,
+		this.mon(this._controller_.store, "load", this._onStoreLoad_, this);
+		this.mon(this._controller_, "selectionChange", this.onController_selectionChange, this);
+	},
+	
+	// *********** event handlers ************************
+	
+	
+	onController_selectionChange: function(evnt) { // return ;
+		var s = evnt.dc.getSelectedRecords();
+		if (s != this.getSelectionModel().getSelection()) {
+			this.getSelectionModel().suspendEvents();
+			this.getSelectionModel().select(s, false);
+			this.getSelectionModel().resumeEvents();
+		}
+	},
+	 
+	
+	_onStoreLoad_ : function(store, operation, eopts) {
+		if (!this._noExport_) {
+			if (store.getCount() > 0) {
+				this._getElement_("_btnExport_").enable();
+			} else {
+				this._getElement_("_btnExport_").disable();
+			}
+		}
+		if (store.getCount() > 0) {
+			if (this.selModel.getCount() == 0) {
+				this.selModel.select(0);
+			} else {
+				this._controller_.setSelectedRecords(this.selModel
+						.getSelection());
+			}
+		}
+	},
+	 
+	 
+	// ****************  API   *****************
+	
 	_getElement_ : function(name) {
 		return Ext.getCmp(this._elems_.get(name).id);
 	},
+	
+	
 	_getElementConfig_ : function(name) {
 		return this._elems_.get(name);
-	}
-
-	,
+	},
+	
 	_startDefine_ : function() {
 	},
+	
 	_endDefine_ : function() {
-	}
-
-	,
+	},
+	
 	_defineColumns_ : function() {
 	},
+	
 	_beforeDefineColumns_ : function() {
 		return true;
 	},
+	
 	_afterDefineColumns_ : function() {
-	}
-
-	,
+	},
+	
 	_defineElements_ : function() {
 	},
+	
 	_beforeDefineElements_ : function() {
 		return true;
 	},
+	
 	_afterDefineElements_ : function() {
 	},
 
@@ -206,25 +233,7 @@ Ext.define("dnet.base.AbstractDcvGrid", {
 		}
 		this._layoutWindow_.show();
 	},
-
-	_onStoreLoad_ : function(store, records, options) {
-		if (!this._noExport_) {
-			if (store.getCount() > 0) {
-				this._getElement_("_btnExport_").enable();
-			} else {
-				this._getElement_("_btnExport_").disable();
-			}
-		}
-		if (store.getCount() > 0) {
-			if (this.selModel.getCount() == 0) {
-				this.selModel.select(0);
-			} else {
-				this._controller_.setSelectedRecords(this.selModel
-						.getSelection());
-			}
-		}
-	},
-
+ 
 	_afterEdit_ : function(e) {
 	},
 
@@ -284,6 +293,11 @@ Ext.define("dnet.base.AbstractDcvGrid", {
 			handler : this._doLayoutManager_,
 			scope : this
 		});
+	},
+	
+	beforeDestroy: function() {
+		this._controller_ = null;
+		this.callParent(); 
 	}
 
 });

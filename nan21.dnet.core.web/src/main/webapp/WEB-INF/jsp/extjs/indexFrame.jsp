@@ -16,12 +16,12 @@
 	<script type="text/javascript" src="${ urlUiExtjsCore }/config.js"></script>
 	<script type="text/javascript">
 	  checkAndStart(); 
-	  __checkAuthToken();
+	  __checkAuthToken();	   
 	</script>
   
 	<link rel="stylesheet" type="text/css" href="${ urlUiExtjsCore }/resources/css/dnet.css"/>
 </head>
-<body  onUnload="javascript: onContentPanelClose('_ALL_'); ">
+<body>
 	
 	<%@ include file="_loading_mask.jspf" %> 
 
@@ -50,6 +50,7 @@
     
  	<script>
 	var theFrameInstance = null;
+	var __theViewport__ = null;
     Ext.onReady(function(){
 
     	<%@ include file="_on_ready.jspf" %>
@@ -65,7 +66,7 @@
         				afterrender : { fn: function(p) { theFrameInstance = this; } }
         			}  	         
          	      }	]};
-    	var __theViewport__ = new Ext.Viewport(cfg);
+    	__theViewport__ = new Ext.Viewport(cfg);
     	//__theViewport__.doLayout(); 
 	});
 

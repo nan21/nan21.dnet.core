@@ -8,7 +8,7 @@ dnet.base.FrameButtonStateManager =  {
 		,record_is_clean: function(btnName, state, dcName, frame, options) {
 			var andFn = options.and || function(evnt) {return true;};
 			var theDc = frame._getDc_(dcName);
-			theDc.on("recordChange", function(evnt) {
+			theDc.mon(theDc, "recordChange", function(evnt) {
 				var btn = this._getElement_(btnName); 
 				if(btn){
 					if (evnt.dc.getRecord() && !evnt.dc.isCurrentRecordDirty() && andFn(evnt)) {
@@ -18,7 +18,7 @@ dnet.base.FrameButtonStateManager =  {
 					}					
 				}				 
 			 }, frame );
-			theDc.on("statusChange", function(evnt) {
+			theDc.mon(theDc, "statusChange", function(evnt) {
 				var btn = this._getElement_(btnName); 
 				if(btn){
 					if (evnt.dc.getRecord() && !evnt.dc.isCurrentRecordDirty() && andFn(evnt)) {
@@ -33,7 +33,7 @@ dnet.base.FrameButtonStateManager =  {
 		,record_is_dirty: function(btnName, state, dcName, frame, options) {
 			var andFn = options.and || function(evnt) {return true;}
 			var theDc = frame._getDc_(dcName);
-			theDc.on("recordChange", function(evnt) {
+			theDc.mon(theDc, "recordChange", function(evnt) {
 				var btn = this._getElement_(btnName); 
 				if(btn){
 					if (evnt.dc.getRecord() && evnt.dc.isCurrentRecordDirty() && andFn(evnt)) {
@@ -43,7 +43,7 @@ dnet.base.FrameButtonStateManager =  {
 					}					
 				}				 
 			 }, frame );
-			theDc.on("statusChange", function(evnt) {
+			theDc.mon(theDc, "statusChange", function(evnt) {
 				var btn = this._getElement_(btnName); 
 				if(btn){
 					if (evnt.dc.getRecord() && evnt.dc.isCurrentRecordDirty() && andFn(evnt)) {
@@ -59,7 +59,7 @@ dnet.base.FrameButtonStateManager =  {
 		,record_status_is_new: function(btnName, state, dcName, frame, options) {
 			var andFn = options.and || function(evnt) {return true;};
 			var theDc = frame._getDc_(dcName);
-			theDc.on("recordChange", function(evnt) {
+			theDc.mon(theDc, "recordChange", function(evnt) {
 				var btn = this._getElement_(btnName); 
 				if(btn){
 					if (evnt.status=='insert'&& andFn(evnt)) {
@@ -74,7 +74,7 @@ dnet.base.FrameButtonStateManager =  {
 		,record_status_is_edit: function(btnName, state, dcName, frame, options) {
 			var andFn = options.and || function(evnt) {return true;};
 			var theDc = frame._getDc_(dcName);
-			theDc.on("recordChange", function(evnt) {
+			theDc.mon(theDc, "recordChange", function(evnt) {
 				var btn = this._getElement_(btnName); 
 				if(btn){
 					if (evnt.status=='update'&& andFn(evnt)) {
@@ -91,7 +91,7 @@ dnet.base.FrameButtonStateManager =  {
 		,selected_zero: function(btnName, state, dcName, frame, options) {
 			var andFn = options.and || function(evnt) {return true;};
 			var theDc = frame._getDc_(dcName);
-			theDc.on("recordChange", function(evnt) {
+			theDc.mon(theDc, "recordChange", function(evnt) {
 				var btn = this._getElement_(btnName); 
 				if(btn){
 					if (evnt.dc.selectedRecords.length == 0&& andFn(evnt)) {
@@ -105,7 +105,7 @@ dnet.base.FrameButtonStateManager =  {
 		,selected_one: function(btnName, state, dcName, frame, options) {
 			var andFn = options.and || function(evnt) {return true;};
 			var theDc = frame._getDc_(dcName);
-			theDc.on("selectionChange", function(evnt) {
+			theDc.mon(theDc, "selectionChange", function(evnt) {
 				var btn = this._getElement_(btnName); 
 				if(btn){
 					if (evnt.dc.selectedRecords.length == 1&& andFn(evnt)) {
@@ -119,7 +119,7 @@ dnet.base.FrameButtonStateManager =  {
 		,selected_one_clean: function(btnName, state, dcName, frame, options) {
 			var andFn = options.and || function(evnt) {return true;};
 			var theDc = frame._getDc_(dcName);
-			theDc.on("selectionChange", function(evnt) {
+			theDc.mon(theDc, "selectionChange", function(evnt) {
 				var btn = this._getElement_(btnName); 
 				if(btn){
 					if (evnt.dc.selectedRecords.length == 1 && !evnt.dc.isCurrentRecordDirty()&& andFn(evnt)) {
@@ -129,7 +129,7 @@ dnet.base.FrameButtonStateManager =  {
 					}					
 				}				 
 			 }, frame );
-			theDc.on("recordChange", function(evnt) {
+			theDc.mon(theDc, "recordChange", function(evnt) {
 				var btn = this._getElement_(btnName); 
 				if(btn){
 					if (evnt.state=='clean' && evnt.dc.selectedRecords.length == 1&& andFn(evnt)) {
@@ -144,7 +144,7 @@ dnet.base.FrameButtonStateManager =  {
 		,selected_one_dirty: function(btnName, state, dcName, frame, options) {
 			var andFn = options.and || function(evnt) {return true;};
 			var theDc = frame._getDc_(dcName);
-			theDc.on("selectionChange", function(evnt) {
+			theDc.mon(theDc, "selectionChange", function(evnt) {
 				var btn = this._getElement_(btnName); 
 				if(btn){
 					if (evnt.dc.selectedRecords.length == 1 && evnt.dc.isCurrentRecordDirty()&& andFn(evnt)) {
@@ -154,7 +154,7 @@ dnet.base.FrameButtonStateManager =  {
 					}					
 				}				 
 			 }, frame );
-			theDc.on("recordChange", function(evnt) {
+			theDc.mon(theDc, "recordChange", function(evnt) {
 				var btn = this._getElement_(btnName); 
 				if(btn){
 					if (evnt.state=='dirty' && evnt.dc.selectedRecords.length == 1&& andFn(evnt)) {
@@ -168,7 +168,7 @@ dnet.base.FrameButtonStateManager =  {
 		,selected_many: function(btnName, state, dcName, frame, options) {
 			var andFn = options.and || function(evnt) {return true;};
 			var theDc = frame._getDc_(dcName);
-			theDc.on("selectionChange", function(evnt) {
+			theDc.mon(theDc, "selectionChange", function(evnt) {
 				var btn = this._getElement_(btnName); 
 				if(btn){
 					if (evnt.dc.selectedRecords.length > 1&& andFn(evnt)) {
@@ -182,7 +182,7 @@ dnet.base.FrameButtonStateManager =  {
 		,selected_not_zero: function(btnName, state, dcName, frame, options) {
 			var andFn = options.and || function(evnt) {return true;};
 			var theDc = frame._getDc_(dcName);
-			theDc.on("selectionChange", function(evnt) {
+			theDc.mon(theDc, "selectionChange", function(evnt) {
 				var btn = this._getElement_(btnName); 				
 				if(btn){
 					if (evnt.dc.selectedRecords.length >0 && andFn(evnt)) {

@@ -87,7 +87,7 @@ dnet.base.FrameNavigatorWithIframe = {
 		var vb = getApplication().getViewBody();
 
 		if (Ext.isEmpty(document.getElementById(ifrID))
-				&& !Ext.isEmpty(window.frames[ifrID])) {
+				&& !Ext.isEmpty(window.frames[ifrID])) {  alert("am ifrme");
 			delete window.frames[ifrID];
 		}
 
@@ -107,6 +107,19 @@ dnet.base.FrameNavigatorWithIframe = {
 				return;
 			}
 			vb.add(new Ext.Panel({
+				
+				onDestroy: function() { 
+					Ext.destroy(window.frames[this.n21_iframeID].__theViewport__);
+					Ext.destroy(window.frames[this.n21_iframeID].theFrameInstance);			 
+					try {
+						delete window.frames[this.n21_iframeID];
+					} catch (e) {
+						alert(e);
+					}
+					this.callParent();
+				},
+				
+				
 				title : (resourceType != "")
 						? resourceType + ":" + frame
 						: frame,
@@ -124,16 +137,8 @@ dnet.base.FrameNavigatorWithIframe = {
 						+ ifrID
 						+ '" src="'
 						+ params.url
-						+ '" style="border:0;width:100%;height:100%;overflow: hidden" FRAMEBORDER="no"></iframe></div>',
-				listeners : {
-					beforeclose : {
-						scope : this,
-						fn : function(tab, options) {
-							//onContentPanelClose(panel.initialConfig.n21_iframeID);
-							return true;
-						}
-					}
-				}
+						+ '" style="border:0;width:100%;height:100%;overflow: hidden" FRAMEBORDER="no"></iframe></div>'
+				 
 			}));
 			vb.setActiveTab(tabID);
 		}

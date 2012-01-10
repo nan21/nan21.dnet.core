@@ -66,51 +66,12 @@ Ext.define("dnet.base.AbstractDcvForm", {
 		this.callParent(arguments);
 		
 		
-		this._controller_.store.on("update", function(store, rec, op, eopts) {	
-			//dnet.base.Logger.debug("dnet.base.AbstractDcvForm. store.on.update" );	 
-			this.updateBound(rec);
-			//this._controller_.commands["doSave"].locked = !this.getForm().isValid();
-		}, this);
-		
-		/**
-		 * use the first record from the result list as reference 
-		 * see Store on write event handler defined in AbstractDc.
-		 */
-		this._controller_.store.on("write", function(store, operation, eopts) {	
-			if (operation.action == "create") {
-				this._applyContextRules_(operation.resultSet.records[0]);
-			}
-		}, this);
-		
-		this._controller_.store.on("datachanged", function(store, eopts) {	
-			//dnet.base.Logger.debug("dnet.base.AbstractDcvForm. store.on.datachanged" );	 
-			if(this.getForm().getRecord()) {
-				this.updateBound(this._controller_.getRecord());
-			}			
-		}, this);
-		
-		
+		this.mon(this._controller_.store, "update", this.onStore_update, this);		 
+		this.mon(this._controller_.store, "write", this.onStore_write, this);		
+		this.mon(this._controller_.store, "datachanged", this.onStore_datachanged, this);		 
+		this.mon(this._controller_, "recordChange", this.onController_recordChange, this);	 
 		 
-		this._controller_.on("recordChange", function(evnt) {		
-			//dnet.base.Logger.debug("dnet.base.AbstractDcvForm. controller.on.recordChange, form.dirty="+this.getForm().isDirty() );	 
-			var newRecord = evnt.newRecord;
-			var oldRecord = evnt.oldRecord;
-			var newIdx = evnt.newIdx;
-			if (newRecord != oldRecord) {
-				this.onUnbind(oldRecord);
-				this.onBind(newRecord);		
-			} 
-		}, this);	 
-		
- 
-		this.on("afterrender", function() { 
-			if ( this._controller_&& this._controller_.getRecord()) { 
-				this.onBind(this._controller_.getRecord()); 
-			} else { 
-				this.onUnbind(null);
-			}
-			this._afterRender_();
-			}, this);
+		this.mon(this, "afterrender", this.on_afterrender, this);
 		
 		if (this._controller_.commands.doSave ) {
 			this._controller_.commands.doSave.beforeExecute = Ext.Function.createInterceptor(
@@ -133,14 +94,65 @@ Ext.define("dnet.base.AbstractDcvForm", {
 //		this.getForm().on("validitychange", function(form, isValid, eopts) {
 //			this._controller_.commands["doSave"].locked = !isValid;
 //		}, this);
-	}
+	},
  
-	,_afterRender_: function() {
-	}
-    ,_startDefine_: function () {}
-    ,_endDefine_: function () {}
-    ,_getController_: function() { return this._controller_;}
-    ,_getElement_: function(name) {
+	// *********** event handlers ************************
+	
+	on_afterrender: function() { 
+		if ( this._controller_&& this._controller_.getRecord()) { 
+			this.onBind(this._controller_.getRecord()); 
+		} else { 
+			this.onUnbind(null);
+		}
+		this._afterRender_();
+	},
+	
+	onController_recordChange: function(evnt) {		
+		//dnet.base.Logger.debug("dnet.base.AbstractDcvForm. controller.on.recordChange, form.dirty="+this.getForm().isDirty() );	 
+		var newRecord = evnt.newRecord;
+		var oldRecord = evnt.oldRecord;
+		var newIdx = evnt.newIdx;
+		if (newRecord != oldRecord) {
+			this.onUnbind(oldRecord);
+			this.onBind(newRecord);		
+		} 
+	},
+		
+		
+	onStore_datachanged: function(store, eopts) {			 
+		if(this.getForm().getRecord()) {
+			this.updateBound(this._controller_.getRecord());
+		}	
+	},
+	
+	onStore_write: function(store, operation, eopts) {
+		/**
+		 * use the first record from the result list as reference 
+		 * see Store on write event handler defined in AbstractDc.
+		 */
+		if (operation.action == "create") {
+			this._applyContextRules_(operation.resultSet.records[0]);
+		}
+	},
+	
+	onStore_update: function(store, rec, op, eopts) {			 
+		this.updateBound(rec);		 
+	},
+	
+	
+	
+	// ****************  API   *****************
+	
+	_afterRender_: function() {
+	},
+	
+	_startDefine_: function () {},
+	
+	_endDefine_: function () {},
+	
+	_getController_: function() { return this._controller_;},
+	
+	_getElement_: function(name) {
 		try { 
 			return Ext.getCmp( this._elems_.get(name).id);
 		} catch(e) { /*if (console) { console.log(name+':'+ e.message);}*/ }
@@ -299,8 +311,29 @@ Ext.define("dnet.base.AbstractDcvForm", {
 			this._builder_ = new dnet.base.DcvFormBuilder({dcv: this});
 		}	
 		return this._builder_;
+	},
+	
+	beforeDestroy: function() { 
+		//console.log("AbstractDcvFilterForm.beforeDestroy");
+		this._controller_ = null;
+		this.callParent();
+		this._elems_.each(this.unlinkElem, this);
+		this._elems_.each(this.destroyElement, this);		 
+	},
+	
+	unlinkElem: function(item, index, len) {
+		item._dcView_ = null;
+	},
+	
+ 	destroyElement: function(elemCfg) {
+		try{			 
+			var c =  Ext.getCmp( elemCfg.id );
+			if (c) {
+				Ext.destroy(c);
+			}			
+		} catch(e) {
+			alert(e);
+		}
 	}
-	
-	
 	
 });

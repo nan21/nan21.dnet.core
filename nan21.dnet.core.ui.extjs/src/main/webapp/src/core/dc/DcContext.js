@@ -84,14 +84,14 @@ Ext.define("dnet.base.DcContext", {
 			this.childDc.doQuery();
 		}, this);
 
-		this.parentDc.on("recordChange", function() {
+		this.parentDc.mon(this.parentDc, "recordChange", function() {
 			this._updateCtxData_("recordChange");
 		}, this);
-		this.childDc.on("updateActionsState", function() {
+		this.childDc.mon(this.childDc, "updateActionsState", function() {
 			this.parentDc.updateActionsState();
 		}, this);
 
-		this.parentDc.store.on("write", function(store, operation, eopts) {
+		this.parentDc.mon(this.parentDc.store, "write", function(store, operation, eopts) {
 
 			if (this.reloadChildrenOnParentInsert
 					&& operation.action == "create") {

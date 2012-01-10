@@ -84,21 +84,7 @@
      }
   }
 
-      function onContentPanelClose(clientSession) { return;
-        var baseUrlCfg = {};
-        baseUrlCfg[__Http__.REQUEST_PARAM_ACTION] = __Http__.REQUEST_PARAM_ACTION_CUSTOM;
-        baseUrlCfg[__Http__.REQUEST_PARAM_CUSTOM_ACTION] =  "logout";
-        baseUrlCfg[__Http__.REQUEST_PARAM_CLIENT_SESSION] =  clientSession;
-        baseUrlCfg[__Http__.REQUEST_PARAM_DC] = "_SessionManager_";
-				baseUrlCfg[__Http__.REQUEST_PARAM_FETCH_DATA_FORMAT] = __Http__.DATA_FORMAT_JSON;
-				
-        Ext.Ajax.request({
-             url: buildUrl(baseUrlCfg)
-            ,scope:this
-          });
-
-      }
-
+   
 
       function global_after_ajax_failure(response , options) {
     	Ext.MessageBox.hide();

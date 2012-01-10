@@ -1,5 +1,5 @@
 
-
+/*
 Ext.override(Ext.layout.component.AbstractDock, {
 	afterRemove : function(item) {
 		this.callParent(arguments);
@@ -16,6 +16,9 @@ Ext.override(Ext.layout.component.AbstractDock, {
 	}
 
 });
+*/
+
+
 Ext.define("dnet.base.ActionBuilder", {
 	frame : null,
 	name : null,
@@ -73,7 +76,7 @@ Ext.define("dnet.base.ActionBuilder", {
 		var a = this.frame._getDc_(cfg.dc).actions.doNew;
 		this.frame._tlbitms_.add(this.name + "__" + a.initialConfig.name, a);
 		if (cfg.autoEdit != "false") {
-			this.frame._getDc_(cfg.dc).on('afterDoNew', function() {
+			this.frame.mon(this.frame._getDc_(cfg.dc), "afterDoNew", function() {
 						this._invokeTlbItem_("doEdit", cfg.tlb);
 					}, this.frame);
 		} else {
@@ -98,7 +101,7 @@ Ext.define("dnet.base.ActionBuilder", {
 						dnet.base.DcExceptions.showMessage(e);
 					}
 				};
-				this.frame._getDc_(cfg.dc).on('afterDoNew', fn, this.frame);
+				this.frame.mon(this.frame._getDc_(cfg.dc), "afterDoNew", fn, this.frame);
 			}
 		}
 		return this;
@@ -153,7 +156,7 @@ Ext.define("dnet.base.ActionBuilder", {
 		a.setHandler(fn, this.frame);
 		this.frame._tlbitms_.add(this.name + "__" + a.initialConfig.name, a);
 
-		this.frame._getDc_(cfg.dc).on("onEdit", function() {
+		this.frame.mon(this.frame._getDc_(cfg.dc), "onEdit", function() {
 					this._invokeTlbItem_("doEdit", cfg.tlb);
 				}, this.frame);
 		return this;
@@ -170,7 +173,7 @@ Ext.define("dnet.base.ActionBuilder", {
 		var a = this.frame._getDc_(cfg.dc).actions.doCancel;
 		this.frame._tlbitms_.add(this.name + "__" + a.initialConfig.name, a);
 		if (cfg.autoBack) {
-			this.frame._getDc_(cfg.dc).on('recordChanged', function(event) {
+			this.frame.mon(this.frame._getDc_(cfg.dc), 'recordChanged', function(event) {
 						if (event.record == null) {
 							this._invokeTlbItem_("doBack", cfg.tlb);
 						}

@@ -131,38 +131,39 @@ Ext.define("dnet.base.AbstractDcvEditableGrid", {
 
 		this.callParent(arguments);
 
-		this._controller_.store.on("load", this._onStoreLoad_, this);
+		this.mon(this._controller_.store, "load", this._onStoreLoad_, this);
 		this.on("afteredit", this._afterEdit_, this);
-		this._controller_.on("selectionChange", function(evnt) {
-			var s = evnt.dc.getSelectedRecords();
-			if (s != this.getSelectionModel().getSelection()) {
-				this.getSelectionModel().suspendEvents();
-				this.getSelectionModel().select(s, false);
-				this.getSelectionModel().resumeEvents();
-			}
-		}, this);
+		this.mon(this._controller_, "selectionChange", this.onController_selectionChange, this);
 
-	}
-
-	,
+	},
+	
+	onController_selectionChange: function(evnt) {
+		var s = evnt.dc.getSelectedRecords();
+		if (s != this.getSelectionModel().getSelection()) {
+			this.getSelectionModel().suspendEvents();
+			this.getSelectionModel().select(s, false);
+			this.getSelectionModel().resumeEvents();
+		}
+	},
+	
 	_getElement_ : function(name) {
 		return Ext.getCmp(this._elems_.get(name).id);
 	},
+	
 	_getElementConfig_ : function(name) {
 		return this._elems_.get(name);
-	}
-
-	,
+	},
+	
 	_get_ : function(name) {
 		return this._getElement_(name);
 	},
 	_getConfig_ : function(name) {
 		return this._elems_.get(name);
-	}
-
-	,
+	},
+	
 	_startDefine_ : function() {
 	},
+	
 	_endDefine_ : function() {
 	},
 
@@ -284,7 +285,13 @@ Ext.define("dnet.base.AbstractDcvEditableGrid", {
 			});
 		}
 		return this._builder_;
+	},
+	
+	beforeDestroy: function() {
+		this._controller_ = null;
+		this.callParent(); 
 	}
+	
 });
 
 /*

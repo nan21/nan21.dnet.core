@@ -21,7 +21,7 @@
   
 	<link rel="stylesheet" type="text/css" href="${ urlUiExtjsCore }/resources/css/dnet.css"/>
 </head>
-<body  onUnload="javascript: onContentPanelClose('_ALL_'); ">
+<body>
 	
 	<%@ include file="_loading_mask.jspf" %> 
 

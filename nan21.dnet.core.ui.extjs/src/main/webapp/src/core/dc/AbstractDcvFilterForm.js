@@ -68,7 +68,7 @@ Ext.define("dnet.base.AbstractDcvFilterForm", {
 				this.updateBound(this._controller_.getFilter());
 			}
 		});
-		this._controller_.on("parameterValueChanged", this._onParameterValueChanged_, this);
+		this.mon(this._controller_, "parameterValueChanged", this._onParameterValueChanged_, this);
 	}, 
 	
 	
@@ -186,5 +186,29 @@ Ext.define("dnet.base.AbstractDcvFilterForm", {
 			});
 		}
 		return this._builder_;
+	},
+	
+	beforeDestroy: function() { 
+		//console.log("AbstractDcvFilterForm.beforeDestroy");
+		this._controller_ = null;
+		this.callParent();
+		this._elems_.each(this.unlinkElem, this);
+		this._elems_.each(this.destroyElement, this);	 
+		 
+	},
+	
+	unlinkElem: function(item, index, len) {
+		item._dcView_ = null;
+	},
+ 	destroyElement: function(elemCfg) {
+		try{			 
+			var c =  Ext.getCmp( elemCfg.id );
+			if (c) {
+				Ext.destroy(c);
+			}			
+		} catch(e) {
+			alert(e);
+		}
 	}
+	
 });

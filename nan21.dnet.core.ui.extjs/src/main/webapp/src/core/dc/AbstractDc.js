@@ -219,64 +219,63 @@ Ext.define("dnet.base.AbstractDc", {
 				this.commandNames.concat(this.actionNames));
 
 		// register listeners
-
-		// if Query action is disabled do not execute it.
-		this.store.on("beforeload", function(store, operation, eopts) {
-			if (dnet.base.DcActionsStateManager.isQueryDisabled(this)) {
-				return false;
-			}
-		}, this);
-
-		this.store.on("update", function(store, rec, operation, eopts) {			 
-			this.fireEvent("statusChange", {
-				dc : this
-			});
-			this.updateActionsState();
-		}, this);
-
-		this.store.on("add", function(store, records, index, eopts) {
-//			dnet.base.Logger.debug("dnet.base.AbstractDc (" + this.dsName
-//					+ ") -> store.on.add event handler");
-				 this.updateActionsState();
-			}, this);
-
-		this.store.on("remove", function(store, records, index, eopts) {
-//			dnet.base.Logger.debug("dnet.base.AbstractDc (" + this.dsName
-//					+ ") -> store.on.remove event handler");
-			 this.updateActionsState();
-				 this.doDefaultSelection();
-			}, this);
-		 
-		this.store.on("clear", function(store, eopts) { 
-			 this.updateActionsState();				
-			}, this);
-		
-		this.store.on("datachanged", function(store, eopts) {
-			this.updateActionsState();
-		}, this);
+ 
+		this.mon(this.store, "beforeload", this.onStore_beforeload, this);
+		this.mon(this.store, "update", this.onStore_update, this);
+		this.mon(this.store, "add", this.onStore_add, this);
+		this.mon(this.store, "remove", this.onStore_remove, this);		 
+		this.mon(this.store, "clear", this.onStore_clear, this);		
+		this.mon(this.store, "datachanged", this.onStore_datachanged, this);
 		
 		// after the store is loaded apply an initial selection
 		if (this.afterStoreLoadDoDefaultSelection) {
-			this.store.on("load", function(store, records, success, operation, eopts) {
-				if (this.afterStoreLoadDoDefaultSelection) {
-					this.doDefaultSelection();
-				}
-			}, this);
+			this.mon(this.store, "load", this.onStore_load, this);
 		}
-		
-			 
-		
+		  
 		// invoke the action state update whenever necessary
-		this.on("recordChange", this.updateActionsState, this);
-		this.on("selectionChange", this.updateActionsState, this);
+		this.mon( this, "recordChange", this.updateActionsState, this);
+		this.mon( this, "selectionChange", this.updateActionsState, this);
 
 		// ************************************************
 		// to be reviewd
 		// ************************************************
 
-		this.store.on("write", function(store, operation, eopts) {
-			  
-			if(this.record) {				
+		this.mon(this.store, "write", this.onStore_write, this);
+	},
+
+	onStore_load: function(store, operation, eopts) {
+		if (this.afterStoreLoadDoDefaultSelection) {
+			this.doDefaultSelection();
+		}
+	},
+	
+	onStore_beforeload: function(store, operation, eopts) {
+		if (dnet.base.DcActionsStateManager.isQueryDisabled(this)) {
+			return false;
+		}
+	},
+	onStore_update: function(store, rec, operation, eopts) {
+		this.fireEvent("statusChange", {
+				dc : this
+			});
+			this.updateActionsState();
+	},
+	onStore_add: function(store, eopts) {
+		this.updateActionsState();
+	},
+	onStore_clear: function(store, eopts) {
+		this.updateActionsState();
+	},
+	onStore_datachanged: function(store, eopts) {
+		this.updateActionsState();
+	},
+	onStore_remove: function(store, records, index, eopts) {
+		this.updateActionsState();
+		this.doDefaultSelection();
+	},
+	
+	onStore_write: function(store, operation, eopts) {
+		if(this.record) {				
 				this.record = operation.resultSet.records[0];				 				
 				if (!this.multiEdit) {
 					try {
@@ -291,11 +290,12 @@ Ext.define("dnet.base.AbstractDc", {
 			if (operation.action == "update" || operation.action == "create") {
 				this.afterDoSaveSuccess();
 			}
-			
-			
-			}, this);
 	},
-
+	
+	
+	
+	
+	
 	/** ***************************************************** */
 	/** ***************** Public API ************************ */
 	/** ***************************************************** */
@@ -981,31 +981,20 @@ Ext.define("dnet.base.AbstractDc", {
 	,
 	setDcContext : function(dcCtx) {
 		this.dcContext = dcCtx;
-		this.dcContext.on("dataContextChanged",
-				function(dctx) {
+		this.mon(this.dcContext, "dataContextChanged", this.onDcContext_dataContextChanged, this);
+	},
 
-					dnet.base.DcActionsStateManager.applyStates(this);
-					if (dctx.parentDc.getRecord()
-							&& dctx.parentDc.getRecord().phantom) {
-
-						this.fireEvent("inContextOfNewRecord", this); /*
-																		 * is
-																		 * this
-																		 * still
-																		 * useful ?
-																		 */
-					} else {
-						this.fireEvent("inContextOfEditRecord", this);/*
-																		 * is
-																		 * this
-																		 * still
-																		 * useful ?
-																		 */
-					}
-				}, this);
-	}
-
-	,
+	onDcContext_dataContextChanged: function(dctx) {
+		dnet.base.DcActionsStateManager.applyStates(this);
+		if (dctx.parentDc.getRecord()
+				&& dctx.parentDc.getRecord().phantom) {
+			this.fireEvent("inContextOfNewRecord", this);  
+		} else {
+			this.fireEvent("inContextOfEditRecord", this); 
+		}
+	},
+	
+	
 	isRecordChangeAllowed : function() {
 		return (!(this.isAnyChildDirty() || ((!this.multiEdit) && this
 				.isCurrentRecordDirty())));
@@ -1024,6 +1013,17 @@ Ext.define("dnet.base.AbstractDc", {
 		if (!this.isStoreDirty() && !this.isAnyChildDirty()) {
 			this.onCleanDc();
 		}
-	}
+	},
 
+	destroy: function() {		
+		//console.log("AbstractDc.destroy");
+		this.store.clearListeners();
+		this.store.destroyStore();
+		
+//		delete this.actions;
+//		delete this.commands;
+//		delete this.store;
+		
+		//Ext.destroy( this.dcContext);
+	}
 });
