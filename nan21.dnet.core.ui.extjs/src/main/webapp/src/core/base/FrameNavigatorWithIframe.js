@@ -114,7 +114,7 @@ dnet.base.FrameNavigatorWithIframe = {
 					try {
 						delete window.frames[this.n21_iframeID];
 					} catch (e) {
-						alert(e);
+						//alert(e);
 					}
 					this.callParent();
 				},

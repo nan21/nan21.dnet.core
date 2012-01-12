@@ -84,11 +84,44 @@ Ext.define("dnet.base.DcvFormBuilder", {
 		return this;
 	},
 
+	addDisplayFieldText : function(config) {
+		config.xtype = "displayfieldtext";
+		Ext.applyIf(config, {
+			anchor:"-20" ,
+			fieldCls: "displayfield"
+			 
+		});
+		this.applySharedConfig(config);
+		return this;
+	},
+	
+	addDisplayFieldNumber : function(config) {
+		config.xtype = "displayfieldnumber";		
+		Ext.applyIf(config, {
+			anchor:"-20" ,
+			format: Dnet.getNumberFormat(config.decimals || 0 ),
+			fieldCls: "displayfieldnumber"
+		});
+		this.applySharedConfig(config);
+		return this;
+	},
+	addDisplayFieldDate : function(config) {
+		config.xtype = "displayfielddate";
+		Ext.applyIf(config, {
+			anchor:"-20" ,
+			fieldCls: "displayfield"
+		});
+		this.applySharedConfig(config);
+		return this;
+	},
+	
 	addPanel : function(config) {
 		Ext.applyIf(config, this.dcv.defaults);
 		Ext.applyIf(config, {
 			defaults : this.dcv.defaults,
+			xtype:"container",
 			id: Ext.id()
+			
 		});
 		this.dcv._elems_.add(config.name, config);
 		return this;

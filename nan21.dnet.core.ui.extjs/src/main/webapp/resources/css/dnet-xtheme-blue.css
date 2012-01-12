@@ -2,9 +2,20 @@
 .x-item-disabled {
 	opacity:0.7;    
 }
-.documentTotalField {
-	font-weight:bold !important;
+ 
+.important-field {
+	font-weight:bold;
+} 
+ 
+.displayfield {	 
+	border:1px solid #d3d3d3;	
+	height:22px; 
 }
+.displayfieldnumber {	 
+	border:1px solid #d3d3d3;	
+	height:22px; 
+	text-align:right;
+}  
  
 .dnet-toolbar-title { font-weight:bold !important;  }
 

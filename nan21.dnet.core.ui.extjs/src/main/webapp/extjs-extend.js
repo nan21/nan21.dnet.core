@@ -49,6 +49,56 @@ Ext.override(Ext.form.field.Date, {
 	}
 });
 
+ 
+Ext.define("dnet.base.DisplayFieldText", {
+	extend: "Ext.form.field.Display",
+	alias: "widget.displayfieldtext",
+	asText: false,
+	_setRawValue_: function(v) {
+		this.setRawValue(this.valueToRaw(v));
+	},
+	valueToRaw: function(value) {
+			return value;      
+    }, 
+    setRawValue: function(value) {
+        var me = this;
+        value = Ext.value(value, '');
+        me.rawValue = value;
+        if (me.rendered) {
+        	if (this.asText) {
+        		me.inputEl.dom.innerHTML = "<pre>" + value + "</pre>";
+        	} else {
+        		me.inputEl.dom.innerHTML = me.htmlEncode ? Ext.util.Format.htmlEncode(value) : value;
+        	}
+            
+        }
+        return value;
+    }
+});
+Ext.define("dnet.base.DisplayFieldDate", {
+	extend: "Ext.form.field.Display",
+	alias: "widget.displayfielddate",
+	_setRawValue_: function(v) {
+		this.setRawValue(this.valueToRaw(v));
+	},
+	valueToRaw: function(value) { 
+        return Ext.util.Format.date(value, Dnet.DATE_FORMAT);
+    }
+});
+
+Ext.define("dnet.base.DisplayFieldNumber", {
+	extend: "Ext.form.field.Display",
+	alias: "widget.displayfieldnumber",
+	 
+	_setRawValue_: function(v) {
+		this.setRawValue(this.valueToRaw(v));
+	},
+	valueToRaw: function(value) {
+        return Ext.util.Format.number(value, this.format || "0");
+    }    
+});
+
+
 Ext.override(Ext.data.Store, {
 
 	commitChanges : function() {
@@ -88,7 +138,12 @@ Ext.override(Ext.data.Store, {
     
     getAllNewRecords: function() {
         return this.data.filterBy(this.filterAllNew).items;
-    } 
+    },
+    filterUpdated: function(item) {
+        // only want dirty records, not phantoms that are valid
+        return item.dirty === true && item.phantom !== true ; //&& item.isValid();
+    }
+    
 
 }); // Ext.data.Store
 

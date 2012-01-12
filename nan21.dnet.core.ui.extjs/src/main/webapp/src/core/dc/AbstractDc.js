@@ -749,11 +749,14 @@ Ext.define("dnet.base.AbstractDc", {
 	 * Creates a new record instance and initialize it
 	 */
 	newRecordInstance : function() {
-		var o = Ext.create(this.recordModel, {});
+		var o = Ext.create(this.recordModel, this.initNewRecordInstance({}));
 		o.data["clientId"] = getApplication().getSession().client.id;
 		return o;
 	},
-
+	
+	initNewRecordInstance : function(o) {
+		return o;
+	},
 	/**
 	 * Creates a new filter instance and initialize it
 	 */

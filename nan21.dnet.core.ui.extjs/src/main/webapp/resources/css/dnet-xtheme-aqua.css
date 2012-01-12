@@ -9,10 +9,21 @@
 .x-item-disabled {
 	opacity:0.75;    
 }
+  
+.important-field {
+	font-weight:bold;
+} 
  
-.documentTotalField {
-	font-weight:bold !important;
+.displayfield {	 
+	border:1px solid #d3d3d3;	
+	height:22px; 
 }
+.displayfieldnumber {	 
+	border:1px solid #d3d3d3;	
+	height:22px; 
+	text-align:right;
+}  
+ 
 
  
 .dnet-toolbar-title { font-weight:bold !important;  }

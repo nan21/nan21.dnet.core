@@ -6,7 +6,7 @@ Ext.define("dnet.base.DcNewCommand", {
 		//console.log("new: 1-store.getCount() = "+dc.store.getCount() );
 		//console.log("new: 1-count dirty  = "+dc.store.data.filterBy(function(e) { return e.dirty}).getCount()  );
 
-		var r = Ext.create(dc.recordModel, {});
+		var r = dc.newRecordInstance();
 		r.dirty = true;
 		if (dc.dcContext) {
 			dc.dcContext._applyContextData_(r);
