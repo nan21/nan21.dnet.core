@@ -23,10 +23,9 @@
 	height:22px; 
 	text-align:right;
 }  
+  
  
-
- 
-.dnet-toolbar-title { font-weight:bold !important;  }
+.dnet-toolbar-title { font-weight:bold; font-size:14px; }
 
 .lovCombo-item {
     font:normal 11px tahoma, arial, helvetica, sans-serif;
@@ -170,15 +169,16 @@
 .icon-action-synchronize {
     background-image: url(../images/icon/action_synchronize.gif) !important;
 }
-
-
+ 
+ 
 .icon-action-previous {
-    background-image: url(../images/icon/action_prev_rec.gif) !important;
+    background-image: url(../images/icon/action_prev_rec.gif) ;
+    background-position: 3px 4px;
 }
 .icon-action-next {
-    background-image: url(../images/icon/action_next_rec.gif) !important;
+    background-image: url(../images/icon/action_next_rec.gif)  ;
+    background-position: 3px 4px;
 }
-
 
 .icon-action-help {
     background-image: url(../images/icon/action_help.png) !important;

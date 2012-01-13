@@ -30,7 +30,7 @@ Ext.define("dnet.base.DataExportForm", {
 		};
 		Ext.apply(this, cfg);
 		this.callParent(arguments);
-		this.mon("afterrender", this._on_format_changed_, this);
+		this.on("afterrender", this._on_format_changed_, this);
 	},
 
 	_getElement_ : function(name) {

@@ -312,7 +312,7 @@ Ext.define("dnet.base.AbstractDc", {
 	 * Clear query criteria -> reset filter to its initial state
 	 */
 	doClearQuery : function() {
-		this.commands.doClearQuery();
+		this.commands.doClearQuery.execute();
 	},
 
 	/**
@@ -561,7 +561,7 @@ Ext.define("dnet.base.AbstractDc", {
 		if (ov != v) {
 			this.filter.set(n, v);
 			if (!(silent === true)) {
-				this.fireEvent("filterValueChanged", this, name, ov, v);
+				this.fireEvent("filterValueChanged", this, n, ov, v);
 			}
 		}
 	},

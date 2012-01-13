@@ -55,17 +55,17 @@ Ext.define("dnet.base.AbstractUi", {
 		   this._defineActions_();
            this._afterDefineActions_();
 		}
-
-        /* define toolbars */
-        if (this._beforeDefineToolbars_()!== false) {
-		   this._defineToolbars_();
-           this._afterDefineToolbars_();
-		}
-
+ 
         /* define stand-alone user-interface elements */
 		if (this._beforeDefineElements_()!== false) {
 		   this._defineElements_();
            this._afterDefineElements_();
+		}
+		
+		/* define toolbars */
+        if (this._beforeDefineToolbars_()!== false) {
+		   this._defineToolbars_();
+           this._afterDefineToolbars_();
 		}
 
         /* build the ui, linking elements */
@@ -265,7 +265,18 @@ Ext.define("dnet.base.AbstractUi", {
 		aw._controller_.initAssignement();				
     },
     
-    
+    _alert_dirty_: function() {
+    	var msg = "Cannot execute the requested action as there are unsaved changes. <br> Save your changes or discard them then try again. ";			
+		Ext.Msg.show({
+			title : "Action not allowed",	
+			msg : msg,
+			scope : this,
+			icon : Ext.MessageBox.INFO,
+			buttons : Ext.MessageBox.OK
+		});
+		return;
+    },
+     
     beforeDestroy: function() {//alert("sdfsd");
 		this._elems_.each(this.destroyElement, this);	
 		this._tlbitms_.each(function(item) { try { Ext.destroy(item); } catch(e) { alert(e);} } );	

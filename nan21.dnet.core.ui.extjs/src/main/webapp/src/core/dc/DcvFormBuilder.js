@@ -120,8 +120,7 @@ Ext.define("dnet.base.DcvFormBuilder", {
 		Ext.applyIf(config, {
 			defaults : this.dcv.defaults,
 			xtype:"container",
-			id: Ext.id()
-			
+			id: Ext.id()			
 		});
 		this.dcv._elems_.add(config.name, config);
 		return this;

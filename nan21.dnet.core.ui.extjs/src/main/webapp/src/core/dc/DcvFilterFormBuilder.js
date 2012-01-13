@@ -95,14 +95,17 @@ Ext.define("dnet.base.DcvFilterFormBuilder", {
 		return this;
 	},
 
-	addPanel : function(config) {
+	addPanel : function(config) {		
 		Ext.applyIf(config, this.dcv.defaults);
 		if (config.defaults) {
 			Ext.applyIf(config.defaults, this.dcv.defaults);
 		} else {
 			config.defaults = this.dcv.defaults;
 		}
-		config.id = Ext.id();
+		Ext.applyIf(config, {			 
+			xtype:"container",
+			id: Ext.id()			
+		});
 		this.dcv._elems_.add(config.name, config);
 		return this;
 	},

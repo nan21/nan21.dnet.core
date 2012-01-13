@@ -1,7 +1,8 @@
 Ext.define("dnet.base.DcClearQueryCommand", {
 	extend : "dnet.base.AbstractDcSyncCommand",
 
-	execute : function(dc) {
+	onExecute : function() {
+		var dc = this.dc;
 		if (dnet.base.DcActionsStateManager.isQueryDisabled(dc)) {
 			throw ("Query is not allowed.");
 		}

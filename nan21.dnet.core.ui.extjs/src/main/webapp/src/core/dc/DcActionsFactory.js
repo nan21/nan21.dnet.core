@@ -190,7 +190,7 @@ dnet.base.DcActionsFactory = {
 			name : "doPrevRec",
 			iconCls : "icon-action-previous",
 			disabled : false,
-			text : Dnet.translate("tlbitem", "prev_rec__lbl"),
+			//text : Dnet.translate("tlbitem", "prev_rec__lbl"),
 			tooltip : Dnet.translate("tlbitem", "prev_rec__tlp"),
 			scope : dc,
 			handler : function() {
@@ -212,7 +212,7 @@ dnet.base.DcActionsFactory = {
 			name : "doNextRec",
 			iconCls : "icon-action-next",
 			disabled : false,
-			text : Dnet.translate("tlbitem", "next_rec__lbl"),
+			//text : Dnet.translate("tlbitem", "next_rec__lbl"),
 			tooltip : Dnet.translate("tlbitem", "next_rec__tlp"),
 			scope : dc,
 			handler : function() {

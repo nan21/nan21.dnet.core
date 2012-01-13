@@ -296,6 +296,30 @@ Ext.define("dnet.base.ActionBuilder", {
 		this.frame._tlbitms_.add(this.name + "__" + a.initialConfig.name, a); // new
 																				// Ext.Action(cfg)
 		return this;
+	},
+	
+	addButton: function(config) {
+		var cfg = config || {};
+		Ext.applyIf(config , {id:Ext.id(), xtype:"button"} ); 
+		this.frame._tlbitms_.add(this.name + "__" + config.name, config);
+		return this;
+		 
+//		this.frame._elems_.add(config.name, config);
+//		if (config.stateManager ) {
+//			var options = {and:config.stateManager.and };
+//			dnet.base.FrameButtonStateManager.register(config.name, config.stateManager.name, config.stateManager.dc, this.frame, options );
+//		}
+		return this;
+	},
+	
+	addButtons: function(btns) {
+		if (Ext.isArray(btns)) {
+			for(var i=0;i<btns.length; i++) {
+				this.addButton(btns[i]);
+			}
+		}
+		return this;
 	}
-
+	
+	
 });

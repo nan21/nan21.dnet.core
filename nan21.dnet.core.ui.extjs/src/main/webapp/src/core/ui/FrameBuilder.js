@@ -21,9 +21,9 @@ Ext.define("dnet.base.FrameBuilder" , {
 	addDc: function(name, obj) {
 		this.frame._dcs_.add(name, obj);	
 		return this;
-	}
+	},
 	
-	,linkDc: function(childName, parentName, relation) {
+	linkDc: function(childName, parentName, relation) {
 		Ext.applyIf(relation, {fetchMode:"manual", strict: true});
 		var c = this.frame._dcs_.get(childName);
 		var p = this.frame._dcs_.get(parentName);
@@ -33,10 +33,9 @@ Ext.define("dnet.base.FrameBuilder" , {
 			,relation:relation});
 		p.addChild(c);c.setDcContext(ctx);
 		return this;
-	}
-
-
-	,addDcFormView: function(dc, config) {	
+	},
+	
+	addDcFormView: function(dc, config) {	
 		this.addDcView(dc, config);	
 		var theDc = this.frame._dcs_.get(dc);
 		var viewId = config.id;
@@ -48,8 +47,10 @@ Ext.define("dnet.base.FrameBuilder" , {
 //			} else return true;			 
 //		} );
 		return this;
-	}
-	,addDcFilterFormView: function(dc, config) {	
+	},
+	
+	
+	addDcFilterFormView: function(dc, config) {	
 		this.addDcView(dc, config);	
 		var theDc = this.frame._dcs_.get(dc);
 		var viewId = config.id;
@@ -61,20 +62,24 @@ Ext.define("dnet.base.FrameBuilder" , {
 //			} else return true;			
 //		} );
 		return this;
-	} 
-	,addDcListView: function(dc, config) {	
+	},
+	
+	addDcListView: function(dc, config) {	
 		return this.addDcView(dc, config);
-	} 
-	,addDcView: function(dc, config) {	
+	},
+	
+	
+	addDcView: function(dc, config) {	
 		Ext.apply(config, {
 			_controller_:this.frame._dcs_.get(dc)
 			//,listeners:{ activate:{scope:this,fn:function(p){p.doLayout(false,true);} } }
 		});
 		this.applyViewSharedConfig(config);				
 		return this;
-	} 
- 
-	,addPanel:function(config) {
+	},
+	
+	
+	addPanel:function(config) {
 		config.listeners = config.listeners || {};
 		if (config.onActivateDoLayoutFor) {
 			var onActivateDoLayoutFor = config.onActivateDoLayoutFor;
@@ -91,11 +96,16 @@ Ext.define("dnet.base.FrameBuilder" , {
 				config.listeners.activate = activate;
 			}
 		}
+		Ext.applyIf(config, {
+			 
+			id: Ext.id()			
+		});
 		this.applyViewSharedConfig(config);	
 		return this;
-	}
-
-	,addChildrenTo: function(c,list,regions) {
+	},
+	
+	
+	addChildrenTo: function(c,list,regions) {
 		var isWrapped = this.frame._elems_.get(c)._wrapped_;
 		var items = ((isWrapped)? this.frame._elems_.get(c)["items"]["items"]:this.frame._elems_.get(c)["items"] )|| [];
 		for(var i=0, len=list.length; i<len; i++ ) {

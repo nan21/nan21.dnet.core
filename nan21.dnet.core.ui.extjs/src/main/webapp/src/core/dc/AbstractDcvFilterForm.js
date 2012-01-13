@@ -69,6 +69,7 @@ Ext.define("dnet.base.AbstractDcvFilterForm", {
 			}
 		});
 		this.mon(this._controller_, "parameterValueChanged", this._onParameterValueChanged_, this);
+		this.mon(this._controller_, "filterValueChanged", this._onFilterValueChanged_, this);
 	}, 
 	
 	
@@ -133,6 +134,18 @@ Ext.define("dnet.base.AbstractDcvFilterForm", {
 		}			
 	},
 	
+	
+	_onFilterValueChanged_: function(ctrl, fieldName, ov, nv) {
+		var fld = this._elems_.findBy(function(item) {
+			return (item.dataIndex == fieldName);
+		});
+		if (fld) {
+			fld = this._getElement_(fld.name);
+			if (fld.getValue() != nv) {
+				fld._setRawValue_(nv);
+			}	
+		}
+	},
 	
 	_defineElements_ : function() {
 	},

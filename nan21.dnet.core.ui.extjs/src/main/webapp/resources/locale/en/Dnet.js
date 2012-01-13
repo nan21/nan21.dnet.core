@@ -376,7 +376,8 @@ dnet.Translation = Ext.apply({},{
 		,Issues_UI: "Issues"
 		,IssueTask_UI:"Tasks"
 
-
+		,IssueRoadmap_UI: "Roadmap"
+		,IssueChangelog_UI: "Changelog"
 	}
 
 
