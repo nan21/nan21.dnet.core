@@ -174,7 +174,7 @@ Ext.define("dnet.base.DcvFormBuilder", {
 		if (!config.listeners[en]) {
 			config.listeners[en] = {};
 		}
-		
+		config.listeners[en]['buffer'] = 250;
 		if(fn!=null) {
 			if (config.listeners[en].fn) {
 				config.listeners[en].fn = Ext.Function.createInterceptor(config.listeners[en].fn, fn);
@@ -182,7 +182,6 @@ Ext.define("dnet.base.DcvFormBuilder", {
 				config.listeners[en]["fn"] = fn;
 			}
 		}
-		
 	},
 
 	createModelUpdaterCheckbox: function(config) {
@@ -192,8 +191,8 @@ Ext.define("dnet.base.DcvFormBuilder", {
 				var r = f._dcView_._controller_.getParams();
 				if (!r)
 					return;
-				var rv = r.get(f.paramIndex);				 
-				if (!r.isEqual(rv, nv)) {
+				var rv = !! r.get(f.paramIndex);				 
+				if ( rv!==nv ) {
 					r.set(f.paramIndex, nv);
 				}				
 			};
@@ -202,8 +201,8 @@ Ext.define("dnet.base.DcvFormBuilder", {
 				var r = f._dcView_._controller_.getRecord();
 				if (!r)
 					return;
-				var rv = r.get(f.dataIndex);				 
-				if (!r.isEqual(rv, nv)) {
+				var rv = !!r.get(f.dataIndex);				 
+				if ( rv!==nv ) {
 					r.set(f.dataIndex, nv);
 				}				 
 			}
@@ -267,7 +266,7 @@ Ext.define("dnet.base.DcvFormBuilder", {
 			id : Ext.id(),
 			itemId : config.name,
 			selectOnFocus : true,
-			checkChangeBuffer : 80,
+			//checkChangeBuffer : 200,
 			_dcView_ : this.dcv
 		});
 		if (config.allowBlank === false) {

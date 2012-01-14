@@ -5,14 +5,28 @@
  */
 dnet.base.DcActionsFactory = {
 
+	RUN_QUERY: "Query",
+	CLEAR_QUERY: "ClearQuery",
+	CREATE: "New",
+	COPY: "Copy",
+	SAVE: "Save",
+	DELETE: "Delete",
+	CANCEL: "Cancel",
+	EDIT_IN: "EditIn",
+	EDIT_OUT: "EditOut",
+	PREV_REC: "PrevRec",
+	NEXT_REC: "NextRec",
+	RELOAD_REC: "ReloadRec",
+	
+	
 	/**
 	 * List with the names of the registered actions. See the appropriate create
 	 * method for the meaning of each of the actions.
 	 */
 	actionNames : function() {
-		return [ "Query", "ClearQuery", "New", "Copy", "Save", "Delete",
-				"Cancel", "EditIn", "EditOut", "PrevRec", "NextRec",
-				"ReloadRec" ];
+		return [ this.RUN_QUERY, this.CLEAR_QUERY, 
+				this.CREATE, this.COPY, this.SAVE, this.DELETE, this.CANCEL, 
+				this.EDIT_IN, this.EDIT_OUT, this.PREV_REC, this.NEXT_REC, this.RELOAD_REC ];
 	},
 
 	/**

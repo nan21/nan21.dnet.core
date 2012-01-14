@@ -15,13 +15,17 @@
 //Ext.MODEL_DATE_FORMAT = "Y-m-d\\TH:i:s";
 
 
-Ext.override(Ext.form.field.Base, {
-	_setRawValue_: function(v) {		
-		this.setRawValue(v);
-	} 
-
-});
-
+//Ext.override(Ext.form.field.Base, {
+//	_setRawValue_: function(v) {		
+//		this.setRawValue(v);
+//	} 
+//
+//});
+//Ext.override(Ext.form.field.Checkbox, {
+//    _setRawValue_: function(v) {		
+//		this.setValue(v);
+//	} 
+//});
 Ext.override(Ext.form.field.Text, { 
 	getRawValue: function() {
 		var me = this,
@@ -43,20 +47,20 @@ Ext.override(Ext.form.field.Text, {
 
 
 
-Ext.override(Ext.form.field.Date, {
-	_setRawValue_: function(v) {
-		this.setRawValue(this.valueToRaw(v));
-	}
-});
+//Ext.override(Ext.form.field.Date, {
+//	_setRawValue_: function(v) {
+//		this.setRawValue(this.valueToRaw(v));
+//	}
+//});
 
  
 Ext.define("dnet.base.DisplayFieldText", {
 	extend: "Ext.form.field.Display",
 	alias: "widget.displayfieldtext",
 	asText: false,
-	_setRawValue_: function(v) {
-		this.setRawValue(this.valueToRaw(v));
-	},
+//	_setRawValue_: function(v) {
+//		this.setRawValue(this.valueToRaw(v));
+//	},
 	valueToRaw: function(value) {
 			return value;      
     }, 
@@ -78,9 +82,9 @@ Ext.define("dnet.base.DisplayFieldText", {
 Ext.define("dnet.base.DisplayFieldDate", {
 	extend: "Ext.form.field.Display",
 	alias: "widget.displayfielddate",
-	_setRawValue_: function(v) {
-		this.setRawValue(this.valueToRaw(v));
-	},
+//	_setRawValue_: function(v) {
+//		this.setRawValue(this.valueToRaw(v));
+//	},
 	valueToRaw: function(value) { 
         return Ext.util.Format.date(value, Dnet.DATE_FORMAT);
     }
@@ -90,9 +94,9 @@ Ext.define("dnet.base.DisplayFieldNumber", {
 	extend: "Ext.form.field.Display",
 	alias: "widget.displayfieldnumber",
 	 
-	_setRawValue_: function(v) {
-		this.setRawValue(this.valueToRaw(v));
-	},
+//	_setRawValue_: function(v) {
+//		this.setRawValue(this.valueToRaw(v));
+//	},
 	valueToRaw: function(value) {
         return Ext.util.Format.number(value, this.format || "0");
     }    

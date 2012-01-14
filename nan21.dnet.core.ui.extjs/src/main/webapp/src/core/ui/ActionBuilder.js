@@ -105,10 +105,52 @@ Ext.define("dnet.base.ActionBuilder", {
 			}
 		}
 		return this;
-	}
+	},
 
-	,
+	
 	addCopy : function(config) {
+		var cfg = config || {};
+		Ext.applyIf(cfg, {
+					dc : this.dc,
+					tlb : this.name,
+					autoEdit : true
+				});
+		var a = this.frame._getDc_(cfg.dc).actions.doCopy;
+		this.frame._tlbitms_.add(this.name + "__" + a.initialConfig.name, a);
+		if (cfg.autoEdit != "false") {
+			this.frame.mon(this.frame._getDc_(cfg.dc), "afterDoNew", function() {
+						this._invokeTlbItem_("doEdit", cfg.tlb);
+					}, this.frame);
+		} else {
+			if (!Ext.isEmpty(cfg.showView)) {
+				var fn = function() {
+					try {
+						var ct = (cfg.inContainer) ? this
+								._getElement_(cfg.inContainer) : this
+								._getElement_("main");
+						if (cfg.showView) {
+							var cmp = this._get_(cfg.showView);
+							if (cmp) {
+								ct.getLayout().setActiveItem(cmp);
+							} else {
+								ct.getLayout().setActiveItem(this
+										._getElementConfig_(cfg.showView).id);
+							}
+						} else {
+							ct.getLayout().setActiveItem(1);
+						}
+					} catch (e) {
+						dnet.base.DcExceptions.showMessage(e);
+					}
+				};
+				this.frame.mon(this.frame._getDc_(cfg.dc), "afterDoNew", fn, this.frame);
+			}
+		}
+		return this;
+	}
+	
+	,
+	addCopy1 : function(config) {
 		var cfg = config || {};
 		Ext.applyIf(cfg, {
 					dc : this.dc

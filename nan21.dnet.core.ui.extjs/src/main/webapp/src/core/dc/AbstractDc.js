@@ -118,6 +118,8 @@ Ext.define("dnet.base.AbstractDc", {
 
 	store : null,
 
+	lastStateManagerFlags: null,
+	
 	constructor : function(config) {
 		config = config || {};
 		Ext.apply(this, config);
@@ -258,7 +260,7 @@ Ext.define("dnet.base.AbstractDc", {
 		this.fireEvent("statusChange", {
 				dc : this
 			});
-			this.updateActionsState();
+			this.updateActionsState(true);
 	},
 	onStore_add: function(store, eopts) {
 		this.updateActionsState();
@@ -458,8 +460,8 @@ Ext.define("dnet.base.AbstractDc", {
 	 * Update the enabled/disabled states of the actions. Delegate the work to
 	 * the states manager.
 	 */
-	updateActionsState : function() {
-		dnet.base.DcActionsStateManager.applyStates(this);
+	updateActionsState : function(ifNeeded) {
+		dnet.base.DcActionsStateManager.applyStates(this, ifNeeded);
 		this.fireEvent("updateActionsState", {
 			dc : this
 		});
@@ -820,62 +822,7 @@ Ext.define("dnet.base.AbstractDc", {
 		// dc.on("recordChange", this.updateActionsState, this);
 	},
 
-	/**
-	 * Register a data-control view for data binding management
-	 */
-//	addBindedView : function(id, type) {
-//		if (type == "edit-form") {
-//			this.addBindedFormView(id);
-//		}
-//		if (type == "filter-form") {
-//			this.addBindedFilterView(id);
-//		}
-//	},
-
-	/**
-	 * Register a data-control form-view for data binding.
-	 */
-//	addBindedFormView : function(id) {
-//		if (this.bindedFormViews == null) {
-//			this.bindedFormViews = [];
-//		}
-//		this.bindedFormViews[this.bindedFormViews.length] = id;
-//
-//		this.on('recordChange', function(evnt) {
-//			var newRecord = evnt.newRecord;
-//			var oldRecord = evnt.oldRecord;
-//			var newIdx = evnt.newIdx;
-//			if (newRecord) {
-//				Ext.BindMgr.unbind(oldRecord);
-//				Ext.BindMgr.bind(newRecord, this.bindedFormViews);
-//			} else {
-//				Ext.BindMgr.unbind(oldRecord);
-//			}
-//		}, this);
-//
-//	},
-
-	/**
-	 * Register a data-control filter-form view for data binding.
-	 */
-//	addBindedFilterView : function(id) {
-//		if (this.bindedFilterViews == null) {
-//			this.bindedFilterViews = [];
-//		}
-//		this.bindedFilterViews[this.bindedFilterViews.length] = id;
-//
-//		this.on('filterChanged', function(evnt) {
-//			var newFilter = evnt.newFilter;
-//			var oldFilter = evnt.oldFilter;
-//			if (newFilter) {
-//				Ext.BindMgr.unbind(oldFilter);
-//				Ext.BindMgr.bind(newFilter, this.bindedFilterViews);
-//			} else {
-//				Ext.BindMgr.unbind(oldFilter);
-//			}
-//		}, this);
-//	},
-
+ 
 	// ************************************************
 	// to be reviewd
 	// ************************************************

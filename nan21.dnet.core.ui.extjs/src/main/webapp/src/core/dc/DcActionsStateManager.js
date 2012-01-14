@@ -5,12 +5,17 @@
 
 dnet.base.DcActionsStateManager = {
 
-	applyStates : function(dc) {
+	applyStates : function(dc, ifNeeded) {
 		/*
 		 * this.logger.info("dnet.base.DcActionsStateManager.applyStates -> " +
 		 * dc.dsName);
 		 */
 		var flags = this._getFlags(dc);
+		
+		if (ifNeeded && !this.needsToRun(dc,flags ) ) {  
+			return;
+		}
+		
 		var names = dc.actionNames;
 		if ((flags.hasParent && flags.parentIsNull)
 				|| (flags.hasParent && flags.parentIsNew)) {
@@ -27,8 +32,26 @@ dnet.base.DcActionsStateManager = {
 				dc.actions[an].setDisabled(b);
 			}			
 		}
+		dc.lastStateManagerFlags =  flags;
 	},
 
+	needsToRun: function(dc, newFlags) {
+		if (dc.lastStateManagerFlags == null) {
+			return true;
+		} else {
+			var last = dc.lastStateManagerFlags;
+			for(var f in newFlags) {
+				//console.log(f+ 'new='+newFlags[f] + ' last='+last[f] );
+				if (newFlags[f] != last[f] ) {
+					return true;
+				}
+			}
+		}
+		
+		return false;
+	},
+	
+	
 	disableAll : function(dc, names) {
 		for ( var i = 0, l = names.length; i < l; i++) {
 			var n = names[i];

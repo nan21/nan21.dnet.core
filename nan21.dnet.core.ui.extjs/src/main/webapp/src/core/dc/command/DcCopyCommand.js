@@ -1,6 +1,8 @@
 Ext.define("dnet.base.DcCopyCommand", {
 	extend : "dnet.base.AbstractDcSyncCommand",
 
+	dcApiMethod : dnet.base.DcActionsFactory.COPY,
+	
 	onExecute : function() {
 		var dc = this.dc;
 		//console.log("copy: 1-store.getCount() = "+dc.store.getCount() );
@@ -12,6 +14,12 @@ Ext.define("dnet.base.DcCopyCommand", {
 		} 
 		var target = source.copy();		 
 		target.data.id = null;
+		if (target.data.code) {
+			target.data.code = null;
+		}
+		if (target.data.name) {
+			target.data.name = 'Copy of ' + target.data.name;
+		}
 		target.phantom = true;
 		target.dirty = true;
 		Ext.data.Model.id(target);
@@ -21,6 +29,9 @@ Ext.define("dnet.base.DcCopyCommand", {
 		dc.setRecord(target);
 		dc.store.add(target);
 		
+		dc.fireEvent("afterDoNew", {
+			dc : dc
+		});
 		//console.log("copy: 2-store.getCount() = "+dc.store.getCount() );
 		//console.log("copy: 2-count dirty  = "+dc.store.data.filterBy(function(e) { return e.dirty}).getCount()  );
 

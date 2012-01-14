@@ -30,7 +30,7 @@
 
 			<filelist dir="${sourcePathCore}/base" files="HomePanel.js,UrlBuilder.js,UiHeader.js,FrameNavigatorWithIframe.js,FrameNavigator.js,FileUploadWindow.js,WorkflowFormWithHtmlWindow.js,WorkflowFormWithExtjsWindow.js,WorkflowFormFactory.js" />
 
-			<filelist dir="${sourcePathCore}/dc" files="AbstractDc.js,AbstractDcvGrid.js,AbstractDcvEditableGrid.js,AbstractDcvForm.js,AbstractDcvTree.js,AbstractDcvFilterForm.js,DcvFilterFormBuilder.js,DcvFormBuilder.js,DcvGridBuilder.js,DcvEditableGridBuilder.js" />
+			<filelist dir="${sourcePathCore}/dc" files="AbstractDc.js,AbstractDcvGrid.js,AbstractDcvEditableGrid.js,AbstractDcvForm.js,AbstractDcvTree.js,AbstractDcvFilterForm.js,DcvFilterFormBuilder.js,DcvFormBuilder.js,DcvGridBuilder.js,DcvEditableGridBuilder.js,DcActionsFactory.js" />
 
 
 			<filelist dir="${sourcePathCore}/dc/command" files="AbstractDcCommand.js,AbstractDcAsyncCommand.js,AbstractDcSyncCommand.js,DcCommandFactory.js" />
@@ -42,7 +42,7 @@
 
 			<filelist dir="${sourcePathCore}/ui" files="FrameBuilder.js,ActionBuilder.js,FrameButtonStateManager.js,AbstractUi.js" />
 
-			<filelist dir="${sourcePathCore}/dc" files="DcActionsFactory.js,DcActionsStateManager.js,DcContext.js,DcExceptions.js,DataExportWindow.js,DataImportWindow.js,GridLayoutManager.js" />
+			<filelist dir="${sourcePathCore}/dc" files="DcActionsStateManager.js,DcContext.js,DcExceptions.js,DataExportWindow.js,DataImportWindow.js,GridLayoutManager.js" />
 
 			<filelist dir="${sourcePathCore}/lov" files="AbstractRemoteCombo.js,AbstractCombo.js,AbstractLov.js" />
 

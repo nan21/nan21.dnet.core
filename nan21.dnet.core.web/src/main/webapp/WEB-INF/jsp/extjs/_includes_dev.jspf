@@ -69,6 +69,7 @@
     <script type="text/javascript" src="${urlUiExtjsCore}/src/core/dc/DcvGridBuilder.js"></script>
     <script type="text/javascript" src="${urlUiExtjsCore}/src/core/dc/DcvEditableGridBuilder.js"></script>
     
+    <script type="text/javascript" src="${urlUiExtjsCore}/src/core/dc/DcActionsFactory.js"></script>
        
     <script type="text/javascript" src="${urlUiExtjsCore}/src/core/dc/command/AbstractDcCommand.js"></script>
     <script type="text/javascript" src="${urlUiExtjsCore}/src/core/dc/command/AbstractDcAsyncCommand.js"></script>
@@ -96,7 +97,7 @@
     <script type="text/javascript" src="${urlUiExtjsCore}/src/core/ui/ActionBuilder.js"></script>
     <script type="text/javascript" src="${urlUiExtjsCore}/src/core/ui/FrameButtonStateManager.js"></script>
     
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/core/dc/DcActionsFactory.js"></script>
+    
     <script type="text/javascript" src="${urlUiExtjsCore}/src/core/dc/DcActionsStateManager.js"></script>     
     <script type="text/javascript" src="${urlUiExtjsCore}/src/core/dc/DcContext.js"></script>
     <script type="text/javascript" src="${urlUiExtjsCore}/src/core/dc/DcExceptions.js"></script>

@@ -4,12 +4,18 @@
  * you need. See the synchronous and asynchronous commands for details.
  */
 Ext.define("dnet.base.AbstractDcCommand", {
-
+ 
 	/**
 	 * Data-control on which this command is invoked.
 	 */
 	dc : null,
 
+	/**
+	 * DC API method which delegates to this command
+	 * @type String 
+	 */
+	dcApiMethod: null,
+	
 	/**
 	 * Flag to set if this command needs explicit confirmation from the user in
 	 * order to execute.
@@ -52,6 +58,12 @@ Ext.define("dnet.base.AbstractDcCommand", {
 	 * call available here. Provide callbacks for such situations.
 	 */
 	afterExecute : function() {
+		if(this.dcApiMethod != null) {
+			var m = this.dc['afterDo'+this.dcApiMethod];
+			if(m!= undefined && Ext.isFunction(m)) {
+				m.call(this.dc);
+			}			 
+		}
 	},
 
 	/**

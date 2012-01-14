@@ -197,7 +197,119 @@ Ext.define("dnet.base.DcvFilterFormBuilder", {
 
 	// private
 
-	applyModelUpdater : function(config, eventName) {
+	
+	applyModelUpdater : function(config) {
+
+		var en = "change";		
+		var fn = null;
+		
+		if(config.xtype == "checkbox") {			 
+			fn = this.createModelUpdaterCheckbox(config);
+		} else {
+			fn = this.createModelUpdaterField(config);		
+		}
+		
+		if (!config.listeners) {
+			config.listeners = {};
+		}
+		if (!config.listeners[en]) {
+			config.listeners[en] = {};
+		}
+		config.listeners[en]['buffer'] = 250;
+		if(fn!=null) {
+			if (config.listeners[en].fn) {
+				config.listeners[en].fn = Ext.Function.createInterceptor(config.listeners[en].fn, fn);
+			} else {
+				config.listeners[en]["fn"] = fn;
+			}
+		}
+	},
+	
+	createModelUpdaterCheckbox: function(config) {
+		var fn = null;
+		if (config.paramIndex) {
+			fn = function(f, nv, ov, eopts) {				 
+				var r = f._dcView_._controller_.getParams();
+				if (!r)
+					return;
+				var rv = !! r.get(f.paramIndex);				 
+				if ( rv!==nv ) {
+					r.set(f.paramIndex, nv);
+				}				
+			};
+		} else if (config.dataIndex) {
+			fn = function(f, nv, ov, eopts) {				 
+				var r = f._dcView_._controller_.getFilter();
+				if (!r)
+					return;
+				var rv = !!r.get(f.dataIndex);				 
+				if ( rv!==nv ) {
+					r.set(f.dataIndex, nv);
+				}				 
+			}
+		}
+		return fn;
+	},
+	createModelUpdaterField: function(config) {
+		var fn = null;
+		if (config.paramIndex) {
+			fn = function(f, nv, ov, eopts) {
+				if (!f.isValid()) {
+					return;
+				}
+				var r = f._dcView_._controller_.getParams();
+				if (!r)
+					return;
+				var rv = r.get(f.paramIndex);
+				if (Ext.isDate(rv)) {
+					var rd = Ext.Date.parse(Ext.Date.format(rv, f.format),
+							f.format);
+					if (!r.isEqual(rd, nv)) {
+						r.set(f.paramIndex, nv);
+					}
+				} else {
+					if (!r.isEqual(rv, nv)) {
+						r.set(f.paramIndex, nv);
+					}
+				}
+			};
+		} else if (config.dataIndex) {
+			fn = function(f, nv, ov, eopts) {
+				if (!f.isValid()) {
+					return;
+				}
+				var r = f._dcView_._controller_.getFilter();
+				if (!r)
+					return;
+				var rv = r.get(f.dataIndex);
+				if (Ext.isDate(rv)) {
+					var rd = Ext.Date.parse(Ext.Date.format(rv, f.format),
+							f.format);
+					if (!r.isEqual(rd, nv)) {
+						r.set(f.dataIndex, nv);
+					}
+				} else {
+					if (!r.isEqual(rv, nv)) {
+						//r.beginEdit();
+						r.set(f.dataIndex, nv);
+						//r.endEdit();
+					}
+				}
+			}
+		}
+		return fn;
+	},
+	
+	
+	
+	
+	
+	
+	// ==============================================
+	// ==============================================
+	
+	
+	applyModelUpdater1 : function(config, eventName) {
 		var en = eventName || "change";
 		if (!config.listeners) {
 			config.listeners = {};
@@ -267,6 +379,14 @@ Ext.define("dnet.base.DcvFilterFormBuilder", {
 		
 	},
 
+	
+	
+	
+	// ==============================================
+	// ==============================================
+	
+	
+	
 	applySharedConfig : function(config) {
 		Ext.applyIf(config, {
 			id : Ext.id(),

@@ -142,7 +142,9 @@ Ext.define("dnet.base.AbstractDcvFilterForm", {
 		if (fld) {
 			fld = this._getElement_(fld.name);
 			if (fld.getValue() != nv) {
-				fld._setRawValue_(nv);
+				fld.suspendEvents();
+				fld.setValue(nv);
+				fld.resumeEvents();
 			}	
 		}
 	},

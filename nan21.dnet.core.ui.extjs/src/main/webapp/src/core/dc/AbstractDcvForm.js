@@ -120,9 +120,9 @@ Ext.define("dnet.base.AbstractDcvForm", {
 		
 		
 	onStore_datachanged: function(store, eopts) {			 
-		if(this.getForm().getRecord()) {
+		//if(this.getForm().getRecord()) {
 			this.updateBound(this._controller_.getRecord());
-		}	
+		//}	
 	},
 	
 	onStore_write: function(store, operation, eopts) {
@@ -163,37 +163,29 @@ Ext.define("dnet.base.AbstractDcvForm", {
     ,_getConfig_: function(name) {  return this._elems_.get(name); }
     
  
-	,onBind:function(record) {
-		//this.getForm().reset();
-//		var msg = "null";
-//		if (record) {
-//			msg = record.data.name + ", dirty = "+record.dirty; 
-//		}
-		//dnet.base.Logger.debug("dnet.base.AbstractDcvForm.onBind => " + msg);
-		
+	,onBind:function(record) {		
 		if (record) {
-			this.getForm().getFields().each(function(field) {
-				if (field.dataIndex) {
-					field._setRawValue_(record.data[field.dataIndex]);
-				}						
-				}); 
-				
+//			this.getForm().getFields().each(function(field) {
+//				if (field.dataIndex) {
+//					field._setRawValue_(record.data[field.dataIndex]);
+//				}						
+//				}); 			
+			var fields = this.getForm().getFields();
+			
+			fields.each(function(field){
+                field.suspendEvents();
+            });
+            this.getForm().loadRecord(record);
+            fields.each(function(field){
+                field.resumeEvents();
+            });
 			this._applyContextRules_(record);
-			this.getForm().isValid();
-			//this.enable();
+			this.getForm().isValid();			
 		}
-		this._afterBind_(record);
-	//}			
+		this._afterBind_(record);		
 	}
 	,onUnbind:function(record) {
-		//this.getForm().reset();
-//		var msg = "null";
-//		if (record) {
-//			msg = record.data.name+ ", dirty = "+record.dirty; 
-//		}
-		//dnet.base.Logger.debug("dnet.base.AbstractDcvForm.onUnbind => " +msg);
-		 
-		
+
 		this.getForm().getFields().each(function(field) {
 			if (field.dataIndex) {
 				field.setRawValue(null);
@@ -218,9 +210,18 @@ Ext.define("dnet.base.AbstractDcvForm", {
 	,updateBound:function(record) {
 		var msg = "null";
 		if (record) {
-			//msg = record.data.name+ ", dirty = "+record.dirty; 
-			//dnet.base.Logger.debug("dnet.base.AbstractDcvForm.updateBound => " +msg );
-			this.getForm().loadRecord(record);
+			var fields = this.getForm().getFields();
+			fields.each(function(field){
+               
+				if (field.dataIndex) {
+					var nv = record.data[field.dataIndex];
+					if (field.getValue() != nv) {
+						field.suspendEvents();
+						field.setValue(nv);
+						field.resumeEvents();
+					}					
+				}
+            });
 		}		
 	}
 
