@@ -199,6 +199,10 @@ Ext.define("dnet.core.ui.FrameBuilder" , {
 	
 	,addButton: function(config) {		
 		Ext.applyIf(config , {id:Ext.id(), xtype:"button"} );
+		var ttlKey = config.name + "__ttl";
+		if (config.text && this.frame._trl_ && this.frame._trl_[ttlKey]) {
+			config.text = this.frame._trl_[ttlKey];
+		}
 		this.frame._elems_.add(config.name, config);
 		if (config.stateManager ) {
 			var options = {and:config.stateManager.and };

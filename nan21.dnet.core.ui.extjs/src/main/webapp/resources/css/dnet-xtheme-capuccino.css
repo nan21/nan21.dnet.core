@@ -5,7 +5,10 @@
 }
  
 .x-item-disabled {
-	opacity:0.75;    
+	opacity:0.75; 	 
+	filter: alpha(opacity=99);
+	filter:progid:DXImageTransform.Microsoft.Alpha(Opacity=99);
+	
 }
   
 .important-field {

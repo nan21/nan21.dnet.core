@@ -39,7 +39,7 @@
 	</c:if>
 	
 	<%@ include file="_dnet_params.jspf" %> 
-	
+	<script type="text/javascript" src="${urlUiExtjs}/${bundle}/resources/locale/${shortLanguage}/frame/${itemSimpleName}.js"></script>
 	<script type="text/javascript" src="${urlUiExtjs}/${bundle}/src/frame/${itemSimpleName}.js"></script>
 	
 	<script type="text/javascript">

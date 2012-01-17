@@ -20,6 +20,11 @@ Ext.override(Ext.layout.component.AbstractDock, {
 
 
 Ext.define("dnet.core.ui.ActionBuilder", {
+	
+	/**
+	 * 
+	 * @type dnet.core.ui.AbstractUi
+	 */
 	frame : null,
 	name : null,
 	dc : null,
@@ -47,14 +52,17 @@ Ext.define("dnet.core.ui.ActionBuilder", {
 	},
 
 	addTitle : function(config) {
-		var cfg = config || {};
+		var cfg = config || {};		
 		Ext.applyIf(cfg, {
 					dc : this.dc,
 					xtype : "label",
-					"name" : "title",
+					"name" : "title",					
 					cls : "dnet-toolbar-title"
 				});
-		this.frame._tlbitms_.add(this.name + "__" + config.name, config);
+		if (cfg.text && this.frame._trl_ && this.frame._trl_[this.name + "__ttl"]) {
+			cfg.text = this.frame._trl_[this.name + "__ttl"];
+		}		
+		this.frame._tlbitms_.add(this.name + "__" + cfg.name, cfg);
 		return this;
 	},
 	addQuery : function(config) {

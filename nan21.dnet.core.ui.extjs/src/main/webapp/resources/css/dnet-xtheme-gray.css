@@ -4,9 +4,10 @@
 }
  
 .x-item-disabled {
-	opacity:0.75;    
+	opacity: 0.75; 	 
+	filter: alpha(opacity=75);
+  
 }
- 
  
 .important-field {
 	font-weight:bold;

@@ -1,4 +1,4 @@
- 
+  
 Ext.define("dnet.core.ui.AbstractUi", {
 	extend:  "Ext.Panel" ,
  
@@ -17,8 +17,20 @@ Ext.define("dnet.core.ui.AbstractUi", {
 	 
 	 ,_header_: null
 	 ,_builder_: null
+	 ,_trl_ : null
+	 
 	,initComponent: function() {
 		 this._mainViewName_= "main";
+		 try {
+		 	this._trl_ = Ext.create(this.$className +"$Trl");
+		 } catch(e) {
+		 	Ext.Msg.show({
+				title : "Invalid language-pack",
+				msg:"No translation file found for " +this.$className +"$Trl <br> Using the default system language.",	
+				icon : Ext.MessageBox.INFO,
+				buttons : Ext.Msg.OK
+			});
+		 }
 		 
 		 this._elems_ = new Ext.util.MixedCollection();
 	 	 this._configVars_= new Ext.util.MixedCollection();
@@ -89,7 +101,12 @@ Ext.define("dnet.core.ui.AbstractUi", {
 			]
 		});
 
-		this._title_ = Dnet.translate("ui", this._name_.substring(this._name_.lastIndexOf(".")+1 )  ); //.substr(this._name_.strpos() )
+		if (this._trl_ && this._trl_.title ) {
+			this._title_ = this._trl_.title ;
+		} else {
+			this._title_ = Dnet.translate("ui", this._name_.substring(this._name_.lastIndexOf(".")+1 )  );
+		}
+		 
 
     	this.callParent(arguments);
     	this.mon(this, "afterlayout", this._onReady_, this);
