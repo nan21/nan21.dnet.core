@@ -20,7 +20,9 @@ Ext.define("dnet.core.base.LoginForm", {
 				msgTarget : 'side'
 			},
 			defaults : {
-				anchor : '-20'
+				anchor : '-20',
+				selectOnFocus : true,
+				allowBlank : false
 			},
 			items : this._buildItems_()
 		};
@@ -36,10 +38,7 @@ Ext.define("dnet.core.base.LoginForm", {
 		return [ {
 			xtype : "textfield",
 			itemId : "usr",
-			fieldLabel : Dnet.translate("msg", "login_user"),
-			width : 150,
-			selectOnFocus : true,
-			allowBlank : false,
+			fieldLabel : Dnet.translate("msg", "login_user"),			 
 			value : getApplication().getSession().getUser().code,
 			listeners : {
 				change : {
@@ -51,9 +50,6 @@ Ext.define("dnet.core.base.LoginForm", {
 			xtype : "textfield",
 			itemId : "pswd",
 			fieldLabel : Dnet.translate("msg", "login_pswd"),
-			width : 150,
-			selectOnFocus : true,
-			allowBlank : false,
 			inputType : "password",
 			listeners : {
 				change : {
@@ -65,9 +61,6 @@ Ext.define("dnet.core.base.LoginForm", {
 			xtype : "textfield",
 			itemId : "client",
 			fieldLabel : Dnet.translate("msg", "login_client"),
-			width : 150,
-			selectOnFocus : true,
-			allowBlank : false,
 			value : getApplication().getSession().getClient().code,
 			listeners : {
 				change : {
@@ -79,10 +72,7 @@ Ext.define("dnet.core.base.LoginForm", {
 			xtype : "combo",
 			itemId : "lang",
 			fieldLabel : Dnet.translate("msg", "login_lang"),
-			width : 150,
-			selectOnFocus : true,
 			forceSelection : true,
-			allowBlank : false,
 			triggerAction : "all",
 			store : [ "English", "Romana" ],
 			value : "English",
@@ -307,7 +297,7 @@ Ext.define("dnet.core.base.LoginWindow", {
 			width : 350,
 			resizable : false,
 			closeAction : "hide",
-			padding : 5,
+			//padding : 5,
 			closable : false,
 			constrain : true,			
 			buttonAlign : "center",
