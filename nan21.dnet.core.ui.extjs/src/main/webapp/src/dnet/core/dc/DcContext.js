@@ -9,14 +9,15 @@ Ext.define("dnet.core.dc.DcContext", {
 	/**
 	 * Reference to the parent data-control. Must be specified in initial
 	 * configuration.
+	 * @type dnet.core.dc.AbstractDc
 	 */
 	parentDc : null,
 
 	/**
 	 * Reference to the child data-control. Must be specified in initial
 	 * configuration.
+	 * @type dnet.core.dc.AbstractDc 
 	 */
-
 	childDc : null,
 	/**
 	 * Relation definition. Must be specified in initial configuration. Supports
@@ -163,6 +164,11 @@ Ext.define("dnet.core.dc.DcContext", {
 
 	_applyContextData_ : function(record) {
 		Ext.apply(record.data, this.ctxData);
-	}
+	},
 
+	destroy: function() {	
+		this.clearListeners();
+		delete this.childDc;
+		delete this.parentDc;
+	}
 });

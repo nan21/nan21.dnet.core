@@ -31,11 +31,13 @@ Ext.define("dnet.core.dc.AbstractDc", {
 
 	/**
 	 * Filter model instance. Has the same signature as the data model instance
+	 * @type Ext.data.Model
 	 */
 	filter : null,
 
 	/**
 	 * Data model instance.
+	 * @type Ext.data.Model
 	 */
 	record : null,
  
@@ -88,8 +90,10 @@ Ext.define("dnet.core.dc.AbstractDc", {
 	 */
 	children : null,
 
+
 	/**
 	 * Parent data-control, similar to a `BelongsTo` association.
+	 * @type dnet.core.dc.AbstractDc
 	 */
 	parent : null,
 
@@ -109,15 +113,19 @@ Ext.define("dnet.core.dc.AbstractDc", {
 	afterStoreLoadDoDefaultSelection : true,
 
 	/**
-	 * Local reference to the data-source store.
+	 *  Local reference to the data-source store.
+	 * @type Ext.data.Store
 	 */
 	store : null,
 
+	/**
+	 * 
+	 * @type dnet.core.dc.DcContext
+	 */
 	dcContext : null,
+	
 	_trl_ : null,
-
-	store : null,
-
+ 
 	lastStateManagerFlags: null,
 	
 	constructor : function(config) {
@@ -966,6 +974,13 @@ Ext.define("dnet.core.dc.AbstractDc", {
 		//console.log("AbstractDc.destroy");
 		this.store.clearListeners();
 		this.store.destroyStore();
+		try{
+			this.dcContext.destroy();
+		} catch(e) {
+		}
+		delete this.children;
+		delete this.parent; 
+		delete this.dcContext;
 		
 //		delete this.actions;
 //		delete this.commands;

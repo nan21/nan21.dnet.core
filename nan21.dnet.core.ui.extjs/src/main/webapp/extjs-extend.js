@@ -1,31 +1,4 @@
-//session_decimalSeparator = ".";
-//session_groupSeparator = ",";
-//
-//Ext.DATE_FORMAT = 'd.m.Y';
-//Ext.TIME_FORMAT = 'H:i';
-//Ext.DATETIME_FORMAT = 'd.m.Y H:i';
-//// Ext.MONTH_FORMAT = 'm.Y';
-//Ext.form.field.Date.prototype.altFormats = "j|j.n|d|d.m";
-//// //Ext.form.field.TimeField.prototype.altFormats = "G|H|G:i";
-////
-//// Ext.NUMBER_FORMAT_DEC = "0,000.00";
-//// Ext.NUMBER_FORMAT_INT = "0,000";
-////
-////
-//Ext.MODEL_DATE_FORMAT = "Y-m-d\\TH:i:s";
-
-
-//Ext.override(Ext.form.field.Base, {
-//	_setRawValue_: function(v) {		
-//		this.setRawValue(v);
-//	} 
-//
-//});
-//Ext.override(Ext.form.field.Checkbox, {
-//    _setRawValue_: function(v) {		
-//		this.setValue(v);
-//	} 
-//});
+ 
 Ext.override(Ext.form.field.Text, { 
 	getRawValue: function() {
 		var me = this,
@@ -45,25 +18,17 @@ Ext.override(Ext.form.field.Text, {
     }
 });
 
-
-
-//Ext.override(Ext.form.field.Date, {
-//	_setRawValue_: function(v) {
-//		this.setRawValue(this.valueToRaw(v));
-//	}
-//});
-
- 
+  
 Ext.define("dnet.base.DisplayFieldText", {
 	extend: "Ext.form.field.Display",
 	alias: "widget.displayfieldtext",
+	
 	asText: false,
-//	_setRawValue_: function(v) {
-//		this.setRawValue(this.valueToRaw(v));
-//	},
+ 
 	valueToRaw: function(value) {
 			return value;      
     }, 
+    
     setRawValue: function(value) {
         var me = this;
         value = Ext.value(value, '');
@@ -79,12 +44,10 @@ Ext.define("dnet.base.DisplayFieldText", {
         return value;
     }
 });
+
 Ext.define("dnet.base.DisplayFieldDate", {
 	extend: "Ext.form.field.Display",
 	alias: "widget.displayfielddate",
-//	_setRawValue_: function(v) {
-//		this.setRawValue(this.valueToRaw(v));
-//	},
 	valueToRaw: function(value) { 
         return Ext.util.Format.date(value, Dnet.DATE_FORMAT);
     }
@@ -93,10 +56,7 @@ Ext.define("dnet.base.DisplayFieldDate", {
 Ext.define("dnet.base.DisplayFieldNumber", {
 	extend: "Ext.form.field.Display",
 	alias: "widget.displayfieldnumber",
-	 
-//	_setRawValue_: function(v) {
-//		this.setRawValue(this.valueToRaw(v));
-//	},
+ 
 	valueToRaw: function(value) {
         return Ext.util.Format.number(value, this.format || "0");
     }    
@@ -143,13 +103,11 @@ Ext.override(Ext.data.Store, {
     getAllNewRecords: function() {
         return this.data.filterBy(this.filterAllNew).items;
     },
-    filterUpdated: function(item) {
-        // only want dirty records, not phantoms that are valid
-        return item.dirty === true && item.phantom !== true ; //&& item.isValid();
-    }
     
-
-}); // Ext.data.Store
+    filterUpdated: function(item) {        
+        return item.dirty === true && item.phantom !== true ;  
+    }
+}); 
 
 
 
@@ -232,11 +190,7 @@ Ext.override(Ext.grid.plugin.CellEditing, {
 		return this.getEditor(record, column);
 		  
 	}
-	
-	
+	 
 });
-
-
-
 
  
