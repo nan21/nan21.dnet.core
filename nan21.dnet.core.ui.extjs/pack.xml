@@ -6,7 +6,8 @@
 	<property name="targetFileCore" value="dnet-ui-extjs-core-all-debug.js" />
 	<property name="targetFileCoreMinimized" value="dnet-ui-extjs-core-all.js" />
 	<property name="targetPathCore" value="src/main/webapp" />
-	<property name="sourcePathCore" value="src/main/webapp/src/core" />
+	<property name="sourcePathRoot" value="src/main/webapp/src" />
+	<property name="sourcePathCore" value="src/main/webapp/src/dnet/core" />
 
 	<property name="yui" value="yuicompressor-2.4.2.jar" />
 
@@ -20,20 +21,20 @@
 		<echo>[CORE] Packing javascript files in dnet-ui-extjs-core... </echo>
 		<concat destfile="${targetPathCore}/${targetFileCore}">
 
-			<filelist dir="${sourcePathCore}" files="Dnet.js" />
+			<filelist dir="${sourcePathRoot}" files="Dnet.js" />
 			
 			<filelist dir="${sourcePathCore}/../.." files="extjs-extend.js,extjs-ux-extend.js" />
  
 			<filelist dir="${sourcePathCore}/asgn" files="AbstractAsgn.js,AbstractAsgnGrid.js,AbstractAsgnUi.js,AsgnGridBuilder.js,AsgnUiBuilder.js" />
 
-			<filelist dir="${sourcePathCore}/base" files="NavigationTree.js,TemplateRepository.js,Session.js,Application.js,ApplicationMenu.js,LoginWindow.js,ChangePasswordWindow.js,FrameInspector.js" />
+			<filelist dir="${sourcePathCore}/base" files="Logger.js,NavigationTree.js,TemplateRepository.js,Session.js,Application.js,ApplicationMenu.js,LoginWindow.js,ChangePasswordWindow.js,FrameInspector.js" />
 
 			<filelist dir="${sourcePathCore}/base" files="HomePanel.js,UrlBuilder.js,UiHeader.js,FrameNavigatorWithIframe.js,FrameNavigator.js,FileUploadWindow.js,WorkflowFormWithHtmlWindow.js,WorkflowFormWithExtjsWindow.js,WorkflowFormFactory.js" />
 
-			<filelist dir="${sourcePathCore}/dc" files="AbstractDc.js,AbstractDcvGrid.js,AbstractDcvEditableGrid.js,AbstractDcvForm.js,AbstractDcvTree.js,AbstractDcvFilterForm.js,DcvFilterFormBuilder.js,DcvFormBuilder.js,DcvGridBuilder.js,DcvEditableGridBuilder.js,DcActionsFactory.js" />
+			<filelist dir="${sourcePathCore}/dc" files="AbstractDc.js,AbstractDcvGrid.js,AbstractDcvEditableGrid.js,AbstractDcvForm.js,AbstractDcvTree.js,AbstractDcvFilterForm.js,DcvFilterFormBuilder.js,DcvFormBuilder.js,DcvGridBuilder.js,DcvEditableGridBuilder.js,DcActionsFactory.js,DcCommandFactory.js" />
 
 
-			<filelist dir="${sourcePathCore}/dc/command" files="AbstractDcCommand.js,AbstractDcAsyncCommand.js,AbstractDcSyncCommand.js,DcCommandFactory.js" />
+			<filelist dir="${sourcePathCore}/dc/command" files="AbstractDcCommand.js,AbstractDcAsyncCommand.js,AbstractDcSyncCommand.js" />
 
 			<filelist dir="${sourcePathCore}/dc/command" files="DcQueryCommand.js,DcNewCommand.js,DcCopyCommand.js,DcSaveCommand.js,DcCancelCommand.js,DcEditInCommand.js,DcEditOutCommand.js" />
 

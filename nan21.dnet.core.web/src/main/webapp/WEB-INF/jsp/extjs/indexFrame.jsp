@@ -12,7 +12,7 @@
 		__STATIC_RESOURCE_URL_CORE__  = "${urlUiExtjsCore}";
 		__LANGUAGE__ = "${session.language}"; 	
 	</script>
-	<script type="text/javascript" src="${ urlUiExtjsCore }/src/core/globals.js" ></script>	
+	<script type="text/javascript" src="${ urlUiExtjsCore }/src/globals.js" ></script>	
 	<script type="text/javascript" src="${ urlUiExtjsCore }/config.js"></script>
 	<script type="text/javascript">
 	  checkAndStart(); 

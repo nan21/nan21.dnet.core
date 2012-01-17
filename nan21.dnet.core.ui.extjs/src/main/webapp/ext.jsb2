@@ -1,0 +1,214 @@
+{
+    "projectName": "DNet-Core",
+    "deployDir": "src",
+    "pkgs": [{
+       "name": "DNet-Core",
+
+       "fileIncludes": [
+{
+	"text": "Dnet.js",
+	"path": "src/"
+},{
+	"text": "AbstractAsgn.js",
+	"path": "src/dnet/core/asgn/"
+},{
+	"text": "AbstractAsgnGrid.js",
+	"path": "src/dnet/core/asgn/"
+},{
+	"text": "AbstractAsgnUi.js",
+	"path": "src/dnet/core/asgn/"
+},{
+	"text": "AsgnGridBuilder.js",
+	"path": "src/dnet/core/asgn/"
+},{
+	"text": "AsgnUiBuilder.js",
+	"path": "src/dnet/core/asgn/"
+},{
+	"text": "Logger.js",
+	"path": "src/dnet/core/base/"
+},{
+	"text": "Application.js",
+	"path": "src/dnet/core/base/"
+},{
+	"text": "Session.js",
+	"path": "src/dnet/core/base/"
+},{
+	"text": "NavigationTree.js",
+	"path": "src/dnet/core/base/"
+},{
+	"text": "TemplateRepository.js",
+	"path": "src/dnet/core/base/"
+},{
+	"text": "ApplicationMenu.js",
+	"path": "src/dnet/core/base/"
+},{
+	"text": "LoginWindow.js",
+	"path": "src/dnet/core/base/"
+},{
+	"text": "ChangePasswordWindow.js",
+	"path": "src/dnet/core/base/"
+},{
+	"text": "FrameInspector.js",
+	"path": "src/dnet/core/base/"
+},{
+	"text": "HomePanel.js",
+	"path": "src/dnet/core/base/"
+},{
+	"text": "UrlBuilder.js",
+	"path": "src/dnet/core/base/"
+},{
+	"text": "UiHeader.js",
+	"path": "src/dnet/core/base/"
+},{
+	"text": "FrameNavigatorWithIframe.js",
+	"path": "src/dnet/core/base/"
+},{
+	"text": "FrameNavigator.js",
+	"path": "src/dnet/core/base/"
+},{
+	"text": "FileUploadWindow.js",
+	"path": "src/dnet/core/base/"
+},{
+	"text": "WorkflowFormWithHtmlWindow.js",
+	"path": "src/dnet/core/base/"
+},{
+	"text": "WorkflowFormWithExtjsWindow.js",
+	"path": "src/dnet/core/base/"
+},{
+	"text": "WorkflowFormFactory.js",
+	"path": "src/dnet/core/base/"
+},{
+	"text": "AbstractDc.js",
+	"path": "src/dnet/core/dc/"
+},{
+	"text": "AbstractDcvGrid.js",
+	"path": "src/dnet/core/dc/"
+},{
+	"text": "AbstractDcvEditableGrid.js",
+	"path": "src/dnet/core/dc/"
+},{
+	"text": "AbstractDcvForm.js",
+	"path": "src/dnet/core/dc/"
+},{
+	"text": "AbstractDcvTree.js",
+	"path": "src/dnet/core/dc/"
+},{
+	"text": "AbstractDcvFilterForm.js",
+	"path": "src/dnet/core/dc/"
+},{
+	"text": "DcvFilterFormBuilder.js",
+	"path": "src/dnet/core/dc/"
+},{
+	"text": "DcvFormBuilder.js",
+	"path": "src/dnet/core/dc/"
+},{
+	"text": "DcvGridBuilder.js",
+	"path": "src/dnet/core/dc/"
+},{
+	"text": "DcvEditableGridBuilder.js",
+	"path": "src/dnet/core/dc/"
+},{
+	"text": "DcActionsFactory.js",
+	"path": "src/dnet/core/dc/"
+},{
+	"text": "AbstractDcCommand.js",
+	"path": "src/dnet/core/dc/command/"
+},{
+	"text": "AbstractDcAsyncCommand.js",
+	"path": "src/dnet/core/dc/command/"
+},{
+	"text": "AbstractDcSyncCommand.js",
+	"path": "src/dnet/core/dc/command/"
+},{
+	"text": "DcCommandFactory.js",
+	"path": "src/dnet/core/dc/"
+},{
+	"text": "DcQueryCommand.js",
+	"path": "src/dnet/core/dc/command/"
+} ,{
+	"text": "DcNewCommand.js",
+	"path": "src/dnet/core/dc/command/"
+},{
+	"text": "DcCopyCommand.js",
+	"path": "src/dnet/core/dc/command/"
+},{
+	"text": "DcvGridBuilder.js",
+	"path": "src/dnet/core/dc/command/"
+},{
+	"text": "DcSaveCommand.js",
+	"path": "src/dnet/core/dc/command/"
+},{
+	"text": "DcCancelCommand.js",
+	"path": "src/dnet/core/dc/command/"
+},{
+	"text": "DcEditInCommand.js",
+	"path": "src/dnet/core/dc/command/"
+},{
+	"text": "DcEditOutCommand.js",
+	"path": "src/dnet/core/dc/command/"
+},{
+	"text": "DcClearQueryCommand.js",
+	"path": "src/dnet/core/dc/command/"
+},{
+	"text": "DcDeleteCommand.js",
+	"path": "src/dnet/core/dc/command/"
+},{
+	"text": "DcReloadRecCommand.js",
+	"path": "src/dnet/core/dc/command/"
+},{
+	"text": "DcPrevRecCommand.js",
+	"path": "src/dnet/core/dc/command/"
+},{
+	"text": "DcNextRecCommand.js",
+	"path": "src/dnet/core/dc/command/"
+},{
+	"text": "DcRpcDataCommand.js",
+	"path": "src/dnet/core/dc/command/"
+},{
+	"text": "DcRpcFilterCommand.js",
+	"path": "src/dnet/core/dc/command/"
+},{
+	"text": "FrameBuilder.js",
+	"path": "src/dnet/core/ui/"
+},{
+	"text": "ActionBuilder.js",
+	"path": "src/dnet/core/ui/"
+},{
+	"text": "FrameButtonStateManager.js",
+	"path": "src/dnet/core/ui/"
+},{
+	"text": "AbstractUi.js",
+	"path": "src/dnet/core/ui/"
+},{
+	"text": "DcActionsStateManager.js",
+	"path": "src/dnet/core/dc/"
+},{
+	"text": "DcContext.js",
+	"path": "src/dnet/core/dc/"
+},{
+	"text": "DcExceptions.js",
+	"path": "src/dnet/core/dc/"
+},{
+	"text": "DataExportWindow.js",
+	"path": "src/dnet/core/dc/"
+},{
+	"text": "DataImportWindow.js",
+	"path": "src/dnet/core/dc/"
+},{
+	"text": "GridLayoutManager.js",
+	"path": "src/dnet/core/dc/"
+},{
+	"text": "AbstractRemoteCombo.js",
+	"path": "src/dnet/core/lov/"
+},{
+	"text": "AbstractCombo.js",
+	"path": "src/dnet/core/lov/"
+},{
+	"text": "AbstractLov.js",
+	"path": "src/dnet/core/lov/"
+}
+
+
+       ]
+    }]
+}

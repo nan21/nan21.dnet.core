@@ -12,7 +12,7 @@
 		__STATIC_RESOURCE_URL_CORE__  = "${urlUiExtjsCore}";
 		__LANGUAGE__ = "${session.language}"; 	
 	</script>
-	<script type="text/javascript" src="${ urlUiExtjsCore }/src/core/globals.js" ></script>	
+	<script type="text/javascript" src="${ urlUiExtjsCore }/src/globals.js" ></script>	
 	<script type="text/javascript" src="${ urlUiExtjsCore }/config.js"></script>
 	<script type="text/javascript">
 	  checkAndStart(); 
@@ -55,11 +55,11 @@
 
     	<%@ include file="_on_ready.jspf" %>
      
-      	var tr = dnet.base.TemplateRepository;
+      	var tr = dnet.core.base.TemplateRepository;
 
-		__application__ = dnet.base.Application;
+		__application__ = dnet.core.base.Application;
 		__application__.type = "dnet";      
-		__application__.menu = new dnet.base.ApplicationMenu({ region:"north" });
+		__application__.menu = new dnet.core.base.ApplicationMenu({ region:"north" });
 		__application__.view = new Ext.Viewport({
 			 layout:'card', activeItem:0
 			,forceLayout:true
