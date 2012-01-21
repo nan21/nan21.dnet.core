@@ -8,7 +8,7 @@ Ext.define("dnet.core.base.FrameInspector", {
 	width : 500,
 	layout : 'fit',
 	resizable : true,
-	padding : 5,
+	 
 	bodyPadding : 20,
 	closable : true,
 	constrain : true,

@@ -27,16 +27,16 @@ dnet.Translation = Ext.apply({},{
 		,copy__tlp : "Copiază înregistrarea curentă"
 
 		,next_rec__lbl : "Următor"
-		,next_rec__tlp : "Incarcă înregistrarea următoare din cele selectate sau următoare disponibilă dacă nu există selecţie multiplă"
+		,next_rec__tlp : "Încarcă înregistrarea următoare din cele selectate sau următoare disponibilă dacă nu există selecţie multiplă"
 
 		,prev_rec__lbl : "Anterior"
-		,prev_rec__tlp : "Incarcă înregistrarea anterioară din cele selectate sau cea anterioră disponibilă dacă nu există selecţie multiplă"
+		,prev_rec__tlp : "Încarcă înregistrarea anterioară din cele selectate sau cea anterioră disponibilă dacă nu există selecţie multiplă"
 
-		,delete_current__lbl : "Sterge"
-		,delete_current__tlp : "Sterge înregistrarea curentă"
+		,delete_current__lbl : "Şterge"
+		,delete_current__tlp : "Şterge înregistrarea curentă"
 
-		,delete_selected__lbl : "Sterge"
-		,delete_selected__tlp : "Sterge înregistrările selectate"
+		,delete_selected__lbl : "Şterge"
+		,delete_selected__tlp : "Şterge înregistrările selectate"
 
         ,cancel__lbl : "Anulează"
 		,cancel__tlp : "Anulează modificările utilizatorului."
@@ -150,9 +150,9 @@ dnet.Translation = Ext.apply({},{
 	  ,login_lang : "Limbă"
       ,login_btn : "Conectare"
 
-	  ,upload_title : "Upload fisier"
+	  ,upload_title : "Upload fişier"
 	  ,upload_name : "Nume"
-	  ,upload_file : "Fisier"	 
+	  ,upload_file : "Fişier"	 
 	  ,upload_btn : "Trimite"
 	  
       ,chpswd_title : "Schimbare parolă"
@@ -221,7 +221,7 @@ dnet.Translation = Ext.apply({},{
        ,code: "Cod"
        ,name: "Denumire"
        ,description: "Descriere"
-       ,notes: "Observatii"
+       ,notes: "Observaţii"
        ,active: "Activ"
        ,valid: "Valid"
        ,statusId: "Stare(ID)"
@@ -238,10 +238,10 @@ dnet.Translation = Ext.apply({},{
    }
 
   ,ui:{
-  	    Countries_UI: "Tări"
+  	    Countries_UI: "Ţări"
   	   ,Regions_UI: "Judeţe"
-  	   ,CountryMD_UI: "Tară cu detalii"
-	   ,RegionMD_UI: "Judeţ cu detalii"
+  	   ,CountryMD_UI: "Ţări/Judeţe"
+	   ,RegionMD_UI: "Judeţe/Localităţi"
 	   ,Currencies_UI: "Valute"
 	   ,CurrencyXrateProvider_UI :"Furnizori rate de schimb"
 	   ,CurrencyXRates_UI : "Rate de schimb valutar"
@@ -264,8 +264,8 @@ dnet.Translation = Ext.apply({},{
 	    ,Client_UI:"Administrare clienţi"
        ,SysDataSources_UI : "Componente sistem: Surse de date"
        ,SysParam_UI: "Parametri sistem"
-       ,SysDateFormat_UI: "Formate dat��"
-       ,MyUserSettings_UI:"Set��rile mele"
+       ,SysDateFormat_UI: "Formate dat��"
+       ,MyUserSettings_UI:"Set��rile mele"
        
        ,Reports_UI : "Rapoarte"
 	   ,ReportServers_UI : "Servere raportare"
@@ -286,15 +286,15 @@ dnet.Translation = Ext.apply({},{
         ,WorkflowDef_UI : "Definire Workflow"
 		,AttachmentType_UI : "Tipuri atasament"
 	   //CRM
-       ,CalendarEventTypeDef_UI : "Definiţii evenimente agend��"       
-       ,MyCalendarEvent_UI : "Evenimente agend��"
+       ,CalendarEventTypeDef_UI : "Definiţii evenimente agendă"       
+       ,MyCalendarEvent_UI : "Evenimente agendă"
     	 
        	//HR
 
        	,Grade_UI : "Grade"
-		,GradeRate_UI : "Grade rates"
+		,GradeRate_UI : "Rate grade"
 		,PayScale_UI :"Grile salarizare"
-		,PayScaleRate_UI :"Pay scale rates"
+		,PayScaleRate_UI :"Rate grile salarizare"
 		,RatingScale_UI : "Grile evaluare"
 		,RatingLevel_UI : "Nivele evaluare"
 		,SkillType_UI : "Tipuri competenţe"
@@ -357,14 +357,14 @@ dnet.Translation = Ext.apply({},{
 	    ,InvBalance_UI: "Stocuri"	
 	    ,InvOperations_UI: "Operatii gestiuni"	
 	    //SD
-	    ,SalesOrderBaseData_UI : "Definiţii (facturi)"
+	    ,SalesOrderBaseData_UI : "Definiţii (comenzi)"
         //,SalesOrderStatus_UI : "Stări comenzi"
         //,SalesOrderType_UI : "Tipuri comenzi"
         ,SalesOrder_UI : "Comenzi"
 
 		//,SalesInvoiceStatus_UI : "Stări factura"
         //,SalesInvoiceType_UI : "Tipuri factura"
-        ,SalesInvoiceBaseData_UI : "Definiţii (comenzi)"
+        ,SalesInvoiceBaseData_UI : "Definiţii (facturi)"
         ,SalesInvoice_UI: "Facturi"
 		,OpportunityBaseData_UI: "Definiţii oportunităţi" 
         ,Opportunity_UI: "Oportunităţi" 

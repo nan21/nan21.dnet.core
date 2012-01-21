@@ -68,7 +68,8 @@ Ext.define("dnet.core.base.LoginForm", {
 					fn : this.enableAction
 				}
 			}
-		}, {
+		}
+		/*, {
 			xtype : "combo",
 			itemId : "lang",
 			fieldLabel : Dnet.translate("msg", "login_lang"),
@@ -82,7 +83,7 @@ Ext.define("dnet.core.base.LoginForm", {
 					fn : this.enableAction
 				}
 			}
-		}
+		}*/
 
 		];
 	},
@@ -202,7 +203,7 @@ Ext.define("dnet.core.base.LoginForm", {
 		p["user"] = this.getUserField().getValue();
 		p["pswd"] = Ext.util.MD5(this.getPasswordField().getValue());
 		p["client"] = this.getClientField().getValue();
-		p["lang"] = this.getLanguageField().getValue();
+		//p["lang"] = this.getLanguageField().getValue();
 
 		Ext.Ajax.request( {
 			method : "POST",
@@ -244,7 +245,7 @@ Ext.define("dnet.core.base.LoginForm", {
 		this.getClientField().setValue(null);
 		this.getClientField().clearInvalid();
 
-		this.getLanguageField().enable();
+		//this.getLanguageField().enable();
 		this.getActionButton().disable();
 	},
 
@@ -256,7 +257,7 @@ Ext.define("dnet.core.base.LoginForm", {
 		this.getPasswordField().setValue(null);
 		this.getPasswordField().clearInvalid();
 		this.getClientField().disable();
-		this.getLanguageField().disable();
+		//this.getLanguageField().disable();
 		this.getActionButton().disable();
 	},
 

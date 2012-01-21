@@ -44,7 +44,7 @@ public class SessionController {
 			@RequestParam(value = "user", required = true) String username,
 			@RequestParam(value = "pswd", required = true) String password,
 			@RequestParam(value = "client", required = true) String clientCode,
-			@RequestParam(value = "lang", required = true) String language,
+			@RequestParam(value = "lang", required = false ) String language,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		try {

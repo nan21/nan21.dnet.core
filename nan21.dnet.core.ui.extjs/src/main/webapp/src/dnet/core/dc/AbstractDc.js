@@ -209,7 +209,20 @@ Ext.define("dnet.core.dc.AbstractDc", {
 
 	_setup_ : function() {
 		 
-		this._trl_ = Ext.create(this.recordModel +"$Trl");
+		  
+		 try {
+		 	this._trl_ = Ext.create(this.recordModel +"$Trl");
+		 } catch(e) {
+//		 	Ext.Msg.show({
+//				title : "Invalid language-pack",
+//				msg:"No translation file found for " +this.recordModel +"$Trl <br> Using the default system language for the associated labels.",	
+//				icon : Ext.MessageBox.INFO,
+//				buttons : Ext.Msg.OK
+//			});
+		 }
+		 
+		 
+		 
 		// this.dsName = this.ds.dsName;
  
 		if(Ext.isEmpty(this.filterModel)) {

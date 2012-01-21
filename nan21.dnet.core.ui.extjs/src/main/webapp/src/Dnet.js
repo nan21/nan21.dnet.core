@@ -200,7 +200,7 @@ Dnet = {
 				var rd = this.describeResource(list[i]);
 				document.write('<'+'scr'+'ipt type="text/javascript" src="'+Dnet.staticResourceUrl+'/'+rd.bundle+'/src/'+rd.type+'/'+rd.name+'.js"></script>');
 				if(rd.type=="ds") {
-					document.write('<'+'scr'+'ipt type="text/javascript" src="'+Dnet.staticResourceUrl+'/'+rd.bundle+'/resources/locale/en/'+rd.type+'/'+rd.name+'.js"></script>');
+					document.write('<'+'scr'+'ipt type="text/javascript" src="'+Dnet.staticResourceUrl+'/'+rd.bundle+'/resources/locale/'+__LANGUAGE__+'/'+rd.type+'/'+rd.name+'.js"></script>');
 				}
 			}
 		}

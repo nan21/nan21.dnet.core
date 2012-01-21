@@ -51,6 +51,10 @@ Ext.define("dnet.core.ui.FrameBuilder" , {
 	
 	
 	addDcFilterFormView: function(dc, config) {	
+		var ttlKey = config.name + "__ttl";
+		if (config.title && this.frame._trl_ && this.frame._trl_[ttlKey]) {
+			config.title = this.frame._trl_[ttlKey];
+		}
 		this.addDcView(dc, config);	
 		var theDc = this.frame._dcs_.get(dc);
 		var viewId = config.id;
@@ -65,6 +69,11 @@ Ext.define("dnet.core.ui.FrameBuilder" , {
 	},
 	
 	addDcListView: function(dc, config) {	
+		var ttlKey = config.name + "__ttl";
+		  
+		if (config.title && this.frame._trl_ && this.frame._trl_[ttlKey]) {
+			config.title = this.frame._trl_[ttlKey];
+		}
 		return this.addDcView(dc, config);
 	},
 	
@@ -74,6 +83,10 @@ Ext.define("dnet.core.ui.FrameBuilder" , {
 			_controller_:this.frame._dcs_.get(dc)
 			//,listeners:{ activate:{scope:this,fn:function(p){p.doLayout(false,true);} } }
 		});
+		var ttlKey = config.name + "__ttl";
+		if (config.title && this.frame._trl_ && this.frame._trl_[ttlKey]) {
+			config.title = this.frame._trl_[ttlKey];
+		}
 		this.applyViewSharedConfig(config);				
 		return this;
 	},
@@ -100,6 +113,11 @@ Ext.define("dnet.core.ui.FrameBuilder" , {
 			 
 			id: Ext.id()			
 		});
+		var ttlKey = config.name + "__ttl";
+		  
+		if (config.title && this.frame._trl_ && this.frame._trl_[ttlKey]) {
+			config.title = this.frame._trl_[ttlKey];
+		}
 		this.applyViewSharedConfig(config);	
 		return this;
 	},
@@ -200,9 +218,14 @@ Ext.define("dnet.core.ui.FrameBuilder" , {
 	,addButton: function(config) {		
 		Ext.applyIf(config , {id:Ext.id(), xtype:"button"} );
 		var ttlKey = config.name + "__ttl";
+		var descKey = config.name + "__desc";
+		
 		if (config.text && this.frame._trl_ && this.frame._trl_[ttlKey]) {
 			config.text = this.frame._trl_[ttlKey];
 		}
+		if (config.tooltip && this.frame._trl_ && this.frame._trl_[descKey]) {
+			config.tooltip = this.frame._trl_[descKey];
+		}		
 		this.frame._elems_.add(config.name, config);
 		if (config.stateManager ) {
 			var options = {and:config.stateManager.and };
@@ -219,6 +242,12 @@ Ext.define("dnet.core.ui.FrameBuilder" , {
 	
 	addWindow: function(config) {
 		Ext.applyIf(config,{ id:Ext.id(),_window_:true} );
+		var ttlKey = config.name + "__ttl";
+		  
+		if (config.title && this.frame._trl_ && this.frame._trl_[ttlKey]) {
+			config.title = this.frame._trl_[ttlKey];
+		}
+		
 		this.frame._elems_.add(config.name, config);
 		return this;
 	}

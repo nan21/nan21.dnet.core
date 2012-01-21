@@ -10,7 +10,7 @@
 		__ITEM__ = "${item}";  	
 		__STATIC_RESOURCE_URL__  = "${urlUiExtjs}";
 		__STATIC_RESOURCE_URL_CORE__  = "${urlUiExtjsCore}";
-		__LANGUAGE__ = "${session.language}"; 	
+		__LANGUAGE__ = "${shortLanguage}"; 	
 	</script>
 	<script type="text/javascript" src="${ urlUiExtjsCore }/src/globals.js" ></script>	
 	<script type="text/javascript" src="${ urlUiExtjsCore }/config.js"></script>
