@@ -23,7 +23,7 @@
 
 			<filelist dir="${sourcePathRoot}" files="Dnet.js" />
 			
-			<filelist dir="${sourcePathCore}/.." files="extjs-extend.js,extjs-ux-extend.js" />
+			<filelist dir="${sourcePathRoot}/.." files="extjs-extend.js,extjs-ux-extend.js" />
  
 			<filelist dir="${sourcePathCore}/asgn" files="AbstractAsgn.js,AbstractAsgnGrid.js,AbstractAsgnUi.js,AsgnGridBuilder.js,AsgnUiBuilder.js" />
 
