@@ -1,3 +1,4 @@
+Ext.ns("dnet.core.base");
 dnet.core.base.Logger = function() {
 	return {
 		doLogging : false /*(Ext.isDefined(console))? true: false */ 
