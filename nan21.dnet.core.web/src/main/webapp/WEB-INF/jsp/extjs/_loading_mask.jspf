@@ -3,7 +3,7 @@
       <div class="n21-loading-indicator">        
         <span id="n21-loading-logo-text">${title}</span>
         <br>
-        <img src="${urlUiExtjsCore}/resources/images/icon/loading.gif" width="150"/>
+        <img src="${urlUiExtjsCore}/resources/images/${theme}/icon/loading.gif" width="150"/>
         <br>
         <span id="n21-loading-msg">Loading ${item}...</span>
       </div>

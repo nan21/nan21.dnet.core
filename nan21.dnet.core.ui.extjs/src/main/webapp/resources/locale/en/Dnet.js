@@ -207,6 +207,12 @@ dnet.Translation = Ext.apply({},{
        	,exp_rec_all: "All pages"
        ,exp_run: "Run"
        
+       
+       ,sort_title: "Sort"
+       ,sort_btn: "Sort"
+       ,sort_run: "Apply"
+       
+       
        ,layout_mylayouts : "Select existing layout"
 		,layout_name : "Save current layout as"
 		,layout_title: "My layouts"

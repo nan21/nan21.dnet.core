@@ -43,7 +43,7 @@
 
 			<filelist dir="${sourcePathCore}/ui" files="FrameBuilder.js,ActionBuilder.js,FrameButtonStateManager.js,AbstractUi.js" />
 
-			<filelist dir="${sourcePathCore}/dc" files="DcActionsStateManager.js,DcContext.js,DcExceptions.js,DataExportWindow.js,DataImportWindow.js,GridLayoutManager.js" />
+			<filelist dir="${sourcePathCore}/dc" files="DcActionsStateManager.js,DcContext.js,DcExceptions.js,DataExportWindow.js,DataImportWindow.js,DataSortWindow.js,GridLayoutManager.js" />
 
 			<filelist dir="${sourcePathCore}/lov" files="AbstractRemoteCombo.js,AbstractCombo.js,AbstractLov.js" />
 

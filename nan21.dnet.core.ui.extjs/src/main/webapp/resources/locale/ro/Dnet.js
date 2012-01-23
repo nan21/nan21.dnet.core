@@ -45,9 +45,7 @@ dnet.Translation = Ext.apply({},{
 		,back__tlp : "Înapoi."
 
         // *******************  Standard actions for MULTI-RECORD data-control ******************
-
-        
-
+ 
 	}
 
 	,appmenuitem: {
@@ -209,6 +207,10 @@ dnet.Translation = Ext.apply({},{
        	,exp_rec_all: "Toate paginile"
        ,exp_run: "Execută"
        
+       ,sort_title: "Sortare"
+       ,sort_btn: "Sortare"
+       ,sort_run: "Aplică"
+       
         ,layout_mylayouts : "Alegeti layout existent"
 		,layout_name : "Salveaza layout curent"
 		,layout_title: "My layouts"
@@ -264,7 +266,7 @@ dnet.Translation = Ext.apply({},{
 	    ,Client_UI:"Administrare clienţi"
        ,SysDataSources_UI : "Componente sistem: Surse de date"
        ,SysParam_UI: "Parametri sistem"
-       ,SysDateFormat_UI: "Formate dat��"
+       ,SysDateFormat_UI: "Formate dată"
        ,MyUserSettings_UI:"Set��rile mele"
        
        ,Reports_UI : "Rapoarte"

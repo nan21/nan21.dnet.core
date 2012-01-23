@@ -9,7 +9,12 @@ Ext.define('dnet.core.ui.FrameBuilder$TocModel', {
 	}]
 });
  
-Ext.define("dnet.core.ui.FrameBuilder" , {		
+Ext.define("dnet.core.ui.FrameBuilder" , {
+	
+	/**
+	 * 
+	 * @type dnet.core.ui.AbstractUi
+	 */
 	frame : null,
 	
 	constructor : function(config) {

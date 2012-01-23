@@ -3,11 +3,17 @@ Ext.ns("dnet.core.base");
 dnet.core.base.ApplicationMenu$ContributedMenus = [];
 /* company logo + user info */
 
-dnet.core.base.ApplicationMenu$LogoItems = [Ext.create('Ext.Img', {
+dnet.core.base.ApplicationMenu$LogoItems = [{
+	xtype:"container"
+	,items: [Ext.create('Ext.Img', {
 			src : __STATIC_RESOURCE_URL_CORE__
-					+ "/resources/images/logo/logo.png",
-			id : "net.nan21.dnet.core.menu.ApplicationMenu$Item$Logo"
-		}), {
+					+ "/resources/images/"+__THEME__+"/logo/logo.png",
+			id : "net.nan21.dnet.core.menu.ApplicationMenu$Item$Logo" ,
+			style:"vertical-align:middle;" 
+		})]
+	,style:""	
+	,width:100	
+}, {
 	xtype : "tbspacer",
 	id : "net.nan21.dnet.core.menu.ApplicationMenu$Item$LogoSpacer",
 	width : 20
@@ -81,20 +87,8 @@ dnet.core.base.ApplicationMenu$Items = [
 	xtype : "splitbutton",
 	text : Dnet.translate("appmenuitem", "theme__lbl"),
 	menu : new Ext.menu.Menu({
-				items : [{
-							text : Dnet.translate("appmenuitem",
-									"theme_capuccino__lbl"),
-							handler : function() {
-								getApplication().changeCurrentTheme("capuccino");
-							}
-						}
-						,{
-							text : Dnet.translate("appmenuitem",
-									"theme_aqua__lbl"),
-							handler : function() {
-								getApplication().changeCurrentTheme("aqua");
-							}
-						},{
+				items : [
+						{
 							text : Dnet.translate("appmenuitem",
 									"theme_gray__lbl"),
 							handler : function() {
@@ -106,11 +100,11 @@ dnet.core.base.ApplicationMenu$Items = [
 							handler : function() {
 								getApplication().changeCurrentTheme("blue");
 							}
-						}, {
+						},{
 							text : Dnet.translate("appmenuitem",
-									"theme_access__lbl"),
+									"theme_capuccino__lbl"),
 							handler : function() {
-								getApplication().changeCurrentTheme("access");
+								getApplication().changeCurrentTheme("capuccino");
 							}
 						}]
 			})

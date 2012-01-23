@@ -3,11 +3,30 @@ Ext.define("dnet.core.dc.AbstractDcvEditableGrid", {
 
 	// DNet properties
 
+	/**
+	 * Component builder
+	 * @type dnet.core.dc.DcvEditableGridBuilder
+	 */
 	_builder_ : null,
+	
+	/**
+	 * Columns definition map
+	 * @type Ext.util.MixedCollection
+	 */
 	_columns_ : null,
+	/**
+	 * Elements definition map
+	 * @type Ext.util.MixedCollection
+	 */
 	_elems_ : null,
+	
+	/**
+	 * DC-Controller
+	 * @type dnet.core.dc.AbstractDc
+	 */
 	_controller_ : null,
 
+	_noSort_	: false,
 	_noExport_ : false,
 	_noImport_ : true,
 	_noLayoutCfg_ : true,
@@ -108,18 +127,21 @@ Ext.define("dnet.core.dc.AbstractDcvEditableGrid", {
 		if (!this._noLayoutCfg_) {
 			bbitems = [ "-", this._elems_.get("_btnLayout_") ];
 		}
+		
+		if (!this._noSort_) {			 
+			bbitems.push("-");
+			bbitems.push(this._elems_.get("_btnSort_"));			 
+		}
 
 		if (!this._noImport_) {
-			if (bbitems.length == 0) {
-				bbitems[0] = "-";
-			}
-			bbitems[bbitems.length] = [ this._elems_.get("_btnImport_") ];
+			bbitems.push("-");
+			bbitems.push(this._elems_.get("_btnImport_"));				 
 		}
 		if (!this._noExport_) {
-			if (bbitems.length == 0) {
-				bbitems[0] = "-";
-			}
-			bbitems[bbitems.length] = [ this._elems_.get("_btnExport_") ];
+			if (this._noImport_) {
+				bbitems.push("-");
+			}			
+			bbitems.push(this._elems_.get("_btnExport_"));	
 		}
 
 		if (bbitems.length > 0) {
@@ -206,6 +228,15 @@ Ext.define("dnet.core.dc.AbstractDcvEditableGrid", {
 			handler : this._doImport_,
 			scope : this
 		});
+		this._elems_.add("_btnSort_", {
+			xtype : "button",
+			id : Ext.id(),			 
+			//text : Dnet.translate("dcvgrid", "sort_btn"),
+			tooltip : Dnet.translate("dcvgrid", "sort_title"),
+			iconCls : 'icon-action-sort',
+			handler : this._doSort_,
+			scope : this
+		});
 		this._elems_.add("_btnLayout_", {
 			xtype : "button",
 			id : Ext.id(),
@@ -218,14 +249,14 @@ Ext.define("dnet.core.dc.AbstractDcvEditableGrid", {
 	},
 	_doImport_ : function() {
 		if (this._importWindow_ == null) {
-			this._importWindow_ = new dnet.core.base.DataImportWindow();
+			this._importWindow_ = new dnet.core.dc.DataImportWindow();
 			this._importWindow_._grid_ = this;
 		}
 		this._importWindow_.show();
 	},
 	_doExport_ : function() {
 		if (this._exportWindow_ == null) {
-			this._exportWindow_ = new dnet.core.base.DataExportWindow({_grid_: this});			 
+			this._exportWindow_ = new dnet.core.dc.DataExportWindow({_grid_: this});			 
 		}
 		this._exportWindow_.show();
 	},
@@ -235,9 +266,14 @@ Ext.define("dnet.core.dc.AbstractDcvEditableGrid", {
 			this._layoutWindow_._grid_ = this;
 		}
 		this._layoutWindow_.show();
-	}
+	},
 
-	,
+	_doSort_ : function() {
+		//if (this._sortWindow_ == null) {
+			this._sortWindow_ = new dnet.core.dc.DataSortWindow({_grid_: this});			 
+		//}
+		this._sortWindow_.show();
+	},
 	_onStoreLoad_ : function(store, records, options) {
 		if (!this._noExport_) {
 			if (store.getCount() > 0) {

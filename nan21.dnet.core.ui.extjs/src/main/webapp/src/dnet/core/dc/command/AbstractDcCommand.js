@@ -5,9 +5,10 @@
  */
 Ext.define("dnet.core.dc.command.AbstractDcCommand", {
  
-	/**
-	 * Data-control on which this command is invoked.
-	 */
+ 	/**
+ 	 * Data-control on which this command is invoked.
+ 	 * @type dnet.core.dc.AbstractDc
+ 	 */
 	dc : null,
 
 	/**

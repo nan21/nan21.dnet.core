@@ -210,7 +210,7 @@ Ext.define("dnet.core.dc.DataExportForm", {
 	}
 });
 
-Ext.define("dnet.core.base.DataExportWindow", {
+Ext.define("dnet.core.dc.DataExportWindow", {
 	extend : "Ext.Window",
 
 	_grid_ : null,
