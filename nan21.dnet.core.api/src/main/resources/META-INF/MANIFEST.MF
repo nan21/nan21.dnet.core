@@ -1,24 +1,24 @@
 Manifest-Version: 1.0
-Export-Package: net.nan21.dnet.core.api;version="1.0.0.M6";uses:="org.
+Export-Package: net.nan21.dnet.core.api;version="1.0.0.M7";uses:="org.
  springframework.beans.factory.annotation,org.springframework.context"
- ,net.nan21.dnet.core.api.action;version="1.0.0.M6";uses:="net.nan21.d
+ ,net.nan21.dnet.core.api.action;version="1.0.0.M7";uses:="net.nan21.d
  net.core.api,net.nan21.dnet.core.api.descriptor",net.nan21.dnet.core.
- api.annotation;version="1.0.0.M6";uses:="javax.persistence",net.nan21
- .dnet.core.api.converter;version="1.0.0.M6";uses:="javax.persistence"
- ,net.nan21.dnet.core.api.descriptor;version="1.0.0.M6",net.nan21.dnet
- .core.api.exceptions;version="1.0.0.M6",net.nan21.dnet.core.api.marsh
- all;version="1.0.0.M6";uses:="net.nan21.dnet.core.api.action",net.nan
- 21.dnet.core.api.model;version="1.0.0.M6",net.nan21.dnet.core.api.ser
- vice;version="1.0.0.M6";uses:="javax.persistence,net.nan21.dnet.core.
+ api.annotation;version="1.0.0.M7";uses:="javax.persistence",net.nan21
+ .dnet.core.api.converter;version="1.0.0.M7";uses:="javax.persistence"
+ ,net.nan21.dnet.core.api.descriptor;version="1.0.0.M7",net.nan21.dnet
+ .core.api.exceptions;version="1.0.0.M7",net.nan21.dnet.core.api.marsh
+ all;version="1.0.0.M7";uses:="net.nan21.dnet.core.api.action",net.nan
+ 21.dnet.core.api.model;version="1.0.0.M7",net.nan21.dnet.core.api.ser
+ vice;version="1.0.0.M7";uses:="javax.persistence,net.nan21.dnet.core.
  api,net.nan21.dnet.core.api.action,net.nan21.dnet.core.api.marshall,o
  rg.springframework.web.multipart",net.nan21.dnet.core.api.session;ver
- sion="1.0.0.M6",net.nan21.dnet.core.api.setup;version="1.0.0.M6";uses
+ sion="1.0.0.M7",net.nan21.dnet.core.api.setup;version="1.0.0.M7";uses
  :="net.nan21.dnet.core.api,org.springframework.beans.factory.annotati
  on,org.springframework.context",net.nan21.dnet.core.api.ui.extjs;vers
- ion="1.0.0.M6",net.nan21.dnet.core.api.ui.extjs.impl;version="1.0.0.M
- 6";uses:="net.nan21.dnet.core.api.ui.extjs"
+ ion="1.0.0.M7",net.nan21.dnet.core.api.ui.extjs.impl;version="1.0.0.M
+ 7";uses:="net.nan21.dnet.core.api.ui.extjs"
 Bundle-Vendor: Nan21 
-Bundle-Version: 1.0.0.M6
+Bundle-Version: 1.0.0.M7
 Tool: Bundlor 1.0.0.RELEASE
 Bundle-Name: DNet Core - api
 Bundle-ManifestVersion: 2

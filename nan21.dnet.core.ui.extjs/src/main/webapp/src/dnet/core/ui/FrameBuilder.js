@@ -106,7 +106,18 @@ Ext.define("dnet.core.ui.FrameBuilder" , {
 				scope:this.frame,
 				fn:function(cmp,opt){ 
 					for (var i=0;i<onActivateDoLayoutFor.length;i++) {  
-						this._getElement_(onActivateDoLayoutFor[i]).doLayout();  
+						var e = this._getElement_(onActivateDoLayoutFor[i]);
+						// workaround for the dissapearing scrollbars when returning from an editor after a new+ cancel combination  
+						if (e instanceof dnet.core.dc.AbstractDcvGrid) {
+							//alert(onActivateDoLayoutFor[i] + " instanceof dnet.core.dc.AbstractDcvGrid");
+							//e.getView().refresh();
+							//e.determineScrollbars( );
+							e.getView().refresh();
+							e.invalidateScroller();
+						} else {
+							e.doLayout(); 
+						}
+						
 					} 
 				}
 			}	
@@ -162,7 +173,7 @@ Ext.define("dnet.core.ui.FrameBuilder" , {
 	}
 	
 	,beginToolbar: function(name, config) {
-		return new dnet.core.ui.ActionBuilder({name:name, frame:this.frame, dc: config.dc});
+		return new dnet.core.ui.ActionBuilder({name:name , frame:this.frame, dc: config.dc});
 	}
 	
 	,addToc: function(canvases) {

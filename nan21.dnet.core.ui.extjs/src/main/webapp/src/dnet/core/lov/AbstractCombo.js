@@ -112,8 +112,15 @@ Ext.define("dnet.core.lov.AbstractCombo", {
  
     _mapReturnFields_: function(crec) {   
 		if (this.inEditor) {
-           var mrec = this._targetRecord_;
-           this._mapReturnFieldsExecute_(crec,mrec);
+			var dcv = this._dcView_;
+			if (dcv && dcv._dcViewType_ == "bulk-edit-field") {
+            	/*is a bulk editor for one ds field in a property grid*/
+	           mrec = dcv.getSource();
+			 	this._mapReturnFieldsExecuteBulkEdit_(crec,mrec);
+           } else {           	 
+           	 var mrec = this._targetRecord_;
+           	 this._mapReturnFieldsExecute_(crec,mrec);
+           }             
 		} else {
 			var dcv = this._dcView_, mrec = null;
 			if (dcv._dcViewType_ == "edit-form") {
@@ -122,10 +129,39 @@ Ext.define("dnet.core.lov.AbstractCombo", {
 	        if (dcv._dcViewType_ == "filter-form") {
 	           mrec = dcv._controller_.getFilter();
 			}
+			
            this._mapReturnFieldsExecute_(crec, mrec, dcv._controller_.getParams());
 		}
     },
     
+    
+    _mapReturnFieldsExecuteBulkEdit_: function(crec, recdata) {    
+		if (!recdata) {return; }
+        if (this.retFieldMapping != null) {
+        	for(var i=this.retFieldMapping.length-1; i>=0; i-- ) {
+        		
+        		var retDataIndex = null;
+        		var nv = null;
+				isParam  =  !Ext.isEmpty(this.retFieldMapping[i]["dsParam"]);
+				if (isParam) {				   		   
+					retDataIndex = this.retFieldMapping[i]["dsParam"];
+					ov = prec.get( retDataIndex );
+				} else {
+					retDataIndex = this.retFieldMapping[i]["dsField"];
+					ov = recdata[retDataIndex];
+				}
+				
+				 if (crec && crec.data) {
+				 	nv = crec.data[ this.retFieldMapping[i]["lovField"] ];
+				 	recdata[retDataIndex] = nv;
+				 } else {
+				 	
+				 }
+				
+        	}
+        }	 
+
+	 } ,
     
     /**
      * Params: crec: combo selected record

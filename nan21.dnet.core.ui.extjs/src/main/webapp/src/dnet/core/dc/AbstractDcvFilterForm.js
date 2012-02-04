@@ -70,6 +70,26 @@ Ext.define("dnet.core.dc.AbstractDcvFilterForm", {
 		});
 		this.mon(this._controller_, "parameterValueChanged", this._onParameterValueChanged_, this);
 		this.mon(this._controller_, "filterValueChanged", this._onFilterValueChanged_, this);
+		
+		if (this._controller_.commands.doQuery ) {
+			this._controller_.commands.doQuery.beforeExecute = Ext.Function.createInterceptor(
+				this._controller_.commands.doQuery.beforeExecute,
+				function() {
+					if(!this.getForm().isValid()) {
+						Ext.Msg.show({
+							title : "Validation info",	
+							msg : "Filter contains invalid data.<br> Please fix the errors then try again.",
+							scope : this,
+							icon : Ext.MessageBox.ERROR,
+							buttons : Ext.MessageBox.OK
+						});
+						return false;
+					} else {
+						return true;	
+					}					
+				},this, -1 );
+		}
+		
 	}, 
 	
 	
@@ -129,7 +149,9 @@ Ext.define("dnet.core.dc.AbstractDcvFilterForm", {
 		if (fld) {
 			fld = this._getElement_(fld.name);
 			if (fld.getValue() != nv) {
-				fld._setRawValue_(nv);
+				fld.suspendEvents();
+				fld.setValue(nv);
+				fld.resumeEvents();
 			}	
 		}			
 	},

@@ -1,23 +1,23 @@
 Manifest-Version: 1.0
 Export-Package: net.nan21.dnet.core.business.persistenceunit;version="
- 1.0.0.M6";uses:="javax.sql,org.springframework.orm.jpa.persistenceuni
- t",net.nan21.dnet.core.business.pu;version="1.0.0.M6",net.nan21.dnet.
- core.business.service;version="1.0.0.M6";uses:="javax.persistence,net
+ 1.0.0.M7";uses:="javax.sql,org.springframework.orm.jpa.persistenceuni
+ t",net.nan21.dnet.core.business.pu;version="1.0.0.M7",net.nan21.dnet.
+ core.business.service;version="1.0.0.M7";uses:="javax.persistence,net
  .nan21.dnet.core.api,net.nan21.dnet.core.api.service,net.nan21.dnet.c
  ore.api.setup,org.springframework.beans.factory.annotation,org.spring
  framework.context"
 Bundle-Vendor: Nan21 
-Bundle-Version: 1.0.0.M6
+Bundle-Version: 1.0.0.M7
 Tool: Bundlor 1.0.0.RELEASE
 Bundle-Name: DNet Core - business
 Bundle-ManifestVersion: 2
 Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.html
 Bundle-SymbolicName: nan21.dnet.core.business
 Import-Package: javax.persistence;version="[2.0,2.1)",javax.sql,net.na
- n21.dnet.core.api,net.nan21.dnet.core.api.model;version="[1.0.0.M6,1.
- 0.0.M6]",net.nan21.dnet.core.api.service;version="[1.0.0.M6,1.0.0.M6]
- ",net.nan21.dnet.core.api.session;version="[1.0.0.M6,1.0.0.M6]",net.n
- an21.dnet.core.api.setup;version="[1.0.0.M6,1.0.0.M6]",org.slf4j;vers
+ n21.dnet.core.api,net.nan21.dnet.core.api.model;version="[1.0.0.M7,1.
+ 0.0.M7]",net.nan21.dnet.core.api.service;version="[1.0.0.M7,1.0.0.M7]
+ ",net.nan21.dnet.core.api.session;version="[1.0.0.M7,1.0.0.M7]",net.n
+ an21.dnet.core.api.setup;version="[1.0.0.M7,1.0.0.M7]",org.slf4j;vers
  ion="[1.0,2.0]",org.springframework.beans.factory,org.springframework
  .beans.factory.annotation;version="[3.0,3.1)",org.springframework.con
  text;version="[3.0,3.1)",org.springframework.context.config;version="

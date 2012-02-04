@@ -49,12 +49,14 @@ Ext.define("dnet.core.dc.AbstractDc", {
 
 	/**
 	 * Data model signature - record constructor.
+	 * @type Ext.data.Model 
 	 */
 	recordModel : null,
 
 	/**
 	 * Filter model signature - filter constructor.
 	 * Defaults to recordModel if not specified.
+	 * @type Ext.data.Model
 	 */
 	filterModel : null,
 	
@@ -137,8 +139,7 @@ Ext.define("dnet.core.dc.AbstractDc", {
 		this.store = Ext.create("Ext.data.Store", {
 			model : this.recordModel,
 			remoteSort : true,
-			remoteSort : true,
-
+			  
 			autoLoad : false,
 			autoSync : false,
 			clearOnPageLoad : true,
@@ -245,9 +246,9 @@ Ext.define("dnet.core.dc.AbstractDc", {
  
 		this.mon(this.store, "beforeload", this.onStore_beforeload, this);
 		this.mon(this.store, "update", this.onStore_update, this);
-		this.mon(this.store, "add", this.onStore_add, this);
-		this.mon(this.store, "remove", this.onStore_remove, this);		 
-		this.mon(this.store, "clear", this.onStore_clear, this);		
+		//this.mon(this.store, "add", this.onStore_add, this);
+		//this.mon(this.store, "remove", this.onStore_remove, this);		 
+		//this.mon(this.store, "clear", this.onStore_clear, this);		
 		this.mon(this.store, "datachanged", this.onStore_datachanged, this);
 		
 		// after the store is loaded apply an initial selection
@@ -283,12 +284,12 @@ Ext.define("dnet.core.dc.AbstractDc", {
 			});
 			this.updateActionsState(true);
 	},
-	onStore_add: function(store, eopts) {
-		this.updateActionsState();
-	},
-	onStore_clear: function(store, eopts) {
-		this.updateActionsState();
-	},
+//	onStore_add: function(store, eopts) {
+//		this.updateActionsState();
+//	},
+//	onStore_clear: function(store, eopts) {
+//		this.updateActionsState();
+//	},
 	onStore_datachanged: function(store, eopts) {
 		this.updateActionsState();
 	},
@@ -298,21 +299,21 @@ Ext.define("dnet.core.dc.AbstractDc", {
 	},
 	
 	onStore_write: function(store, operation, eopts) {
-		if(this.record) {				
-				this.record = operation.resultSet.records[0];				 				
-				if (!this.multiEdit) {
-					try {
-						this.setSelectedRecords([this.record]);
-					}catch(e) {
-						//console.log(e);
-					}					
-				}
-			}
-			
-			this.updateActionsState();
-			if (operation.action == "update" || operation.action == "create") {
-				this.afterDoSaveSuccess();
-			}
+//		if(this.record) {				
+//			this.record = operation.resultSet.records[0];				 				
+//			if (!this.multiEdit) {
+//				try {
+//					this.setSelectedRecords([this.record]);
+//				}catch(e) {
+//					//console.log(e);
+//				}					
+//			}
+//		}
+		
+		this.updateActionsState();
+		if (operation.action == "update" || operation.action == "create") {
+			this.afterDoSaveSuccess();
+		}
 	},
 	
 	
@@ -692,12 +693,21 @@ Ext.define("dnet.core.dc.AbstractDc", {
 				newIdx : idx,
 				status : this.getRecordStatus()
 			});
-			if (this.selectedRecords.length <= 1 && this.shouldRecordNotifySelection ) {
-				if (this.record != null ) {
-					this.shouldSelectionNotifyRecord = false;
-					this.setSelectedRecords([this.record]);
-					this.shouldSelectionNotifyRecord = true;
-				} else {
+			 
+			//console.log("console.log => recordChange ");
+			if ( this.shouldRecordNotifySelection ) {
+				if (rec != null ) {
+					if (this.selectedRecords.length == 1) {
+						this.shouldSelectionNotifyRecord = false;
+						this.setSelectedRecords([rec]);
+						this.shouldSelectionNotifyRecord = true;
+					} else {
+						this.shouldSelectionNotifyRecord = false;
+						this.setSelectedRecords(this.selectedRecords.push(rec));
+						this.shouldSelectionNotifyRecord = true;
+					}
+				} else { 
+					//console.log("set record shouldRecordNotifySelection=true, new record = null ");
 					this.shouldSelectionNotifyRecord = false;
 					this.setSelectedRecords([]);
 					this.shouldSelectionNotifyRecord = true;

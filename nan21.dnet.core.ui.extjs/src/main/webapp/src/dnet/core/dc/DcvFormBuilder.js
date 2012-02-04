@@ -174,7 +174,7 @@ Ext.define("dnet.core.dc.DcvFormBuilder", {
 		if (!config.listeners[en]) {
 			config.listeners[en] = {};
 		}
-		config.listeners[en]['buffer'] = 250;
+		//config.listeners[en]['buffer'] = 700;
 		if(fn!=null) {
 			if (config.listeners[en].fn) {
 				config.listeners[en].fn = Ext.Function.createInterceptor(config.listeners[en].fn, fn);
@@ -266,7 +266,7 @@ Ext.define("dnet.core.dc.DcvFormBuilder", {
 			id : Ext.id(),
 			itemId : config.name,
 			selectOnFocus : true,
-			//checkChangeBuffer : 200,
+			checkChangeBuffer : 700,
 			_dcView_ : this.dcv
 		});
 		if (config.allowBlank === false) {

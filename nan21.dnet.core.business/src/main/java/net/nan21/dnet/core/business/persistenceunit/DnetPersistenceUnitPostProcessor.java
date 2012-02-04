@@ -15,6 +15,7 @@ import java.util.Properties;
 
 import javax.sql.DataSource;
 
+import org.eclipse.persistence.config.PersistenceUnitProperties;
 import org.springframework.orm.jpa.persistenceunit.MutablePersistenceUnitInfo;
 import org.springframework.orm.jpa.persistenceunit.PersistenceUnitPostProcessor;
 
@@ -51,6 +52,7 @@ public class DnetPersistenceUnitPostProcessor implements
     	  
         if (this.persistenceUnitName.equals(pui.getPersistenceUnitName())) {            
             final Properties properties = pui.getProperties();
+             
             for (final Map.Entry entries : this.persistenceProperties.entrySet()) {
                 properties.put(entries.getKey(), entries.getValue());
             }

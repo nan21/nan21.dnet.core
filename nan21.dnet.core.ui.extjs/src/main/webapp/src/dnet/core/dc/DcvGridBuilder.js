@@ -4,6 +4,10 @@
 Ext.define("dnet.core.dc.DcvGridBuilder", {
 	extend : "Ext.util.Observable",
 
+	/**
+	 * 
+	 * @type dnet.core.dc.AbstractDcvGrid 
+	 */
 	dcv : null,
 
 	addTextColumn : function(config) {
@@ -41,6 +45,34 @@ Ext.define("dnet.core.dc.DcvGridBuilder", {
 		this.applySharedConfig(config);
 		return this;
 	},
+	
+	addDefaults: function() {
+		var r =  Ext.create(this.dcv._controller_.recordModel, {});
+		r.fields.each(function(f,idx,len) {
+			if(f.name=="id") {
+				this.addNumberColumn({ name:"id", dataIndex:"id", hidden:true,format:"0",width:70 }) ;
+			}
+			if(f.name=="uuid") {
+				this.addTextColumn({ name:"uuid", dataIndex:"uuid", hidden:true,width:100 })   	
+			}
+			if(f.name=="createdAt") {
+				this.addDateColumn({ name:"createdAt", dataIndex:"createdAt", hidden:true,format:Dnet.DATETIME_FORMAT})   
+			}
+			if(f.name=="modifiedAt") {
+				this.addDateColumn({ name:"modifiedAt", dataIndex:"modifiedAt", hidden:true,format:Dnet.DATETIME_FORMAT}) 
+			}
+			if(f.name=="createdBy") {
+				this.addTextColumn({ name:"createdBy", dataIndex:"createdBy", hidden:true,width:100 })   	
+			}
+			if(f.name=="modifiedBy") {
+				this.addTextColumn({ name:"modifiedBy", dataIndex:"modifiedBy", hidden:true,width:100 })  
+			}
+			
+		}, this);
+		return this;
+	},
+	
+	
 	
 	add : function(config) {
 		this.applySharedConfig(config);

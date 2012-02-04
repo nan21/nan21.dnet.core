@@ -38,13 +38,20 @@ Ext.define("dnet.core.dc.AbstractDcvGrid", {
 	// defaults
 
 	buttonAlign : "left",
+	//invalidateScrollerOnRefresh: true,
+	//invalidateScrollerOnRefresh: false,
 	forceFit : false,
+	autoScroll:true,
+	scroll: "both",
 	loadMask : true,
 	stripeRows : true,
 	border : true,
 	frame : true,
 	deferRowRender : true,
+	//enableLocking : true,
 	viewConfig : {
+		//invalidateScrollerOnRefresh: false,
+		//onStoreLoad: Ext.emptyFn,
 		emptyText : Dnet.translate("msg", "grid_emptytext")
 	},
 
@@ -159,13 +166,17 @@ Ext.define("dnet.core.dc.AbstractDcvGrid", {
 
 		this.mon(this._controller_.store, "load", this._onStoreLoad_, this);
 		this.mon(this._controller_, "selectionChange", this.onController_selectionChange, this);
+		
+		 
 	},
 	
 	// *********** event handlers ************************
 	
 	
 	onController_selectionChange: function(evnt) { // return ;
+		
 		var s = evnt.dc.getSelectedRecords();
+		//console.log("Abstractdcvgrid. onController_selectionChange sel.len = " + s.length );
 		if (s != this.getSelectionModel().getSelection()) {
 			this.getSelectionModel().suspendEvents();
 			this.getSelectionModel().select(s, false);

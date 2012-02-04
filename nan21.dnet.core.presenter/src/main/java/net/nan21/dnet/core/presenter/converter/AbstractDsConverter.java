@@ -50,7 +50,7 @@ public abstract class AbstractDsConverter<M, E> implements IDsConverter<M, E>{
 		Map<String, String> refpaths = this.descriptor.getE2mConv();
 		Method[] methods = this.getModelClass().getMethods();
 		for (Method method : methods) {
-			if (method.getName().startsWith("set")) {
+			if (!method.getName().equals("set__clientRecordId__") && method.getName().startsWith("set")) {
 				String fn = StringUtils.uncapitalize(method.getName().substring(3));
 				try {
 					method.invoke(m, parser.parseExpression(refpaths.get(fn)).getValue(context));

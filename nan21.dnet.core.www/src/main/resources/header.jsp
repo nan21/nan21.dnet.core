@@ -8,19 +8,28 @@
 	<link rel="shortcut icon" href="<c:url value="/images/favicon.ico"/>" />
 
 	<link rel="stylesheet" href="<c:url value="/resources/css/main.css"   />" type="text/css" />
-	<link rel="stylesheet" href="<c:url value="/styles/local.css"  />" type="text/css" />
-	<link rel="stylesheet" href="<c:url value="/styles/print.css"  />" type="text/css" media="print" />
 	
-	<script src="/nan21.dnet.core.www/resources/jquery/jquery.js" type="text/javascript"></script>
+	<script src="http://cdn.jquerytools.org/1.2.6/full/jquery.tools.min.js"></script>
+	 
 	<script src="/nan21.dnet.core.www/resources/jquery-lightbox/js/jquery.lightbox-0.5.min.js" type="text/javascript"></script>
 	<link  href="/nan21.dnet.core.www/resources/jquery-lightbox/css/jquery.lightbox-0.5.css"  rel="stylesheet" type="text/css"  media="screen" />
+	<!-- <script src="/nan21.dnet.core.www/resources/jquery/jquery.js" type="text/javascript"></script>
+	 
+	 -->
+	 
+	<script>
+	function loadFragment( selector, url, callback) {
+		$(selector).load(url, callback);
+	}
+	</script> 
 	 
 </head>
 
 <body>
- 
+
+
 <div class="main">
- 
+ 	
  <div id="wrapper-header"> <!-- #wrapper-header -->
 
 	<div class="nav"><!-- top nav -->
@@ -57,4 +66,4 @@
 	</div><!-- end of top nav -->  
  </div>
   <div id="wrapper-content">
-  
+ 

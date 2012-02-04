@@ -18,7 +18,7 @@ Ext.define("dnet.core.dc.command.DcCancelCommand", {
 		}
 		//console.log("cancel: 2-store.getCount() = "+dc.store.getCount() );
 		//console.log("cancel: 2-count dirty  = "+dc.store.data.filterBy(function(e) { return e.dirty}).getCount()  );
-		dc.updateActionsState();
+		//dc.updateActionsState();
 	},
 
 	discardChanges : function() {

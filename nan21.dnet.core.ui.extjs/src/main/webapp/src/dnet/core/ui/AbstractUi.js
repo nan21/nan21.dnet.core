@@ -271,10 +271,7 @@ Ext.define("dnet.core.ui.AbstractUi", {
 		return this._builder_;
 	}
     
-    ,showAsgnWindow: function(asgnWdwClass,cfg) { 
-    	//this.showAsgnWindow(net.nan21.dnet.module.ad.usr.asgn.RolesOfUser$Ui ,{dc:"rol",objectIdField:"id"});
-    	
-    	//var cfg = this._getConfig_(name);
+    ,showAsgnWindow: function(asgnWdwClass,cfg) {  
 		var objectId = this._dcs_.get(cfg.dc).record.data[cfg.objectIdField];
 		var aw=Ext.create( asgnWdwClass, cfg);
 		aw.show();

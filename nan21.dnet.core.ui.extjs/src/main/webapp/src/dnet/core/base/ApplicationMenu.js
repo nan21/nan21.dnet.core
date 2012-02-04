@@ -102,11 +102,16 @@ dnet.core.base.ApplicationMenu$Items = [
 							}
 						},{
 							text : Dnet.translate("appmenuitem",
-									"theme_capuccino__lbl"),
+									"theme_access__lbl"),
 							handler : function() {
-								getApplication().changeCurrentTheme("capuccino");
+								getApplication().changeCurrentTheme("access");
 							}
-						}]
+						}/*,{
+							text : "Neptune",
+							handler : function() {
+								getApplication().changeCurrentTheme("neptune");
+							}
+						}*/]
 			})
 }
 

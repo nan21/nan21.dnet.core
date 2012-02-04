@@ -1,9 +1,14 @@
 Ext.define("dnet.core.asgn.AbstractAsgnUi", {
-	extend : "Ext.window.Window",
+   extend : "Ext.window.Window",
 
 	// DNet properties
 
 	_elems_ : null,
+	
+	/**
+	 * Assignment controller
+	 * @type dnet.core.asgn.AbstractAsgn
+	 */
 	_controller_ : null,
 	_leftGridId_ : null,
 	_rightGridId_ : null,
@@ -13,18 +18,20 @@ Ext.define("dnet.core.asgn.AbstractAsgnUi", {
 	_autoCloseAfterSave_ : true,
 
 	// defaults
-
+	 
 	layout : "fit",
 	closable : true,
 	closeAction : "hide",
 	modal : true,
-
+	
+	
 	initComponent : function() {
-
+		
 		this._elems_ = new Ext.util.MixedCollection();
 		this._tlbs_ = new Ext.util.MixedCollection();
 		this._tlbitms_ = new Ext.util.MixedCollection();
 		this._controller_ = Ext.create(this._controller_, {});
+		
 		this._leftGridId_ = Ext.id()
 		this._rightGridId_ = Ext.id()
 
@@ -42,27 +49,31 @@ Ext.define("dnet.core.asgn.AbstractAsgnUi", {
 		this._afterLinkElements_();
 
 		this._endDefine_();
-
+		
 		Ext.apply(this, {
 			items : [ {
+				xtype:"container",
 				layout : {
 					type : "hbox",
 					align : "stretch"
-				},
-				items : [
+				}
+				,items : [
 						{
 							frame : true,
 							flex : 10,
+							xtype:"container",
 							layout : {
 								type : "vbox",
 								align : "stretch"
-							},
-							items : [ this._elems_.get("leftFilter"),
-									this._elems_.get("leftList") ]
+							} 
+							,items : [ this._elems_.get("leftFilter")
+								, this._elems_.get("leftList") 
+							]
 						},
 						{
 							width : 80,
 							frame : true,
+							xtype:"container",
 							layout : {
 								type : "vbox",
 								align : "stretch",
@@ -73,24 +84,28 @@ Ext.define("dnet.core.asgn.AbstractAsgnUi", {
 						{
 							frame : true,
 							flex : 10,
+							xtype:"container",
 							layout : {
 								type : "vbox",
 								align : "stretch"
-							},
-							items : [ this._elems_.get("rightFilter"),
-									this._elems_.get("rightList") ]
-						} ]
+							} 
+							,items : [ this._elems_.get("rightFilter")
+									,this._elems_.get("rightList") 
+									]
+						} 
+						]
 			} ]
 		});
 		this.callParent(arguments);
-
 		if (this._autoCloseAfterSave_ == true) {
 			this._controller_.on("afterDoSaveSuccess", function() {
 				this.close();
 			}, this);
-		}
+		}		
 	},
-
+	
+	
+	 
 	_getElement_ : function(name) {
 		return Ext.getCmp(this._elems_.get(name).id);
 	},
@@ -367,5 +382,4 @@ Ext.define("dnet.core.asgn.AbstractAsgnUi", {
 				} ];
 
 	}
-
 });

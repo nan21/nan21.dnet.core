@@ -1,5 +1,5 @@
 Manifest-Version: 1.0
-Export-Package: net.nan21.dnet.core.security;version="1.0.0.M6";uses:=
+Export-Package: net.nan21.dnet.core.security;version="1.0.0.M7";uses:=
  "javax.servlet,javax.servlet.http,net.nan21.dnet.core.api.session,org
  .springframework.dao,org.springframework.jdbc.core,org.springframewor
  k.jdbc.core.support,org.springframework.security.access,org.springfra
@@ -7,7 +7,7 @@ Export-Package: net.nan21.dnet.core.security;version="1.0.0.M6";uses:=
  g.springframework.security.core.userdetails.jdbc,org.springframework.
  security.web,org.springframework.security.web.access"
 Bundle-Vendor: Nan21 
-Bundle-Version: 1.0.0.M6
+Bundle-Version: 1.0.0.M7
 Tool: Bundlor 1.0.0.RELEASE
 Bundle-Name: DNet Core - security
 Bundle-ManifestVersion: 2

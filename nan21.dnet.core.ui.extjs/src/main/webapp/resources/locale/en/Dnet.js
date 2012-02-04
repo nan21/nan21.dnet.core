@@ -208,9 +208,13 @@ dnet.Translation = Ext.apply({},{
        ,exp_run: "Run"
        
        
-       ,sort_title: "Sort"
+       ,sort_title: "Sort by multiple fields"
        ,sort_btn: "Sort"
        ,sort_run: "Apply"
+       
+       ,btn_bulkedit_tlp: "Bulk update selected records"
+       ,bulkedit_title: "Bulk update"
+       ,bulkedit_run: "Apply changes"
        
        
        ,layout_mylayouts : "Select existing layout"
@@ -292,6 +296,7 @@ dnet.Translation = Ext.apply({},{
 	   ,WorkflowAdmin_UI: "Workflow admin console"
 	   ,WorkflowDef_UI : "Workflow definition"
 	   ,AttachmentType_UI : "Attachment types"
+	   ,Attachments_UI : "Attachments"
        //CRM
        ,CalendarEventTypeDef_UI : "Calendar event definitions"       
        ,MyCalendarEvent_UI : "Calendar events"
@@ -379,7 +384,10 @@ dnet.Translation = Ext.apply({},{
         ,IssueBaseData_UI: "Issues base data"
         ,ProjectBaseData_UI: "Project base data"
         ,Projects_UI: "Projects"
+        ,ProjectVersions_UI: "Project versions"
+        
 		,Issues_UI: "Issues"
+		,IssuesMnt_UI: "Issue maintenance"
 		,IssueTask_UI:"Tasks"
 
 		,IssueRoadmap_UI: "Roadmap"

@@ -187,7 +187,7 @@ dnet.Translation = Ext.apply({},{
        ,imp_file: "Fișier"
        ,imp_run: "Execută"
        ,imp_strgy : "Strategie"
-	       ,imp_strgy_pos  : "Layout listă( Coloanele vizibile din listă reprezintă campurile din fișier in aceeași ordine. )"
+	       ,imp_strgy_pos  : "Layout listă( Coloanele vizibile din listă reprezintă campurile din fișier în aceeași ordine. )"
 	       ,imp_strgy_bean : "Denumiri tehnice( campurile din fișier au aceleași anteturi ca și modelul de date al listei - vezi export )"
        ,imp_notes_lbl: "Observatii"
 	   ,imp_notes : "Prima linie din fișier este ignorată. Se presupune că este linia cu anteturi."
@@ -197,7 +197,7 @@ dnet.Translation = Ext.apply({},{
        ,exp_format: "Format"
        ,exp_layout: "Orientare"
        ,exp_columns: "Coloane"
-	       ,exp_col_visible: "Vizibile in listă"
+	       ,exp_col_visible: "Vizibile în listă"
 	       ,exp_col_all: "Toate din listă"
 	       ,exp_col_all2: "Toate disponibile"
 
@@ -207,9 +207,13 @@ dnet.Translation = Ext.apply({},{
        	,exp_rec_all: "Toate paginile"
        ,exp_run: "Execută"
        
-       ,sort_title: "Sortare"
+       ,sort_title: "Sortează după mai multe coloane"
        ,sort_btn: "Sortare"
        ,sort_run: "Aplică"
+       
+       ,btn_bulkedit_tlp: "Modifică înregistrările selectate"
+       ,bulkedit_title: "Modifică înregistrările"
+       ,bulkedit_run: "Aplică modificările"
        
         ,layout_mylayouts : "Alegeti layout existent"
 		,layout_name : "Salveaza layout curent"
@@ -267,7 +271,7 @@ dnet.Translation = Ext.apply({},{
        ,SysDataSources_UI : "Componente sistem: Surse de date"
        ,SysParam_UI: "Parametri sistem"
        ,SysDateFormat_UI: "Formate dată"
-       ,MyUserSettings_UI:"Set��rile mele"
+       ,MyUserSettings_UI:"Setările mele"
        
        ,Reports_UI : "Rapoarte"
 	   ,ReportServers_UI : "Servere raportare"
@@ -286,7 +290,9 @@ dnet.Translation = Ext.apply({},{
        ,MyBookmark_UI : "Marcajele mele"
        ,WorkflowAdmin_UI: "Administrare Workflow"
         ,WorkflowDef_UI : "Definire Workflow"
-		,AttachmentType_UI : "Tipuri atasament"
+		,AttachmentType_UI : "Tipuri ataşament"
+		,Attachments_UI : "Ataşamente"
+		
 	   //CRM
        ,CalendarEventTypeDef_UI : "Definiţii evenimente agendă"       
        ,MyCalendarEvent_UI : "Evenimente agendă"
@@ -375,7 +381,9 @@ dnet.Translation = Ext.apply({},{
         ,IssueBaseData_UI: "Definiţii incidente"
         ,ProjectBaseData_UI: "Definiţii proiecte"
         ,Projects_UI: "Proiecte"
+        ,ProjectVersions_UI: "Versiuni project"
 		,Issues_UI: "Incidente"
+		,IssuesMnt_UI: "Mentenanţă incidente"
 		,IssueTask_UI:"Activităţi"
 		
 		,IssueRoadmap_UI: "Roadmap"

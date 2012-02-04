@@ -1,26 +1,26 @@
 Manifest-Version: 1.0
-Export-Package: net.nan21.dnet.core.presenter.action;version="1.0.0.M6
+Export-Package: net.nan21.dnet.core.presenter.action;version="1.0.0.M7
  ";uses:="javax.persistence,net.nan21.dnet.core.api,net.nan21.dnet.cor
  e.api.action,net.nan21.dnet.core.api.descriptor",net.nan21.dnet.core.
- presenter.converter;version="1.0.0.M6";uses:="javax.persistence,net.n
+ presenter.converter;version="1.0.0.M7";uses:="javax.persistence,net.n
  an21.dnet.core.api,net.nan21.dnet.core.api.converter,net.nan21.dnet.c
  ore.api.service,net.nan21.dnet.core.presenter.model,net.nan21.dnet.co
  re.presenter.service,org.springframework.beans.factory.annotation,org
  .springframework.context",net.nan21.dnet.core.presenter.exception;ver
- sion="1.0.0.M6",net.nan21.dnet.core.presenter.marshaller;version="1.0
- .0.M6";uses:="net.nan21.dnet.core.api.action,net.nan21.dnet.core.api.
- marshall",net.nan21.dnet.core.presenter.model;version="1.0.0.M6";uses
+ sion="1.0.0.M7",net.nan21.dnet.core.presenter.marshaller;version="1.0
+ .0.M7";uses:="net.nan21.dnet.core.api.action,net.nan21.dnet.core.api.
+ marshall",net.nan21.dnet.core.presenter.model;version="1.0.0.M7";uses
  :="net.nan21.dnet.core.api.descriptor,org.springframework.beans.facto
  ry.annotation,org.springframework.context",net.nan21.dnet.core.presen
- ter.propertyeditors;version="1.0.0.M6",net.nan21.dnet.core.presenter.
- service;version="1.0.0.M6";uses:="net.nan21.dnet.core.api,net.nan21.d
+ ter.propertyeditors;version="1.0.0.M7",net.nan21.dnet.core.presenter.
+ service;version="1.0.0.M7";uses:="net.nan21.dnet.core.api,net.nan21.d
  net.core.api.action,net.nan21.dnet.core.api.converter,net.nan21.dnet.
  core.api.marshall,net.nan21.dnet.core.api.service,net.nan21.dnet.core
  .api.setup,net.nan21.dnet.core.presenter.model,org.activiti.engine,or
  g.springframework.beans.factory.annotation,org.springframework.contex
  t,org.springframework.transaction.annotation"
 Bundle-Vendor: Nan21 
-Bundle-Version: 1.0.0.M6
+Bundle-Version: 1.0.0.M7
 Tool: Bundlor 1.0.0.RELEASE
 Bundle-Name: DNet Core - presenter
 Bundle-ManifestVersion: 2
@@ -29,13 +29,13 @@ Bundle-SymbolicName: nan21.dnet.core.presenter
 Import-Package: au.com.bytecode.opencsv;version="[2.0,3.0)",au.com.byt
  ecode.opencsv.bean;version="[2.0,3.0)",javax.persistence;version="[2.
  0,2.1)",javax.sql,net.nan21.dnet.core.api,net.nan21.dnet.core.api.act
- ion;version="[1.0.0.M6,1.0.0.M6]",net.nan21.dnet.core.api.annotation;
- version="[1.0.0.M6,1.0.0.M6]",net.nan21.dnet.core.api.converter;versi
- on="[1.0.0.M6,1.0.0.M6]",net.nan21.dnet.core.api.descriptor;version="
- [1.0.0.M6,1.0.0.M6]",net.nan21.dnet.core.api.marshall;version="[1.0.0
- .M6,1.0.0.M6]",net.nan21.dnet.core.api.model;version="[1.0.0.M6,1.0.0
- .M6]",net.nan21.dnet.core.api.service;version="[1.0.0.M6,1.0.0.M6]",n
- et.nan21.dnet.core.api.session;version="[1.0.0.M6,1.0.0.M6]",net.nan2
+ ion;version="[1.0.0.M7,1.0.0.M7]",net.nan21.dnet.core.api.annotation;
+ version="[1.0.0.M7,1.0.0.M7]",net.nan21.dnet.core.api.converter;versi
+ on="[1.0.0.M7,1.0.0.M7]",net.nan21.dnet.core.api.descriptor;version="
+ [1.0.0.M7,1.0.0.M7]",net.nan21.dnet.core.api.marshall;version="[1.0.0
+ .M7,1.0.0.M7]",net.nan21.dnet.core.api.model;version="[1.0.0.M7,1.0.0
+ .M7]",net.nan21.dnet.core.api.service;version="[1.0.0.M7,1.0.0.M7]",n
+ et.nan21.dnet.core.api.session;version="[1.0.0.M7,1.0.0.M7]",net.nan2
  1.dnet.core.api.setup,org.activiti.engine;version="[5.6,6.0)",org.act
  iviti.engine.impl.el;version="[5.6,6.0)",org.activiti.spring;version=
  "[5.6,6.0)",org.codehaus.jackson;version="[1.4,2.0)",org.codehaus.jac

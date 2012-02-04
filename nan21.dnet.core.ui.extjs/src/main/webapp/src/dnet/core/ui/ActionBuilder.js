@@ -56,7 +56,8 @@ Ext.define("dnet.core.ui.ActionBuilder", {
 		Ext.applyIf(cfg, {
 					dc : this.dc,
 					xtype : "label",
-					"name" : "title",					
+					"name" : "title",	
+					height:20,
 					cls : "dnet-toolbar-title"
 				});
 		if (cfg.text && this.frame._trl_ && this.frame._trl_[this.name + "__ttl"]) {
@@ -350,7 +351,7 @@ Ext.define("dnet.core.ui.ActionBuilder", {
 	
 	addButton: function(config) {
 		var cfg = config || {};
-		Ext.applyIf(config , {id:Ext.id(), xtype:"button"} ); 
+		Ext.applyIf(config , {id:Ext.id(), xtype:"button"  } ); 
 		this.frame._tlbitms_.add(this.name + "__" + config.name, config);
 		return this;
 	},

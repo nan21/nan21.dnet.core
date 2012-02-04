@@ -3,63 +3,44 @@
 	margin: 0;
 	padding: 0;
 	border: 0;
+	font-size: 13px;
+	
+	font-family: Arial,Helvetica,Tahoma,sans-serif;
+	color: #363636;
 }
 
 /* ================   tags ===============  */
-body {
-	border: 0;
-	font: 12px Arial, Helvetica, sans-serif;
-	color: #363636;
-	line-height:16px;
-	background: url(../images/header-bg.png) top repeat-x #fff;
-}
+body { background: url(../images/header-bg.png) top repeat-x #fff;}
 
-li {
-	list-style: none
-}
+h1{font-size:1.8em;}
+h2{font-size:1.8em;}
+h3{font-size:1.3em;}
+h4{font-size:1.2em;}
+h5{font-size:1em;}
+h6{font-size:.9em;}
 
-a {
-	color: #CA0002;
-	text-decoration: underline
-}
+td {line-height:1.2em;padding:3px;}
+td.label {  padding-left:10px; width:130px; }
+td.value {  }
 
-a:hover {
-	text-decoration: none
-}
+li { list-style: none}
+ 
 
-h1 {
-	font-size: 28px;
-	color: #6c6c6c;
-	line-height: normal;
-	padding-top: 12px;
-	padding-bottom: 12px;
-}
+a { color: #CA0002; text-decoration: underline }
+a:hover { text-decoration: none } 
+pre{font-family:monospace;font-size:1.2em;}
+textarea,select,optgroup,option,input {color:#000;font-family:arial,tahoma,verdana,sans-serif; }
 
-h2 {
-	font-size: 24px;
-	color: #4d4d4d;
-	line-height: normal;
-	padding-top: 10px;
-	padding-bottom: 10px;
-}
+.pagetitle { padding-top:20px; padding-bottom:20px; }
+.label {  color:#666; padding-right:30px;}
+.expand-open { cursor:hand; }
+.action-closed { cursor:hand; }
 
-h3 {
-	font-size: 20px;
-	color: #4d4d4d;
-	line-height: normal;
-	padding-top: 8px;
-	padding-bottom: 8px;
-}
-
-h4 {
-	font-size: 16px;
-	color: #4d4d4d;
-	line-height: normal;
-	padding-top: 6px;
-	padding-bottom: 6px;
-}
+.subtitle { padding-top:10px; padding-bottom:10px;}
 
 /* ================   global layout ===============  */
+
+
 .main {
 	width: 980px;
 	margin:0 auto;
@@ -84,18 +65,34 @@ h4 {
 	width: 980px;
 	margin: auto;
 }
-
+.form-table {
+	border:1px solid #ddd;
+	background-color:#fcfcfc;
+	-moz-border-radius:.4em;-webkit-border-radius:.4em;border-radius:.4em;
+}
 .wrapper {
 	width: 100%;
 	overflow: hidden;
+	
 }
 
+ 
+.col700 {
+	width: 700px;
+	float: left;
+	padding-top: 10px;
+	padding-left:10px;	
+}
 .col1 {
 	width: 550px;
 	float: left;
 	padding-top: 10px;
+	padding-left:10px;	
 }
 
+.left-border {
+	border-left:1px solid #eee;
+}
 .col2 {
 	width: 350px;
 	float: left;
@@ -122,6 +119,10 @@ h4 {
 	padding: 20 0 5 0px;
 	border-bottom: 1px solid #ddd;
 }
+
+div.spacer30 {
+	height:30px;
+}
 /* ================   header ===============  */
 .header h1,.header h1 a {
 	padding-top: 2px;
@@ -133,6 +134,9 @@ h4 {
 	padding-bottom: 2px;
 }
 
+.menu2 li {
+	padding-right:20px;
+}
 
 #wrapper-header {
 	width: 980px;
@@ -198,7 +202,7 @@ h4 {
 }
 
 /* ================   content ===============  */
-#wrapper-content {
+#content {
 	width: 980px;
 	margin-left: auto;
 	margin-right: auto;
@@ -206,6 +210,56 @@ h4 {
 	padding-bottom: 50px;
 	
 }
+
+/* ================   tabs  ===============  */
+
+
+	/* ================   vl: vertical-left  ===============  */
+div.tab-vl-container { width:800px; float:right;  padding-left:20px;	 }
+div.tab-vl-container div {   }
+
+
+ul.tab-vl-menu { margin:0; padding:0; list-style:none; height:600px; width:150px; float:left; }
+ul.tab-vl-menu li {  width:208px; margin:0; text-transform:uppercase; }
+ 
+ul.tab-vl-menu li a {padding:8px 0 0 15px;   text-transform:uppercase; display:block; font-size:14px; 
+		color:#d00;  text-decoration:underline; outline:none; }
+ul.tab-vl-menu a:hover { background-color:#F7F7F7; color:#d00;
+	background: url(http://localhost:8089/nan21.dnet.core.www/resources/images/marker_2.jpg) top left no-repeat;
+	background-position: 0px 15px; }
+ul.tab-vl-menu a.current { background-color:#fff;	text-decoration: none;		 
+		color:#919190;	cursor:default; background: none;}
+
+ 	/* ================   ht: horizontal-top  ===============  */
+ 	
+ 	
+div.tab-ht-container { width:100%; }
+div.tab-ht-container div { padding:15px 5px;  }
+ 
+ul.tab-ht-menu {margin:0 !important; padding:0;height:30px;border-bottom:1px solid #666; }
+ul.tab-ht-menu li { float:left;	padding:0;margin:0;	list-style-type:none; text-transform:uppercase; }
+ 
+ 
+ul.tab-ht-menu li a { float:left;font-size:13px;display:block;padding:5px 30px;	text-decoration:none; border:1px solid #666;	
+	border-bottom:0px;
+	height:18px;
+	color:#d00;  text-decoration:underline;
+	 
+	margin-right:2px;
+	position:relative;
+	top:1px;	
+	outline:0;
+	-moz-border-radius:4px 4px 0 0;	
+ }
+ul.tab-ht-menu a:hover {  background-color:#F7F7F7; color:#d00;
+	background: url(http://localhost:8089/nan21.dnet.core.www/resources/images/marker_2.jpg) top left no-repeat;
+	background-position: 10px 10px; }
+ul.tab-ht-menu a.current {  border-bottom:1px solid #fff; background-color:#fff;	text-decoration: none; color:#919190;	cursor:default; background: none; }
+
+ 
+
+
+
 
 /* ================   footer ===============  */
 #wrapper-footer {
@@ -234,6 +288,33 @@ h4 {
 .copyright p {
 	line-height: 20px;
 }
+
+
+
+
+/* ==================   PJ styles ->  to be moved into the PJ css file*/
+
+
+.prj-list td {
+	border-bottom: 1px solid #eee;
+	line-height:2.2em;
+	padding-left:10px; 
+}
+.prj-list table {
+	cell-padding:0;
+	width:100%;
+	
+}
+.prj-list th {
+	padding-left:10px;
+	line-height:2.2em; 
+	text-align:left;
+	border-bottom: 2px solid #ccc;
+}
+
+
+
+
 
 /* ==================   MM styles ->  to be moved into the MM css file*/
 .categories {

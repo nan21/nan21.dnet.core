@@ -6,6 +6,7 @@ import java.util.List;
 import net.nan21.dnet.core.api.ISystemConfig;
 import net.nan21.dnet.core.api.action.IDsExport;
 import net.nan21.dnet.core.api.action.IQueryBuilder;
+import net.nan21.dnet.core.api.action.SortToken;
 import net.nan21.dnet.core.api.marshall.IDsMarshaller;
 
 /**
@@ -68,12 +69,22 @@ public interface IDsService<M,F,P> {
 	public void deleteByIds(List<Object> ids) throws Exception;
 
 	public M findById(Object id) throws Exception;
+	
+	public M findById(Object id, P params) throws Exception;
 
 	public List<M> findByIds(List<Object> ids) throws Exception;
 
+	public List<M> find(F filter, P params ) throws Exception;
+	
+	public List<M> find(F filter ) throws Exception;
+	
 	public List<M> find(F filter, P params, IQueryBuilder<M,F,P> builder)
 			throws Exception;
 
+	public List<M> find(F filter, P params , List<SortToken> sortTokens, int resultStart, int resultSize ) throws Exception;
+	
+	public List<M> find(F filter, P params , int resultStart, int resultSize ) throws Exception;
+	
 	public Long count(F filter, P params, IQueryBuilder<M,F,P> builder)
 			throws Exception;
 

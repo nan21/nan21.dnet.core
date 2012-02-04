@@ -18,6 +18,7 @@ import org.eclipse.persistence.queries.Cursor;
 
 import net.nan21.dnet.core.api.action.IDsExport;
 import net.nan21.dnet.core.api.action.IQueryBuilder;
+import net.nan21.dnet.core.api.action.SortToken;
 import net.nan21.dnet.core.api.converter.IDsConverter;
 import net.nan21.dnet.core.api.marshall.IDsMarshaller;
 import net.nan21.dnet.core.api.model.IModelWithClientId;
@@ -76,6 +77,29 @@ public abstract class AbstractDsService<M,F,P,E> extends AbstractDsProcessor  {
 			throws Exception {
 	}
 
+	public List<M> find(F filter, P params , List<SortToken> sortTokens, int resultStart, int resultSize ) throws Exception {
+		QueryBuilderWithJpql<M,F,P> builder = (QueryBuilderWithJpql<M,F,P>) this.createQueryBuilder();
+		builder.addFetchLimit(resultStart, resultSize);
+		builder.addSortInfo(sortTokens);
+		return this.find(filter, params, builder);
+	}
+	
+	public List<M> find(F filter, P params , int resultStart, int resultSize ) throws Exception {
+		QueryBuilderWithJpql<M,F,P> builder = (QueryBuilderWithJpql<M,F,P>) this.createQueryBuilder();
+		builder.addFetchLimit(resultStart, resultSize);
+		return this.find(filter, params, builder);
+	}
+	
+	public List<M> find(F filter, P params ) throws Exception {
+		QueryBuilderWithJpql<M,F,P> builder = (QueryBuilderWithJpql<M,F,P>) this.createQueryBuilder();
+		return this.find(filter, params, builder);
+	}
+	
+	public List<M> find(F filter ) throws Exception {
+		QueryBuilderWithJpql<M,F,P> builder = (QueryBuilderWithJpql<M,F,P>) this.createQueryBuilder();
+		return this.find(filter, this.paramClass.newInstance(), builder);
+	}
+	
 	public List<M> find(F filter, P params, IQueryBuilder<M,F,P> builder)
 			throws Exception {
 		QueryBuilderWithJpql<M,F,P> bld = null;
@@ -105,11 +129,15 @@ public abstract class AbstractDsService<M,F,P,E> extends AbstractDsProcessor  {
 	}
 
 	public M findById(Object id) throws Exception {
+		return this.findById(id, this.getParamClass().newInstance());
+	}
+	
+	public M findById(Object id, P params) throws Exception {
 		Method setter = this.getFilterClass().getDeclaredMethod("setId",
 				Object.class);
 		F filter = this.getFilterClass().newInstance();
 		setter.invoke(filter, id);
-		List<M> result = this.find(filter, null, null);
+		List<M> result = this.find(filter, params, null);
 		if (result.size() == 0) {
 			return null;
 		} else {
