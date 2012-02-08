@@ -96,7 +96,9 @@ Ext.override(Ext.grid.plugin.CellEditing, {
 		if (me.grid._getCustomCellEditor_) {
 			var editor = me.grid._getCustomCellEditor_(record, column);
 			if (editor != null ) {
-				 
+				if (!this._isEditAllowed_(record, column, editor)) {
+					return null;
+				} 
 				if (!(editor instanceof Ext.grid.CellEditor)) {
 					editorId = column.id + record.id;
 	                editor = new Ext.grid.CellEditor({
@@ -120,12 +122,25 @@ Ext.override(Ext.grid.plugin.CellEditing, {
 			
 		}
 		var editor = this.callParent(arguments);
+		if (!this._isEditAllowed_(record, column, editor)) {
+			return null;
+		}
 		if(editor.field) {
 			editor.field["_targetRecord_"] = record;
 		}
 		return editor;
 		 
     }
+    
+    ,_isEditAllowed_: function(record, column, editor) {
+    	if (editor.field.noUpdate === true && !record.phantom ) {
+    		return false;
+    	} else if (editor.field.noInsert === true && record.phantom ) {
+    		return false;
+    	}
+    	return true;
+    } 
+    
   
 });
 

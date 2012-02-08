@@ -5,6 +5,11 @@ Ext.define("dnet.core.dc.AbstractDcvForm", {
 	
 	_builder_: null,
 	_elems_: null,
+	
+	/**
+	 * 
+	 * @type dnet.core.dc.AbstractDc
+	 */
 	_controller_: null,
     _mainViewName_: "main",
     _dcViewType_: "edit-form",	
@@ -77,7 +82,7 @@ Ext.define("dnet.core.dc.AbstractDcvForm", {
 			this._controller_.commands.doSave.beforeExecute = Ext.Function.createInterceptor(
 				this._controller_.commands.doSave.beforeExecute,
 				function() {
-					if(!this.getForm().isValid()) {
+					if( this._shouldValidate_() && !this.getForm().isValid()) {
 						Ext.Msg.show({
 							title : "Validation info",	
 							msg : "Form contains invalid data.<br> Please fix the errors then try again.",
@@ -96,6 +101,10 @@ Ext.define("dnet.core.dc.AbstractDcvForm", {
 //		}, this);
 	},
  
+	_shouldValidate_: function() {
+		return true;
+	},
+	
 	// *********** event handlers ************************
 	
 	on_afterrender: function() { 

@@ -85,6 +85,14 @@ public interface IEntityService<E> {
 	public E findByUk(String namedQueryName, Map<String, Object> params)
 			throws Exception;
 
+	
+	public <T> List<T> findEntitiesByAttributes(Class<T> entityClass, Map<String, Object> params) throws Exception;
+	public <T> T findEntityByAttributes(Class<T> entityClass, Map<String, Object> params) throws Exception;
+	
+	public List<E> findEntitiesByAttributes( Map<String, Object> params) throws Exception ;
+	
+	public E findEntityByAttributes( Map<String, Object> params) throws Exception;
+	
 	public void deleteById(Object id) throws Exception;
 
 	public void deleteByIds(List<Object> ids) throws Exception;

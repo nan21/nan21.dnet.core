@@ -19,6 +19,17 @@ public class ChangeDbPasswordService extends JdbcDaoSupport implements IChangePa
     
     public void changePassword(String userName, String newPassword,
 			String oldPassword, Long clientId, String clientCode) throws Exception {
+    	
+    	int exists = this.getJdbcTemplate()
+    		.queryForInt("select count(1) from AD_USERS a where a.code = ? and a.password = ? ", userName, oldPassword)
+    		 ;
+    	if (exists == 0 ) {
+    		throw new Exception("Incorrect password!");
+    	}
+    	if (newPassword == null || newPassword.equals("")) {
+			throw new Exception("Password must not be empty!");
+		}
+		  
     	if (this.sql==null) {
     		throw new Exception("Invalid configuration of change password service. Sql statement not specified in bean definition.");
     	}

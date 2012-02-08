@@ -1,5 +1,7 @@
 package net.nan21.dnet.core.api.descriptor;
 
+import java.util.List;
+
 public interface IDsDefinition {
 	public String getName();
 
@@ -12,5 +14,9 @@ public interface IDsDefinition {
 	public boolean isAsgn();
 
 	public void setAsgn(boolean isAsgn);
+
+	public void addServiceMethod(String serviceMethod);
+
+	public List<String> getServiceMethods();
 
 }

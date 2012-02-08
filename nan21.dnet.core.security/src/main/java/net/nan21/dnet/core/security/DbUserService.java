@@ -131,6 +131,11 @@ public class DbUserService extends JdbcDaoImpl {
                             String decimalSeparator = rs.getString( 25 );
                             String thousandSeparator = rs.getString( 26 );
                             
+                            
+                            String asgnName = rs.getString(27);
+                            Long asgnId = rs.getLong(28);
+                            
+                            
                             // build the objects
                             UserPreferences preferences = new UserPreferences();
                             
@@ -148,7 +153,8 @@ public class DbUserService extends JdbcDaoImpl {
                             User user = new User(code, name, password,
                                     accountExpired, accountLocked,
                                     credentialsExpired, enabled, clientCode,
-                                    clientId, preferences,employeeCode , employeeId );
+                                    clientId, preferences, employeeCode , employeeId
+                                    , asgnName , asgnId);
                             Params params = new Params();
 
                             if (defaultAccessAllow != null

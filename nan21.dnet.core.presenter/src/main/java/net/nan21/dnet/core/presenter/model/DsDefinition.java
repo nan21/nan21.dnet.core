@@ -1,5 +1,8 @@
 package net.nan21.dnet.core.presenter.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.nan21.dnet.core.api.descriptor.IDsDefinition;
 
 public class DsDefinition implements IDsDefinition {
@@ -20,6 +23,11 @@ public class DsDefinition implements IDsDefinition {
 	 */
 	private boolean asgn;
 
+	/**
+	 * List of publicly exposed service methods.
+	 */
+	private List<String> serviceMethods;
+	
 	public String getName() {
 		return name;
 	}
@@ -44,4 +52,18 @@ public class DsDefinition implements IDsDefinition {
 		this.asgn = isAsgn;
 	}
 
+	public List<String> getServiceMethods() {
+		return serviceMethods;
+	}
+
+	public void setServiceMethods(List<String> serviceMethods) {
+		this.serviceMethods = serviceMethods;
+	}
+	
+	public void addServiceMethod(String serviceMethod) {
+		if (this.serviceMethods == null) {
+			this.serviceMethods = new ArrayList<String>();			
+		}
+		this.serviceMethods.add(serviceMethod);
+	}
 }

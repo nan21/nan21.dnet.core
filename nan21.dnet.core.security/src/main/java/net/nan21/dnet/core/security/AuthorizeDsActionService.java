@@ -39,40 +39,61 @@ public class AuthorizeDsActionService  extends JdbcDaoSupport
         }
                 
         if ( i<1) {
-            throw new NotAuthorizedRequestException("You are not authorized to execute this action. <BR> Not enogh privileges on resource `"+dsName+"`");
+            throw new NotAuthorizedRequestException("You are not authorized to execute `"+action+"`. <BR> Not enogh privileges on resource `"+dsName+"`");
         } 
     }
     
     private String buildSql(String dsName, String action ) {
-    	String baseSql = "select distinct 1 from AD_ACCESS_CONTROL_DS acl where acl.dsname = ? "
-    		+" and exists ( "
-    		+" select 1 "
-    		+"   from AD_ROLES_ACCESSCTRL rac"
-    		+"  where rac.accessControls_id = acl.accessControl_id and rac.roles_id in ( "
-    		+" 		select ur.roles_id from ad_users_roles ur where ur.users_id in ( select u.id from ad_users u where u.code = ? )"
-    		+"	)"
-    		+")";
-    	
-        StringBuffer sb = new StringBuffer(baseSql);
+    	//String baseSql = null;    	 
+        StringBuffer sb = null; 
          int x = 1;
         if (action.equals("find")) {
+        	sb = new StringBuffer(this.getSqlDsAction());
             sb.append(" and acl.queryAllowed = "+x);
-        }
-        if (action.equals("export")) {
+        } else if (action.equals("export")) {
+        	sb = new StringBuffer(this.getSqlDsAction());
             sb.append(" and acl.exportAllowed = "+x);
-        }
-        if (action.equals("import")) {
+        } else if (action.equals("import")) {
+        	sb = new StringBuffer(this.getSqlDsAction());
             sb.append(" and acl.importAllowed = "+x);
-        }
-        if (action.equals("insert")) {
+        } else if (action.equals("insert")) {
+        	sb = new StringBuffer(this.getSqlDsAction());
             sb.append(" and acl.insertAllowed = "+x);
-        }
-        if (action.equals("update")) {
+        } else if (action.equals("update")) {
+        	sb = new StringBuffer(this.getSqlDsAction());
             sb.append(" and acl.updateAllowed = "+x);
-        }
-        if (action.equals("delete")) {
+        } else if (action.equals("delete")) {
+        	sb = new StringBuffer(this.getSqlDsAction());
             sb.append(" and acl.deleteAllowed = "+x);
+        } else {
+        	sb = new StringBuffer(this.getSqlDsServiceMethod());
+            sb.append(" and acl.serviceMethod = '"+action+"'");
         }
         return sb.toString();
     }
+    
+    
+    private String getSqlDsAction() {
+    	return "select distinct 1 from AD_ACCESS_CONTROL_DS acl where acl.dsname = ? "
+		+" and exists ( "
+		+" select 1 "
+		+"   from AD_ROLES_ACCESSCTRL rac"
+		+"  where rac.accessControls_id = acl.accessControl_id and rac.roles_id in ( "
+		+" 		select ur.roles_id from ad_users_roles ur where ur.users_id in ( select u.id from ad_users u where u.code = ? )"
+		+"	)"
+		+")";
+    }
+    private String getSqlDsServiceMethod() {
+    	return "select distinct 1 from AD_ACCESS_CONTROL_DSMTHD acl where acl.dsname = ? "
+		+" and exists ( "
+		+" select 1 "
+		+"   from AD_ROLES_ACCESSCTRL rac"
+		+"  where rac.accessControls_id = acl.accessControl_id and rac.roles_id in ( "
+		+" 		select ur.roles_id from ad_users_roles ur where ur.users_id in ( select u.id from ad_users u where u.code = ? )"
+		+"	)"
+		+")";
+    }
+      
+    
+    
 }

@@ -12,22 +12,26 @@ Ext.define("dnet.core.base.ChangePasswordForm" , {
 	
 		this.actionButton = this.initialConfig.actionButton;
 		this.actionButton.setHandler(this.doTask, this);
-		 
+		
 		var cfg = {
 			frame : true,
-			bodyStyle : 'padding:5px 5px 0',
+			bodyPadding: 10,
 			fieldDefaults : {
 				labelAlign : 'right',
-				labelWidth : 130,
+				labelWidth : 100,
 				msgTarget : 'side'
-			},			 
-			defaults : {
-				anchor : '90%'
 			},
-			items : this._buildItems_()			
+			defaults : {
+				anchor : '-20',
+				selectOnFocus : true,
+				allowBlank : false
+			},
+			items : this._buildItems_()
 		};
+		
+ 
         Ext.apply(this,cfg);
-		//dnet.core.base.ChangePasswordForm.superclass.initComponent.call(this, arguments);
+		 
         this.callParent(arguments);
  	},
 
@@ -37,14 +41,14 @@ Ext.define("dnet.core.base.ChangePasswordForm" , {
 	 */
 	_buildItems_ : function() {
  		return [				
-			{xtype:"textfield", itemId:"opswd", fieldLabel:"Password", width:150, selectOnFocus: true, allowBlank: false, inputType: "password"
+			{xtype:"textfield", itemId:"opswd", fieldLabel:"Password",   selectOnFocus: true, allowBlank: false, inputType: "password"
 			 	,listeners: {change: {scope:this, fn:this.enableAction }}   }
 
-			,{xtype:"textfield", itemId:"pswd1", fieldLabel:Dnet.translate("msg", "chpswd_pswd1"), width:150, selectOnFocus: true, allowBlank: false
+			,{xtype:"textfield", itemId:"pswd1", fieldLabel:Dnet.translate("msg", "chpswd_pswd1"), selectOnFocus: true, allowBlank: false
 		    	,inputType: "password"
 		     	,listeners: {change: {scope:this, fn:this.enableAction }}   }
 	     	
-	     	,{xtype:"textfield", itemId:"pswd2", fieldLabel:Dnet.translate("msg", "chpswd_pswd2"), width:150, selectOnFocus: true, allowBlank: false
+	     	,{xtype:"textfield", itemId:"pswd2", fieldLabel:Dnet.translate("msg", "chpswd_pswd2"), selectOnFocus: true, allowBlank: false
 		    	,inputType: "password"
 		     	,listeners: {change: {scope:this, fn:this.enableAction }}   }
 		 ]; 		
@@ -105,7 +109,8 @@ Ext.define("dnet.core.base.ChangePasswordForm" , {
 	         ,buttons: Ext.MessageBox.OK
 	         ,scope:this
 	         ,icon: Ext.MessageBox.INFO
-		 });	 
+		 });
+		  
 	},
 
 	/**
@@ -168,7 +173,7 @@ Ext.define("dnet.core.base.ChangePasswordWindow" , {
 	initComponent: function() {
 	
 		var btn = Ext.create('Ext.Button', {
-			text : Dnet.translate("msg", "login_btn"),
+			text : Dnet.translate("tlbitem", "save__lbl"),
 			disabled : true
 		}); 
 		 
@@ -180,7 +185,8 @@ Ext.define("dnet.core.base.ChangePasswordWindow" , {
 			closeAction : "hide",			 
 			closable : true,
 			constrain : true,
-			xtype : "form",
+			layout:"fit",
+			xtype : "container",
 			buttonAlign : "center",
 			modal : true,
 			items : new dnet.core.base.ChangePasswordForm({actionButton: btn}),
@@ -188,7 +194,7 @@ Ext.define("dnet.core.base.ChangePasswordWindow" , {
 		};
 		Ext.apply(this, cfg);
 	
-		dnet.core.base.ChangePasswordWindow.superclass.initComponent.call(this, arguments);
+		this.callParent(arguments);
  
  	}
  

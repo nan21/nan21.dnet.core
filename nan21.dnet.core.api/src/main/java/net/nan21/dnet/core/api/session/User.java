@@ -25,12 +25,22 @@ public class User {
     private final String employeeCode;
     private final Long employeeId;
     
+    /**
+     * Assignable resource name of the current user.
+     */
+    private final String asgnName;
+    
+    /**
+     * Assignable resource id of the current user.
+     */
+    private final Long asgnId;
+    
     
     public User(String username, String displayName, String password,
             boolean accountExpired, boolean accountLocked, 
             boolean credentialsExpired, boolean enabled,
             String clientCode, Long clientId, UserPreferences preferences
-            ,String employeeCode, Long employeeId ) {
+            ,String employeeCode, Long employeeId ,String asgnName, Long asgnId ) {
         super();
         this.username = username;
         this.displayName = displayName;
@@ -44,7 +54,8 @@ public class User {
         this.clientId = clientId;
         this.employeeCode = employeeCode;
         this.employeeId = employeeId;
-        
+        this.asgnName = asgnName;
+        this.asgnId = asgnId;
     }
 
     

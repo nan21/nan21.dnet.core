@@ -1,5 +1,6 @@
 package net.nan21.dnet.core.business.service;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -8,12 +9,21 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery; 
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+ 
 
 import net.nan21.dnet.core.api.ISystemConfig;
+import net.nan21.dnet.core.api.model.IModelWithClientId;
 import net.nan21.dnet.core.api.service.IEntityService;
+import net.nan21.dnet.core.api.session.Session;
+ 
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.util.Assert;
 
 /**
  * Abstract class for entity service implementations.
@@ -97,6 +107,55 @@ public abstract class AbstractEntityService<E> {
 			q.setParameter(key, params.get(key));
 		}
 		return (E) q.getSingleResult();
+	}
+	
+	public List<E> findEntitiesByAttributes( Map<String, Object> params) throws Exception {
+		return 	findEntitiesByAttributes(this.getEntityClass(), params);
+	}
+	
+	public E findEntityByAttributes( Map<String, Object> params) throws Exception {
+		return 	findEntityByAttributes(this.getEntityClass(), params);
+	}
+	
+	
+	public <T> List<T> findEntitiesByAttributes(Class<T> entityClass, Map<String, Object> params) throws Exception {
+		CriteriaBuilder cb = this.em.getCriteriaBuilder();
+	    CriteriaQuery<T> cq = cb.createQuery(entityClass);
+	    Root<T> root = cq.from(entityClass);
+	    cq.select(root);
+	    Assert.notNull(params);
+	    Predicate p = null;
+	   // Iterator<String> it = params.entrySet().iterator(); 
+	    if (entityClass.isAssignableFrom(IModelWithClientId.class)) {
+	    	 p = cb.equal(root.get("clientId"), Session.user.get().getClientId() ); 
+	    }
+	    for(Map.Entry<String, Object> entry : params.entrySet()) {	    	
+	    	p = cb.and(cb.equal(root.get(entry.getKey()), entry.getValue()) );
+	    }
+	    cq.where(p);
+	    TypedQuery<T> query = this.em.createQuery(cq);
+	    return (List<T>)query.getResultList();
+	     
+	}
+
+	public <T> T findEntityByAttributes(Class<T> entityClass, Map<String, Object> params) throws Exception {
+		CriteriaBuilder cb = this.em.getCriteriaBuilder();
+	    CriteriaQuery<T> cq = cb.createQuery(entityClass);
+	    Root<T> root = cq.from(entityClass);
+	    cq.select(root);
+	    Assert.notNull(params);
+	    Predicate p = null;
+	   // Iterator<String> it = params.entrySet().iterator(); 
+	    if (entityClass.isAssignableFrom(IModelWithClientId.class)) {
+	    	p =  cb.equal(root.get("clientId"), Session.user.get().getClientId() ); 
+	    }
+	    for(Map.Entry<String, Object> entry : params.entrySet()) {	    	
+	    	p = cb.and(cb.equal(root.get(entry.getKey()), entry.getValue()) );
+	    }
+	    cq.where(p);
+	    TypedQuery<T> query = this.em.createQuery(cq);
+	    return (T)query.getSingleResult();
+	     
 	}
 
 	/**

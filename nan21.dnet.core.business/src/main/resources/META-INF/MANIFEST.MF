@@ -13,14 +13,15 @@ Bundle-Name: DNet Core - business
 Bundle-ManifestVersion: 2
 Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.html
 Bundle-SymbolicName: nan21.dnet.core.business
-Import-Package: javax.persistence;version="[2.0,2.1)",javax.sql,net.na
- n21.dnet.core.api,net.nan21.dnet.core.api.model;version="[1.0.0.M7,1.
- 0.0.M7]",net.nan21.dnet.core.api.service;version="[1.0.0.M7,1.0.0.M7]
- ",net.nan21.dnet.core.api.session;version="[1.0.0.M7,1.0.0.M7]",net.n
- an21.dnet.core.api.setup;version="[1.0.0.M7,1.0.0.M7]",org.slf4j;vers
- ion="[1.0,2.0]",org.springframework.beans.factory,org.springframework
- .beans.factory.annotation;version="[3.0,3.1)",org.springframework.con
- text;version="[3.0,3.1)",org.springframework.context.config;version="
- [3.0,3.1)",org.springframework.orm.jpa;version="[3.0,3.1)",org.spring
- framework.orm.jpa.persistenceunit;version="[3.0,3.1)"
+Import-Package: javax.persistence;version="[2.0,2.1)",javax.persistenc
+ e.criteria;version="[2.0,2.1)",javax.sql,net.nan21.dnet.core.api,net.
+ nan21.dnet.core.api.model;version="[1.0.0.M7,1.0.0.M7]",net.nan21.dne
+ t.core.api.service;version="[1.0.0.M7,1.0.0.M7]",net.nan21.dnet.core.
+ api.session;version="[1.0.0.M7,1.0.0.M7]",net.nan21.dnet.core.api.set
+ up;version="[1.0.0.M7,1.0.0.M7]",org.slf4j;version="[1.0,2.0]",org.sp
+ ringframework.beans.factory,org.springframework.beans.factory.annotat
+ ion;version="[3.0,3.1)",org.springframework.context;version="[3.0,3.1
+ )",org.springframework.context.config;version="[3.0,3.1)",org.springf
+ ramework.orm.jpa;version="[3.0,3.1)",org.springframework.orm.jpa.pers
+ istenceunit;version="[3.0,3.1)",org.springframework.util
 

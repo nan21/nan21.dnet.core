@@ -33,8 +33,9 @@
 			value="select u.code, u.name, u.password, u.active, 0 accountExpired, 0 credentialsExpired,0 accountLocked, u.clientid clientId, c.code clientCode, 
 			c.defaultDsAccessRule, c.defaultImportPath, c.defaultExportPath, c.tempPath, c.adminRole, c.systemClient, '', 0, 
 					f.extjsDateFormat, f.extjsTimeFormat, f.extjsDateTimeFormat, f.extjsAltFormats,	f.javaDateFormat, f.javaTimeFormat, f.javaDateTimeFormat ,
-					 u.decimalseparator, u.thousandseparator
+					 u.decimalseparator, u.thousandseparator, asg.name asgnName, asg.id asgnId
 				  from ad_users u join ad_client c on u.clientid = c.id left join ad_sysdateformat f on u.dateformat_id = f.id
+				  left join ad_assignable asg on u.code = asg.usercode
 				where u.code = ? and c.code = ?" />
 		<property name="authoritiesByUsernameQuery"
 			value="select u.code , r.name 

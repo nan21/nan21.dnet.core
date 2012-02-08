@@ -194,7 +194,7 @@ public class SetupController {
 	private boolean authenticate(String user, String password) {
 		if (user.equals("admin") && password.equals("admin")) {
 			User su = new User(user, user, password, false, false, false, true,
-					null, null, null, null, null);
+					null, null, null, null, null, null, null);
 			Session.user.set(su);
 			this.request.getSession().setAttribute("setupUser", su);
 			return true;
