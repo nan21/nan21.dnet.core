@@ -1,0 +1,33 @@
+* {
+	font-family: Arial, tahoma, verdana;
+	font-size:13px;
+	color: #333;
+	line-height:1.6em;
+}
+table.result {
+  border: 1px solid gray;
+  border-collapse:collapse;
+}
+
+table.result thead tr th {
+  border-bottom: 1px solid gray;
+  padding:2px 2px 2px 4px;
+}
+table.result tbody tr td {
+  border-bottom: 1px solid #dedede;
+  padding:2px 2px 2px 6px;
+}
+
+td.middle-data {
+  border-right: 1px solid #dedede;
+}
+td.first-data {
+  border-right: 1px solid #dedede;
+}
+
+th.middle-title {
+  border-right: 1px solid #dedede;
+}
+th.first-title {
+  border-right: 1px solid #dedede;
+}

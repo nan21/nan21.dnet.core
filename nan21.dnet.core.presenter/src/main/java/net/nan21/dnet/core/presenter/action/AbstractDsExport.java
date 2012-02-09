@@ -30,7 +30,7 @@ public abstract class AbstractDsExport<M> {
 	protected List<String> fieldTitles;
 	protected List<String> fieldWidths;
 	
-	
+	protected Map<String, Object> properties;
 	
 	protected SimpleDateFormat serverDateFormat;
 	 
@@ -192,4 +192,13 @@ public abstract class AbstractDsExport<M> {
 		return outFileExtension;
 	}
 
+	public Map<String, Object> getProperties() {
+		return properties;
+	}
+
+	public void setProperties(Map<String, Object> properties) {
+		this.properties = properties;
+	}
+
+	
 }

@@ -3,6 +3,7 @@ package net.nan21.dnet.core.api.action;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 public interface IDsExport<M> {
 	public void begin() throws Exception;
@@ -25,4 +26,7 @@ public interface IDsExport<M> {
 	public void setFieldTitles(List<String> fieldTitles);
 	public List<String> getFieldWidths();
 	public void setFieldWidths(List<String> fieldWidths) ;
+	public Map<String, Object> getProperties();
+	public void setProperties(Map<String, Object> properties);
+	
 }

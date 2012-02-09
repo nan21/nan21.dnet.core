@@ -1,7 +1,9 @@
 package net.nan21.dnet.core.web.controller.data;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -13,6 +15,7 @@ import net.nan21.dnet.core.api.marshall.IDsMarshaller;
 import net.nan21.dnet.core.api.service.IDsService;
 import net.nan21.dnet.core.api.session.Session;
 import net.nan21.dnet.core.presenter.action.DsCsvExport;
+import net.nan21.dnet.core.presenter.action.DsHtmlExport;
 import net.nan21.dnet.core.presenter.action.DsJsonExport;
 import net.nan21.dnet.core.presenter.action.DsXmlExport;
 import net.nan21.dnet.core.web.result.ActionResultFind;
@@ -164,6 +167,12 @@ public class AbstractDsReadController<M,F,P> extends
 			}
 			if (dataFormat.equalsIgnoreCase("pdf")) {
 				writer = new DsXmlExport<M>(service.getModelClass());
+			}
+			if (dataFormat.equalsIgnoreCase("html")) {
+				writer = new DsHtmlExport<M>(service.getModelClass());
+				Map<String, Object> properties = new HashMap<String, Object>();
+				properties.put("cssUrl", this.getSystemConfig().getSysParamValue("CORE_EXP_HTML_CSS"));
+				writer.setProperties(properties);
 			}
 			if (writer == null) {
 				throw new Exception("Invalid data-format " + dataFormat);

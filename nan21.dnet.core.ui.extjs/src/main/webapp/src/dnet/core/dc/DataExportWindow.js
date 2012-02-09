@@ -3,7 +3,7 @@ Ext.define("dnet.core.dc.DataExportForm", {
 
 	actionButton : null,
 	_elems_ : null,
-	_formats_ : [ "csv", "json", "pdf", "xml" ],
+	_formats_ : [ "csv", "html", "xml", "json", "pdf" ],
 	_layouts_ : [ "portrait", "landscape" ],
 	_grid_ : null,
 
@@ -43,7 +43,7 @@ Ext.define("dnet.core.dc.DataExportForm", {
 		return this._elems_.get(name);
 	},
 
-	_on_format_changed_ : function(nv) {return ;
+	_on_format_changed_ : function(nv) { //return ;
 		if (nv == "pdf") {
 			this._getElement_("fld_columns_listvisible").setValue(true);
 			this._getElement_("fld_columns_listall").disable();
@@ -174,11 +174,23 @@ Ext.define("dnet.core.dc.DataExportForm", {
 			params["resultSize"] = 30;
 			params["resultStart"] = 0;
 		}
-		// var sortState = ctrl.store.getSortState();
-		// if (sortState) {
-		// params[Dnet.requestParam.SORT] = sortState.field;
-		// params[Dnet.requestParam.SENSE] = sortState.direction;
-		// }
+		
+		var sortCols = "";
+		var sortDirs = "";
+		var first = true;
+		ctrl.store.sorters.each(function(item, idx,len) {
+			if(!first) {
+				sortCols += ",";
+				sortDirs += ",";
+			}
+			sortCols += item.property;
+			sortDirs += item.direction || "ASC";
+			first = false;
+		},this); 
+		  
+		 params[Dnet.requestParam.SORT] = sortCols;
+		 params[Dnet.requestParam.SENSE] = sortDirs;
+		 
 		if (fcv != "a") {
 			var gridCm = this._grid_.columns;
 			var cs = '';
