@@ -36,8 +36,7 @@ Ext.define("dnet.core.base.HomePanel" , {
 			,split:true
             ,minSize: 200
             ,maxSize: 500
-           ,title:"Application menus"
-           ,collapsible:true
+           
             ,items:[]
              
         }
@@ -69,23 +68,13 @@ Ext.define("dnet.core.base.HomePanel" , {
 						}
 					]};
 		}
-		 
-		var html = '<div style="width:100%;height:100%;overflow: hidden;" id="div_dnet_dashboard" ><iframe id="iframe_dnet_dashboard" name="iframe_dnet_dashboard"';
-		html += ' src="dashboard" ';
-		html += '" style="border:0;width:100%;height:100%;overflow: hidden" FRAMEBORDER="no"></iframe></div>';
-		
+		  
         var cfg = {
            layout:"border"
           ,title:this._TEXT_TITLE
           ,items:[
               //{region:"center", frame:true, html:"<div style='text-align:center;width:100%;font-size:16px;font-weight:bold;padding-top:40px;'><span>Welcome to "+Dnet.name+"</span></div>" }
-             // {region:"center", frame:true, tpl:dnet.core.base.TemplateRepository.APPLICATION_HOME, data:{dnetName: Dnet.name, dnetVersion:Dnet.version} }
-             
-               {region:"center", frame:true, 
-               	layout : 'fit',
-				html :  html
-               }
-              
+              {region:"center", frame:true, tpl:dnet.core.base.TemplateRepository.APPLICATION_HOME, data:{dnetName: Dnet.name, dnetVersion:Dnet.version} }
               ,{region:"south", border: false, frame:true,  tpl: tr.get(tr.HOMEPANEL_FOOTER)
 	    	             	, data:{}, id:"dnet-application-view-footer" }
               ,navigAccordeonCfg
