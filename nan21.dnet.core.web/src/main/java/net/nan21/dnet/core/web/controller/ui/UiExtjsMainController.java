@@ -27,6 +27,13 @@ public class UiExtjsMainController extends AbstractUiExtjsController {
 	protected ModelAndView handleRequestInternal(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		
+		for (ISetupParticipant sp: setupParticipants) {
+			if (sp.hasWorkToDo()) {
+				response.sendRedirect("/nan21.dnet.core.setup");
+				return null;
+			}
+		}	
+		
 		try {
 			SessionUser su = (SessionUser) SecurityContextHolder.getContext()
 			.getAuthentication().getPrincipal();
@@ -37,12 +44,7 @@ public class UiExtjsMainController extends AbstractUiExtjsController {
 		
 		this._prepare(request, response);
 		 
-		for (ISetupParticipant sp: setupParticipants) {
-			if (sp.hasWorkToDo()) {
-				response.sendRedirect("/nan21.dnet.core.setup");
-				return null;
-			}
-		}		
+			
 		
 		// get extensions scripts 
 		StringBuffer sb = new StringBuffer();
