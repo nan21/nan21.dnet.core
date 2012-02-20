@@ -10,16 +10,14 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery; 
+import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
- 
 
 import net.nan21.dnet.core.api.ISystemConfig;
 import net.nan21.dnet.core.api.model.IModelWithClientId;
 import net.nan21.dnet.core.api.service.IEntityService;
 import net.nan21.dnet.core.api.session.Session;
- 
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -37,21 +35,19 @@ public abstract class AbstractEntityService<E> {
 
 	@Autowired
 	protected ApplicationContext appContext;
-	 
+
 	@Autowired
 	protected ISystemConfig systemConfig;
-	
+
 	@Autowired
 	private ServiceLocatorBusiness serviceLocator;
-	
+
 	@PersistenceContext
 	@Autowired
 	protected EntityManager em;
 
-	 
-	
 	protected abstract Class<E> getEntityClass();
-	
+
 	/*
 	 * @return the entity manager
 	 */
@@ -67,17 +63,6 @@ public abstract class AbstractEntityService<E> {
 	}
 
 	/**
-	 * Find all entities.
-	 */
-	@SuppressWarnings("unchecked")
-	public List<E> findAll() {
-		return (List<E>) this.em.createQuery(
-				"select e from " + getEntityClass().getSimpleName() + " e where e.clientId = :pClientId ")
-				.setParameter("pClientId", Session.user.get().getClientId())
-				.getResultList();
-	}
-
-	/**
 	 * Find entity by id.
 	 */
 	public E findById(Object object) {
@@ -85,17 +70,46 @@ public abstract class AbstractEntityService<E> {
 	}
 
 	/**
+	 * Find all entities.
+	 */
+	@SuppressWarnings("unchecked")
+	public List<E> findAll() {
+		if (IModelWithClientId.class.isAssignableFrom(this.getEntityClass())) {
+			return (List<E>) this.em
+					.createQuery(
+							"select e from " + getEntityClass().getSimpleName()
+									+ " e where e.clientId = :pClientId ")
+					.setParameter("pClientId", Session.user.get().getClientId())
+					.getResultList();
+		} else {
+			return (List<E>) this.em
+					.createQuery(
+							"select e from " + getEntityClass().getSimpleName()
+									+ " e ").getResultList();
+		}
+
+	}
+
+	/**
 	 * Find entities by ids.
 	 */
 	@SuppressWarnings("unchecked")
 	public List<E> findByIds(List<Object> ids) {
-		// TypedQuery<E> q =
-		// (TypedQuery<E>)this.em.createQuery("select e from "+getEntityClass().getSimpleName()+" e where e.id in :pIds ",this.getEntityClass());
-		return (List<E>) this.em.createQuery(
-				"select e from " + getEntityClass().getSimpleName()
-						+ " e where e.clientId = :pClientId and e.id in :pIds ").setParameter("pIds", ids)
-				.setParameter("pClientId", Session.user.get().getClientId())		
-				.getResultList();
+		if (IModelWithClientId.class.isAssignableFrom(this.getEntityClass())) {
+			return (List<E>) this.em
+					.createQuery(
+							"select e from "
+									+ getEntityClass().getSimpleName()
+									+ " e where  e.clientId = :pClientId and e.id in :pIds ")
+					.setParameter("pIds", ids).setParameter("pClientId",
+							Session.user.get().getClientId()).getResultList();
+		} else {
+			return (List<E>) this.em.createQuery(
+					"select e from " + getEntityClass().getSimpleName()
+							+ " e where e.id in :pIds ").setParameter("pIds",
+					ids).getResultList();
+		}
+
 	}
 
 	/**
@@ -111,54 +125,61 @@ public abstract class AbstractEntityService<E> {
 		}
 		return (E) q.getSingleResult();
 	}
-	
-	public List<E> findEntitiesByAttributes( Map<String, Object> params) throws Exception {
-		return 	findEntitiesByAttributes(this.getEntityClass(), params);
-	}
-	
-	public E findEntityByAttributes( Map<String, Object> params) throws Exception {
-		return 	findEntityByAttributes(this.getEntityClass(), params);
-	}
-	
-	
-	public <T> List<T> findEntitiesByAttributes(Class<T> entityClass, Map<String, Object> params) throws Exception {
-		CriteriaBuilder cb = this.em.getCriteriaBuilder();
-	    CriteriaQuery<T> cq = cb.createQuery(entityClass);
-	    Root<T> root = cq.from(entityClass);
-	    cq.select(root);
-	    Assert.notNull(params);
-	    Predicate p = null;
-	   // Iterator<String> it = params.entrySet().iterator(); 
-	    if (entityClass.isAssignableFrom(IModelWithClientId.class)) {
-	    	 p = cb.equal(root.get("clientId"), Session.user.get().getClientId() ); 
-	    }
-	    for(Map.Entry<String, Object> entry : params.entrySet()) {	    	
-	    	p = cb.and(cb.equal(root.get(entry.getKey()), entry.getValue()) );
-	    }
-	    cq.where(p);
-	    TypedQuery<T> query = this.em.createQuery(cq);
-	    return (List<T>)query.getResultList();
-	     
+
+	public List<E> findEntitiesByAttributes(Map<String, Object> params)
+			throws Exception {
+		return findEntitiesByAttributes(this.getEntityClass(), params);
 	}
 
-	public <T> T findEntityByAttributes(Class<T> entityClass, Map<String, Object> params) throws Exception {
+	public E findEntityByAttributes(Map<String, Object> params)
+			throws Exception {
+		return findEntityByAttributes(this.getEntityClass(), params);
+	}
+
+	public <T> List<T> findEntitiesByAttributes(Class<T> entityClass,
+			Map<String, Object> params) throws Exception {
 		CriteriaBuilder cb = this.em.getCriteriaBuilder();
-	    CriteriaQuery<T> cq = cb.createQuery(entityClass);
-	    Root<T> root = cq.from(entityClass);
-	    cq.select(root);
-	    Assert.notNull(params);
-	    Predicate p = null;
-	   // Iterator<String> it = params.entrySet().iterator(); 
-	    if (entityClass.isAssignableFrom(IModelWithClientId.class)) {
-	    	p =  cb.equal(root.get("clientId"), Session.user.get().getClientId() ); 
-	    }
-	    for(Map.Entry<String, Object> entry : params.entrySet()) {	    	
-	    	p = cb.and(cb.equal(root.get(entry.getKey()), entry.getValue()) );
-	    }
-	    cq.where(p);
-	    TypedQuery<T> query = this.em.createQuery(cq);
-	    return (T)query.getSingleResult();
-	     
+		CriteriaQuery<T> cq = cb.createQuery(entityClass);
+		Root<T> root = cq.from(entityClass);
+		cq.select(root);
+		Assert.notNull(params);
+		Predicate p = null;
+		// Iterator<String> it = params.entrySet().iterator();
+		if (entityClass.isAssignableFrom(IModelWithClientId.class)) {
+			p = cb
+					.equal(root.get("clientId"), Session.user.get()
+							.getClientId());
+		}
+		for (Map.Entry<String, Object> entry : params.entrySet()) {
+			p = cb.and(cb.equal(root.get(entry.getKey()), entry.getValue()));
+		}
+		cq.where(p);
+		TypedQuery<T> query = this.em.createQuery(cq);
+		return (List<T>) query.getResultList();
+
+	}
+
+	public <T> T findEntityByAttributes(Class<T> entityClass,
+			Map<String, Object> params) throws Exception {
+		CriteriaBuilder cb = this.em.getCriteriaBuilder();
+		CriteriaQuery<T> cq = cb.createQuery(entityClass);
+		Root<T> root = cq.from(entityClass);
+		cq.select(root);
+		Assert.notNull(params);
+		Predicate p = null;
+		// Iterator<String> it = params.entrySet().iterator();
+		if (entityClass.isAssignableFrom(IModelWithClientId.class)) {
+			p = cb
+					.equal(root.get("clientId"), Session.user.get()
+							.getClientId());
+		}
+		for (Map.Entry<String, Object> entry : params.entrySet()) {
+			p = cb.and(cb.equal(root.get(entry.getKey()), entry.getValue()));
+		}
+		cq.where(p);
+		TypedQuery<T> query = this.em.createQuery(cq);
+		return (T) query.getSingleResult();
+
 	}
 
 	/**
@@ -182,10 +203,23 @@ public abstract class AbstractEntityService<E> {
 	 * @param list
 	 */
 	protected void onDeleteById(Object id) throws Exception {
-		this.em.createQuery(
-				"delete from " + getEntityClass().getSimpleName()
-						+ " e where e.id = :pId").setParameter("pId", id)
-				.executeUpdate();
+
+		if (IModelWithClientId.class.isAssignableFrom(this.getEntityClass())) {
+			this.em
+					.createQuery(
+							"delete from "
+									+ getEntityClass().getSimpleName()
+									+ " e where e.clientId = :pClientId and e.id = :pId")
+					.setParameter("pId", id).setParameter("pClientId",
+							Session.user.get().getClientId()).executeUpdate();
+
+		} else {
+			this.em.createQuery(
+					"delete from " + getEntityClass().getSimpleName()
+							+ " e where e.id = :pId").setParameter("pId", id)
+					.executeUpdate();
+		}
+
 	}
 
 	/**
@@ -219,10 +253,23 @@ public abstract class AbstractEntityService<E> {
 	 * @param list
 	 */
 	protected void onDeleteByIds(List<Object> ids) throws Exception {
-		this.em.createQuery(
-				"delete from " + getEntityClass().getSimpleName()
-						+ " e where e.id in :pIds").setParameter("pIds", ids)
-				.executeUpdate();
+
+		if (IModelWithClientId.class.isAssignableFrom(this.getEntityClass())) {
+			this.em
+					.createQuery(
+							"delete from "
+									+ getEntityClass().getSimpleName()
+									+ " e where e.clientId = :pClientId and e.id in :pIds")
+					.setParameter("pIds", ids).setParameter("pClientId",
+							Session.user.get().getClientId()).executeUpdate();
+
+		} else {
+			this.em.createQuery(
+					"delete from " + getEntityClass().getSimpleName()
+							+ " e where  e.id in :pIds").setParameter("pIds",
+					ids).executeUpdate();
+		}
+
 	}
 
 	/**
@@ -343,19 +390,16 @@ public abstract class AbstractEntityService<E> {
 	 */
 	protected void preUpdate(E e) throws Exception {
 	}
-	
-	
+
 	/**
-	 * On-update template method for one entity, it actually does
-	 * the work.
+	 * On-update template method for one entity, it actually does the work.
 	 * 
 	 * @param e
 	 */
-	protected void onUpdate(E e) throws Exception {		 
-			this.em.merge(e);		 
+	protected void onUpdate(E e) throws Exception {
+		this.em.merge(e);
 	}
-	
-	
+
 	/**
 	 * Update (merge) one entity.
 	 */
@@ -372,7 +416,7 @@ public abstract class AbstractEntityService<E> {
 	 */
 	protected void postUpdate(E e) throws Exception {
 	}
-	
+
 	/**
 	 * Pre-update template method for a collection of entities.
 	 * 
@@ -411,9 +455,9 @@ public abstract class AbstractEntityService<E> {
 	protected void postUpdate(List<E> list) throws Exception {
 	}
 
-	
 	/**
-	 * Execute a JPQL update statement. 
+	 * Execute a JPQL update statement.
+	 * 
 	 * @param jpqlStatement
 	 * @param parameters
 	 * @return
@@ -431,6 +475,7 @@ public abstract class AbstractEntityService<E> {
 
 	/**
 	 * Return a new instance of a business delegate by the given class.
+	 * 
 	 * @param <T>
 	 * @param clazz
 	 * @return
@@ -444,9 +489,9 @@ public abstract class AbstractEntityService<E> {
 		return delegate;
 	}
 
-	
 	/**
 	 * Lookup an entity service.
+	 * 
 	 * @param <T>
 	 * @param entityClass
 	 * @return
@@ -456,24 +501,24 @@ public abstract class AbstractEntityService<E> {
 			throws Exception {
 		return this.getServiceLocator().findEntityService(entityClass);
 	}
-	
+
 	/**
 	 * Get spring application context.
+	 * 
 	 * @return
 	 */
 	public ApplicationContext getAppContext() {
 		return appContext;
 	}
 
-	
 	/**
 	 * Set spring application context.
+	 * 
 	 * @param appContext
 	 */
 	public void setAppContext(ApplicationContext appContext) {
 		this.appContext = appContext;
 	}
-
 
 	/**
 	 * Get system configuration object. If it is null attempts to retrieve it
@@ -481,7 +526,7 @@ public abstract class AbstractEntityService<E> {
 	 * 
 	 * @return
 	 */
-	public ISystemConfig getSystemConfig() {		
+	public ISystemConfig getSystemConfig() {
 		if (this.systemConfig == null) {
 			this.systemConfig = this.appContext.getBean(ISystemConfig.class);
 		}
@@ -490,27 +535,29 @@ public abstract class AbstractEntityService<E> {
 
 	/**
 	 * Set system configuration object.
+	 * 
 	 * @param systemConfig
 	 */
 	public void setSystemConfig(ISystemConfig systemConfig) {
 		this.systemConfig = systemConfig;
 	}
-	
-	
-	
+
 	/**
 	 * Get business service locator. If it is null attempts to retrieve it
+	 * 
 	 * @return
 	 */
 	public ServiceLocatorBusiness getServiceLocator() {
 		if (this.serviceLocator == null) {
-			this.serviceLocator = this.appContext.getBean(ServiceLocatorBusiness.class);
+			this.serviceLocator = this.appContext
+					.getBean(ServiceLocatorBusiness.class);
 		}
 		return serviceLocator;
 	}
 
 	/**
 	 * Set business service locator.
+	 * 
 	 * @param serviceLocator
 	 */
 	public void setServiceLocator(ServiceLocatorBusiness serviceLocator) {
