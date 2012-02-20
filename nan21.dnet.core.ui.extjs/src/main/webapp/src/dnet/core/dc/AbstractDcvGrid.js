@@ -25,11 +25,35 @@ Ext.define("dnet.core.dc.AbstractDcvGrid", {
 	 * @type dnet.core.dc.AbstractDc
 	 */
 	_controller_ : null,
-
+	
+	/**
+	 * Flag to switch on/off advanced sort on multiple columns.
+	 * @type Boolean
+	 */
 	_noSort_	: false,
+	
+	/**
+	 * Flag to switch on/off data export.
+	 * @type Boolean
+	 */
 	_noExport_ : false,
+	
+	/**
+	 * Flag to switch on/off data import.
+	 * @type Boolean
+	 */
 	_noImport_ : true,
-	_noLayoutCfg_ : true,
+	
+	/**
+	 * Flag to switch on/off custom layout management.
+	 * @type Boolean
+	 */
+	_noLayoutCfg_ : false,
+	
+	/**
+	 * Data export window.
+	 * @type dnet.core.dc.DataExportWindow
+	 */
 	_exportWindow_ : null,
 	_importWindow_ : null,
 	_layoutWindow_ : null,
@@ -38,8 +62,6 @@ Ext.define("dnet.core.dc.AbstractDcvGrid", {
 	// defaults
 
 	buttonAlign : "left",
-	//invalidateScrollerOnRefresh: true,
-	//invalidateScrollerOnRefresh: false,
 	forceFit : false,
 	autoScroll:true,
 	scroll: "both",
@@ -50,19 +72,18 @@ Ext.define("dnet.core.dc.AbstractDcvGrid", {
 	deferRowRender : true,
 	//enableLocking : true,
 	viewConfig : {
-		//invalidateScrollerOnRefresh: false,
-		//onStoreLoad: Ext.emptyFn,
 		emptyText : Dnet.translate("msg", "grid_emptytext")
 	},
 
 	initComponent : function(config) {
 
+		this._noImport_ = true;
+		
 		this._elems_ = new Ext.util.MixedCollection();
 		this._columns_ = new Ext.util.MixedCollection();
 
 		this._noImport_ = true;
-		this._noLayoutCfg_ = true;
-
+		  
 		this._startDefine_();
 		this._defineDefaultElements_();
 
@@ -133,28 +154,9 @@ Ext.define("dnet.core.dc.AbstractDcvGrid", {
 		// scope: this
 		// }]
 		};
-
 		var bbitems = [];
-		if (!this._noLayoutCfg_) {
-			bbitems = [ "-", this._elems_.get("_btnLayout_") ];
-		}
-		
-		if (!this._noSort_) {			 
-			bbitems.push("-");
-			bbitems.push(this._elems_.get("_btnSort_"));			 
-		}
-
-		if (!this._noImport_) {
-			bbitems.push("-");
-			bbitems.push(this._elems_.get("_btnImport_"));				 
-		}
-		if (!this._noExport_) {
-			if (this._noImport_) {
-				bbitems.push("-");
-			}			
-			bbitems.push(this._elems_.get("_btnExport_"));	
-		}
-
+		this._buildToolbox_(bbitems);
+ 
 		if (bbitems.length > 0) {
 			cfg["bbar"]["items"] = bbitems;
 		}
@@ -170,6 +172,98 @@ Ext.define("dnet.core.dc.AbstractDcvGrid", {
 		 
 	},
 	
+	_buildToolbox_: function(bbitems) {		 
+		if (!this._noLayoutCfg_) {
+			bbitems.push("-");
+			bbitems.push(this._elems_.get("_btnLayout_"));
+		}
+		
+		if (!this._noSort_) {			 
+			bbitems.push("-");
+			bbitems.push(this._elems_.get("_btnSort_"));			 
+		} 
+		
+		if (!this._noImport_) {
+			bbitems.push("-");
+			bbitems.push(this._elems_.get("_btnImport_"));				 
+		}
+		
+		if (!this._noExport_) {
+			bbitems.push("-");
+			bbitems.push(this._elems_.get("_btnExport_"));	
+		} 
+	},
+	
+	getState: function(){        
+        return this._getViewState_();
+    },
+     
+    applyState: function(state){        
+        return this._applyViewState_(state);
+    },
+    
+    _getViewState_: function(){
+        var me = this,
+            state = null,
+            colStates = [],
+            cm = this.headerCt,    	
+    		cols = cm.items.items;
+        for(var i = 0, len = cols.length; i < len; i++){
+        	var c=cols[i];
+        	colStates.push({
+        		n : c.name,
+        		h : c.hidden,
+        		w : c.width
+        	});
+        }
+            
+        state = me.addPropertyToState(state, 'columns', colStates);
+        return state;
+    },
+    _applyViewStateAfterRender_: function(cmp, eOpts) {
+    	this._applyViewState_(eOpts.state);
+    },
+     _applyViewState_ : function(state) {
+     	if (!this.rendered) {
+     		this.on("afterrender", this._applyViewStateAfterRender_, this, {single:true, state:state});
+     		return ;
+     	}
+    	var sCols = state.columns, 
+    		cm = this.headerCt,    	
+    		cols = cm.items.items,
+    		col = null;
+         
+    	for(var i = 0, slen = sCols.length; i < slen; i++){
+            var sCol = sCols[i];
+            var colIndex = -1;
+            
+            for (var j = 0, len = cols.length;j < len; j++) {
+	            if (cols[j].name == sCol.n ) { //&& (!myCM.config[i]._aSel_) ){	            	 
+	                colIndex = j;
+	                col = cols[j];
+	                break;
+	            }
+	        }
+	        
+            if(colIndex >= 0){               
+            	if (sCol.h) {
+            		col.hide();
+            	} else {
+            		col.show();
+            	}
+                 col.setWidth(sCol.w);
+                //cm.setColumnWidth(colIndex, s.width, true);
+                //cm.setColumnHeader(colIndex, s.header, true);
+                if(colIndex != i){
+                    col.move(colIndex, i);
+                }
+            }
+        }
+    },
+    
+    
+   
+    
 	// *********** event handlers ************************
 	
 	
@@ -309,7 +403,7 @@ Ext.define("dnet.core.dc.AbstractDcvGrid", {
 			xtype : "button",
 			id : Ext.id(),
 			disabled : true,
-			text : Dnet.translate("dcvgrid", "exp_btn"),
+			//text : Dnet.translate("dcvgrid", "exp_btn"),
 			tooltip : Dnet.translate("dcvgrid", "exp_title"),
 			iconCls : 'icon-action-export',
 			handler : this._doExport_,
@@ -318,7 +412,7 @@ Ext.define("dnet.core.dc.AbstractDcvGrid", {
 		this._elems_.add("_btnImport_", {
 			xtype : "button",
 			id : Ext.id(),
-			text : Dnet.translate("dcvgrid", "imp_btn"),
+			//text : Dnet.translate("dcvgrid", "imp_btn"),
 			tooltip : Dnet.translate("dcvgrid", "imp_title"),
 			iconCls : 'icon-action-import',
 			handler : this._doImport_,
@@ -336,7 +430,7 @@ Ext.define("dnet.core.dc.AbstractDcvGrid", {
 		this._elems_.add("_btnLayout_", {
 			xtype : "button",
 			id : Ext.id(),
-			text : Dnet.translate("dcvgrid", "btn_perspective_txt"),
+			//text : Dnet.translate("dcvgrid", "btn_perspective_txt"),
 			tooltip : Dnet.translate("dcvgrid", "btn_perspective_tlp"),
 			iconCls : 'icon-action-customlayout',
 			handler : this._doLayoutManager_,

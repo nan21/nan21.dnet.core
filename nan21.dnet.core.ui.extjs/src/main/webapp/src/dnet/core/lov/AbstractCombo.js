@@ -72,8 +72,7 @@ Ext.define("dnet.core.lov.AbstractCombo", {
 		this.store = Ext.create("Ext.data.Store", {
 			model : this.recordModel,
 			remoteSort : true,
-			remoteSort : true,
-	
+		  
 			autoLoad : false,
 			autoSync : false,
 			clearOnPageLoad : true,

@@ -83,8 +83,8 @@ dnet.core.base.Session = {
 	 */
 	isAuthenticated : function() {
 		return (!Ext.isEmpty(this.user.name));
-	}
+	},
 
-	
+	rememberViewState: false
 	
 };

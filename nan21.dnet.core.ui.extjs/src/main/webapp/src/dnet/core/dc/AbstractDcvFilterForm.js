@@ -243,7 +243,7 @@ Ext.define("dnet.core.dc.AbstractDcvFilterForm", {
 				Ext.destroy(c);
 			}			
 		} catch(e) {
-			alert(e);
+			//alert(e);
 		}
 	}
 	

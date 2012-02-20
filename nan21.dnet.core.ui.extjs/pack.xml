@@ -27,11 +27,11 @@
  
 			<filelist dir="${sourcePathCore}/asgn" files="AbstractAsgn.js,AbstractAsgnGrid.js,AbstractAsgnUi.js,AsgnGridBuilder.js,AsgnUiBuilder.js" />
 
-			<filelist dir="${sourcePathCore}/base" files="Logger.js,NavigationTree.js,TemplateRepository.js,Session.js,Application.js,ApplicationMenu.js,LoginWindow.js,ChangePasswordWindow.js,FrameInspector.js" />
+			<filelist dir="${sourcePathCore}/base" files="UserPreferences.js,Logger.js,NavigationTree.js,TemplateRepository.js,Session.js,Application.js,ApplicationMenu.js,LoginWindow.js,ChangePasswordWindow.js,FrameInspector.js" />
 
 			<filelist dir="${sourcePathCore}/base" files="HomePanel.js,UrlBuilder.js,UiHeader.js,FrameNavigatorWithIframe.js,FrameNavigator.js,FileUploadWindow.js,WorkflowFormWithHtmlWindow.js,WorkflowFormWithExtjsWindow.js,WorkflowFormFactory.js" />
 
-			<filelist dir="${sourcePathCore}/dc" files="AbstractDc.js,AbstractDcvGrid.js,AbstractDcvEditableGrid.js,AbstractDcvForm.js,AbstractDcvTree.js,AbstractDcvFilterForm.js,DcvFilterFormBuilder.js,DcvFormBuilder.js,DcvGridBuilder.js,DcvEditableGridBuilder.js,DcActionsFactory.js,DcCommandFactory.js" />
+			<filelist dir="${sourcePathCore}/dc" files="BulkEditWindow.js,AbstractDc.js,AbstractDcvGrid.js,AbstractDcvEditableGrid.js,AbstractDcvForm.js,AbstractDcvTree.js,AbstractDcvFilterForm.js,DcvFilterFormBuilder.js,DcvFormBuilder.js,DcvGridBuilder.js,DcvEditableGridBuilder.js,DcActionsFactory.js,DcCommandFactory.js" />
 
 
 			<filelist dir="${sourcePathCore}/dc/command" files="AbstractDcCommand.js,AbstractDcAsyncCommand.js,AbstractDcSyncCommand.js" />

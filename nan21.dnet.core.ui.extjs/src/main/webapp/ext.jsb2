@@ -206,7 +206,14 @@
 },{
 	"text": "AbstractLov.js",
 	"path": "src/dnet/core/lov/"
+},{
+	"text": "UserPreferences.js",
+	"path": "src/dnet/core/base/"
+},{
+	"text": "BulkEditWindow.js",
+	"path": "src/dnet/core/dc/"
 }
+
 
 
        ]

@@ -1,6 +1,7 @@
 package net.nan21.dnet.core.presenter.converter;
 
 import java.lang.reflect.Method;
+import java.util.List;
 import java.util.Map;
  
 import javax.persistence.EntityManager;
@@ -62,22 +63,44 @@ public abstract class AbstractDsConverter<M, E> implements IDsConverter<M, E>{
 	}
 	 
 	
-	public void modelToEntity(M m, E e) throws Exception  {
-		this.modelToEntityAttributes(m, e);
-		this.modelToEntityReferences(m, e);
+	public void modelToEntity(M m, E e, boolean isInsert) throws Exception  {
+		this.modelToEntityAttributes(m, e, isInsert);
+		this.modelToEntityReferences(m, e, isInsert);
 	}
 	
 	
-	protected void modelToEntityAttributes(M m, E e)  throws Exception  {
+	protected void modelToEntityAttributes(M m, E e, boolean isInsert)  throws Exception  {
 		StandardEvaluationContext context = new StandardEvaluationContext(m);
 		Map<String, String> attrmap = this.descriptor.getM2eConv();
 		Method[] methods = this.getEntityClass().getMethods();
+		
+		List<String> noInserts = this.descriptor.getNoInserts();
+		List<String> noUpdates = this.descriptor.getNoUpdates();
+		
 		for (Method method : methods) {
 			if (method.getName().startsWith("set")) {
 				String fn = StringUtils.uncapitalize(method.getName().substring(3));
+				boolean doit = true;
 				if (attrmap.containsKey(fn)) {
+					String dsf = attrmap.get(fn);
+					if (isInsert && noInserts.contains(fn)) {
+						doit = false;
+					}
+					if (!isInsert && noUpdates.contains(fn)) {
+						doit = false;
+					}
+//					if(!isInsert) {
+//						// prevent updating technical fields
+//						// move this into an ignoreFields list populated based on the DsField noInsert/noUpdate attributes
+//						if (dsf.equals("id") ||   dsf.equals("createdAt") || dsf.equals("createdBy") 
+//								|| dsf.equals("uuid") || dsf.equals("clientId")   ) {
+//							doit = false;
+//						}
+//					}
 					try {
-						method.invoke(e, parser.parseExpression(attrmap.get(fn)).getValue(context));
+						if (doit) {
+							method.invoke(e, parser.parseExpression(dsf).getValue(context));
+						}
 					} catch(Exception exc) {
 						
 					}
@@ -86,7 +109,7 @@ public abstract class AbstractDsConverter<M, E> implements IDsConverter<M, E>{
 		}			
 	}
 	
-	protected void modelToEntityReferences(M m, E e)  throws Exception  {
+	protected void modelToEntityReferences(M m, E e, boolean isInsert)  throws Exception  {
 		 	
 	}
 

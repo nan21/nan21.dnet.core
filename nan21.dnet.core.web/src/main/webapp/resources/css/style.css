@@ -1,0 +1,5 @@
+  .label{ font-family:arial,verdana;font-size:12px; border-bottom:1px solid gray; }
+  .labelut{ font-family:arial,verdana;font-size:12px; border-top:1px solid gray; vertical-align: text-top;}
+  .text{ font-family:arial,verdana;font-size:12px; }
+  .title{ font-family:arial,verdana;font-size:16px; }
+  .field{ font-family:arial,verdana; font-size:12px; padding:2px; border:1px solid gray; width:130px; }

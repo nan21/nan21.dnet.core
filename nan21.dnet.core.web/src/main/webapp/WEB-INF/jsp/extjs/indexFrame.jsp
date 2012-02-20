@@ -43,6 +43,8 @@
 	<script type="text/javascript" src="${urlUiExtjs}/${bundle}/resources/locale/${shortLanguage}/frame/${itemSimpleName}.js"></script>
 	<script type="text/javascript" src="${urlUiExtjs}/${bundle}/src/frame/${itemSimpleName}.js"></script>
 	
+	${extensions}
+	
 	<script type="text/javascript">
   		if(document && document.getElementById('n21-loading-msg')) {
   	  		document.getElementById('n21-loading-msg').innerHTML = Dnet.translate("msg", "initialize")+' ${item}...';
@@ -55,6 +57,8 @@
     Ext.onReady(function(){
 
     	<%@ include file="_on_ready.jspf" %>
+
+    	${extensionsContent}
     	
      	var cfg = { layout:"border"	 	     			  
          	    ,items: [{					      	 

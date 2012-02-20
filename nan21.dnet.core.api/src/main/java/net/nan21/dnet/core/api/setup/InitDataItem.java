@@ -9,7 +9,8 @@ public class InitDataItem {
 	private String fileName;
 	private File file;
 	private String destPath; 
-	 
+	private String ukFieldName; 
+	
 	public String getDestPath() {
 		return destPath;
 	}
@@ -39,6 +40,12 @@ public class InitDataItem {
 	}
 	public void setFile(File file) {
 		this.file = file;
+	}
+	public String getUkFieldName() {
+		return ukFieldName;
+	}
+	public void setUkFieldName(String ukFieldName) {
+		this.ukFieldName = ukFieldName;
 	}
 	 
 	

@@ -17,7 +17,7 @@ import net.nan21.dnet.core.api.marshall.IDsMarshaller;
  * @param <M>
  * @param <P>
  */
-public interface IDsService<M,F,P> {
+public interface IDsService<M, F, P> {
 
 	/**
 	 * Handler for insert event.
@@ -69,27 +69,30 @@ public interface IDsService<M,F,P> {
 	public void deleteByIds(List<Object> ids) throws Exception;
 
 	public M findById(Object id) throws Exception;
-	
+
 	public M findById(Object id, P params) throws Exception;
 
 	public List<M> findByIds(List<Object> ids) throws Exception;
 
-	public List<M> find(F filter, P params ) throws Exception;
-	
-	public List<M> find(F filter ) throws Exception;
-	
-	public List<M> find(F filter, P params, IQueryBuilder<M,F,P> builder)
+	public List<M> find(F filter, P params) throws Exception;
+
+	public List<M> find(F filter) throws Exception;
+
+	public List<M> find(F filter, P params, IQueryBuilder<M, F, P> builder)
 			throws Exception;
 
-	public List<M> find(F filter, P params , List<SortToken> sortTokens, int resultStart, int resultSize ) throws Exception;
-	
-	public List<M> find(F filter, P params , int resultStart, int resultSize ) throws Exception;
-	
-	public Long count(F filter, P params, IQueryBuilder<M,F,P> builder)
+	public List<M> find(F filter, P params, List<SortToken> sortTokens,
+			int resultStart, int resultSize) throws Exception;
+
+	public List<M> find(F filter, P params, int resultStart, int resultSize)
+			throws Exception;
+
+	public Long count(F filter, P params, IQueryBuilder<M, F, P> builder)
 			throws Exception;
 
 	/**
 	 * Handler for basic data import given a file-name as absolute location.
+	 * Performs an insert.
 	 * 
 	 * @param absoluteFileName
 	 */
@@ -97,43 +100,68 @@ public interface IDsService<M,F,P> {
 
 	/**
 	 * Handler for basic data import given a file-name and directory where it
-	 * resides .
+	 * resides. Performs an insert.
 	 * 
 	 * @param relativeFileName
 	 * @param path
 	 */
 	public void doImport(String relativeFileName, String path) throws Exception;
 
-	public void doExport(F filter, P params, IQueryBuilder<M,F,P> builder,
+	/**
+	 * Handler for basic data import given a file-name and directory where it
+	 * resides. <br>
+	 * Performs an update. <br>
+	 * Tries to read the value from the database using the
+	 * <code>ukFieldName</code> as an unique key field, apply the changes read
+	 * from the file to be imported and updates the result.
+	 * 
+	 * @param relativeFileName
+	 * @param path
+	 */
+	public void doImport(String absoluteFileName, String ukFieldName,
+			int batchSize) throws Exception;
+
+	/**
+	 * Handler for basic data import given a file-name and directory where it
+	 * resides. <br>
+	 * Performs an update. <br>
+	 * Tries to read the value from the database using the
+	 * <code>ukFieldName</code> as an unique key field, apply the changes read
+	 * from the file to be imported and updates the result.
+	 * 
+	 * @param relativeFileName
+	 * @param path
+	 */
+	public void doImport(String relativeFileName, String path,
+			String ukFieldName, int batchSize) throws Exception;
+
+	public void doExport(F filter, P params, IQueryBuilder<M, F, P> builder,
 			IDsExport<M> writer) throws Exception;
 
-	public IQueryBuilder<M,F,P> createQueryBuilder() throws Exception;
+	public IQueryBuilder<M, F, P> createQueryBuilder() throws Exception;
 
-	public IDsMarshaller<M,F,P> createMarshaller(String dataFormat)
+	public IDsMarshaller<M, F, P> createMarshaller(String dataFormat)
 			throws Exception;
 
 	public Class<?> getEntityClass();
 
 	public Class<M> getModelClass();
-	
+
 	public Class<F> getFilterClass();
 
 	public Class<P> getParamClass();
- 
+
 	public void rpcFilter(String procedureName, F filter, P params)
 			throws Exception;
 
-	
 	public void rpcData(String procedureName, M ds, P params) throws Exception;
 
 	public void rpcData(String procedureName, List<M> list, P params)
 			throws Exception;
 
-	
 	public InputStream rpcFilterStream(String procedureName, F filter, P params)
 			throws Exception;
 
-	
 	public InputStream rpcDataStream(String procedureName, M ds, P params)
 			throws Exception;
 

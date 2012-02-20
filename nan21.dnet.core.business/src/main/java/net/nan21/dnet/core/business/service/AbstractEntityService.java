@@ -72,7 +72,8 @@ public abstract class AbstractEntityService<E> {
 	@SuppressWarnings("unchecked")
 	public List<E> findAll() {
 		return (List<E>) this.em.createQuery(
-				"select e from " + getEntityClass().getSimpleName() + " e")
+				"select e from " + getEntityClass().getSimpleName() + " e where e.clientId = :pClientId ")
+				.setParameter("pClientId", Session.user.get().getClientId())
 				.getResultList();
 	}
 
@@ -92,7 +93,8 @@ public abstract class AbstractEntityService<E> {
 		// (TypedQuery<E>)this.em.createQuery("select e from "+getEntityClass().getSimpleName()+" e where e.id in :pIds ",this.getEntityClass());
 		return (List<E>) this.em.createQuery(
 				"select e from " + getEntityClass().getSimpleName()
-						+ " e where e.id in :pIds ").setParameter("pIds", ids)
+						+ " e where e.clientId = :pClientId and e.id in :pIds ").setParameter("pIds", ids)
+				.setParameter("pClientId", Session.user.get().getClientId())		
 				.getResultList();
 	}
 
@@ -103,6 +105,7 @@ public abstract class AbstractEntityService<E> {
 		TypedQuery<E> q = this.em.createNamedQuery(namedQueryName, this
 				.getEntityClass());
 		Set<String> keys = params.keySet();
+		q.setParameter("pClientId", Session.user.get().getClientId());
 		for (String key : keys) {
 			q.setParameter(key, params.get(key));
 		}

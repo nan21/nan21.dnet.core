@@ -8,9 +8,11 @@
 package net.nan21.dnet.core.security;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -28,7 +30,8 @@ public class SessionUser implements UserDetails {
     private static final long serialVersionUID = 1L;
     private Boolean administrator;
     private Set<GrantedAuthority> authorities;
-
+    private List<String> roles;
+    
     private User user;
     private Params params;
 
@@ -116,6 +119,16 @@ public class SessionUser implements UserDetails {
         return this.user.getUsername();
     }
 
+    
+    public List<String> getRoles() {
+    	if (this.roles == null) {
+    		this.roles = new ArrayList<String>();
+    		for(GrantedAuthority a : authorities) {
+    			this.roles.add(a.getAuthority());
+    		}   
+    	}
+    	return this.roles;
+    }
     /**
      * @return the authorities
      */

@@ -341,7 +341,7 @@ Ext.define("dnet.core.dc.AbstractDcvForm", {
 				Ext.destroy(c);
 			}			
 		} catch(e) {
-			alert(e);
+			//alert(e);
 		}
 	}
 	

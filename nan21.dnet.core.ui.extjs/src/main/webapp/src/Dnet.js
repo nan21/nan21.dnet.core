@@ -101,7 +101,7 @@ Dnet = {
 	,sessionAPI: function (format) {
 	   return {
               login : this.sessionUrl +'?action=login'
-             ,logout : this.sessionUrl +'?action=logout'
+             ,logout : this.sessionUrl +'/doLogout'
              ,lock : this.sessionUrl +'?action=lock'
              ,unlock : this.sessionUrl +'?action=unlock'
              ,changePassword : this.sessionUrl +'?action=changePassword'

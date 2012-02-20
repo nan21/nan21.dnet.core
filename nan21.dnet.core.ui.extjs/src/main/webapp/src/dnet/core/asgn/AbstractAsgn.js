@@ -75,6 +75,10 @@ Ext.define("dnet.core.asgn.AbstractAsgn", {
 				proxy : {
 					type : 'ajax',
 					api : Dnet.asgnLeftAPI(this.dsName, "json"),
+					model : this.recordModel,
+					extraParams: {
+						params: {}
+					},
 					actionMethods : {
 						create : 'POST',
 						read : 'POST',
@@ -102,8 +106,8 @@ Ext.define("dnet.core.asgn.AbstractAsgn", {
 					},
 					startParam : Dnet.requestParam.START,
 					limitParam : Dnet.requestParam.SIZE,
-					sortParam : Dnet.requestParam.SORT,
-					directionParam : Dnet.requestParam.SENSE
+					sortParam : Dnet.requestParam.SORT 
+					//directionParam : Dnet.requestParam.SENSE
 				}
 			});
 		}
@@ -121,6 +125,10 @@ Ext.define("dnet.core.asgn.AbstractAsgn", {
 				proxy : {
 					type : 'ajax',
 					api : Dnet.asgnRightAPI(this.dsName, "json"),
+					model : this.recordModel,
+					extraParams: {
+						params: {}
+					},
 					actionMethods : {
 						create : 'POST',
 						read : 'POST',
@@ -438,12 +446,18 @@ Ext.define("dnet.core.asgn.AbstractAsgn", {
 		this.storeLeft.removeAll();
 		var lp = {};
 		var data = {};
+		 
+		this.storeLeft.proxy.extraParams = this.params;
+		this.storeLeft.currentPage = 1;
+		 
 		if (this.filter.left.field) {
 			data[this.filter.left.field] = this.filter.left.value || '*';
+			this.storeLeft.proxy.extraParams.data = Ext.encode(data);
 		}
-		lp.data = Ext.encode(data);
+		  
 		lp[Dnet.requestParam.START] = 0;
 		lp[Dnet.requestParam.SIZE] = this.tuning.fetchSize;
+		
 		Ext.apply(lp, this.params);
 		var theCallback = function(recs, options, success) {
 		}
@@ -462,10 +476,16 @@ Ext.define("dnet.core.asgn.AbstractAsgn", {
 		this.storeRight.removeAll();
 		var lp = {};
 		var data = {};
+		
+		this.storeRight.proxy.extraParams = this.params;
+		this.storeRight.currentPage = 1;
+		 
+		
 		if (this.filter.right.field) {
 			data[this.filter.right.field] = this.filter.right.value || '*';
+			this.storeRight.proxy.extraParams["data"] = Ext.encode(data);
 		}
-		lp.data = Ext.encode(data);
+		 
 		lp[Dnet.requestParam.START] = 0;
 		lp[Dnet.requestParam.SIZE] = this.tuning.fetchSize;
 		Ext.apply(lp, this.params);

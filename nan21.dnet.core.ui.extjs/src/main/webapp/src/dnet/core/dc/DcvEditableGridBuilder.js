@@ -131,9 +131,10 @@ Ext.define("dnet.core.dc.DcvEditableGridBuilder", {
 	applySharedConfig : function(config) {
 		Ext.applyIf(config, {
 			id : Ext.id(),
+			headerId: config.name,
 			selectOnFocus : true,
 			sortable : true,
-			hidden : false,
+			//hidden : false,
 			_dcView_ : this.dcv
 		});
 		if (config.editor) {

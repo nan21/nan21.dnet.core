@@ -1,6 +1,10 @@
 package net.nan21.dnet.core.web.controller.session;
 
 import java.io.IOException;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -26,6 +30,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @Scope(value = "request")
@@ -38,9 +43,80 @@ public class SessionController {
 	@Autowired
 	private AuthenticationManager authenticationManager;
 
+	
+	// ************* HTML LOGIN ************* 
+	
+	/**
+	 * Show login page
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/login")
+	public ModelAndView showLogin(
+			 )
+			throws Exception {
+		return new ModelAndView("login");
+	
+	}
+	
+	 
+	
+	/**
+	 * Process login action
+	 * @param username
+	 * @param password
+	 * @param clientCode
+	 * @param language
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/doLogin", method = RequestMethod.POST)
+	public ModelAndView doLogin(
+			@RequestParam(value = "user", required = true) String username,
+			@RequestParam(value = "pswd", required = true) String password,
+			@RequestParam(value = "client", required = true) String clientCode,
+			@RequestParam(value = "lang", required = false ) String language,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		try {
+			DefaultLoginAuthParams.clientCode.set(clientCode);
+			DefaultLoginAuthParams.language.set(language);
+			
+			String thePassword = password;
+			MessageDigest messageDigest = MessageDigest.getInstance("MD5");
+	        messageDigest.update(thePassword.getBytes(), 0, thePassword.length());
+	        String hashedPass = new BigInteger(1, messageDigest.digest())
+	                .toString(16);
+	        if (hashedPass.length() < 32) {
+	            hashedPass = "0" + hashedPass;
+	        }
+	        
+			Authentication authRequest = new UsernamePasswordAuthenticationToken(
+					username, hashedPass);
+			Authentication authResponse = this.authenticationManager
+					.authenticate(authRequest);
+			SecurityContextHolder.getContext().setAuthentication(authResponse);
+
+			User u = ((SessionUser) authResponse.getPrincipal()).getUser();
+			Params params = ((SessionUser) authResponse.getPrincipal())
+					.getParams();
+			UserPreferences prefs = u.getPreferences();
+			response.sendRedirect("/nan21.dnet.core.web/ui/extjs/");
+			return null;
+		} catch (Exception e) {
+			Map<String, String> model = new HashMap<String, String>();
+			model.put("error",
+					"Invalid credentials. Authentication failed.");
+			return new ModelAndView("login", model);
+		}
+	}
+	
+	
 	@ResponseBody
 	@RequestMapping(params = "action=login")
-	public String login(
+	public String doLoginExtjs(
 			@RequestParam(value = "user", required = true) String username,
 			@RequestParam(value = "pswd", required = true) String password,
 			@RequestParam(value = "client", required = true) String clientCode,
@@ -91,8 +167,8 @@ public class SessionController {
 	}
 
 	@ResponseBody
-	@RequestMapping(params = "action=logout")
-	public String logout(HttpServletRequest request,
+	@RequestMapping(value = "/doLogout")
+	public String doLogout(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		SecurityContextHolder.getContext().setAuthentication(null);
 		request
@@ -101,7 +177,9 @@ public class SessionController {
 						HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY);
 		return "";
 	}
-
+	
+	// ************* EXTJS LOGIN ************* 
+	
 	@ResponseBody
 	@RequestMapping(params = "action=lock")
 	public String lock(HttpServletRequest request, HttpServletResponse response)

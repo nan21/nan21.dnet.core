@@ -44,13 +44,6 @@ Ext.define("dnet.core.ui.FrameBuilder" , {
 		this.addDcView(dc, config);	
 		var theDc = this.frame._dcs_.get(dc);
 		var viewId = config.id;
-//		theDc.addBindedView(viewId, "edit-form");
-//		theDc.isRecordValid = theDc.isRecordValid.createInterceptor(function() {
-//			var c = Ext.getCmp(viewId);
-//			if (c) {
-//				return c.getForm().isValid();
-//			} else return true;			 
-//		} );
 		return this;
 	},
 	
@@ -63,25 +56,20 @@ Ext.define("dnet.core.ui.FrameBuilder" , {
 		this.addDcView(dc, config);	
 		var theDc = this.frame._dcs_.get(dc);
 		var viewId = config.id;
-//		theDc.addBindedView(config.id, "filter-form");
-//		theDc.isFilterValid = theDc.isFilterValid.createInterceptor(function() {
-//			var c = Ext.getCmp(viewId);
-//			if (c) {
-//				return c.getForm().isValid();
-//			} else return true;			
-//		} );
 		return this;
 	},
 	
-	addDcListView: function(dc, config) {	
-		var ttlKey = config.name + "__ttl";
-		  
-		if (config.title && this.frame._trl_ && this.frame._trl_[ttlKey]) {
-			config.title = this.frame._trl_[ttlKey];
+	addDcGridView: function(dc, config) {		 
+		config.stateId = this.frame.$className + "-"+ config.name;
+		if (getApplication().getSession().rememberViewState) {
+			config.stateful = true;
 		}
 		return this.addDcView(dc, config);
 	},
 	
+	addDcEditGridView: function(dc, config) {
+		return this.addDcGridView(dc, config);
+	},
 	
 	addDcView: function(dc, config) {	
 		Ext.apply(config, {

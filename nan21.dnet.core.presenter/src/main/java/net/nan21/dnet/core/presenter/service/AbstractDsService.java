@@ -2,6 +2,7 @@ package net.nan21.dnet.core.presenter.service;
 
 import java.io.File;
 import java.io.InputStream;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,6 +16,9 @@ import org.eclipse.persistence.config.HintValues;
 import org.eclipse.persistence.config.QueryHints;
 import org.eclipse.persistence.jpa.JpaQuery;
 import org.eclipse.persistence.queries.Cursor;
+import org.springframework.beans.BeanUtils;
+import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 
 import net.nan21.dnet.core.api.action.IDsExport;
 import net.nan21.dnet.core.api.action.IQueryBuilder;
@@ -26,6 +30,7 @@ import net.nan21.dnet.core.api.model.IModelWithId;
 import net.nan21.dnet.core.api.service.IEntityService;
 import net.nan21.dnet.core.api.session.Session;
 import net.nan21.dnet.core.presenter.action.DsCsvLoader;
+import net.nan21.dnet.core.presenter.action.DsCsvLoaderResult;
 import net.nan21.dnet.core.presenter.action.QueryBuilderWithJpql;
 import net.nan21.dnet.core.presenter.converter.AbstractDsConverter;
 import net.nan21.dnet.core.presenter.converter.BaseDsConverter;
@@ -37,7 +42,7 @@ import net.nan21.dnet.core.presenter.model.EmptyParam;
 import net.nan21.dnet.core.presenter.model.RpcDefinition;
 import net.nan21.dnet.core.presenter.model.ViewModelDescriptorManager;
 
-public abstract class AbstractDsService<M,F,P,E> extends AbstractDsProcessor  {
+public abstract class AbstractDsService<M, F, P, E> extends AbstractDsProcessor {
 
 	protected boolean noInsert = false;
 	protected boolean noUpdate = false;
@@ -62,9 +67,9 @@ public abstract class AbstractDsService<M,F,P,E> extends AbstractDsProcessor  {
 
 	// ======================== Find ===========================
 
-	public Long count(F filter, P params, IQueryBuilder<M,F,P> builder)
+	public Long count(F filter, P params, IQueryBuilder<M, F, P> builder)
 			throws Exception {
-		QueryBuilderWithJpql<M,F,P> bld = (QueryBuilderWithJpql<M,F,P>) builder;
+		QueryBuilderWithJpql<M, F, P> bld = (QueryBuilderWithJpql<M, F, P>) builder;
 		Object count = bld.createQueryCount().getSingleResult();
 		if (count instanceof Integer) {
 			return ((Integer) count).longValue();
@@ -73,44 +78,59 @@ public abstract class AbstractDsService<M,F,P,E> extends AbstractDsProcessor  {
 		}
 	}
 
-	protected void preFind(F filter, P params, IQueryBuilder<M,F,P> builder)
+	protected void preFind(F filter, P params, IQueryBuilder<M, F, P> builder)
 			throws Exception {
 	}
 
-	public List<M> find(F filter, P params , List<SortToken> sortTokens, int resultStart, int resultSize ) throws Exception {
-		QueryBuilderWithJpql<M,F,P> builder = (QueryBuilderWithJpql<M,F,P>) this.createQueryBuilder();
+	public List<M> find(F filter, P params, List<SortToken> sortTokens,
+			int resultStart, int resultSize) throws Exception {
+		QueryBuilderWithJpql<M, F, P> builder = (QueryBuilderWithJpql<M, F, P>) this
+				.createQueryBuilder();
 		builder.addFetchLimit(resultStart, resultSize);
 		builder.addSortInfo(sortTokens);
 		return this.find(filter, params, builder);
 	}
-	
-	public List<M> find(F filter, P params , int resultStart, int resultSize ) throws Exception {
-		QueryBuilderWithJpql<M,F,P> builder = (QueryBuilderWithJpql<M,F,P>) this.createQueryBuilder();
+
+	public List<M> find(F filter, P params, int resultStart, int resultSize)
+			throws Exception {
+		QueryBuilderWithJpql<M, F, P> builder = (QueryBuilderWithJpql<M, F, P>) this
+				.createQueryBuilder();
 		builder.addFetchLimit(resultStart, resultSize);
 		return this.find(filter, params, builder);
 	}
-	
-	public List<M> find(F filter, P params ) throws Exception {
-		QueryBuilderWithJpql<M,F,P> builder = (QueryBuilderWithJpql<M,F,P>) this.createQueryBuilder();
+
+	public List<M> find(F filter, P params) throws Exception {
+		QueryBuilderWithJpql<M, F, P> builder = (QueryBuilderWithJpql<M, F, P>) this
+				.createQueryBuilder();
 		return this.find(filter, params, builder);
 	}
-	
-	public List<M> find(F filter ) throws Exception {
-		QueryBuilderWithJpql<M,F,P> builder = (QueryBuilderWithJpql<M,F,P>) this.createQueryBuilder();
+
+	public List<M> find(F filter) throws Exception {
+		QueryBuilderWithJpql<M, F, P> builder = (QueryBuilderWithJpql<M, F, P>) this
+				.createQueryBuilder();
 		return this.find(filter, this.paramClass.newInstance(), builder);
 	}
-	
-	public List<M> find(F filter, P params, IQueryBuilder<M,F,P> builder)
+
+	public List<M> find(F filter, P params, IQueryBuilder<M, F, P> builder)
 			throws Exception {
-		QueryBuilderWithJpql<M,F,P> bld = null;
+		QueryBuilderWithJpql<M, F, P> bld = null;
 		if (builder != null) {
-			bld = (QueryBuilderWithJpql<M,F,P>) builder;
+			bld = (QueryBuilderWithJpql<M, F, P>) builder;
 		} else {
-			bld = (QueryBuilderWithJpql<M,F,P>) this.createQueryBuilder();
+			bld = (QueryBuilderWithJpql<M, F, P>) this.createQueryBuilder();
 		}
 
-		bld.setFilter(filter);
-		bld.setParams(params);
+		if(filter!=null) {
+			bld.setFilter(filter);
+		} else {
+			bld.setFilter(this.filterClass.newInstance());
+		}
+		if (params != null) {
+			bld.setParams(params);
+		} else {
+			bld.setParams(this.paramClass.newInstance());
+		}
+		
 
 		List<M> result = new ArrayList<M>();
 
@@ -124,14 +144,14 @@ public abstract class AbstractDsService<M,F,P,E> extends AbstractDsProcessor  {
 		return result;
 	}
 
-	protected void postFind(F filter, P params, IQueryBuilder<M,F,P> builder)
+	protected void postFind(F filter, P params, IQueryBuilder<M, F, P> builder)
 			throws Exception {
 	}
 
 	public M findById(Object id) throws Exception {
 		return this.findById(id, this.getParamClass().newInstance());
 	}
-	
+
 	public M findById(Object id, P params) throws Exception {
 		Method setter = this.getFilterClass().getDeclaredMethod("setId",
 				Object.class);
@@ -240,7 +260,7 @@ public abstract class AbstractDsService<M,F,P,E> extends AbstractDsProcessor  {
 		}
 		this.preInsert(ds, params);
 		E e = (E) this.getEntityService().create();
-		this.getConverter().modelToEntity(ds, e);
+		this.getConverter().modelToEntity(ds, e, true);
 		this.preInsert(ds, e, params);
 		this.onInsert(ds, e, params);
 		postInsertBeforeModel(ds, e, params);
@@ -282,7 +302,7 @@ public abstract class AbstractDsService<M,F,P,E> extends AbstractDsProcessor  {
 			E e = (E) this.getEntityService().create();
 			entities.add(e);
 			((AbstractDsModel<E>) ds)._setEntity_(e);
-			this.getConverter().modelToEntity(ds, e);
+			this.getConverter().modelToEntity(ds, e, true);
 			this.preInsert(ds, e, params);
 		}
 		// this.getEntityService().insert(entities);
@@ -411,7 +431,7 @@ public abstract class AbstractDsService<M,F,P,E> extends AbstractDsProcessor  {
 		this.preUpdate(ds, params);
 		E e = (E) this.getEntityService().findById(((IModelWithId) ds).getId());
 		this.preUpdateBeforeEntity(ds, e, params);
-		this.getConverter().modelToEntity(ds, e);
+		this.getConverter().modelToEntity(ds, e, false);
 		this.preUpdateAfterEntity(ds, e, params);
 		this.getEntityService().update(e);
 		postUpdateBeforeModel(ds, e, params);
@@ -441,7 +461,7 @@ public abstract class AbstractDsService<M,F,P,E> extends AbstractDsProcessor  {
 			// TODO: optimize me
 			E e = lookupEntityById(entities, ((IModelWithId) ds).getId());
 			this.preUpdateBeforeEntity(ds, e, params);
-			this.getConverter().modelToEntity(ds, e);
+			this.getConverter().modelToEntity(ds, e, false);
 			this.preUpdateAfterEntity(ds, e, params);
 		}
 		this.getEntityService().update(entities);
@@ -541,24 +561,83 @@ public abstract class AbstractDsService<M,F,P,E> extends AbstractDsProcessor  {
 	// ======================== Import/Export ===========================
 
 	public void doImport(String absoluteFileName) throws Exception {
-		this.doImport(new File(absoluteFileName));
+		this.doImportAsInsert_(new File(absoluteFileName));
 	}
 
 	public void doImport(String relativeFileName, String path) throws Exception {
-		this.doImport(new File(path + "/" + relativeFileName));
+		this.doImportAsInsert_(new File(path + "/" + relativeFileName));
 	}
 
-	private void doImport(File file) throws Exception {
-		// TODO: check type-> csv, json, etc
+	public void doImport(String absoluteFileName, String ukFieldName,
+			int batchSize) throws Exception {
+		this.doImportAsUpdate_(new File(absoluteFileName), ukFieldName,
+				batchSize);
+	}
+
+	public void doImport(String relativeFileName, String path,
+			String ukFieldName, int batchSize) throws Exception {
+		this.doImportAsUpdate_(new File(path + "/" + relativeFileName),
+				ukFieldName, batchSize);
+	}
+
+	protected void doImportAsInsert_(File file) throws Exception {
 		DsCsvLoader l = new DsCsvLoader();
 		List<M> list = l.run(file, this.modelClass, null);
 		this.insert(list, null);
 	}
 
-	public void doExport(F filter, P params, IQueryBuilder<M,F,P> builder,
+	protected void doImportAsUpdate_(File file, String ukFieldName,
+			int batchSize) throws Exception {
+
+		Assert.notNull(ukFieldName,
+				"For import as update you must specify the unique-key "
+						+ "field which is used to lookup the existing record.");
+
+		// TODO: check type-> csv, json, etc
+		DsCsvLoader l = new DsCsvLoader();
+		DsCsvLoaderResult<M> result = l.run2(file, this.modelClass, null);
+		List<M> list = result.getResult();
+		String[] columns = result.getHeader();
+		
+		F filter = this.filterClass.newInstance();
+		 
+		//TODO: ******************   optimize me to do the work in batches !! ***************
+		
+		Method filterUkFieldSetter = this.filterClass.getDeclaredMethod("set"+ StringUtils.capitalize(ukFieldName), String.class);
+		Method modelUkFieldGetter = this.modelClass.getDeclaredMethod("get"+ StringUtils.capitalize(ukFieldName));
+		
+		Map<String, Method> modelSetters = new HashMap<String, Method>();
+		Map<String, Method> modelGetters = new HashMap<String, Method>();
+		
+		int len = columns.length;
+		
+		for(int i=0;i<len;i++) {
+			String fieldName = columns[i];
+			Field f = this.modelClass.getDeclaredField(fieldName);			
+			
+			Method modelSetter = this.modelClass.getDeclaredMethod("set"+ StringUtils.capitalize(fieldName), f.getType());
+			modelSetters.put(fieldName, modelSetter);
+			
+			Method modelGetter = this.modelClass.getDeclaredMethod("get"+ StringUtils.capitalize(fieldName));
+			modelGetters.put(fieldName, modelGetter);
+			
+		}
+		
+		for (M newDs : list) {
+			filterUkFieldSetter.invoke(filter, modelUkFieldGetter.invoke(newDs));
+			M oldDs = this.find(filter).get(0);
+			for(Map.Entry<String, Method> entry : modelSetters.entrySet()) {
+				entry.getValue().invoke(oldDs, modelGetters.get(entry.getKey()).invoke(newDs) );
+			}
+			this.update(oldDs, null);
+		}
+ 
+	}
+
+	public void doExport(F filter, P params, IQueryBuilder<M, F, P> builder,
 			IDsExport<M> writer) throws Exception {
 
-		QueryBuilderWithJpql<M,F,P> bld = (QueryBuilderWithJpql<M,F,P>) builder;
+		QueryBuilderWithJpql<M, F, P> bld = (QueryBuilderWithJpql<M, F, P>) builder;
 		bld.setForExport(true);
 
 		EntityManager lem = bld.getEntityManager().getEntityManagerFactory()
@@ -608,15 +687,12 @@ public abstract class AbstractDsService<M,F,P,E> extends AbstractDsProcessor  {
 
 	// ======================== RPC ===========================
 
-	
-
 	public void rpcData(String procedureName, M ds, P params) throws Exception {
 		if (!rpcData.containsKey(procedureName)) {
 			throw new Exception("No such procedure defined: " + procedureName);
 		}
 		RpcDefinition def = rpcData.get(procedureName);
-		AbstractDsDelegate delegate = def.getDelegateClass()
-				.newInstance();
+		AbstractDsDelegate delegate = def.getDelegateClass().newInstance();
 		this.prepareDelegate(delegate);
 		Method m = null;
 		boolean withParams = false;
@@ -642,8 +718,7 @@ public abstract class AbstractDsService<M,F,P,E> extends AbstractDsProcessor  {
 			throw new Exception("No such procedure defined: " + procedureName);
 		}
 		RpcDefinition def = rpcData.get(procedureName);
-		AbstractDsDelegate delegate = def.getDelegateClass()
-				.newInstance();
+		AbstractDsDelegate delegate = def.getDelegateClass().newInstance();
 		this.prepareDelegate(delegate);
 
 		Method m = null;
@@ -673,8 +748,7 @@ public abstract class AbstractDsService<M,F,P,E> extends AbstractDsProcessor  {
 			throw new Exception("No such procedure defined: " + procedureName);
 		}
 		RpcDefinition def = rpcFilter.get(procedureName);
-		AbstractDsDelegate delegate = def.getDelegateClass()
-				.newInstance();
+		AbstractDsDelegate delegate = def.getDelegateClass().newInstance();
 		this.prepareDelegate(delegate);
 		Method m = null;
 		boolean withParams = false;
@@ -701,8 +775,7 @@ public abstract class AbstractDsService<M,F,P,E> extends AbstractDsProcessor  {
 			throw new Exception("No such procedure defined: " + procedureName);
 		}
 		RpcDefinition def = rpcFilter.get(procedureName);
-		AbstractDsDelegate delegate = def.getDelegateClass()
-				.newInstance();
+		AbstractDsDelegate delegate = def.getDelegateClass().newInstance();
 		this.prepareDelegate(delegate);
 		Method m = null;
 		boolean withParams = false;
@@ -751,8 +824,8 @@ public abstract class AbstractDsService<M,F,P,E> extends AbstractDsProcessor  {
 	public void setModelClass(Class<M> modelClass) throws Exception {
 		this.modelClass = modelClass;
 	}
- 
-	public Class<F> getFilterClass() {		
+
+	public Class<F> getFilterClass() {
 		return filterClass;
 	}
 
@@ -796,8 +869,8 @@ public abstract class AbstractDsService<M,F,P,E> extends AbstractDsProcessor  {
 					.newInstance();
 			this.converter.setEntityManager(this.getEntityService()
 					.getEntityManager());
-//			this.converter
-//					.setEntityServiceFactories(this.getEntityServiceFactories());
+			// this.converter
+			// .setEntityServiceFactories(this.getEntityServiceFactories());
 			AbstractDsConverter<M, E> cnv = (AbstractDsConverter<M, E>) this.converter;
 			cnv.setAppContext(this.getAppContext());
 			cnv.setDescriptor(this.getDescriptor());
@@ -819,7 +892,8 @@ public abstract class AbstractDsService<M,F,P,E> extends AbstractDsProcessor  {
 	public DsDescriptor<M> getDescriptor() throws Exception {
 		if (this.descriptor == null) {
 			this.descriptor = ViewModelDescriptorManager.getDsDescriptor(
-					this.modelClass, this.getSystemConfig().shouldCacheDescriptor());
+					this.modelClass, this.getSystemConfig()
+							.shouldCacheDescriptor());
 		}
 		return descriptor;
 	}
@@ -857,18 +931,19 @@ public abstract class AbstractDsService<M,F,P,E> extends AbstractDsProcessor  {
 		this.rpcFilter = rpcFilter;
 	}
 
-	public IQueryBuilder<M,F,P> createQueryBuilder() throws Exception {
-		IQueryBuilder<M,F,P> qb = null;
+	public IQueryBuilder<M, F, P> createQueryBuilder() throws Exception {
+		IQueryBuilder<M, F, P> qb = null;
 		if (this.queryBuilderClass == null) {
-			qb = new QueryBuilderWithJpql<M,F,P>();
+			qb = new QueryBuilderWithJpql<M, F, P>();
 		} else {
-			qb = (IQueryBuilder<M,F,P>) this.queryBuilderClass.newInstance();
+			qb = (IQueryBuilder<M, F, P>) this.queryBuilderClass.newInstance();
 		}
 		this._prepareQueryBuilder(qb);
 		return qb;
 	}
 
-	private void _prepareQueryBuilder(IQueryBuilder<M,F,P> qb) throws Exception {
+	private void _prepareQueryBuilder(IQueryBuilder<M, F, P> qb)
+			throws Exception {
 		qb.setModelClass(this.getModelClass());
 		qb.setFilterClass(this.getFilterClass());
 		qb.setParamClass(this.getParamClass());
@@ -888,12 +963,12 @@ public abstract class AbstractDsService<M,F,P,E> extends AbstractDsProcessor  {
 		}
 	}
 
-	public IDsMarshaller<M,F,P> createMarshaller(String dataFormat)
+	public IDsMarshaller<M, F, P> createMarshaller(String dataFormat)
 			throws Exception {
-		IDsMarshaller<M,F,P> marshaller = null;
+		IDsMarshaller<M, F, P> marshaller = null;
 		if (dataFormat.equals(IDsMarshaller.JSON)) {
-			marshaller = new JsonMarshaller<M,F,P>(this.getModelClass(), this.getFilterClass(), this
-					.getParamClass());
+			marshaller = new JsonMarshaller<M, F, P>(this.getModelClass(), this
+					.getFilterClass(), this.getParamClass());
 		}
 		return marshaller;
 	}

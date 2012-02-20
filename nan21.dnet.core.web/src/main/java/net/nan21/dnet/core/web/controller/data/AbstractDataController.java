@@ -13,6 +13,7 @@ import net.nan21.dnet.core.api.ISystemConfig;
 import net.nan21.dnet.core.api.session.Params;
 import net.nan21.dnet.core.api.session.Session;
 import net.nan21.dnet.core.api.session.User;
+import net.nan21.dnet.core.api.session.UserProfile;
 import net.nan21.dnet.core.security.NotAuthorizedRequestException;
 import net.nan21.dnet.core.security.SessionUser;
 
@@ -46,11 +47,14 @@ public class AbstractDataController {
 		SessionUser su;		
 		User user;
 		Params params;
+		UserProfile profile;
+		
 		try {
             su = (SessionUser) SecurityContextHolder.getContext()
                     .getAuthentication().getPrincipal();
             user = (User)su.getUser();
-            params = (Params)su.getParams();                          
+            params = (Params)su.getParams();  
+            profile = new UserProfile(su.isAdministrator(), su.getRoles());
              
         } catch (ClassCastException e) {
             throw new Exception(
@@ -58,6 +62,7 @@ public class AbstractDataController {
                             + "<br> Logout from application and login again.");
         }
         Session.user.set(user);
+        Session.profile.set(profile);
         Session.params.set(params);   
 	}
 

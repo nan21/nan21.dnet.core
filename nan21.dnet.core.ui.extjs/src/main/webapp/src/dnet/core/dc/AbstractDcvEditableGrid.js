@@ -1,251 +1,3 @@
-
-
-Ext.define("dnet.core.dc.BulkEditWindow", {
-	extend : "Ext.window.Window",
-
-	/**
-	 * 
-	 * @type dnet.core.dc.AbstractDcvGrid
-	 */
-	_grid_ : null,
-	_editorId_ : null,
-	
-	_editorConfig_ : null,
-	_updatableFields_ : null,
-	//TODO: optimize this
-	
-	initComponent : function(config) {
-		this._editorId_ = Ext.id();
-		this.setupBulkEditor();
-		
-		var btn = Ext.create('Ext.Button', {
-			text : Dnet.translate("dcvgrid", "bulkedit_run"),
-			//iconCls : 'icon-action-sort',
-			scope: this,
-			handler:this.executeTask
-		});
-
-		var avlCol = [];
-		this._grid_._columns_.each(function(item, idx,len) {
-			avlCol[avlCol.length] = [item.name, item.header, '',item.header+'' ]
-		})
-		 
-	    
-		var cfg = {
-			title : Dnet.translate("dcvgrid", "bulkedit_title"),
-			border : true,
-			width : 350,
-			height:180,
-			resizable : true,
-			closeAction : "hide",			 
-			closable : true,
-			constrain : true,
-			buttonAlign : "center",
-			modal : true,
-			layout:"fit",
-			items : [this._editorConfig_ ],
-			buttons : [ btn ]
-		};
-
-		Ext.apply(cfg, config);
-		Ext.apply(this, cfg);
-		this.callParent(arguments);
-	},
-	
-	
-	setupBulkEditor: function() {
-		this._updatableFields_ = [];
-		var bef = this._grid_._bulkEditFields_;
-		if (Ext.isEmpty(bef) || bef.length == 0 ) {
-			return null;
-		}
-		
-		var gc = this._grid_._columns_
-		 	len = bef.length;
-		 	
-		 	
-		for (var i=0; i<len; i++ ) {
-			var name =bef[i];
-			var col = gc.get(name);
-			this._updatableFields_.push({"name": name, "title": col.header});
-		}
-		 
-		var updFieldsStore = Ext.create('Ext.data.Store', {
-		    fields: ['name', 'title'],
-		    data : this._updatableFields_
-		});
-  
-		 var be_source = {
-		 		_ds_fieldName_ : "",
-		 		_ds_fieldValue_ : ""
-		 	},
-		 	be_props = {
-		 		_ds_fieldName_ : "Field",
-		 		_ds_fieldValue_ : "New Value"
-		 	},
-		 	be_editors = {
-		 		_ds_fieldName_ : Ext.create('Ext.form.field.ComboBox', {
-		 					selectOnFocus:true, 
-		 					store: updFieldsStore,
-						    queryMode: 'local',
-						    displayField: 'title',
-						    valueField: 'title'
-				})
-		 	};
-		
-		for (var i=0; i<len; i++ ) {
-			var name =bef[i];
-			var col = gc.get(name);
-			be_editors["_ds_fieldValue_"+name] = col.editor;
-			//this._updatableFields_.push({"name": name, "title": col.header});
-		}
-				
-		this._editorConfig_ = {			
-			xtype: 'bulkeditor',	        
-	        id : this._editorId_,
-	       // preventHeader: true,
-	        _grid_: this._grid_,
-	        _updatableFields_ : this._updatableFields_, 
-			customEditors: be_editors,		 
-		    propertyNames: be_props,
-		    source: be_source
-		}
-	},
-	
-	
-	getEditor : function() {
-		return Ext.getCmp(this._editorId_);
-	},
-	
-	
-	getField: function(title) {
-		var f = this._updatableFields_,
-			l = f.length;
-		for(var i=0;i<l; i++) {
-			if(f[i].title == title ) {
-				return f[i].name
-			}
-		}
-	},
-	
-	
-	
-	
-	
-	executeTask : function() {
-		var ed = this.getEditor(),
-			s = ed.getSource(), 
-			dsfield = s._ds_fieldName_
-			;
-		if ( !Ext.isEmpty(dsfield)) {
-			dsfield = this.getField(dsfield);
-			var ctrl = this._grid_._controller_
-				sel = ctrl.selectedRecords,
-				store = ctrl.store,
-				sellen = sel.length;
-			store.suspendEvents(true);	
-			for (var i=0;i<sellen;i++) {
-				sel[i].set(dsfield, s._ds_fieldValue_);
-				
-				for(var p in s) {
-					if (p != "_ds_fieldValue_" && p != "_ds_fieldName_") {
-						sel[i].set(p, s[p]);
-					}
-				}
-				
-				
-			}
-			store.resumeEvents();
-		} 
-		this.close();
-	}
-
-});
-
-
-
-
-Ext.define("dnet.core.dc.BulkEditor", {
-	extend : "Ext.grid.property.Grid",	
-	alias:"widget.bulkeditor",
-	//title: 'Bulk edit',
-    width: 300 ,
-    _dcViewType_: "bulk-edit-field",
-    _grid_ : null,
-   // hideHeaders : true,
-    _updatableFields_ : null,
-     
-    _getEditor_:function(propName) {
-    	
-    },
-    _getField_: function(title) {
-		var f = this._updatableFields_,
-			l = f.length;
-		for(var i=0;i<l; i++) {
-			if(f[i].title == title ) {
-				return f[i].name
-			}
-		}
-	},
-    getCellEditor : function(record, column) {
-    	
-    	var src = this.getSource();
-    	if (record.data.name != "_ds_fieldName_") {    	
-	    	if (Ext.isEmpty(src._ds_fieldName_)) {
-	    		Ext.Msg.show({
-					title : "No field selected",
-					msg:"Select first the field to update, then try to set its value.",	
-					icon : Ext.MessageBox.INFO,
-					buttons : Ext.Msg.OK      
-	    		});
-	    		return null;
-	    	}    		    		
-    	}
-    	
-         var me = this,
-            propName = record.get(me.nameField),
-            val = record.get(me.valueField),
-            editor = me.customEditors[propName]
-            dsField = "";
-
-        if (propName == "_ds_fieldName_") {
-    		editor = me.customEditors[propName];
-    	} else { 
-    		dsField = this._getField_(src._ds_fieldName_);
-    		editor = me.customEditors[propName+dsField];
-    	}    
-            
-        // A custom editor was found. If not already wrapped with a CellEditor, wrap it, and stash it back
-        // If it's not even a Field, just a config object, instantiate it before wrapping it.
-        if (editor) {
-            if (!(editor instanceof Ext.grid.CellEditor)) {
-                if (!(editor instanceof Ext.form.field.Base)) {
-                    editor = Ext.ComponentManager.create(editor, 'textfield');
-                }
-                editor = me.customEditors[propName] = Ext.create('Ext.grid.CellEditor', { field: editor });
-            }
-        } else if (Ext.isDate(val)) {
-            editor = me.editors.date;
-        } else if (Ext.isNumber(val)) {
-            editor = me.editors.number;
-        } else if (Ext.isBoolean(val)) {
-            editor = me.editors['boolean'];
-        } else {
-            editor = me.editors.string;
-        }
-
-        // Give the editor a unique ID because the CellEditing plugin caches them
-        if (propName == "_ds_fieldName_") {
-    		editor.editorId = propName;
-    	} else { 
-    		editor.editorId = propName+dsField;    	 
-    	}  
-    	editor.field._dcView_ = this;
-        return editor;
-    }
-});
-
-
 Ext.define("dnet.core.dc.AbstractDcvEditableGrid", {
 	extend : "Ext.grid.Panel",
 
@@ -274,12 +26,43 @@ Ext.define("dnet.core.dc.AbstractDcvEditableGrid", {
 	 */
 	_controller_ : null,
 
+	/**
+	 * Flag to switch on/off advanced sort on multiple columns.
+	 * @type Boolean
+	 */
 	_noSort_	: false,
+	
+	/**
+	 * Flag to switch on/off bulk edit feature
+	 * @type Boolean
+	 */
 	_noBulkEdit_ : false,
+	
+	/**
+	 * Flag to switch on/off data export.
+	 * @type Boolean
+	 */
 	_noExport_ : false,
-	_noImport_ : true,
-	_noLayoutCfg_ : true,
+	
+	/**
+	 * Flag to switch on/off data import.
+	 * @type Boolean
+	 */
+	_noImport_ : false,
+	
+	/**
+	 * Flag to switch on/off custom layout management.
+	 * @type Boolean
+	 */
+	_noLayoutCfg_ : false,
+	
+	/**
+	 * Data export window.
+	 * @type dnet.core.dc.DataExportWindow
+	 */
 	_exportWindow_ : null,
+	
+	
 	_importWindow_ : null,
 	_layoutWindow_ : null,
 	_routeSelectionTask_ : null,
@@ -302,12 +85,11 @@ Ext.define("dnet.core.dc.AbstractDcvEditableGrid", {
 
 	initComponent : function(config) {
 
+		this._noImport_ = true;
+		
 		this._elems_ = new Ext.util.MixedCollection();
 		this._columns_ = new Ext.util.MixedCollection();
-
-		this._noImport_ = true;
-		this._noLayoutCfg_ = true;
-
+ 
 		this.plugins = [ Ext.create('Ext.grid.plugin.CellEditing', {
 			clicksToEdit : 1
 		}) ];
@@ -337,28 +119,14 @@ Ext.define("dnet.core.dc.AbstractDcvEditableGrid", {
 		}, this);
 
 		var cfg = {
-			columns : this._columns_.getRange()
-
-			// ,keys: [
-			// {
-			// key : Ext.EventObject.ENTER
-			// ,scope:this
-			// ,handler: function() {
-			// var rec = this.getSelectionModel().getSelected();
-			// var rowIndex = this.store.indexOf(rec);
-			// var cm = this.getColumnModel();
-			// //TODO: find the first editable cell from the column model
-			// this.startEditing(rowIndex, 1);
-			// }
-			// }
-			// ]
-
-			,
+			columns : this._columns_.getRange(),
+ 
 			bbar : {
 				xtype : "pagingtoolbar",
 				store : this._controller_.store,
 				displayInfo : true
 			},
+			
 			selModel : {
 				mode : "MULTI",
 				listeners : {
@@ -375,30 +143,7 @@ Ext.define("dnet.core.dc.AbstractDcvEditableGrid", {
 		};
 
 		var bbitems = [];
-		if (!this._noLayoutCfg_) {
-			bbitems = [ "-", this._elems_.get("_btnLayout_") ];
-		}
-		
-		if (!this._noSort_) {			 
-			bbitems.push("-");
-			bbitems.push(this._elems_.get("_btnSort_"));			 
-		}
-		if (!this._noBulkEdit_ && this._bulkEditFields_ != null && this._bulkEditFields_.length > 0) {			 
-			bbitems.push("-");
-			bbitems.push(this._elems_.get("_btnBulkEdit_"));			 
-		}
-		
-
-		if (!this._noImport_) {
-			bbitems.push("-");
-			bbitems.push(this._elems_.get("_btnImport_"));				 
-		}
-		if (!this._noExport_) {
-			if (this._noImport_) {
-				bbitems.push("-");
-			}			
-			bbitems.push(this._elems_.get("_btnExport_"));	
-		}
+		this._buildToolbox_(bbitems);
 
 		if (bbitems.length > 0) {
 			cfg["bbar"]["items"] = bbitems;
@@ -415,6 +160,102 @@ Ext.define("dnet.core.dc.AbstractDcvEditableGrid", {
 
 	},
 	
+	
+	_buildToolbox_: function(bbitems) {
+ 
+		if (!this._noLayoutCfg_) {
+			bbitems.push("-");
+			bbitems.push(this._elems_.get("_btnLayout_"));
+		}
+		
+		if (!this._noSort_) {			 
+			bbitems.push("-");
+			bbitems.push(this._elems_.get("_btnSort_"));			 
+		}
+		 
+		if (!this._noImport_) {
+			bbitems.push("-");
+			bbitems.push(this._elems_.get("_btnImport_"));				 
+		}
+		
+		if (!this._noExport_) {
+			bbitems.push("-");
+			bbitems.push(this._elems_.get("_btnExport_"));	
+		}
+		
+		if (!this._noBulkEdit_ && this._bulkEditFields_ != null && this._bulkEditFields_.length > 0) {			 
+			bbitems.push("-");
+			bbitems.push(this._elems_.get("_btnBulkEdit_"));			 
+		}
+		  
+	},
+	
+	getState: function(){        
+        return this._getViewState_();
+    },
+     
+    applyState: function(state){        
+        return this._applyViewState_(state);
+    },
+    
+    _getViewState_: function(){
+        var me = this,
+            state = null,
+            colStates = [],
+            cm = this.headerCt,    	
+    		cols = cm.items.items;
+        for(var i = 0, len = cols.length; i < len; i++){
+        	var c=cols[i];
+        	colStates.push({
+        		n : c.name,
+        		h : c.hidden,
+        		w : c.width
+        	});
+        }
+            
+        state = me.addPropertyToState(state, 'columns', colStates);
+        return state;
+    },
+    _applyViewStateAfterRender_: function(cmp, eOpts) {
+    	this._applyViewState_(eOpts.state);
+    },
+     _applyViewState_ : function(state) {
+     	if (!this.rendered) {
+     		this.on("afterrender", this._applyViewStateAfterRender_, this, {single:true, state:state});
+     		return ;
+     	}
+    	var sCols = state.columns, 
+    		cm = this.headerCt,    	
+    		cols = cm.items.items,
+    		col = null;
+         
+    	for(var i = 0, slen = sCols.length; i < slen; i++){
+            var sCol = sCols[i];
+            var colIndex = -1;
+            
+            for (var j = 0, len = cols.length;j < len; j++) {
+	            if (cols[j].name == sCol.n ) { //&& (!myCM.config[i]._aSel_) ){	            	 
+	                colIndex = j;
+	                col = cols[j];
+	                break;
+	            }
+	        }
+	        
+            if(colIndex >= 0){               
+            	if (sCol.h) {
+            		col.hide();
+            	} else {
+            		col.show();
+            	}
+                 col.setWidth(sCol.w);
+                //cm.setColumnWidth(colIndex, s.width, true);
+                //cm.setColumnHeader(colIndex, s.header, true);
+                if(colIndex != i){
+                    col.move(colIndex, i);
+                }
+            }
+        }
+    },
 	onController_selectionChange: function(evnt) {
 		var s = evnt.dc.getSelectedRecords();
 		if (s != this.getSelectionModel().getSelection()) {
@@ -469,7 +310,7 @@ Ext.define("dnet.core.dc.AbstractDcvEditableGrid", {
 			xtype : "button",
 			id : Ext.id(),
 			disabled : true,
-			text : Dnet.translate("dcvgrid", "exp_btn"),
+			//text : Dnet.translate("dcvgrid", "exp_btn"),
 			tooltip : Dnet.translate("dcvgrid", "exp_title"),
 			iconCls : 'icon-action-export',
 			handler : this._doExport_,
@@ -478,7 +319,7 @@ Ext.define("dnet.core.dc.AbstractDcvEditableGrid", {
 		this._elems_.add("_btnImport_", {
 			xtype : "button",
 			id : Ext.id(),
-			text : Dnet.translate("dcvgrid", "imp_btn"),
+			//text : Dnet.translate("dcvgrid", "imp_btn"),
 			tooltip : Dnet.translate("dcvgrid", "imp_title"),
 			iconCls : 'icon-action-import',
 			handler : this._doImport_,
@@ -505,7 +346,7 @@ Ext.define("dnet.core.dc.AbstractDcvEditableGrid", {
 		this._elems_.add("_btnLayout_", {
 			xtype : "button",
 			id : Ext.id(),
-			text : Dnet.translate("dcvgrid", "btn_perspective_txt"),
+			//text : Dnet.translate("dcvgrid", "btn_perspective_txt"),
 			tooltip : Dnet.translate("dcvgrid", "btn_perspective_tlp"),
 			iconCls : 'icon-action-customlayout',
 			handler : this._doLayoutManager_,

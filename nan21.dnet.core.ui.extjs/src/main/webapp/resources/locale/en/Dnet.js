@@ -42,6 +42,12 @@ dnet.Translation = Ext.apply({},{
 		,back__lbl : "Back"
 		,back__tlp : "Back to previous canvas."
 
+		,close__lbl : "Close"
+		,close__tlp : "Close"
+		
+		,ok__lbl : "OK"
+		,ok__tlp : "OK"
+		
         // *******************  Standard actions for MULTI-RECORD data-control ******************
 
        
@@ -166,6 +172,9 @@ dnet.Translation = Ext.apply({},{
 
 	  ,bool_true: "Yes"
 	  ,bool_false: "No"
+	  
+	  ,preferences_wdw : "Preferences"
+	  ,remember_view_state : "Remember view state"
 	}
  
 	 ,exception: {
@@ -276,8 +285,10 @@ dnet.Translation = Ext.apply({},{
 	   ,SysDataSources_UI : "System components: Data-sources"
 	   ,SysParam_UI: "System parameters"
 	   ,SysDateFormat_UI: "Date formats"
+	   ,Menu_UI: "Menus"
 	   ,MyUserSettings_UI:"My settings"
-	   
+	   ,UiViewState_UI : "View states"
+	    
 	   ,Reports_UI : "Reports"
 	   ,ReportServers_UI : "Report servers"
 
@@ -290,7 +301,8 @@ dnet.Translation = Ext.apply({},{
 	   ,Role_UI : "Roles"
        ,AccessControl_UI : "Access rights"
        ,DsAccessControl_UI : "Access rights - DS"
-       ,AsgnAccessControl_UI : "Access rights - ASGN"       
+       ,AsgnAccessControl_UI : "Access rights - ASGN"    
+       ,DsMethodAccessControl_UI: "Access rights - DS Method"
        ,Assignables_UI : "Assignable resources"
 	   ,MyBookmark_UI : "My bookmarks"
 	   ,WorkflowAdmin_UI: "Workflow admin console"

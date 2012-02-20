@@ -1,4 +1,8 @@
 
+
+
+
+
 Ext.define("dnet.core.base.HomePanel" , {
   extend: "Ext.Panel",
   alias:"widget.dnetHomePanel",
@@ -15,6 +19,8 @@ Ext.define("dnet.core.base.HomePanel" , {
    ,initComponent:function(config) {
 		var tr = dnet.core.base.TemplateRepository;
 	    var menuConfig = [];
+	    
+
 	    for(var k in Dnet.navigationTreeMenus) {
 	    	menuConfig[menuConfig.length] = Dnet.navigationTreeMenus[k];
 	    } 
@@ -41,15 +47,18 @@ Ext.define("dnet.core.base.HomePanel" , {
             		layout:{ type: 'fit' } 
             		, items:[
 					 	{
-					 		xtype:"dnetNavigationTree", id:"dnet-application-view-menu-"+menuConfig[i]["name"], 
+					 		xtype:"dnetNavigationTree", 
+					 		id:"dnet-application-view-menu-"+menuConfig[i]["name"], 
+					 		_menuId_: 1,
+					 		_menuName_: menuConfig[i]["name"],
 					 		withStdFilterHeader:true,loader_PreloadChildren: true						 	 
 //						  
-					 	,_data_: menuConfig[i]["children"]	
+					 	//,_data_: menuConfig[i]["children"]	
 						 	,listeners: {
 									openMenuLink: {scope:this
 										, fn: function(model) {	
-					 						var bundle = model.data._bundle_;
-					 						var frame = model.data._frame_;
+					 						var bundle = model.raw.bundle;
+					 						var frame = model.raw.frame;
 					 		
 				                            var path = Dnet.buildUiPath(bundle, frame, false);
 				                            getApplication().showFrame(frame, {url:path  } );

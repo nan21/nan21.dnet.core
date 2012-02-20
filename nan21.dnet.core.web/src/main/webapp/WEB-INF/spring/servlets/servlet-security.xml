@@ -8,5 +8,8 @@
 				http://www.springframework.org/schema/oxm http://www.springframework.org/schema/oxm/spring-oxm.xsd">
 	
 	<context:component-scan base-package="net.nan21.dnet.core.web.controller"  />
-	
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/jsp/" />
+        <property name="suffix" value=".jsp" />
+    </bean>
 </beans>

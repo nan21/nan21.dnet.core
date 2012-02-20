@@ -12,22 +12,23 @@ Export-Package: net.nan21.dnet.core.web;version="1.0.0.M7",net.nan21.d
  rk.beans.factory.annotation,org.springframework.context.annotation,or
  g.springframework.security.authentication,org.springframework.stereot
  ype,org.springframework.web.bind.annotation,org.springframework.web.c
- ontext",net.nan21.dnet.core.web.controller.ui;version="1.0.0.M7";uses
- :="javax.servlet.http,net.nan21.dnet.core.api,net.nan21.dnet.core.web
- .settings,org.springframework.web.servlet,org.springframework.web.ser
- vlet.mvc",net.nan21.dnet.core.web.controller.upload;version="1.0.0.M7
- ";uses:="javax.servlet.http,net.nan21.dnet.core.api.service,org.sprin
- gframework.beans.factory.annotation,org.springframework.context.annot
- ation,org.springframework.stereotype,org.springframework.web.bind.ann
- otation,org.springframework.web.context,org.springframework.web.multi
- part",net.nan21.dnet.core.web.controller.workflow;version="1.0.0.M7";
- uses:="javax.servlet,javax.servlet.http,org.activiti.engine,org.codeh
- aus.jackson.map,org.springframework.beans.factory.annotation,org.spri
- ngframework.context.annotation,org.springframework.stereotype,org.spr
- ingframework.web.bind.annotation,org.springframework.web.context",net
- .nan21.dnet.core.web.result;version="1.0.0.M7";uses:="net.nan21.dnet.
- core.api.action",net.nan21.dnet.core.web.settings;version="1.0.0.M7";
- uses:="net.nan21.dnet.core.api"
+ ontext,org.springframework.web.servlet",net.nan21.dnet.core.web.contr
+ oller.ui;version="1.0.0.M7";uses:="javax.servlet.http,net.nan21.dnet.
+ core.api,net.nan21.dnet.core.security,net.nan21.dnet.core.web.setting
+ s,org.springframework.web.bind.annotation,org.springframework.web.ser
+ vlet,org.springframework.web.servlet.mvc",net.nan21.dnet.core.web.con
+ troller.upload;version="1.0.0.M7";uses:="javax.servlet.http,net.nan21
+ .dnet.core.api.service,org.springframework.beans.factory.annotation,o
+ rg.springframework.context.annotation,org.springframework.stereotype,
+ org.springframework.web.bind.annotation,org.springframework.web.conte
+ xt,org.springframework.web.multipart",net.nan21.dnet.core.web.control
+ ler.workflow;version="1.0.0.M7";uses:="javax.servlet,javax.servlet.ht
+ tp,org.activiti.engine,org.codehaus.jackson.map,org.springframework.b
+ eans.factory.annotation,org.springframework.context.annotation,org.sp
+ ringframework.stereotype,org.springframework.web.bind.annotation,org.
+ springframework.web.context",net.nan21.dnet.core.web.result;version="
+ 1.0.0.M7";uses:="net.nan21.dnet.core.api.action",net.nan21.dnet.core.
+ web.settings;version="1.0.0.M7";uses:="net.nan21.dnet.core.api"
 Bundle-Vendor: Nan21 
 Bundle-ClassPath: WEB-INF/classes
 Bundle-Version: 1.0.0.M7

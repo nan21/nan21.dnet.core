@@ -34,7 +34,7 @@ public interface IAsgnService<M,F,P> {
 	 * 
 	 * @throws Exception
 	 */
-	public void moveRightAll() throws Exception ;
+	public void moveRightAll(F filter, P params) throws Exception ;
 	
 	/**
 	 * Remove the specified list of IDs from the selected ones.
@@ -49,7 +49,7 @@ public interface IAsgnService<M,F,P> {
 	 * 
 	 * @throws Exception
 	 */
-	public void moveLeftAll() throws Exception;
+	public void moveLeftAll(F filter, P params) throws Exception;
 	
 	
 	/**

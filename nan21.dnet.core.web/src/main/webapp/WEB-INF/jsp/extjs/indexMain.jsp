@@ -55,7 +55,9 @@
     Ext.onReady(function(){
 
     	<%@ include file="_on_ready.jspf" %>
-     
+ 
+		${extensionsContent}
+        
       	var tr = dnet.core.base.TemplateRepository;
 
 		__application__ = dnet.core.base.Application;

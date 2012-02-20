@@ -16,10 +16,18 @@ Ext.define("dnet.core.ui.AbstractUi", {
 	 ,_statusBar_: null
 	 
 	 ,_header_: null
+	 
+	 /**
+	  * 
+	  * @type dnet.core.ui.FrameBuilder
+	  */
 	 ,_builder_: null
 	 ,_trl_ : null
 	 
 	,initComponent: function() {
+		if (getApplication().getSession().rememberViewState) {
+			Ext.state.Manager.setProvider(new Ext.state.LocalStorageProvider({}));
+		}
 		 this._mainViewName_= "main";
 		 try {
 		 	this._trl_ = Ext.create(this.$className +"$Trl");
@@ -305,7 +313,7 @@ Ext.define("dnet.core.ui.AbstractUi", {
 				Ext.destroy(c);
 			}			
 		} catch(e) {
-			alert(e);
+			//alert(e);
 		}
 	}
 });

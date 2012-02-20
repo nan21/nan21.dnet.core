@@ -30,7 +30,8 @@ Ext.define("dnet.core.base.NavigationTree", {
 	loader_Url : null,
 
 	// defaults
-
+	
+	//displayField: "title",
 	rootVisible : false,
 	lines : false,
 	autoScroll : true,
@@ -41,23 +42,69 @@ Ext.define("dnet.core.base.NavigationTree", {
 
 	initComponent : function(config) {
 
+//		this.store = Ext.create('Ext.data.TreeStore', {
+//			model : 'dnet.core.base.NavigationTree$Model',
+//			root : {
+//				text : 'TreeRoot',
+//				expanded : true,
+//				leaf : false,
+//				children : this._data_
+//			},
+//			proxy : {
+//				type : 'memory',
+//				reader : {
+//					type : 'json'
+//
+//				}
+//			}
+//		});
+
 		this.store = Ext.create('Ext.data.TreeStore', {
-			model : 'dnet.core.base.NavigationTree$Model',
-			root : {
-				text : 'TreeRoot',
-				expanded : true,
-				leaf : false,
-				children : this._data_
-			},
-			proxy : {
-				type : 'memory',
+	        proxy: {
+	            type: 'ajax',
+	            method : "POST",
+	            url: Dnet.dsAPI("MenuItemRtLovDs", "json").read,
+	            actionMethods : {					 
+					read : 'POST' 					 
+				},
 				reader : {
-					type : 'json'
-
+					type : 'json',
+					root : 'data',
+					idProperty : 'id',
+					totalProperty : 'totalCount',
+					messageProperty : 'message'
+				},
+				listeners : {
+					"exception" : {
+						fn : this.proxyException,
+						scope : this
+					}
 				}
-			}
-		});
+	        },
+	        root: {
+	            text: 'Ext JS',
+	            id: 'src',
+	            expanded: true
+	        },
+	        folderSort: true,
+	        sorters: [{
+	            property: 'text',
+	            direction: 'ASC'
+	        }] ,
+	        listeners: {
+	        	beforeload: {
+	        		scope:this,
+	        		fn:  function( store,  operation,  eOpts ) {	
+	        			//alert("store-beforeload");
+						store.proxy.extraParams.data = Ext.encode({
+							menu : this._menuName_
+						});
+					}
+	        	}
+	        }
+	    });
 
+    
 		this.hiddenPkgs = [];
 
 		var cfg = {}
@@ -70,6 +117,9 @@ Ext.define("dnet.core.base.NavigationTree", {
 		this.callParent(arguments);
 
 		this.addEvents("openMenuLink", "openMenuLinkInNewTab", "refreshCatalog");
+		
+		this.on("beforeload", this.beforeStoreLoad, this)
+		 		
 	},
 
 	initEvents : function() {
@@ -77,6 +127,20 @@ Ext.define("dnet.core.base.NavigationTree", {
 		this.on("itemclick", this.onMenuClick, this);
 	},
 
+	beforeStoreLoad: function( store,  operation,  eOpts ) {
+		//alert("tree-beforeload");
+		if(operation.node.data) {
+			store.proxy.extraParams.data = Ext.encode({
+				menuItemId : operation.node.raw.id	
+			});
+		} else {
+			store.proxy.extraParams.data = Ext.encode({
+				menu : this._menuName_		
+			});
+		}
+		
+	},
+	
 	filterTree : function(t, e) {
 		var text = t.getValue();
 		Ext.each(this.hiddenPkgs, function(n) {
@@ -162,6 +226,42 @@ Ext.define("dnet.core.base.NavigationTree", {
 	afterRefreshCatalog : function(response, options) {
 		Ext.MessageBox.hide();
 		this.loader.load(this.root);
-	}
+	},
+	/**
+	 * Default proxy-exception handler
+	 */
+	proxyException : function(proxy, response, operation, eOpts) {
+		this.showAjaxErrors(response, eOpts);
+	},
+	
+	/**
+	 * Show errors to user. TODO: Externalize it as command.
+	 */
+	showAjaxErrors : function(response, options) {
+		// Ext.MessageBox.hide();
+		var msg, withDetails = false;
+		if (response.responseText) {
+			if (response.responseText.length > 2000) {
+				msg = response.responseText.substr(0, 2000);
+				withDetails = true;
+			} else {
+				msg = response.responseText;
+			}
+		} else {
+			msg = "No response received from server.";
+		}
+		var alertCfg = {
+			title : "Server message",	
+			msg : msg,
+			scope : this,
+			icon : Ext.MessageBox.ERROR,
+			buttons : Ext.MessageBox.OK
+		}
+		if (withDetails) {
+			alertCfg.buttons['cancel'] = 'Details';
+			alertCfg['detailedMessage'] = response.responseText;
+		}
+		Ext.Msg.show(alertCfg);
 
+	}
 });

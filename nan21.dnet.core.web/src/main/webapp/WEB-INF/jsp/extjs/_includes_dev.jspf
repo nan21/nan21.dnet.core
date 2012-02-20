@@ -28,6 +28,7 @@
     <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/base/LoginWindow.js"></script>
     <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/base/ChangePasswordWindow.js"></script>
     <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/base/FrameInspector.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/base/UserPreferences.js"></script>
     
     <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/base/HomePanel.js"></script>
     <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/base/UrlBuilder.js"></script>
@@ -80,6 +81,7 @@
     <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/ui/FrameButtonStateManager.js"></script>
     
     
+    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/dc/BulkEditWindow.js"></script>  
     <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/dc/DcActionsStateManager.js"></script>     
     <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/dc/DcContext.js"></script>
     <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/dc/DcExceptions.js"></script>

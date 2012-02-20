@@ -21,7 +21,7 @@
 	<td style='border-top:1px solid gray;' colspan=2> &nbsp;</td>
 </tr>
 <tr>
-	<td colspan=2 class="text" align="center"> Please sign-in to configure application components.<br><br></td>
+	<td colspan=2 class="text" align="center" > <h2>Please sign-in to configure application components.</h2> </td>
 </tr>
 <tr>
 	<td colspan=2 style='padding:10px;'>

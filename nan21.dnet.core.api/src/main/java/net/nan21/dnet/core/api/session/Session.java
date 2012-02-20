@@ -7,7 +7,9 @@
  */
 package net.nan21.dnet.core.api.session;
 
-public class Session { 
-    public static ThreadLocal<User> user = new ThreadLocal<User>();
-    public static ThreadLocal<Params> params = new ThreadLocal<Params>();     
+public class Session {
+	public static ThreadLocal<User> user = new ThreadLocal<User>();
+	public static ThreadLocal<UserProfile> profile = new ThreadLocal<UserProfile>();
+	public static ThreadLocal<Params> params = new ThreadLocal<Params>();
+
 }

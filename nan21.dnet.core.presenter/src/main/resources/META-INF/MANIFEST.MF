@@ -7,18 +7,20 @@ Export-Package: net.nan21.dnet.core.presenter.action;version="1.0.0.M7
  ore.api.service,net.nan21.dnet.core.presenter.model,net.nan21.dnet.co
  re.presenter.service,org.springframework.beans.factory.annotation,org
  .springframework.context",net.nan21.dnet.core.presenter.exception;ver
- sion="1.0.0.M7",net.nan21.dnet.core.presenter.marshaller;version="1.0
- .0.M7";uses:="net.nan21.dnet.core.api.action,net.nan21.dnet.core.api.
- marshall",net.nan21.dnet.core.presenter.model;version="1.0.0.M7";uses
- :="net.nan21.dnet.core.api.descriptor,org.springframework.beans.facto
- ry.annotation,org.springframework.context",net.nan21.dnet.core.presen
- ter.propertyeditors;version="1.0.0.M7",net.nan21.dnet.core.presenter.
- service;version="1.0.0.M7";uses:="net.nan21.dnet.core.api,net.nan21.d
- net.core.api.action,net.nan21.dnet.core.api.converter,net.nan21.dnet.
- core.api.marshall,net.nan21.dnet.core.api.service,net.nan21.dnet.core
- .api.setup,net.nan21.dnet.core.presenter.model,org.activiti.engine,or
- g.springframework.beans.factory.annotation,org.springframework.contex
- t,org.springframework.transaction.annotation"
+ sion="1.0.0.M7",net.nan21.dnet.core.presenter.libextensions;version="
+ 1.0.0.M7";uses:="au.com.bytecode.opencsv.bean",net.nan21.dnet.core.pr
+ esenter.marshaller;version="1.0.0.M7";uses:="net.nan21.dnet.core.api.
+ action,net.nan21.dnet.core.api.marshall",net.nan21.dnet.core.presente
+ r.model;version="1.0.0.M7";uses:="net.nan21.dnet.core.api.descriptor,
+ org.springframework.beans.factory.annotation,org.springframework.cont
+ ext",net.nan21.dnet.core.presenter.propertyeditors;version="1.0.0.M7"
+ ,net.nan21.dnet.core.presenter.service;version="1.0.0.M7";uses:="net.
+ nan21.dnet.core.api,net.nan21.dnet.core.api.action,net.nan21.dnet.cor
+ e.api.converter,net.nan21.dnet.core.api.marshall,net.nan21.dnet.core.
+ api.service,net.nan21.dnet.core.api.setup,net.nan21.dnet.core.present
+ er.model,org.activiti.engine,org.springframework.beans.factory.annota
+ tion,org.springframework.context,org.springframework.transaction.anno
+ tation"
 Bundle-Vendor: Nan21 
 Bundle-Version: 1.0.0.M7
 Tool: Bundlor 1.0.0.RELEASE

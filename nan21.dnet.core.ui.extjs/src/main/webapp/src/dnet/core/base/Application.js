@@ -260,11 +260,15 @@ dnet.core.base.Application = {
 		Ext.Ajax.request({
 					method : "POST",
 					scope : this,
-					url : Dnet.sessionAPI("json").logout
+					url : Dnet.sessionAPI("json").logout,
+					callback: function() {
+						window.location.href="/nan21.dnet.core.web/security/session/login";	
+					}
 				});
-		this.loginWindow.applyState_Logout();
-		this.showLoginView();
-		this.loginWindow.getUserField().focus(false, 200);
+			
+//		this.loginWindow.applyState_Logout();
+//		this.showLoginView();
+//		this.loginWindow.getUserField().focus(false, 200);
 	},
 	
 	/**

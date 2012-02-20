@@ -50,4 +50,21 @@ public @interface DsField {
 	 * @return
 	 */
 	String jpqlFilter() default "";
+	
+	
+	/**
+	 * DS-field marked with this flag with true value doesn't update the value in the corresponding entity field on insert operation.<br>
+	 * By default is false.
+	 * 
+	 * @return
+	 */
+	boolean noInsert() default false;
+	
+	/**
+	 * DS-field marked with this flag with true value doesn't update the value in the corresponding entity field on update operation.<br>
+	 * By default is false.
+	 * 
+	 * @return
+	 */
+	boolean noUpdate() default false;
 }

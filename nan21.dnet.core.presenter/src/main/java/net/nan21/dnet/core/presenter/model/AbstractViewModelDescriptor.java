@@ -1,7 +1,9 @@
 package net.nan21.dnet.core.presenter.model;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.persistence.QueryHint;
@@ -36,6 +38,10 @@ public abstract class AbstractViewModelDescriptor<M> implements IViewModelDescri
 	private Map<String, String> jpqlFieldFilterRules;
 	
 	private Map<String, String> fetchJoins;
+	
+	private List<String> noInserts;
+	
+	private List<String> noUpdates;
 	//private Map<String, String> nestedFetchJoins;
 	
 	
@@ -86,6 +92,10 @@ public abstract class AbstractViewModelDescriptor<M> implements IViewModelDescri
 			this.refPaths = new HashMap<String, String>();
 			this.m2eConv = new HashMap<String, String>();
 			this.e2mConv = new HashMap<String, String>();
+			
+			this.noInserts = new ArrayList<String>();
+			this.noUpdates = new ArrayList<String>();
+			 
 			this.jpqlFieldFilterRules = new HashMap<String, String>();
 			this.fetchJoins = new HashMap<String, String>();
 			
@@ -96,14 +106,22 @@ public abstract class AbstractViewModelDescriptor<M> implements IViewModelDescri
 			//this.nestedFetchJoins = new HashMap<String, String>();
 			Field[] fields = this.modelClass.getDeclaredFields();
 			for (Field field : fields) {
-				if(field.isAnnotationPresent(DsField.class)) {					 
+				if(field.isAnnotationPresent(DsField.class)) {
+					String fieldName = field.getName();
+					
+					if (field.getAnnotation(DsField.class).noInsert()) {
+						this.noInserts.add(fieldName);
+					}
+					if (field.getAnnotation(DsField.class).noUpdate()) {
+						this.noUpdates.add(fieldName);
+					}
 					String path = field.getAnnotation(DsField.class).path();
 					if (path.equals("")) {
 						path = field.getName();
 					}
-					this.e2mConv.put(field.getName(), path);
+					this.e2mConv.put(fieldName, path);
 					if (field.getAnnotation(DsField.class).fetch()) {
-						this.refPaths.put(field.getName(), path);
+						this.refPaths.put(fieldName, path);
 						int firstDot = path.indexOf(".");
 						if (firstDot > 0) {
 							if (firstDot == path.lastIndexOf(".")) {
@@ -118,28 +136,15 @@ public abstract class AbstractViewModelDescriptor<M> implements IViewModelDescri
 										this.queryHints.put(QueryHints.FETCH, p);										 
 									}									
 								}
-//								String p = "e."+path.substring(0, path.lastIndexOf("."));
-								// check if this path is already registered by a sub-path
-//								Iterator<String> it = this.nestedFetchJoins.keySet().iterator();
-//								boolean addIt = true;
-//								while (it.hasNext()) {
-//									String registeredPath = it.next();
-//									if (registeredPath.startsWith(p)) {										
-//										addIt = false;
-//										break;
-//									}
-//								}
-//								if (addIt) {
-//									this.nestedFetchJoins.put(p, field.getAnnotation(DsField.class).join());
-								//}
+ 
 							}						
 						} else {
-							this.m2eConv.put(path, field.getName());
+							this.m2eConv.put(path, fieldName);
 						}
 					}					
 					String jpqlFieldFilterRule = field.getAnnotation(DsField.class).jpqlFilter();
 					if(jpqlFieldFilterRule!=null && !"".equals(jpqlFieldFilterRule)) {
-						this.jpqlFieldFilterRules.put(field.getName(), jpqlFieldFilterRule);
+						this.jpqlFieldFilterRules.put(fieldName, jpqlFieldFilterRule);
 					}					 
 				}
 			}		 
@@ -195,6 +200,14 @@ public abstract class AbstractViewModelDescriptor<M> implements IViewModelDescri
 
 	public Map<String, String> getE2mConv() {
 		return e2mConv;
+	}
+
+	public List<String> getNoInserts() {
+		return noInserts;
+	}
+
+	public List<String> getNoUpdates() {
+		return noUpdates;
 	}
 	 
 	

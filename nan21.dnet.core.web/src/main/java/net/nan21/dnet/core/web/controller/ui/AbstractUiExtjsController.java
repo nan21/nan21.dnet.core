@@ -1,5 +1,6 @@
 package net.nan21.dnet.core.web.controller.ui;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,14 +11,19 @@ import javax.servlet.http.HttpServletResponse;
 import net.nan21.dnet.core.api.IProductInfo;
 import net.nan21.dnet.core.api.ISystemConfig;
 import net.nan21.dnet.core.api.session.Params;
+import net.nan21.dnet.core.api.session.Session;
 import net.nan21.dnet.core.api.session.User;
 import net.nan21.dnet.core.api.session.UserPreferences;
+import net.nan21.dnet.core.api.session.UserProfile;
+import net.nan21.dnet.core.security.NotAuthorizedRequestException;
 import net.nan21.dnet.core.security.SessionUser;
 import net.nan21.dnet.core.web.settings.UiExtjsSettings;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.AbstractController;
 
 public abstract class AbstractUiExtjsController extends AbstractController {
@@ -68,7 +74,13 @@ public abstract class AbstractUiExtjsController extends AbstractController {
 					.getAuthentication().getPrincipal();
 			User user = (User) su.getUser();
 			Params params = (Params) su.getParams();
+			UserProfile profile  = new UserProfile(su.isAdministrator(), su.getRoles());
 			UserPreferences prefs = user.getPreferences();
+			
+			Session.user.set(user);
+	        Session.profile.set(profile);
+	        Session.params.set(params);   
+	        
 			userUsername = user.getUsername();
 			userDisplayName = user.getDisplayName();
 			userClientCode = user.getClientCode();
@@ -213,6 +225,34 @@ public abstract class AbstractUiExtjsController extends AbstractController {
 
 	public void setSystemConfig(ISystemConfig systemConfig) {
 		this.systemConfig = systemConfig;
+	}
+
+	
+	@ExceptionHandler(value=NotAuthorizedRequestException.class) 
+	protected ModelAndView handleException(NotAuthorizedRequestException e, HttpServletResponse response)  throws IOException {
+		String msg = null;
+		 if (e.getCause() != null ) {
+			 msg = e.getCause().getMessage();	
+		} else {
+			msg = e.getMessage();	
+		}			 
+		response.setStatus(403);		
+		return new ModelAndView("not-authorized").addObject("message", msg); //e.getLocalizedMessage();
+  
+	}
+	
+	@ExceptionHandler(value=Exception.class) 
+	protected ModelAndView handleException(Exception e, HttpServletResponse response)  throws IOException {
+		 String msg = null;
+		 if (e.getCause() != null ) {
+			 msg = e.getCause().getMessage();	
+		} else {
+			msg = e.getMessage();	
+		}	
+		logger.error("Exception occured during transactional request execution: ", e.getCause());
+		response.setStatus(500);		
+		return new ModelAndView("error").addObject("message", msg); //e.getLocalizedMessage();
+		  
 	}
 
 }

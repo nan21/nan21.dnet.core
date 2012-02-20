@@ -14,7 +14,7 @@ public interface IDsConverter<M, E> {
 	public EntityManager getEntityManager();
 	public void setEntityManager(EntityManager em);
 	
-	public void modelToEntity(M m, E e) throws Exception ;
+	public void modelToEntity(M m, E e, boolean isInsert) throws Exception ;
 	public void entityToModel(E e, M m) throws Exception ;
 	
 //	public List<IEntityServiceFactory> getEntityServiceFactories();

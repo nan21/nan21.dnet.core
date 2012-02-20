@@ -44,6 +44,12 @@ dnet.Translation = Ext.apply({},{
 		,back__lbl : "Înapoi"
 		,back__tlp : "Înapoi."
 
+		,close__lbl : "Închide"
+		,close__tlp : "Închide"
+		
+		,ok__lbl : "OK"
+		,ok__tlp : "OK"
+		
         // *******************  Standard actions for MULTI-RECORD data-control ******************
  
 	}
@@ -165,6 +171,9 @@ dnet.Translation = Ext.apply({},{
 
 	  ,bool_true: "Da"
 	  ,bool_false: "Nu"
+	  
+	  ,preferences_wdw : "Preferinţe"
+	  ,remember_view_state : "Păstrează view state"
 	}
  
     ,exception: {
@@ -271,7 +280,9 @@ dnet.Translation = Ext.apply({},{
        ,SysDataSources_UI : "Componente sistem: Surse de date"
        ,SysParam_UI: "Parametri sistem"
        ,SysDateFormat_UI: "Formate dată"
+       ,Menu_UI: "Meniuri"
        ,MyUserSettings_UI:"Setările mele"
+       ,UiViewState_UI : "View states"
        
        ,Reports_UI : "Rapoarte"
 	   ,ReportServers_UI : "Servere raportare"
@@ -285,7 +296,8 @@ dnet.Translation = Ext.apply({},{
 	   ,Role_UI : "Roluri"
        ,AccessControl_UI : "Drepturi de acces"
        ,DsAccessControl_UI : "Drepturi de acces - DS"
-       ,AsgnAccessControl_UI : "Drepturi de acces - ASGN"       
+       ,AsgnAccessControl_UI : "Drepturi de acces - ASGN"  
+       ,DsMethodAccessControl_UI: "Drepturi de acces - Serviciu DS"
        ,Assignables_UI : "Resurse alocabile"
        ,MyBookmark_UI : "Marcajele mele"
        ,WorkflowAdmin_UI: "Administrare Workflow"
