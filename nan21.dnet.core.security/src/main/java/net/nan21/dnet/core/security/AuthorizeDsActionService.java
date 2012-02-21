@@ -39,7 +39,7 @@ public class AuthorizeDsActionService  extends JdbcDaoSupport
         }
                 
         if ( i<1) {
-            throw new NotAuthorizedRequestException("You are not authorized to execute `"+action+"`. <BR> Not enogh privileges on resource `"+dsName+"`");
+            throw new NotAuthorizedRequestException("You are not authorized to execute `"+action+"`. <BR> Not enough privileges on resource `"+dsName+"`");
         } 
     }
     
