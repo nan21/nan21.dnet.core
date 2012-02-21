@@ -133,9 +133,9 @@ Ext.override(Ext.grid.plugin.CellEditing, {
     }
     
     ,_isEditAllowed_: function(record, column, editor) {
-    	if (editor.field.noUpdate === true && !record.phantom ) {
+    	if (editor.field && editor.field.noUpdate === true && !record.phantom ) {
     		return false;
-    	} else if (editor.field.noInsert === true && record.phantom ) {
+    	} else if (editor.field && editor.field.noInsert === true && record.phantom ) {
     		return false;
     	}
     	return true;
