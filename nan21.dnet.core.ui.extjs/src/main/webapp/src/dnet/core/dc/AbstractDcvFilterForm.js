@@ -2,10 +2,24 @@ Ext.define("dnet.core.dc.AbstractDcvFilterForm", {
 	extend : "Ext.form.Panel",
 
 	// DNet properties
-
+	/**
+	 * Component builder
+	 * @type dnet.core.dc.DcvFilterFormBuilder
+	 */
 	_builder_ : null,
+	
+	/**
+	 * Elements definition map
+	 * @type Ext.util.MixedCollection
+	 */
 	_elems_ : null,
+	
+	/**
+	 * DC-Controller
+	 * @type dnet.core.dc.AbstractDc
+	 */
 	_controller_ : null,
+	
 	_mainViewName_ : "main",
 	_dcViewType_ : "filter-form",
 	_trl_ : null,

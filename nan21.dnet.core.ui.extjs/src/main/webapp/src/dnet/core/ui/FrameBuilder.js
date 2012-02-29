@@ -24,7 +24,8 @@ Ext.define("dnet.core.ui.FrameBuilder" , {
     },
 
 	addDc: function(name, obj) {
-		this.frame._dcs_.add(name, obj);	
+		this.frame._dcs_.add(name, obj);
+		obj._instanceKey_ = name;
 		return this;
 	},
 	

@@ -58,13 +58,11 @@ public class UiExtjsFrameController extends AbstractUiExtjsController {
 		this.model.put("extensions", sb.toString());
 
 		StringBuffer sbc = new StringBuffer();
-		for(IExtensionContentProviderFrame  provider : this.extensionContentProviders ) {
-			if (item.equals(provider.getTargetFrame())) {
-				sbc.append(provider.getContent());
-			}
+		for (IExtensionContentProviderFrame provider : this.extensionContentProviders) {
+			sbc.append(provider.getContent(item));
 		}
 		this.model.put("extensionsContent", sbc.toString());
-		
+
 		return new ModelAndView(this.jspName, this.model);
 	}
 

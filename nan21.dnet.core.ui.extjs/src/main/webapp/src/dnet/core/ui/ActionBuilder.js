@@ -27,6 +27,7 @@ Ext.define("dnet.core.ui.ActionBuilder", {
 	 */
 	frame : null,
 	name : null,
+	 
 	dc : null,
 	sepIdx : null,
 
@@ -56,7 +57,7 @@ Ext.define("dnet.core.ui.ActionBuilder", {
 		Ext.applyIf(cfg, {
 					dc : this.dc,
 					xtype : "label",
-					"name" : "title",	
+					name : "title",	
 					height:20,
 					cls : "dnet-toolbar-title"
 				});
@@ -64,6 +65,11 @@ Ext.define("dnet.core.ui.ActionBuilder", {
 			cfg.text = this.frame._trl_[this.name + "__ttl"];
 		}		
 		this.frame._tlbitms_.add(this.name + "__" + cfg.name, cfg);
+		if (this.frame._tlbtitles_ == null ) {
+			this.frame._tlbtitles_ = new Ext.util.MixedCollection();
+		}
+		this.frame._tlbtitles_.add(this.name, cfg.text);
+		 
 		return this;
 	},
 	addQuery : function(config) {
@@ -304,12 +310,78 @@ Ext.define("dnet.core.ui.ActionBuilder", {
 				"-");
 		return this;
 	},
+	
+	
+	addReports: function() {
+		if (this.frame._reports_ != null) {
+			var r = [],
+				rc = this.frame._reports_;
+			 	
+			for (var i=0, l=rc.length ;i<l;i++) {
+				if (rc[i].toolbar == this.name) {
+					
+					 
+//					var title_ = rc[i].title,
+//						report_ = rc[i].report,
+//						url_ = rc[i].url +  ((rc[i].contextPath) ? '/' + rc[i].contextPath : '' ),						 
+//						dcAlias_ = rc[i].dcAlias,
+//						params_ = rc[i].params;
+						
+						 
+					var fn = function(item, e) {
+						 
+						var dcReport = new dnet.core.dc.DcReport();
+						var rec = this._getDc_(item.dcAlias).record;
+						 
+						
+						if (!rec) {
+							Ext.Msg.show({
+								title : "No current record",
+								msg:"There is no current record in execution context.<br> Cannot call report `"+item.title+"` without a current record which must provide values for the report parameters.",	
+								icon : Ext.MessageBox.INFO,
+								buttons : Ext.Msg.OK
+							});
+							return false;
+						}
+						dcReport.applyDsFieldValues(item.params, rec.data);
+						dcReport.run({
+							url: item.url,	
+							contextPath: item.contextPath,
+							params: item.params								
+						});
+					};
+						
+					var rcfg = Ext.apply({
+						scope: this.frame, 
+						text:rc[i].title, 
+						handler:  fn
+					}, rc[i]);
+					
+					r.push(rcfg);
+				}
+			}
+			if (r.length > 0) {
+				this.addSeparator();
+				this.frame._tlbitms_.add(this.name + "___REPS_",
+				{
+					text: "Reports",
+					menu: r
+				});
+				 
+			}
+		}
+		return this;
+	},
+	
 	end : function() {
-		var n = this.name;
-		var t = this.frame._tlbitms_.filterBy(function(o, k) {
+		var n = this.name,
+			t = this.frame._tlbitms_.filterBy(function(o, k) {
 					return (k.indexOf(n + "__") != -1);
-				})
-		this.frame._tlbs_.add(this.name, t.getRange());
+				}),
+			tarray = t.getRange()
+				;
+				 
+		this.frame._tlbs_.add(this.name, tarray );
 		return this.frame._getBuilder_();
 	}
 
@@ -367,3 +439,69 @@ Ext.define("dnet.core.ui.ActionBuilder", {
 	
 	
 });
+
+
+
+
+
+
+
+
+
+Ext.define("dnet.core.dc.DcReport", {
+	run: function(config) {
+		//var targetDc = config.dc;
+		var params = config.params;
+		var serverUrl = config.url;
+		if (config.contextPath) {			 
+			serverUrl += config.contextPath;
+		}
+		// config: params, url
+		// param : code, name, type, lov, value, mandatory, noEdit
+		
+		var qs = "";
+		for(var i=0,l=params.length; i<l;i++) {
+			var p = params[i];
+			if(qs != "") {
+				qs += "&";
+			}
+			qs += p.code + "=" + p.value;
+		}
+		
+		//alert(serverUrl + "?" + qs);
+		window.open(serverUrl + "?" + qs, "Test-report","width=800,height=600,adressbar=true")
+		.focus();
+	 
+	},
+	
+	
+	
+	applyDsFieldValues: function(params, data) {
+		for(var i=0,l=params.length; i<l;i++) {
+			var p = params[i];
+			if (p.dsField) {
+				p.value = data[p.dsField];
+			}
+		}
+	},
+	/**
+	 * Validate the report parameters 
+	 * @param {} params
+	 */
+	isValid: function(params) {
+		for(var i=0,l=params.length; i<l;i++) {
+			var p = params[i];
+			if (!p.value && p.mandatory && !p.noEdit ) {
+				return false;
+			}
+		}
+	}
+	
+});
+
+
+
+
+
+
+

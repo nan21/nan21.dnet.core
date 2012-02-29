@@ -3,7 +3,7 @@ dnet.core.base.TemplateRepository = {
 
 
    HOMEPANEL_FOOTER: "<div style='width:100%;'>"+                                                                                                                                                                           
-            "<span style='float:left;'> &copy Nan21 Electronics s.r.l. <a href='http://www.nan21.net' target=_blank title='www.nan21.net'>www.nan21.net</a></span>"+                                                                 
+            "<span style='float:left;'> Powered by  <a href='http://www.dnet-ebusiness-suite.com' target=_blank >DNet eBusiness Suite</a> &copy 2010-2012 Nan21 Electronics s.r.l. </span>"+                                                                 
          		"</div>"
 
    ,APPLICATION_HOME :

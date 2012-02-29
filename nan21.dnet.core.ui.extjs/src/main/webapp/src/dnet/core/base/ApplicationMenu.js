@@ -20,36 +20,38 @@ dnet.core.base.ApplicationMenu$LogoItems = [{
 }];
 
 dnet.core.base.ApplicationMenu$Items = [
-
-{
-	xtype : "splitbutton",
-	text : Dnet.translate("appmenuitem", "myaccount__lbl"),
-	menu : new Ext.menu.Menu({
-		items : [{
-
-			text : Dnet.translate("appmenuitem", "theme__lbl"),
-			menu : new Ext.menu.Menu({
-						items : [{
-							text : Dnet.translate("appmenuitem",
-									"theme_gray__lbl"),
-							handler : function() {
-								getApplication().changeCurrentTheme("gray");
-							}
-						}, {
-							text : Dnet.translate("appmenuitem",
-									"theme_blue__lbl"),
-							handler : function() {
-								getApplication().changeCurrentTheme("blue");
-							}
-						}, {
-							text : Dnet.translate("appmenuitem",
-									"theme_access__lbl"),
-							handler : function() {
-								getApplication().changeCurrentTheme("access");
-							}
-						}]
-					})
+		{
+			xtype : "tbspacer",				
+			width : 10
 		}, {
+			xtype : "splitbutton",
+			text : Dnet.translate("appmenuitem", "myaccount__lbl"),
+			menu : new Ext.menu.Menu({
+				items : [{
+		
+					text : Dnet.translate("appmenuitem", "theme__lbl"),
+					menu : new Ext.menu.Menu({
+								items : [{
+									text : Dnet.translate("appmenuitem",
+											"theme_gray__lbl"),
+									handler : function() {
+										getApplication().changeCurrentTheme("gray");
+									}
+								}, {
+									text : Dnet.translate("appmenuitem",
+											"theme_blue__lbl"),
+									handler : function() {
+										getApplication().changeCurrentTheme("blue");
+									}
+								}, {
+									text : Dnet.translate("appmenuitem",
+											"theme_access__lbl"),
+									handler : function() {
+										getApplication().changeCurrentTheme("access");
+									}
+								}]
+							})
+			}, {
 
 			text : Dnet.translate("appmenuitem", "lang__lbl"),
 			menu : new Ext.menu.Menu({
@@ -157,7 +159,7 @@ dnet.core.base.ApplicationMenu$Items = [
 	id : "net.nan21.dnet.core.menu.ApplicationMenu$Item$ClientName",
 	text : "-",
 	style : "font-weight:bold;"
-}, "-"];
+} ];
 
 Ext.define("dnet.core.base.DBMenu", {
 			extend : "Ext.menu.Menu"
@@ -315,42 +317,21 @@ Ext.define("dnet.core.base.ApplicationMenu", {
 	},
 
 	initComponent : function(config) {
-
-//		Ext.Ajax.request({
-//					url : Dnet.dsAPI("MenuDs", "json").read,
-//					method : "POST",
-//					params : {
-// 
-//					},
-//					success : function(response, opts) {
-//						var menus = Ext.decode(response.responseText);
-//						var m = [];
-//						for (var i = 0; i < menus.data.length; i++) {							 
-//							m.push(this._createMenu_({
-//								text : menus.data[i]["title"],
-//								db_id : menus.data[i]["id"]
-//							}));
-//						}
-//						this.dbMenu = m;
-//						Ext.Function.defer(this.insertDBMenus, 500, this);
-//					},
-//					scope : this
-//				});
-
-		var items = dnet.core.base.ApplicationMenu$LogoItems;
-
-		var productInfo = ["->", {
-			xtype : "tbtext",
-			id : "net.nan21.dnet.core.menu.ApplicationMenu$Item$ProductInfo",
-			cls : "app-header-text",
-			html : "<span style='align:right'><span style='font-weight:bold'>"
-					+ Dnet.name + " </span><br><span>"
-					+ Dnet.translate("appmenuitem", "version__lbl") + ": "
-					+ Dnet.version + "</span></span>"
-		}];
-
+ 
+		var items = []; 
+ 
 		items = items.concat(dnet.core.base.ApplicationMenu$Items);
-		// items = items.concat(productInfo);
+		items = items.concat([
+			{
+				xtype : "tbspacer",				
+				width : 20
+			},{
+				xtype : "tbtext",				
+				id : "net.nan21.dnet.core.menu.ApplicationMenu$Item$ProductInfo",
+				text: "<span>" + Dnet.name + " </span><br><span>"
+						+ Dnet.translate("appmenuitem", "version__lbl") + ": "
+						+ Dnet.version + "</span></span>" 
+		}]);
 
 		this.systemClientMenuAdded = false;
 

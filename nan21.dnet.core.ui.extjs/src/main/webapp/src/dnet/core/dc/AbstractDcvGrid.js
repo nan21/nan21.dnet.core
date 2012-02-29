@@ -108,13 +108,7 @@ Ext.define("dnet.core.dc.AbstractDcvGrid", {
 				}, this);
 
 		var cfg = {
-			columns : this._columns_.getRange(),
-
-			bbar : {
-				xtype : "pagingtoolbar",
-				store : this._controller_.store,
-				displayInfo : true
-			},
+			columns : this._columns_.getRange(), 
 			selModel : {
 				mode : "MULTI",
 				listeners : {
@@ -145,22 +139,29 @@ Ext.define("dnet.core.dc.AbstractDcvGrid", {
 					}
 				}
 			}
-
-		// ,keys:[{
-		// key: Ext.EventObject.ENTER,
-		// fn: function() {
-		// this._controller_.onEdit();
-		// },
-		// scope: this
-		// }]
-		};
-		var bbitems = [];
-		this._buildToolbox_(bbitems);
  
-		if (bbitems.length > 0) {
-			cfg["bbar"]["items"] = bbitems;
+		};
+		
+		if (!this._noPaginator_) {
+			cfg.bbar = {
+				xtype : "pagingtoolbar",
+				store : this._controller_.store,
+				displayInfo : true
+			}
+			var bbitems = [];
+			this._buildToolbox_(bbitems);
+	
+			if (bbitems.length > 0) {
+				cfg["bbar"]["items"] = bbitems;
+			}
+		} else {
+			this._noExport_ = true;
+			this._noImport_ = true;
+			this._noSort_ = true;
+			this._noLayoutCfg_ = true;
+			 
 		}
-
+		 
 		Ext.apply(cfg, config);
 		Ext.apply(this, cfg);
 

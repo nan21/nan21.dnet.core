@@ -58,8 +58,9 @@
 
     	<%@ include file="_on_ready.jspf" %>
 
+    	var frameReports = [];
     	${extensionsContent}
-    	
+ 
      	var cfg = { layout:"border"	 	     			  
          	    ,items: [{					      	 
          	        xtype:"${item}"	
@@ -67,6 +68,7 @@
          	        ,layout:"fit"
          	        ,border: false
          	        ,split: true  
+         	        ,_reports_:frameReports
          	       ,listeners:{ 
         				afterrender : { fn: function(p) { theFrameInstance = this; } }
         			}  	         

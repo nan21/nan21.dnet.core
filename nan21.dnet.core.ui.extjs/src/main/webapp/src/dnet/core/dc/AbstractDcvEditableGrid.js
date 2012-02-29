@@ -57,6 +57,12 @@ Ext.define("dnet.core.dc.AbstractDcvEditableGrid", {
 	_noLayoutCfg_ : false,
 	
 	/**
+	 * Flag to switch on/off paging toolbar.
+	 * @type Boolean
+	 */
+	_noPaginator_ : false,
+	
+	/**
 	 * Data export window.
 	 * @type dnet.core.dc.DataExportWindow
 	 */
@@ -120,13 +126,7 @@ Ext.define("dnet.core.dc.AbstractDcvEditableGrid", {
 
 		var cfg = {
 			columns : this._columns_.getRange(),
- 
-			bbar : {
-				xtype : "pagingtoolbar",
-				store : this._controller_.store,
-				displayInfo : true
-			},
-			
+  
 			selModel : {
 				mode : "MULTI",
 				listeners : {
@@ -142,13 +142,25 @@ Ext.define("dnet.core.dc.AbstractDcvEditableGrid", {
 
 		};
 
-		var bbitems = [];
-		this._buildToolbox_(bbitems);
-
-		if (bbitems.length > 0) {
-			cfg["bbar"]["items"] = bbitems;
+		if (!this._noPaginator_) {
+			cfg.bbar = {
+				xtype : "pagingtoolbar",
+				store : this._controller_.store,
+				displayInfo : true
+			}
+			var bbitems = [];
+			this._buildToolbox_(bbitems);
+	
+			if (bbitems.length > 0) {
+				cfg["bbar"]["items"] = bbitems;
+			}
+		} else {
+			this._noExport_ = true;
+			this._noImport_ = true;
+			this._noSort_ = true;
+			this._noLayoutCfg_ = true;
+			 
 		}
-
 		Ext.apply(cfg, config);
 		Ext.apply(this, cfg);
 

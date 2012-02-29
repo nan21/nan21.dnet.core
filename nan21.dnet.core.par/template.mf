@@ -3,6 +3,6 @@ Bundle-ManifestVersion: 2
 Bundle-Name: DNet Core - par
 Bundle-SymbolicName: nan21.dnet.core.par
 Bundle-Vendor: Nan21 
-Bundle-Version: 1.0.0.M7
+Bundle-Version: 1.0.0.M8
 Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.html
 

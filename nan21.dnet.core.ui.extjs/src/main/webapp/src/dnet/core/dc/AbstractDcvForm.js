@@ -2,8 +2,16 @@ Ext.define("dnet.core.dc.AbstractDcvForm", {
 	extend:  "Ext.form.Panel",
  
 	// DNet properties
-	
+	/**
+	 * Component builder
+	 * @type dnet.core.dc.DcvFormBuilder
+	 */
 	_builder_: null,
+	
+	/**
+	 * Elements definition map
+	 * @type Ext.util.MixedCollection
+	 */
 	_elems_: null,
 	
 	/**
