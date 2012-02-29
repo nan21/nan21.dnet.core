@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+    <changeSet author="amathe" id="TBL">
+        <createTable tableName="SEQUENCE">
+			<column name="SEQ_NAME" type="VARCHAR2(50)">
+				<constraints nullable="false" /></column>	 
+			<column name="SEQ_COUNT" type="NUMBER(38)">
+				<constraints /></column>
+        </createTable>
+    </changeSet>
+    <changeSet author="amathe" id="PK">
+    	<addPrimaryKey tableName="SEQUENCE" constraintName="PK_SEQUENCE" columnNames="SEQ_NAME" />
+    </changeSet>
+</databaseChangeLog>
