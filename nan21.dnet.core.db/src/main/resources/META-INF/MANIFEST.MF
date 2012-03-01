@@ -1,5 +1,7 @@
 Manifest-Version: 1.0
-Export-Package: core;version="1.0.0.M8"
+Export-Package: core;version="1.0.0.M8",mysql.core.install.table;versi
+ on="1.0.0.M8",oracle.core;version="1.0.0.M8",oracle.core.install.tabl
+ e;version="1.0.0.M8"
 Bundle-Vendor: Nan21 
 Bundle-Version: 1.0.0.M8
 Tool: Bundlor 1.0.0.RELEASE

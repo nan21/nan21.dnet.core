@@ -1,0 +1,3 @@
+@echo off
+call liquibase --defaultsFile=../liquibase.properties --changeLogFile=install.xml update
+pause...
