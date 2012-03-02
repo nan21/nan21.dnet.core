@@ -27,14 +27,14 @@ Ext.define("dnet.core.base.HomePanel" , {
 		var navigAccordeonCfg = {
 	          layout: 'accordion'  
 	         ,layoutConfig: {  animate: false,
-        		activeOnTop: true  ,fill: true          
+        		activeOnTop: true // ,fill: true          
              } 
-		 
+		 	 
         	,id:this._Menu_AccordeonId_
 			,region:'west'
 			,width:350
 			,split:true
-            ,minSize: 200
+            ,minSize: 200 
             ,maxSize: 500
            ,title:"Application menus"
            ,collapsible:true

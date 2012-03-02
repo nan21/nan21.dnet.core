@@ -63,7 +63,7 @@ Ext.define("dnet.core.dc.AbstractDcvGrid", {
 
 	buttonAlign : "left",
 	forceFit : false,
-	autoScroll:true,
+	autoScroll:false,
 	scroll: "both",
 	loadMask : true,
 	stripeRows : true,

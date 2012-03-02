@@ -85,6 +85,7 @@ Ext.define("dnet.core.dc.AbstractDcvEditableGrid", {
 	stripeRows : true,
 	buttonAlign : "left",
 	//enableLocking : true,
+	autoScroll:false,
 	viewConfig : {
 		emptyText : Dnet.translate("msg", "grid_emptytext")
 	},

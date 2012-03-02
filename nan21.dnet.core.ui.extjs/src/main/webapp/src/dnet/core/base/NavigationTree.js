@@ -34,30 +34,13 @@ Ext.define("dnet.core.base.NavigationTree", {
 	//displayField: "title",
 	rootVisible : false,
 	lines : false,
-	autoScroll : true,
+	 
 	animate : false,
 	border : false,
 	useArrows : true,
 	bodyBorder : false,
 
 	initComponent : function(config) {
-
-//		this.store = Ext.create('Ext.data.TreeStore', {
-//			model : 'dnet.core.base.NavigationTree$Model',
-//			root : {
-//				text : 'TreeRoot',
-//				expanded : true,
-//				leaf : false,
-//				children : this._data_
-//			},
-//			proxy : {
-//				type : 'memory',
-//				reader : {
-//					type : 'json'
-//
-//				}
-//			}
-//		});
 
 		this.store = Ext.create('Ext.data.TreeStore', {
 	        proxy: {

@@ -90,24 +90,27 @@ Ext.override(Ext.data.Store, {
 
  
 Ext.override(Ext.grid.plugin.CellEditing, {
- 
+
+	 
 	getEditor: function(record, column) {
-        var me = this;
+		var me = this;
 		if (me.grid._getCustomCellEditor_) {
 			var editor = me.grid._getCustomCellEditor_(record, column);
 			if (editor != null ) {
-				if (!this._isEditAllowed_(record, column, editor)) {
+				if (!this._isEditAllowed_(record, column, editor.field || editor)) {
 					return null;
-				} 
+				}
+				 
 				if (!(editor instanceof Ext.grid.CellEditor)) {
 					editorId = column.id + record.id;
 	                editor = new Ext.grid.CellEditor({
 	                    editorId: editorId,
 	                    field: editor,
-	                    editingPlugin: me,
 	                    ownerCt: me.grid
 	                });
 	            }
+	            editor.editingPlugin = me;
+	            editor.isForTree = me.grid.isTree;
 	            editor.on({
 	                scope: me,
 	                specialkey: me.onSpecialKey,
@@ -115,27 +118,26 @@ Ext.override(Ext.grid.plugin.CellEditing, {
 	                canceledit: me.cancelEdit
 	            });
 	            editor.field["_targetRecord_"] = record;
-	           // editors.add(editor);
 	            return editor;
- 
-			} 
-			
-		}
+			} 			
+		} 
+		
 		var editor = this.callParent(arguments);
-		if (!this._isEditAllowed_(record, column, editor)) {
-			return null;
+		if (editor && !this._isEditAllowed_(record, column, editor.field || editor)) {
+			return false;
 		}
 		if(editor.field) {
 			editor.field["_targetRecord_"] = record;
 		}
 		return editor;
 		 
-    }
+    },
+	 
     
-    ,_isEditAllowed_: function(record, column, editor) {
-    	if (editor.field && editor.field.noUpdate === true && !record.phantom ) {
+    _isEditAllowed_: function(record, column, field) {  
+    	if (field && field.noUpdate === true && !record.phantom ) {
     		return false;
-    	} else if (editor.field && editor.field.noInsert === true && record.phantom ) {
+    	} else if (field && field.noInsert === true && record.phantom ) {
     		return false;
     	}
     	return true;
