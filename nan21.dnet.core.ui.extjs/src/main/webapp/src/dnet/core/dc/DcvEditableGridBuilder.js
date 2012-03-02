@@ -8,6 +8,9 @@ Ext.define("dnet.core.dc.DcvEditableGridBuilder", {
 
 	addTextColumn : function(config) {
 		config.xtype = "gridcolumn";
+		if (config.editor && config.editor.maxLength ) {
+			config.editor.enforceMaxLength = true;
+		}
 		this.applySharedConfig(config);
 		return this;
 	},
