@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import net.nan21.dnet.core.api.setup.ISetupParticipant;
 import net.nan21.dnet.core.api.setup.IStartupParticipant;
+import net.nan21.dnet.core.api.ui.extjs.ExtensionScript;
 import net.nan21.dnet.core.api.ui.extjs.IExtensionContentProvider;
 import net.nan21.dnet.core.api.ui.extjs.IExtensionProvider;
 import net.nan21.dnet.core.security.SessionUser;
@@ -43,13 +44,19 @@ public class UiExtjsMainController extends AbstractUiExtjsController {
 		}
 		
 		this._prepare(request, response);
-		 
-			
-		
+		  
 		// get extensions scripts 
 		StringBuffer sb = new StringBuffer();
-		for(IExtensionProvider provider : this.extensionProviders) {			
-			sb.append("<script type=\"text/javascript\" src=\""+uiExtjsSettings.getUrlUiExtjs()+"/"+provider.getBundleName()+"/"+provider.getFileName()+"\"></script>\n" );
+		for(IExtensionProvider provider : this.extensionProviders) {
+			List<ExtensionScript> files = provider.getFiles();
+			for(ExtensionScript file: files) {
+				if (!file.isRelativePath()) {
+					sb.append("<script type=\"text/javascript\" src=\""+file.getLocation()+"\"></script>\n" );
+				}else {
+					sb.append("<script type=\"text/javascript\" src=\""+uiExtjsSettings.getUrlUiExtjs()+"/"+
+							file.getLocation() +"\"></script>\n" );
+				}
+			}			
 		}
 		this.model.put("extensions", sb.toString());
 		

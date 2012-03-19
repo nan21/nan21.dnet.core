@@ -49,7 +49,7 @@ dnet.core.base.ApplicationMenu$Items = [
 									handler : function() {
 										getApplication().changeCurrentTheme("access");
 									}
-								}]
+								} ]
 							})
 			}, {
 

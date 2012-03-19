@@ -1,5 +1,36 @@
 
 
+.x-grid-cell {
+    font-weight:inherit !important;
+    background:inherit !important;
+}
+ 
+
+.my-italic {
+    font-style:italic !important;
+}
+
+.my-bold {
+    font-weight:bold;
+    /*font-weight:bold;*/
+}
+.my-red {
+    color:red;
+    background-color: pink;
+}
+
+.my-green {
+    color:green;
+    background-color: #cec;
+ 
+}
+.my-blue {
+    color:blue;
+    background-color: #ccc;
+     
+}
+
+
 .dcv-edit-form  {
    background: none repeat scroll 0 0 transparent ;
 }

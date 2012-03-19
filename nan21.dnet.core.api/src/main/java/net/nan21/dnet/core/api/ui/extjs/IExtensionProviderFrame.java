@@ -1,7 +1,7 @@
 package net.nan21.dnet.core.api.ui.extjs;
 
+import java.util.List;
+
 public interface IExtensionProviderFrame {
-	public String getTargetFrame();
-	public String getFileName();
-	public String getBundleName();
+	public List<ExtensionScript> getFiles(String targetFrame) throws Exception;
 }

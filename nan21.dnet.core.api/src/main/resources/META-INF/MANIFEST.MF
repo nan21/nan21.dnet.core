@@ -15,8 +15,7 @@ Export-Package: net.nan21.dnet.core.api;version="1.0.0.M8";uses:="org.
  sion="1.0.0.M8",net.nan21.dnet.core.api.setup;version="1.0.0.M8";uses
  :="net.nan21.dnet.core.api,org.springframework.beans.factory.annotati
  on,org.springframework.context",net.nan21.dnet.core.api.ui.extjs;vers
- ion="1.0.0.M8",net.nan21.dnet.core.api.ui.extjs.impl;version="1.0.0.M
- 8";uses:="net.nan21.dnet.core.api.ui.extjs"
+ ion="1.0.0.M8"
 Bundle-Vendor: Nan21 
 Bundle-Version: 1.0.0.M8
 Tool: Bundlor 1.0.0.RELEASE
