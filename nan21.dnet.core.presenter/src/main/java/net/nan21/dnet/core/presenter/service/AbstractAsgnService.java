@@ -1,7 +1,9 @@
 package net.nan21.dnet.core.presenter.service;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.Query;
 
@@ -20,6 +22,10 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.expression.ExpressionParser;
+import org.springframework.expression.spel.standard.SpelExpressionParser;
+import org.springframework.expression.spel.support.StandardEvaluationContext;
+import org.springframework.util.StringUtils;
 
 public abstract class AbstractAsgnService<M, F, P, E> {
 	@Autowired
@@ -181,7 +187,8 @@ public abstract class AbstractAsgnService<M, F, P, E> {
 				bld.getResultSize()).getResultList();
 		for (E e : list) {
 			M m = this.getModelClass().newInstance();
-			BeanUtils.copyProperties(e, m);
+			//BeanUtils.copyProperties(e, m);
+			entityToModel(e, m);
 			result.add(m);
 		}
 		return result;
@@ -207,11 +214,30 @@ public abstract class AbstractAsgnService<M, F, P, E> {
 				bld.getResultSize()).getResultList();
 		for (E e : list) {
 			M m = this.getModelClass().newInstance();
-			BeanUtils.copyProperties(e, m);
+			//BeanUtils.copyProperties(e, m);
+			entityToModel(e, m);
 			result.add(m);
 		}
 		return result;
 	}
+
+	public void entityToModel(E e, M m) throws Exception {
+		ExpressionParser parser = new SpelExpressionParser();
+		StandardEvaluationContext context = new StandardEvaluationContext(e);
+		Map<String, String> refpaths = this.getDescriptor().getE2mConv();
+		Method[] methods = this.getModelClass().getMethods();
+		for (Method method : methods) {
+			if (!method.getName().equals("set__clientRecordId__") && method.getName().startsWith("set")) {
+				String fn = StringUtils.uncapitalize(method.getName().substring(3));
+				try {
+					method.invoke(m, parser.parseExpression(refpaths.get(fn)).getValue(context));
+				} catch(Exception exc) {
+					
+				}				
+			}		 	
+		}	
+	}
+
 
 	public Long countLeft(F filter, P params, IQueryBuilder<M, F, P> builder)
 			throws Exception {
