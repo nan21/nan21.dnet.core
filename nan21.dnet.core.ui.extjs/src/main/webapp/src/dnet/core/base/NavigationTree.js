@@ -39,10 +39,12 @@ Ext.define("dnet.core.base.NavigationTree", {
 	border : false,
 	useArrows : true,
 	bodyBorder : false,
-
+	folderSort : false,
 	initComponent : function(config) {
 
 		this.store = Ext.create('Ext.data.TreeStore', {
+			sortOnLoad: false,
+			isSortable: false,
 	        proxy: {
 	            type: 'ajax',
 	            method : "POST",
