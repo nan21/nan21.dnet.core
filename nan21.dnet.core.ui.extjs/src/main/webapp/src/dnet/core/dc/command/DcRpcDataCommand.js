@@ -33,20 +33,21 @@ Ext.define("dnet.core.dc.command.DcRpcDataCommand", {
 	onExecute : function(options) {
 		var dc = this.dc;
 		var serviceName = options.name;
-		var s = options || {};
+		//var s = options || {};
 		var p = {
 			data : Ext.encode(dc.record.data),
 			params : Ext.encode(dc.params.data)
 		};
+		options.sourceRec = dc.record;
 		p[Dnet.requestParam.SERVICE_NAME_PARAM] = serviceName;
 		p["rpcType"] = "data";
-		if (s.modal) {
+		if (options.modal) {
 			Ext.Msg.wait('Working...');
 		}
 		Ext.Ajax
 				.request( {
 					url : Dnet.dsAPI(dc.dsName,
-							((s.stream) ? "stream" : "json")).service,
+							((options.stream) ? "stream" : "json")).service,
 					method : "POST",
 					params : p,
 					success : this.onAjaxSuccess,
@@ -76,9 +77,31 @@ Ext.define("dnet.core.dc.command.DcRpcDataCommand", {
 	 * 
 	 */
 	onAjaxSuccess : function(response, options) {
-		Ext.Msg.hide();
+		if (options.options.modal) {		
+			try {
+				Ext.Msg.hide();
+			} catch(e) {
+				
+			}
+		}
 		var o = options.options || {}, name = o.name, s = o || {};
 		var dc = this.dc;
+		var r = Ext.decode( response.responseText );
+		 
+		if(r.success) {
+			var rec = dc.store.proxy.reader.readRecords([r.data]).records[0];
+			var srcRec = options.options.sourceRec;
+			var dirty = srcRec.dirty;
+			srcRec.beginEdit();
+			for(var p in rec.data) {
+				srcRec.set(p, rec.data[p]);
+			}
+			srcRec.endEdit();
+			if (!dirty) {
+				srcRec.commit();
+			}
+		}
+		 
 		if (s.callbacks && s.callbacks.successFn) {
 			s.callbacks.successFn.call(s.callbacks.successScope || dc, dc,
 					response, name, options);
@@ -107,7 +130,13 @@ Ext.define("dnet.core.dc.command.DcRpcDataCommand", {
 	 * @See doService()
 	 */
 	onAjaxFailure : function(response, options) {
-		Ext.Msg.hide();
+		if (options.options.modal) {		
+			try {
+				Ext.Msg.hide();
+			} catch(e) {
+				
+			}
+		}
 		var o = options.options || {}, serviceName = o.name, s = o || {};
 		var dc = this.dc;
 		if (s.callbacks && s.callbacks.failureFn) {

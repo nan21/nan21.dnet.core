@@ -61,20 +61,18 @@
     	var frameReports = [];
     	${extensionsContent}
  
-     	var cfg = { layout:"border"	 	     			  
-         	    ,items: [{					      	 
-         	        xtype:"${item}"	
-         	      	,region:"center"
-         	        ,layout:"fit"
-         	        ,border: false
-         	        ,split: true  
-         	        ,_reports_:frameReports
-         	       ,listeners:{ 
-        				afterrender : { fn: function(p) { theFrameInstance = this; } }
-        			}  	         
-         	      }	]};
+     	var cfg = { 
+			layout:"fit"	 	     			  
+			,items: [{					      	 
+				xtype:"${item}"	
+				,border: false 
+				,_reports_:frameReports
+				,listeners:{ 
+       				afterrender : { fn: function(p) { theFrameInstance = this; } }
+       			}  	         
+         	 }]
+       };
     	__theViewport__ = new Ext.Viewport(cfg);
-    	//__theViewport__.doLayout(); 
 	});
 
     <%@ include file="_loading_mask_remove.jspf" %>

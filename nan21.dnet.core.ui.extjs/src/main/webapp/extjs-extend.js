@@ -68,7 +68,19 @@ Ext.define("dnet.base.DisplayFieldNumber", {
     }    
 });
 
- 
+Ext.define("dnet.base.DisplayFieldBoolean", {
+	extend: "Ext.form.field.Display",
+	alias: "widget.displayfieldboolean",
+	renderer: function(rawValue, field) { 
+		if(rawValue === "false" ) {
+			return Dnet.translate("msg", "bool_false");
+		}
+		//return !(!rawValue);
+        return Dnet.translate("msg", "bool_"+(!!rawValue));
+    }
+});
+
+
 Ext.override(Ext.data.Store, {
   
 	filterAllNew: function(item) {        

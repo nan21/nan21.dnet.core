@@ -63,6 +63,8 @@ Ext.define("dnet.core.dc.DcvFormBuilder", {
 
 	addNumberField : function(config) {
 		config.xtype = "numberfield";
+		config.fieldStyle = (config.fieldStyle)? config.fieldStyle + ";text-align:right;": "text-align:right;";
+			
 		this.applyModelUpdater(config);
 		this.applySharedConfig(config);
 		return this;
@@ -83,7 +85,21 @@ Ext.define("dnet.core.dc.DcvFormBuilder", {
 		this.applySharedConfig(config);
 		return this;
 	},
-
+	
+	
+	addHiddenField : function(config) {
+		config.xtype = "hiddenfield";
+		Ext.applyIf(config, {
+			maxLength:20
+//			anchor:"-20" ,
+//			fieldCls: "displayfield"
+			 
+		});
+		this.applySharedConfig(config);
+		return this;
+	},
+	
+	
 	addDisplayFieldText : function(config) {
 		config.xtype = "displayfieldtext";
 		Ext.applyIf(config, {
@@ -109,6 +125,16 @@ Ext.define("dnet.core.dc.DcvFormBuilder", {
 		config.xtype = "displayfielddate";
 		Ext.applyIf(config, {
 			anchor:"-20" ,
+			fieldCls: "displayfield"
+		});
+		this.applySharedConfig(config);
+		return this;
+	},
+	
+	addDisplayFieldBoolean : function(config) {
+		config.xtype = "displayfieldboolean";
+		Ext.applyIf(config, {
+			//anchor:"-20" ,
 			fieldCls: "displayfield"
 		});
 		this.applySharedConfig(config);

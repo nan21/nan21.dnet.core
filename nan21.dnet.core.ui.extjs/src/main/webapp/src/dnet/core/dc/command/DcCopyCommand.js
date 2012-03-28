@@ -18,13 +18,16 @@ Ext.define("dnet.core.dc.command.DcCopyCommand", {
 		if (target.data.name) {
 			target.data.name = 'Copy of ' + target.data.name;
 		}
+		if (target.data.uuid) {
+			target.data.uuid = null;
+		}
 		target.phantom = true;
 		target.dirty = true;
 		Ext.data.Model.id(target);
 		if (dc.dcContext) {
 			dc.dcContext._applyContextData_(target);
 		}
-		dc.setRecord(target);
+		dc.setRecord(target, true);
 		dc.store.add(target);
 		
 		dc.fireEvent("afterDoNew", {

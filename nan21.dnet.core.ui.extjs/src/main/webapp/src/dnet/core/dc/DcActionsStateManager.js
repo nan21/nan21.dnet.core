@@ -142,6 +142,7 @@ dnet.core.dc.DcActionsStateManager = {
 	_getFlags : function(dc) {
 		// console.log("recordIsNull="+Ext.isEmpty(dc.record) );
 		var flags = {
+			isReadOnly : dc.isReadOnly(),
 			isStoreDirty : dc.isStoreDirty(),
 			isDirty : dc.isDirty(),
 			isAnyChildDirty : dc.isAnyChildDirty(),
@@ -161,9 +162,13 @@ dnet.core.dc.DcActionsStateManager = {
 				: false;
 		var parentIsNew = (hasParent && !parentIsNull && dc.getParent().record.phantom) ? true
 				: false;
+				
+		var parentisReadOnly = (hasParent && !parentIsNull && dc.getParent().isReadOnly()) ? true
+				: false;		
 		flags.hasParent = hasParent;
 		flags.parentIsNull = parentIsNull;
 		flags.parentIsNew = parentIsNew;
+		flags.parentisReadOnly = parentisReadOnly;
 	},
 
 	/* decision makers implementation */
@@ -194,7 +199,7 @@ dnet.core.dc.DcActionsStateManager = {
 	},
 
 	_isNewDisabled : function(flags) {
-		return (flags.isAnyChildDirty || (flags.isCurrentRecordDirty && !flags.multiEdit));
+		return (flags.isReadOnly || flags.isAnyChildDirty || (flags.isCurrentRecordDirty && !flags.multiEdit));
 	},
 
 	_isNewEnabled : function(flags) {
@@ -203,6 +208,7 @@ dnet.core.dc.DcActionsStateManager = {
 
 	_getFlagsNew : function(dc) {
 		return {
+			isReadOnly : dc.isReadOnly(),
 			isAnyChildDirty : dc.isAnyChildDirty(),
 			isCurrentRecordDirty : dc.isCurrentRecordDirty(),
 			multiEdit : dc.multiEdit
@@ -210,7 +216,7 @@ dnet.core.dc.DcActionsStateManager = {
 	},
 
 	_isCopyDisabled : function(flags) {
-		return (flags.recordIsNull || flags.selectedRecordsLength != 1
+		return (flags.isReadOnly || flags.recordIsNull || flags.selectedRecordsLength != 1
 				|| flags.storeCount == 0 || flags.isAnyChildDirty || (flags.isCurrentRecordDirty && !flags.multiEdit));
 	},
 
@@ -220,6 +226,7 @@ dnet.core.dc.DcActionsStateManager = {
 
 	_getFlagsCopy : function(dc) {
 		return {
+			isReadOnly : dc.isReadOnly(),
 			isAnyChildDirty : dc.isAnyChildDirty(),
 			isCurrentRecordDirty : dc.isCurrentRecordDirty(),
 			multiEdit : dc.multiEdit,
@@ -230,13 +237,14 @@ dnet.core.dc.DcActionsStateManager = {
 	},
 
 	_isSaveEnabled : function(flags) {
-		return (flags.isCurrentRecordDirty || flags.isStoreDirty);
+		return (!flags.isReadOnly && (flags.isCurrentRecordDirty || flags.isStoreDirty) );
 	},
 	_isSaveDisabled : function(flags) {
 		return !this._isSaveEnabled(flags);
 	},
 	_getFlagsSave : function(dc) {
 		return {
+			isReadOnly : dc.isReadOnly(),
 			isCurrentRecordDirty : dc.isCurrentRecordDirty(),
 			isStoreDirty : dc.isStoreDirty()
 		};
@@ -256,8 +264,8 @@ dnet.core.dc.DcActionsStateManager = {
 		};
 	},
 
-	_isDeleteDisabled : function(flags) {
-		return (flags.selectedRecordsLength == 0 || flags.isAnyChildDirty || flags.storeCount == 0);
+	_isDeleteDisabled : function(flags) {		 
+		return (flags.isReadOnly || flags.selectedRecordsLength == 0 || flags.isAnyChildDirty || flags.storeCount == 0|| (flags.isCurrentRecordDirty && !flags.multiEdit));
 	},
 
 	_isDeleteEnabled : function(flags) {
@@ -266,8 +274,11 @@ dnet.core.dc.DcActionsStateManager = {
 
 	_getFlagsDelete : function(dc) {
 		return {
+			isReadOnly : dc.isReadOnly(),
 			isAnyChildDirty : dc.isAnyChildDirty(),
 			selectedRecordsLength : dc.getSelectedRecords().length,
+			isCurrentRecordDirty : dc.isCurrentRecordDirty(),
+			multiEdit : dc.multiEdit,
 			storeCount : dc.store.getCount()
 		};
 	},

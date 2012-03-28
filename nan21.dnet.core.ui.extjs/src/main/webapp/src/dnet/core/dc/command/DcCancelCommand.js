@@ -3,48 +3,36 @@ Ext.define("dnet.core.dc.command.DcCancelCommand", {
 
 	onExecute : function() {
 		var dc = this.dc;
-		//console.log("cancel: 1-store.getCount() = "+dc.store.getCount() );
-		//console.log("cancel: 1-count dirty  = "+dc.store.data.filterBy(function(e) { return e.dirty}).getCount()  );
-		try {
-			if (dc.store.getCount() == 0) {
-				this.discardChanges();
-			} else {
-				this.discardChildrenChanges();
-				this.discardChanges();
-			}
-		} catch(e) {
-			// 
-			alert(e);
+ 
+		if (dc.store.getCount() == 0) {
+			this.discardChanges();
+		} else {
+			this.discardChildrenChanges();
+			this.discardChanges();
 		}
-		//console.log("cancel: 2-store.getCount() = "+dc.store.getCount() );
-		//console.log("cancel: 2-count dirty  = "+dc.store.data.filterBy(function(e) { return e.dirty}).getCount()  );
-		//dc.updateActionsState();
+ 
 	},
 
 	discardChanges : function() {
 
 		var dc = this.dc;
 		var s = dc.store;
-
+ 
 		if (dc.multiEdit) {
 			s.rejectChanges();
 		} else {
-//			if (dc.record) {
-//				dc.record.reject();
-//			}
-			
+			s.rejectChanges();			
 			if (dc.record.phantom) {
-				//dc.store.remove(dc.record);
-				/* workaround to avoid the dirty check in AbstractDc */
+				/* workaround to avoid the dirty check in AbstractDc.setRecord */
 				var cr = dc.record;
 				cr.phantom = false;
 				cr.dirty = false;
-				dc.setRecord(null);
+				dc.setRecord(null, true);
 				cr.phantom = true;
 				cr.dirty = true;
-			}
-			s.rejectChanges();
+			} 
 		}
+ 		
 	},
 
 	discardChildrenChanges : function() {

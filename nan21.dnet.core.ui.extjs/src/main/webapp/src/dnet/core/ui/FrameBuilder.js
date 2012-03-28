@@ -234,6 +234,9 @@ Ext.define("dnet.core.ui.FrameBuilder" , {
 		this.frame._elems_.add(config.name, config);
 		if (config.stateManager ) {
 			var options = {and:config.stateManager.and };
+			if (options.and) {
+				this.frame._buttonStateRules_[config.name] = options.and;
+			}
 			dnet.core.ui.FrameButtonStateManager.register(config.name, config.stateManager.name, config.stateManager.dc, this.frame, options );
 		}
 		return this;

@@ -1,30 +1,40 @@
 Ext.define("dnet.core.dc.AbstractDcvFilterForm", {
-	extend : "Ext.form.Panel",
+	extend : "dnet.core.dc.AbstractDNetDcForm",
 
-	// DNet properties
+	// **************** Properties *****************
 	/**
 	 * Component builder
+	 * 
 	 * @type dnet.core.dc.DcvFilterFormBuilder
 	 */
 	_builder_ : null,
-	
-	/**
-	 * Elements definition map
-	 * @type Ext.util.MixedCollection
-	 */
-	_elems_ : null,
-	
-	/**
-	 * DC-Controller
-	 * @type dnet.core.dc.AbstractDc
-	 */
-	_controller_ : null,
-	
-	_mainViewName_ : "main",
-	_dcViewType_ : "filter-form",
-	_trl_ : null,
 
-	// defaults
+	/**
+	 * Helper property to identify this dc-view type as filter-form.
+	 * 
+	 * @type String
+	 */
+	_dcViewType_ : "filter-form",
+
+	// **************** Public API *****************
+
+	/**
+	 * @public Returns the builder associated with this type of component. Each
+	 *         predefined data-control view type has its own builder. If it
+	 *         doesn't exist yet attempts to create it.
+	 * 
+	 * @return {dnet.core.dc.DcvFilterFormBuilder}
+	 */
+	_getBuilder_ : function() {
+		if (this._builder_ == null) {
+			this._builder_ = new dnet.core.dc.DcvFilterFormBuilder({
+						dcv : this
+					});
+		}
+		return this._builder_;
+	},
+
+	// **************** Defaults and overrides *****************
 
 	frame : true,
 	border : false,
@@ -48,217 +58,140 @@ Ext.define("dnet.core.dc.AbstractDcvFilterForm", {
 	},
 
 	initComponent : function(config) {
-		 
-		this._elems_ = new Ext.util.MixedCollection();
-		this._startDefine_();
-
-		/* define elements */
-		if (this._beforeDefineElements_() !== false) {
-			this._defineElements_();
-			this._afterDefineElements_();
-		}
-		this._elems_.each(this._postProcessElem_, this);
-
-		/* build the ui, linking elements */
-		if (this._beforeLinkElements_() !== false) {
-			this._linkElements_();
-			this._afterLinkElements_();
-		}
-
-		this._endDefine_();
-
-		var cfg = {
-			layout : "fit",
-			items : [ this._elems_.get(this._mainViewName_) ]
-		}
-		Ext.apply(cfg, config);
-		Ext.apply(this, cfg);
-
+		this._runElementBuilder_();
 		this.callParent(arguments);
+		this._registerListeners_();
+	},
 
-		this.on( {
-			scope : this,
-			afterrender : function() {
-				this.updateBound(this._controller_.getFilter());
-			}
-		});
-		this.mon(this._controller_, "parameterValueChanged", this._onParameterValueChanged_, this);
-		this.mon(this._controller_, "filterValueChanged", this._onFilterValueChanged_, this);
-		
-		if (this._controller_.commands.doQuery ) {
-			this._controller_.commands.doQuery.beforeExecute = Ext.Function.createInterceptor(
-				this._controller_.commands.doQuery.beforeExecute,
-				function() {
-					if(!this.getForm().isValid()) {
-						Ext.Msg.show({
-							title : "Validation info",	
-							msg : "Filter contains invalid data.<br> Please fix the errors then try again.",
-							scope : this,
-							icon : Ext.MessageBox.ERROR,
-							buttons : Ext.MessageBox.OK
-						});
-						return false;
-					} else {
-						return true;	
-					}					
-				},this, -1 );
+	/**
+	 * After the form is rendered invoke the record binding. This is necessary
+	 * as the form may be rendered lazily(delayed) and the data-control may
+	 * already have a current record set.
+	 */
+	afterRender : function() {
+		this.callParent(arguments);
+		if (this._controller_ && this._controller_.getFilter()) {
+			this._onBind_(this._controller_.getFilter());
+		} else {
+			this._onUnbind_(null);
 		}
-		
-	}, 
-	
-	
-	_startDefine_ : function() {
-	},
-	_endDefine_ : function() {
 	},
 
-	_getElement_ : function(name) {
-		return Ext.getCmp(this._elems_.get(name).id);
+	// **************** Private API *****************
+
+	/**
+	 * Register event listeners
+	 */
+	_registerListeners_ : function() {
+		// this.mon(this, "afterrender", this.on_afterrender, this);
+		this.mon(this._controller_, "parameterValueChanged",
+				this._onParameterValueChanged_, this);
+		this.mon(this._controller_, "filterValueChanged",
+				this._onFilterValueChanged_, this);
+
+		if (this._controller_.commands.doQuery) {
+			this._controller_.commands.doQuery.beforeExecute = Ext.Function
+					.createInterceptor(
+							this._controller_.commands.doQuery.beforeExecute,
+							function() {
+								if (this._shouldValidate_()
+										&& !this.getForm().isValid()) {
+									Ext.Msg.show({
+										title : "Validation info",
+										msg : "Filter contains invalid data.<br> Please fix the errors then try again.",
+										scope : this,
+										icon : Ext.MessageBox.ERROR,
+										buttons : Ext.MessageBox.OK
+									});
+									return false;
+								} else {
+									return true;
+								}
+							}, this, -1);
+		}
 	},
 
-	_getElementConfig_ : function(name) {
-		return this._elems_.get(name);
+	/**
+	 * Bind the current filter model of the data-control to the form.
+	 * 
+	 * @param {Ext.data.Model}
+	 *            record The record to bind
+	 */
+	_onBind_ : function(filter) {
+		this._updateBound_(filter);
+		this._applyStates_(filter);
+		this._afterBind_(filter);
 	},
 
-	_get_ : function(name) {
-		return this._getElement_(name);
+	/**
+	 * Un-bind the filter from the form.
+	 * 
+	 * @param {Ext.data.Model}
+	 *            record
+	 */
+	_onUnbind_ : function(filter) {
+		this._updateBound_(filter);
+		this._afterUnbind_(filter);
 	},
 
-	_getConfig_ : function(name) {
-		return this._elems_.get(name);
-	},
-
-	onBind : function(record) {
-		this.updateBound(record);
-	},
-
-	onUnbind : function(record) {
-		this.updateBound();
-	},
-
-	afterEdit : function(record) {
-		this.updateBound(record);
-	},
-
-	afterReject : function(record) {
-		this.updateBound(record);
-	},
-
-	updateBound : function(record) {
-		if (!record) {
+	/**
+	 * When the filter has been changed in any way other than user interaction,
+	 * update the fields of the form with the changed values from the model.
+	 * Such change may happen by custom code snippets updating the model in a
+	 * beginEdit-endEdit block, filter-service methods which returns changed
+	 * data from server, etc.
+	 * 
+	 * @param {Ext.data.Model}
+	 *            filter
+	 */
+	_updateBound_ : function(filter) {
+		if (!filter) {
 			this.disable();
 			this.form.reset();
 		} else {
 			if (this.disabled) {
 				this.enable();
 			}
-			this.form.loadRecord(record);
-		}
-	},
-
-	_onParameterValueChanged_: function(dc, paramName, ov, nv) {
-		var fld = this._elems_.findBy(function(item) {
-			return (item.paramIndex == paramName);
-		});
-		if (fld) {
-			fld = this._getElement_(fld.name);
-			if (fld.getValue() != nv) {
-				fld.suspendEvents();
-				fld.setValue(nv);
-				fld.resumeEvents();
-			}	
-		}			
-	},
-	
-	
-	_onFilterValueChanged_: function(ctrl, fieldName, ov, nv) {
-		var fld = this._elems_.findBy(function(item) {
-			return (item.dataIndex == fieldName);
-		});
-		if (fld) {
-			fld = this._getElement_(fld.name);
-			if (fld.getValue() != nv) {
-				fld.suspendEvents();
-				fld.setValue(nv);
-				fld.resumeEvents();
-			}	
-		}
-	},
-	
-	_defineElements_ : function() {
-	},
-
-	
-	_beforeDefineElements_ : function() {
-		return true;
-	},
-
-	
-	_afterDefineElements_ : function() {
-	},
-
-	
-	_linkElements_ : function() {
-	},
-
-	
-	_beforeLinkElements_ : function() {
-		return true;
-	},
-
-	
-	_afterLinkElements_ : function() {
-	},
-
-	_postProcessElem_ : function(item, idx, len) {
-		if (item.fieldLabel == undefined) {
-			Dnet.translateField(this._trl_, this._controller_._trl_, item);
+			this.form.loadRecord(filter);
 		}
 	},
 
 	/**
-	 * Get value from resource bundle for the specified key.
+	 * The filter model is not part of a store, so we have listen to changes
+	 * made to the model through the `filterValueChanged` event raised by the
+	 * data-control. So changes to the filter model should be done through the
+	 * setFilterValue method of the data-control in order to be listened and
+	 * picked-up to refresh the correcponding filter-form fields.
+	 * 
+	 * @param {dnet.core.dc.AbstractDc}
+	 *            dc The controller
+	 * @param {String}
+	 *            property The filter property which has been changed
+	 * @param {Object}
+	 *            ov Old value
+	 * @param {Object}
+	 *            nv New value
 	 */
-	_getRBValue_ : function(k) {
-		if (this._trl_ != null && this._trl_[k]) {
-			return this._trl_[k];
-		}
-		if (this._controller_._trl_ != null && this._controller_._trl_[k]) {
-			return this._controller_._trl_[k];
-		} else {
-			return k;
-		}
-	},
-
-	_getBuilder_ : function() {
-		if (this._builder_ == null) {
-			this._builder_ = new dnet.core.dc.DcvFilterFormBuilder( {
-				dcv : this
-			});
-		}
-		return this._builder_;
-	},
-	
-	beforeDestroy: function() { 
-		this._controller_ = null;
-		this.callParent();
-		this._elems_.each(this.unlinkElem, this);
-		this._elems_.each(this.destroyElement, this);	 
-		 
-	},
-	
-	unlinkElem: function(item, index, len) {
-		item._dcView_ = null;
-	},
- 	destroyElement: function(elemCfg) {
-		try{			 
-			var c =  Ext.getCmp( elemCfg.id );
-			if (c) {
-				Ext.destroy(c);
-			}			
-		} catch(e) {
-			//alert(e);
+	_onFilterValueChanged_ : function(dc, property, ov, nv) {
+		var fld = this._elems_.findBy(function(item) {
+					return (item.dataIndex == property);
+				});
+		if (fld) {
+			fld = this._getElement_(fld.name);
+			if (fld.getValue() != nv) {
+				fld.suspendEvents();
+				fld.setValue(nv);
+				fld.resumeEvents();
+			}
 		}
 	}
-	
+
+		// afterEdit : function(record) {
+		// this.updateBound(record);
+		// },
+		//
+		// afterReject : function(record) {
+		// this.updateBound(record);
+		// },
+
 });

@@ -75,7 +75,11 @@ Ext.define("dnet.core.dc.command.DcRpcFilterCommand", {
 	 */
 	,
 	onAjaxSuccess : function(response, options) {
-		Ext.Msg.hide();
+		try {
+			Ext.Msg.hide();
+		} catch(e) {
+			
+		}
 		var o = options.options || {}, name = o.name, s = o || {};
 		var dc = this.dc;
 		if (s.callbacks && s.callbacks.successFn) {
@@ -108,7 +112,11 @@ Ext.define("dnet.core.dc.command.DcRpcFilterCommand", {
 	 */
 	,
 	onAjaxFailure : function(response, options) {
-		Ext.Msg.hide();
+		try {
+			Ext.Msg.hide();
+		} catch(e) {
+			
+		}
 		var o = options.options || {}, serviceName = o.name, s = o || {};
 		var dc = this.dc;
 		if (s.callbacks && s.callbacks.failureFn) {

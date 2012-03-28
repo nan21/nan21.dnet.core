@@ -29,6 +29,7 @@
     <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/base/ChangePasswordWindow.js"></script>
     <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/base/FrameInspector.js"></script>
     <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/base/UserPreferences.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/base/AbstractDNetView.js"></script>   
     
     <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/base/HomePanel.js"></script>
     <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/base/UrlBuilder.js"></script>
@@ -41,10 +42,17 @@
     <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/base/WorkflowFormFactory.js"></script>
      
  	<script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/ds/AbstractDs.js"></script>
+ 	
+ 	
+ 	
     <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/dc/AbstractDc.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/dc/AbstractDNetDcGrid.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/dc/AbstractDNetDcForm.js"></script>
     <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/dc/AbstractDcvGrid.js"></script>    
     <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/dc/AbstractDcvEditableGrid.js"></script>
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/dc/AbstractDcvForm.js"></script>    
+     
+
+    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/dc/AbstractDcvForm.js"></script>      
     <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/dc/AbstractDcvTree.js"></script>
     <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/dc/AbstractDcvFilterForm.js"></script>
     <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/dc/DcvFilterFormBuilder.js"></script>

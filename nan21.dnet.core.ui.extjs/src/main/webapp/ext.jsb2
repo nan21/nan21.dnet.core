@@ -87,6 +87,15 @@
 	"text": "AbstractDcvEditableGrid.js",
 	"path": "src/dnet/core/dc/"
 },{
+	"text": "AbstractDNetView.js",
+	"path": "src/dnet/core/base/"
+},{
+	"text": "AbstractDNetDcForm.js",
+	"path": "src/dnet/core/dc/"
+},{
+	"text": "AbstractDNetDcGrid.js",
+	"path": "src/dnet/core/dc/"
+},{
 	"text": "AbstractDcvForm.js",
 	"path": "src/dnet/core/dc/"
 },{

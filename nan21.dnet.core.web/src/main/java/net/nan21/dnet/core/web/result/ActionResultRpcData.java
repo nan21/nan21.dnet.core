@@ -2,7 +2,8 @@ package net.nan21.dnet.core.web.result;
 
 import net.nan21.dnet.core.api.action.IActionResultRpcData;
 
-public class ActionResultRpcData implements IActionResultRpcData{
+public class ActionResultRpcData extends AbstractResultData 
+	implements IActionResultRpcData{
 
 	  
     /**
