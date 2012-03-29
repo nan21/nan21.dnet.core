@@ -380,14 +380,8 @@ dnet.Translation = Ext.apply({},{
         ,InvTransactions_UI : "Inventory transactions"
         ,InvBalance_UI: "Stocks"
         ,InvOperations_UI: "Inventory operations"
-          //SD
-        ,SalesOrderBaseData_UI : "Base data(Sales orders)"
-        //,SalesOrderType_UI : "Order type"
-        ,SalesOrder_UI : "Orders"
-
-        //,SalesInvoiceStatus_UI : "Invoice status"
-        //,SalesInvoiceType_UI : "Invoice type"
-        ,SalesInvoiceBaseData_UI : "Base data(Sales invoice)"	
+          //SD         
+        ,SalesOrder_UI : "Orders" 
         ,SalesInvoice_UI: "Invoices"
         ,OpportunityBaseData_UI: "Opportunity base data" 
         ,Opportunity_UI: "Opportunities" 
