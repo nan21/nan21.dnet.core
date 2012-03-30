@@ -10,6 +10,8 @@ Ext.define("dnet.core.dc.AbstractDNetDcGrid", {
 
 	// **************** Properties *****************
 
+ 
+			
 	/**
 	 * 
 	 * @type dnet.core.dc.AbstractDc

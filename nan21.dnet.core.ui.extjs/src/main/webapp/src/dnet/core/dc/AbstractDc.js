@@ -258,7 +258,7 @@ Ext.define("dnet.core.dc.AbstractDc", {
 
 		// after the store is loaded apply an initial selection
 		if (this.afterStoreLoadDoDefaultSelection) {
-			this.mon(this.store, "load", this.onStore_load, this);
+			this.mon(this.store, "load", this.onStore_load , this);
 		}
 
 		// invoke the action state update whenever necessary
@@ -272,7 +272,7 @@ Ext.define("dnet.core.dc.AbstractDc", {
 		this.mon(this.store, "write", this.onStore_write, this);
 	},
 
-	onStore_load : function(store, operation, eopts) {
+	onStore_load : function(store, records, succes, eopts) {		 
 		if (this.afterStoreLoadDoDefaultSelection) {
 			this.doDefaultSelection();
 		}
@@ -283,6 +283,7 @@ Ext.define("dnet.core.dc.AbstractDc", {
 			return false;
 		}
 	},
+	
 	onStore_update : function(store, rec, operation, eopts) {
 		this.fireEvent("statusChange", {
 					dc : this
@@ -293,6 +294,7 @@ Ext.define("dnet.core.dc.AbstractDc", {
 	onStore_datachanged : function(store, eopts) {
 		this.updateActionsState();
 	},
+	
 	onStore_remove : function(store, records, index, eopts) {
 		this.updateActionsState();
 		this.doDefaultSelection();
@@ -522,10 +524,10 @@ Ext.define("dnet.core.dc.AbstractDc", {
 	 * Default initial selection
 	 */
 	doDefaultSelection : function() {
-		if (this.store.getCount() > 0) {
-			this.setSelectedRecords([this.store.getAt(0)]);
+		if (this.store.getCount() > 0) {			
+			this.setRecord(this.store.getAt(0), true);
 		} else {
-			this.setSelectedRecords([]);
+			this.setRecord(null);
 		}
 	},
 

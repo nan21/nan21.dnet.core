@@ -5,7 +5,7 @@ Ext.define("dnet.core.base.AbstractDNetView", {
 
 			// **************** Properties *****************
 
-			_refs_ : {},
+			_refs_ : null,
 			
 			/**
 			 * Elements definition map
@@ -38,6 +38,9 @@ Ext.define("dnet.core.base.AbstractDNetView", {
 			 * @return {}
 			 */
 			_getElement_ : function(name) {
+				if (!this._refs_) {
+					this._refs_ = {};
+				}
 				if (!this._refs_[name]) {
 					this._refs_[name] = Ext.getCmp(this._elems_.get(name).id);
 				}
