@@ -5,19 +5,12 @@ Ext.define("dnet.core.dc.AbstractDNetDcGrid", {
 	extend : "Ext.grid.Panel",
 
 	mixins : {
-		factoryElems : "dnet.core.base.AbstractDNetView"
+		elemBuilder : "dnet.core.base.AbstractDNetView",
+		dcViewSupport: "dnet.core.dc.AbstractDNetDcView"
 	},
 
 	// **************** Properties *****************
-
  
-			
-	/**
-	 * 
-	 * @type dnet.core.dc.AbstractDc
-	 */
-	_controller_ : null,
-
 	/**
 	 * Columns definition map
 	 * 
@@ -80,15 +73,15 @@ Ext.define("dnet.core.dc.AbstractDNetDcGrid", {
 	 */
 	_layoutWindow_ : null,
 
-	/**
-	 * Delayed task to handle the user initiated records selection in grid and
-	 * synchronize the data-control selectedRecords in
-	 * 
-	 * @link dnet.core.dc.AbstractDc.
-	 * 
-	 * @type Ext.util.DelayedTask
-	 */
-	_routeSelectionTask_ : null,
+//	/**
+//	 * Delayed task to handle the user initiated records selection in grid and
+//	 * synchronize the data-control selectedRecords in
+//	 * 
+//	 * @link dnet.core.dc.AbstractDc.
+//	 * 
+//	 * @type Ext.util.DelayedTask
+//	 */
+//	_routeSelectionTask_ : null,
 
 	// **************** Public API *****************
 
@@ -271,7 +264,7 @@ Ext.define("dnet.core.dc.AbstractDNetDcGrid", {
 		var s = evnt.dc.getSelectedRecords();
 		// console.log("Abstractdcvgrid. onController_selectionChange sel.len =
 		// " + s.length );
-		if ( evnt.eOpts && evnt.eOpts.fromGrid === true ) {
+		if ( evnt.eOpts && evnt.eOpts.fromGrid === true && evnt.eOpts.grid === this) {
 			return;			
 		}
 		if (s !== this.getSelectionModel().getSelection()) {
@@ -453,17 +446,17 @@ Ext.define("dnet.core.dc.AbstractDNetDcGrid", {
 		var dcSel = this._controller_.selectedRecords;
 	 
 		var ctrl = this._controller_;
-		ctrl.setSelectedRecords(gridSel, {fromGrid: true});
+		ctrl.setSelectedRecords(gridSel, {fromGrid: true, grid: this});
 		if (gridSel.length <= 1) {
 			if (gridSel.length == 1) {
-				ctrl.setRecord(gridSel[0],{fromGrid: true});
+				ctrl.setRecord(gridSel[0],{fromGrid: true, grid: this});
 			} else {
-				ctrl.setRecord(null,{fromGrid: true});
+				ctrl.setRecord(null,{fromGrid: true, grid: this});
 			}
 		}
 		if (gridSel.length > 1) {
 			if (ctrl.record == null || gridSel.indexOf(ctrl.record) < 0) {
-				ctrl.setRecord(gridSel[0],{fromGrid: true});
+				ctrl.setRecord(gridSel[0],{fromGrid: true, grid: this});
 			}
 		}
 	},
@@ -473,31 +466,31 @@ Ext.define("dnet.core.dc.AbstractDNetDcGrid", {
 	 * 
 	 * @return {}
 	 */
-	_getRouteSelectionTask_ : function() {
-		if (this._routeSelectionTask_ == null) {
-			this._routeSelectionTask_ = new Ext.util.DelayedTask(function() {
-
-				var gridSel = this.getSelectionModel().getSelection();
-				var dcSel = this._controller_.selectedRecords;
- 
-				var ctrl = this._controller_;
-				ctrl.setSelectedRecords(gridSel, {fromGrid: true});
-				if (gridSel.length <= 1) {
-					if (gridSel.length == 1) {
-						ctrl.setRecord(gridSel[0],{fromGrid: true});
-					} else {
-						ctrl.setRecord(null,{fromGrid: true});
-					}
-				}
-				if (gridSel.length > 1) {
-					if (ctrl.record == null || gridSel.indexOf(ctrl.record) < 0) {
-						ctrl.setRecord(gridSel[0],{fromGrid: true});
-					}
-				}
-			}, this);
-		}
-		return this._routeSelectionTask_;
-	},
+//	_getRouteSelectionTask_ : function() {
+//		if (this._routeSelectionTask_ == null) {
+//			this._routeSelectionTask_ = new Ext.util.DelayedTask(function() {
+//
+//				var gridSel = this.getSelectionModel().getSelection();
+//				var dcSel = this._controller_.selectedRecords;
+// 
+//				var ctrl = this._controller_;
+//				ctrl.setSelectedRecords(gridSel, {fromGrid: true});
+//				if (gridSel.length <= 1) {
+//					if (gridSel.length == 1) {
+//						ctrl.setRecord(gridSel[0],{fromGrid: true});
+//					} else {
+//						ctrl.setRecord(null,{fromGrid: true});
+//					}
+//				}
+//				if (gridSel.length > 1) {
+//					if (ctrl.record == null || gridSel.indexOf(ctrl.record) < 0) {
+//						ctrl.setRecord(gridSel[0],{fromGrid: true});
+//					}
+//				}
+//			}, this);
+//		}
+//		return this._routeSelectionTask_;
+//	},
 
 	/**
 	 * Postprocessor run to inject framework specific settings into the columns.
@@ -514,26 +507,7 @@ Ext.define("dnet.core.dc.AbstractDNetDcGrid", {
 			Dnet.translateColumn(this._trl_, this._controller_._trl_, column);
 		}
 	},
-
-	/**
-	 * Get the translation from the resource bundle for the specified key.
-	 * 
-	 * @param {String}
-	 *            k Key to be translated
-	 * @return {String} Translation of the key if found otherwise the key
-	 *         itself.
-	 */
-	_getRBValue_ : function(k) {
-		if (this._trl_ != null && this._trl_[k]) {
-			return this._trl_[k];
-		}
-		if (this._controller_._trl_ != null && this._controller_._trl_[k]) {
-			return this._controller_._trl_[k];
-		} else {
-			return k;
-		}
-	},
-
+ 
 	beforeDestroy : function() {
 		this._controller_ = null;
 		this.callParent();

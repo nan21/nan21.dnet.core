@@ -127,7 +127,17 @@ Ext.define("dnet.core.dc.AbstractDcvEditableGrid", {
 						fn : this._selectionHandler_ ,
 						buffer: 200
 					}
-				}
+				},
+				"beforedeselect" : {
+						scope : this,
+						fn : function(sm, record, index, eopts) {
+							if (record == this._controller_.record
+									&& !this._controller_
+											.isRecordChangeAllowed()) {
+								return false;
+							}
+						}
+					}
 			} 
 		});
 

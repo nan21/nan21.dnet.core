@@ -109,27 +109,29 @@ Ext.define("dnet.core.lov.AbstractCombo", {
  
 	 
  
-    _mapReturnFields_: function(crec) {   
-		if (this.inEditor) {
-			var dcv = this._dcView_;
+    _mapReturnFields_: function(crec) {  
+		var dcv = this._dcView_;
+		var mrec = null;
+		var targetIsFilter = false;
+		if (this.inEditor && dcv._dcViewType_ != "edit-propgrid" 
+				&& dcv._dcViewType_ != "filter-propgrid" ) {			
 			if (dcv && dcv._dcViewType_ == "bulk-edit-field") {
             	/*is a bulk editor for one ds field in a property grid*/
-	           mrec = dcv.getSource();
-			 	this._mapReturnFieldsExecuteBulkEdit_(crec,mrec);
-           } else {           	 
-           	 var mrec = this._targetRecord_;
-           	 this._mapReturnFieldsExecute_(crec,mrec);
-           }             
-		} else {
-			var dcv = this._dcView_, mrec = null;
-			if (dcv._dcViewType_ == "edit-form") {
+            	mrec = dcv.getSource();
+				this._mapReturnFieldsExecuteBulkEdit_(crec,mrec);
+			} else {           	 
+				mrec = this._targetRecord_;
+				this._mapReturnFieldsExecute_(crec,mrec);
+			}             
+		} else {			
+			if (dcv._dcViewType_ == "edit-form" || dcv._dcViewType_ == "edit-propgrid" ) {
 	           mrec = dcv._controller_.getRecord();
 			}
-	        if (dcv._dcViewType_ == "filter-form") {
+	        if (dcv._dcViewType_ == "filter-form" || dcv._dcViewType_ == "filter-propgrid" ) {
 	           mrec = dcv._controller_.getFilter();
-			}
-			
-           this._mapReturnFieldsExecute_(crec, mrec, dcv._controller_.getParams());
+	           targetIsFilter = true;
+			}			
+			this._mapReturnFieldsExecute_(crec, mrec, dcv._controller_.getParams(), targetIsFilter );
 		}
     },
     
@@ -165,7 +167,7 @@ Ext.define("dnet.core.lov.AbstractCombo", {
     /**
      * Params: crec: combo selected record
      */
-    _mapReturnFieldsExecute_: function(crec, mrec, prec) {    
+    _mapReturnFieldsExecute_: function(crec, mrec, prec, targetIsFilter) {    
 		if (!mrec) {return; }
         if (this.retFieldMapping != null) {
 				var nv,ov, isParam, rawv= this.getRawValue();
@@ -188,7 +190,11 @@ Ext.define("dnet.core.lov.AbstractCombo", {
 								if(isParam) {
 								   this._dcView_._controller_.setParamValue(retDataIndex, nv);
         						} else {
-									mrec.set( retDataIndex ,nv   );
+        							if(targetIsFilter) {
+        								this._dcView_._controller_.setFilterValue(retDataIndex, nv);
+        							} else {
+        								mrec.set( retDataIndex ,nv   );
+        							}
 								}
 							}
 					   } else {	
@@ -202,7 +208,11 @@ Ext.define("dnet.core.lov.AbstractCombo", {
 								   if(isParam) {
 									   this._dcView_._controller_.setParamValue(retDataIndex,rawv );
 									} else {
-										 mrec.set(retDataIndex, rawv );
+										if(targetIsFilter) {
+	        								this._dcView_._controller_.setFilterValue(retDataIndex, rawv);
+	        							} else {
+	        								mrec.set(retDataIndex, rawv );
+	        							}
 									}
 							   }
 								
@@ -211,7 +221,12 @@ Ext.define("dnet.core.lov.AbstractCombo", {
 									if(isParam) {
 									   this._dcView_._controller_.setParamValue(retDataIndex, null);
 	        						} else {
-										 mrec.set(retDataIndex ,null);
+										 //mrec.set(retDataIndex ,null);
+										 if(targetIsFilter) {
+	        								this._dcView_._controller_.setFilterValue(retDataIndex, null);
+	        							} else {
+	        								mrec.set(retDataIndex, null );
+	        							}
 									}
 								}
 							}

@@ -2,7 +2,7 @@ Ext.define("dnet.core.ui.AbstractUi", {
 	extend : "Ext.panel.Panel",
 
 	mixins : {
-		factoryElems : "dnet.core.base.AbstractDNetView"
+		elemBuilder : "dnet.core.base.AbstractDNetView"
 	},
 
 	// **************** Properties *****************

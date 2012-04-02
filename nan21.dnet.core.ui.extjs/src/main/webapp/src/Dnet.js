@@ -248,6 +248,18 @@ Dnet = {
 		item.header = Dnet.translate("ds",item.dataIndex); 
 	}
 	
+	,createBooleanStore: function() {
+		return Ext.create('Ext.data.Store', {
+			fields : [ "bv", "tv" ],
+			data : [{
+				"bv" : true,
+				"tv" : Dnet.translate("msg", "bool_true")
+			}, {
+				"bv" : false,
+				"tv" : Dnet.translate("msg", "bool_false")
+			}]
+		})
+	}
 };
 
 

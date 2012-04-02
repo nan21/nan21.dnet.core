@@ -263,15 +263,18 @@ Ext.define("dnet.core.dc.DcvFilterFormBuilder", {
 				if (!r)
 					return;
 				var rv = r.get(f.paramIndex);
+				var ctrl = f._dcView_._controller_;
 				if (Ext.isDate(rv)) {
 					var rd = Ext.Date.parse(Ext.Date.format(rv, f.format),
 							f.format);
 					if (!r.isEqual(rd, nv)) {
-						r.set(f.paramIndex, nv);
+						ctrl.setFilterValue(f.paramIndex, nv);
+						//r.set(f.paramIndex, nv);
 					}
 				} else {
 					if (!r.isEqual(rv, nv)) {
-						r.set(f.paramIndex, nv);
+						ctrl.setFilterValue(f.paramIndex, nv);
+						//r.set(f.paramIndex, nv);
 					}
 				}
 			};
@@ -284,16 +287,19 @@ Ext.define("dnet.core.dc.DcvFilterFormBuilder", {
 				if (!r)
 					return;
 				var rv = r.get(f.dataIndex);
+				var ctrl = f._dcView_._controller_;
 				if (Ext.isDate(rv)) {
 					var rd = Ext.Date.parse(Ext.Date.format(rv, f.format),
 							f.format);
 					if (!r.isEqual(rd, nv)) {
-						r.set(f.dataIndex, nv);
+						//r.set(f.dataIndex, nv);
+						ctrl.setFilterValue(f.dataIndex, nv);
 					}
 				} else {
 					if (!r.isEqual(rv, nv)) {
 						//r.beginEdit();
-						r.set(f.dataIndex, nv);
+						//r.set(f.dataIndex, nv);
+						ctrl.setFilterValue(f.dataIndex, nv);
 						//r.endEdit();
 					}
 				}
@@ -303,86 +309,7 @@ Ext.define("dnet.core.dc.DcvFilterFormBuilder", {
 	},
 	
 	
-	
-	
-	
-	
-	// ==============================================
-	// ==============================================
-	
-	
-	applyModelUpdater1 : function(config, eventName) {
-		var en = eventName || "change";
-		if (!config.listeners) {
-			config.listeners = {};
-		}
-		if (!config.listeners[en]) {
-			config.listeners[en] = {};
-		}
-
-		var fn=null;
-		if (config.paramIndex) {
-			fn = function(f, nv, ov) {
-				if (!f.isValid()) {
-					return;
-				}
-				var r = f._dcView_._controller_.getParams();
-				if (!r)
-					return;
-				var rv = r.get(f.paramIndex);
-				if (Ext.isDate(rv)) {
-					var rd = Ext.Date.parse(Ext.Date.format(rv, f.format),
-							f.format);
-					if (!r.isEqual(rd, nv)) {
-						r.set(f.paramIndex, nv);
-					}
-				} else {
-					if (!r.isEqual(rv, nv)) {
-						r.set(f.paramIndex, nv);
-					}
-				}
-//				f._dcView_._controller_.setParamValue(f.paramIndex,
-//						f.getValue(), true);
-			};
-		} else if (config.dataIndex) {
-			fn = function(f, nv, ov) {
-				
-				if (!f.isValid()) {
-					return;
-				}
-				var r = f._dcView_._controller_.getFilter();
-				if (!r)
-					return;
-				var rv = r.get(f.dataIndex);
-				if (Ext.isDate(rv)) {
-					var rd = Ext.Date.parse(Ext.Date.format(rv, f.format),
-							f.format);
-					if (!r.isEqual(rd, nv)) {
-						r.set(f.dataIndex, nv);
-					}
-				} else {
-					if (!r.isEqual(rv, nv)) {
-						r.set(f.dataIndex, nv);
-					}
-				}
-				
-				
-//				f._dcView_._controller_.getFilter().set(f.dataIndex,
-//						f.getValue());
-			};
-		}
-		if(fn!=null) {
-			if (config.listeners[en].fn) {
-				config.listeners[en].fn = Ext.Function.createInterceptor(config.listeners[en].fn, fn);
-			} else {
-				config.listeners[en]["fn"] = fn;
-			}
-		}
-		
-	},
-
-	
-	
+	 
 	
 	// ==============================================
 	// ==============================================

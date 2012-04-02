@@ -1,9 +1,9 @@
 /**
- * Base panel used for data-control views. It serves as base class for
- * edit-forms and filter-forms.
+ * Base class for data-control property grid based views. It serves as base class for
+ * edit-form as property grids and filter-forms as property grids .
  */
-Ext.define("dnet.core.dc.AbstractDNetDcForm", {
-	extend : "Ext.form.Panel",
+Ext.define("dnet.core.dc.AbstractDNetDcPropGrid", {
+	extend : "Ext.grid.property.Grid",
 
 	mixins: {
 		elemBuilder: "dnet.core.base.AbstractDNetView",
@@ -14,7 +14,7 @@ Ext.define("dnet.core.dc.AbstractDNetDcForm", {
  
 	// **************** Public API *****************
 	 
-	
+ 
 	/**
 	 * @public Helper method to disable all fields.
 	 */
@@ -24,7 +24,8 @@ Ext.define("dnet.core.dc.AbstractDNetDcForm", {
 				});
 	},
  
- 
+
+	
 	/**
 	 * There may be situations when a form should not validate. For example a
 	 * data-control may have one form for insert and another one to edit an
@@ -39,7 +40,7 @@ Ext.define("dnet.core.dc.AbstractDNetDcForm", {
 		return true;
 	},
 	
- 
+
 
 	_canSetEnabled_ : function(name, model) {
 		var fn = this._elems_.get(name)._enableFn_;
@@ -59,7 +60,8 @@ Ext.define("dnet.core.dc.AbstractDNetDcForm", {
 		}
 	},
 
- 
+	 
+
 	/**
 	 * @public Helper method to disable the specified fields.
 	 * 
@@ -94,8 +96,7 @@ Ext.define("dnet.core.dc.AbstractDNetDcForm", {
 	
 	
 	// **************** Private methods *****************
-	
-	 
+ 
 	/**
 	 * Postprocessor run to inject framework specific settings into the
 	 * elements.

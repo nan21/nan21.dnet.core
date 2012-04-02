@@ -154,44 +154,7 @@ Ext.define("dnet.core.dc.AbstractDcvFilterForm", {
 			}
 			this.form.loadRecord(filter);
 		}
-	},
-
-	/**
-	 * The filter model is not part of a store, so we have listen to changes
-	 * made to the model through the `filterValueChanged` event raised by the
-	 * data-control. So changes to the filter model should be done through the
-	 * setFilterValue method of the data-control in order to be listened and
-	 * picked-up to refresh the correcponding filter-form fields.
-	 * 
-	 * @param {dnet.core.dc.AbstractDc}
-	 *            dc The controller
-	 * @param {String}
-	 *            property The filter property which has been changed
-	 * @param {Object}
-	 *            ov Old value
-	 * @param {Object}
-	 *            nv New value
-	 */
-	_onFilterValueChanged_ : function(dc, property, ov, nv) {
-		var fld = this._elems_.findBy(function(item) {
-					return (item.dataIndex == property);
-				});
-		if (fld) {
-			fld = this._getElement_(fld.name);
-			if (fld.getValue() != nv) {
-				fld.suspendEvents();
-				fld.setValue(nv);
-				fld.resumeEvents();
-			}
-		}
 	}
 
-		// afterEdit : function(record) {
-		// this.updateBound(record);
-		// },
-		//
-		// afterReject : function(record) {
-		// this.updateBound(record);
-		// },
-
+ 
 });

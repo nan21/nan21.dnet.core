@@ -4,5 +4,5 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
     <includeAll path="install/table" />
     <includeAll path="install/fk" />
-    <changeSet author="Version" id="1.0.0.M8" />
+    <changeSet author="Version" id="1.0.0.M9" />
 </databaseChangeLog>

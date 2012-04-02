@@ -610,12 +610,12 @@ Ext.define("dnet.core.dc.AbstractDc", {
 	/**
 	 * Set parameter property value
 	 */
-	setParamValue : function(n, v, silent) {
-		var ov = this.params.get(n);
-		if (ov != v) {
-			this.params.set(n, v);
+	setParamValue : function(property, newValue, silent) {
+		var ov = this.params.get(property);
+		if (ov != newValue) {
+			this.params.set(property, newValue);
 			if ( silent !== true ) {
-				this.fireEvent("parameterValueChanged", this, n, ov, v);
+				this.fireEvent("parameterValueChanged", this, property, ov, newValue);
 			}
 		}
 	},

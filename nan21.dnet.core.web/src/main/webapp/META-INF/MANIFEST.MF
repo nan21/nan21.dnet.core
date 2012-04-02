@@ -1,37 +1,37 @@
 Manifest-Version: 1.0
-Export-Package: net.nan21.dnet.core.web;version="1.0.0.M8",net.nan21.d
- net.core.web.controller;version="1.0.0.M8",net.nan21.dnet.core.web.co
- ntroller.data;version="1.0.0.M8";uses:="javax.servlet,javax.servlet.h
+Export-Package: net.nan21.dnet.core.web;version="1.0.0.M9",net.nan21.d
+ net.core.web.controller;version="1.0.0.M9",net.nan21.dnet.core.web.co
+ ntroller.data;version="1.0.0.M9";uses:="javax.servlet,javax.servlet.h
  ttp,net.nan21.dnet.core.api,net.nan21.dnet.core.api.action,net.nan21.
  dnet.core.api.service,net.nan21.dnet.core.api.session,net.nan21.dnet.
  core.presenter.service,net.nan21.dnet.core.security,org.springframewo
  rk.beans.factory.annotation,org.springframework.context.annotation,or
  g.springframework.stereotype,org.springframework.web.bind.annotation,
  org.springframework.web.context",net.nan21.dnet.core.web.controller.s
- ession;version="1.0.0.M8";uses:="javax.servlet.http,org.springframewo
+ ession;version="1.0.0.M9";uses:="javax.servlet.http,org.springframewo
  rk.beans.factory.annotation,org.springframework.context.annotation,or
  g.springframework.security.authentication,org.springframework.stereot
  ype,org.springframework.web.bind.annotation,org.springframework.web.c
  ontext,org.springframework.web.servlet",net.nan21.dnet.core.web.contr
- oller.ui;version="1.0.0.M8";uses:="javax.servlet.http,net.nan21.dnet.
+ oller.ui;version="1.0.0.M9";uses:="javax.servlet.http,net.nan21.dnet.
  core.api,net.nan21.dnet.core.security,net.nan21.dnet.core.web.setting
  s,org.springframework.web.bind.annotation,org.springframework.web.ser
  vlet,org.springframework.web.servlet.mvc",net.nan21.dnet.core.web.con
- troller.upload;version="1.0.0.M8";uses:="javax.servlet.http,net.nan21
+ troller.upload;version="1.0.0.M9";uses:="javax.servlet.http,net.nan21
  .dnet.core.api.service,org.springframework.beans.factory.annotation,o
  rg.springframework.context.annotation,org.springframework.stereotype,
  org.springframework.web.bind.annotation,org.springframework.web.conte
  xt,org.springframework.web.multipart",net.nan21.dnet.core.web.control
- ler.workflow;version="1.0.0.M8";uses:="javax.servlet,javax.servlet.ht
+ ler.workflow;version="1.0.0.M9";uses:="javax.servlet,javax.servlet.ht
  tp,org.activiti.engine,org.codehaus.jackson.map,org.springframework.b
  eans.factory.annotation,org.springframework.context.annotation,org.sp
  ringframework.stereotype,org.springframework.web.bind.annotation,org.
  springframework.web.context",net.nan21.dnet.core.web.result;version="
- 1.0.0.M8";uses:="net.nan21.dnet.core.api.action",net.nan21.dnet.core.
- web.settings;version="1.0.0.M8";uses:="net.nan21.dnet.core.api"
+ 1.0.0.M9";uses:="net.nan21.dnet.core.api.action",net.nan21.dnet.core.
+ web.settings;version="1.0.0.M9";uses:="net.nan21.dnet.core.api"
 Bundle-Vendor: Nan21 
 Bundle-ClassPath: WEB-INF/classes
-Bundle-Version: 1.0.0.M8
+Bundle-Version: 1.0.0.M9
 Tool: Bundlor 1.0.0.RELEASE
 Bundle-Name: DNet Core - web
 Bundle-ManifestVersion: 2
@@ -40,14 +40,14 @@ Bundle-SymbolicName: nan21.dnet.core.web
 Import-Package: javax.persistence;version="[2.0,2.1)",javax.persistenc
  e.criteria;version="[2.0,2.1)",javax.servlet,javax.servlet.http,javax
  .servlet.jsp.jstl.core;version="[1.2,2.0)",javax.sql,net.nan21.dnet.c
- ore.api;version="[1.0.0.M8,1.0.0.M8]",net.nan21.dnet.core.api.action;
- version="[1.0.0.M8,1.0.0.M8]",net.nan21.dnet.core.api.marshall;versio
- n="[1.0.0.M8,1.0.0.M8]",net.nan21.dnet.core.api.model,net.nan21.dnet.
- core.api.service;version="[1.0.0.M8,1.0.0.M8]",net.nan21.dnet.core.ap
- i.session;version="[1.0.0.M8,1.0.0.M8]",net.nan21.dnet.core.api.setup
- ,net.nan21.dnet.core.api.ui.extjs;version="[1.0.0.M8,1.0.0.M8]",net.n
+ ore.api;version="[1.0.0.M9,1.0.0.M9]",net.nan21.dnet.core.api.action;
+ version="[1.0.0.M9,1.0.0.M9]",net.nan21.dnet.core.api.marshall;versio
+ n="[1.0.0.M9,1.0.0.M9]",net.nan21.dnet.core.api.model,net.nan21.dnet.
+ core.api.service;version="[1.0.0.M9,1.0.0.M9]",net.nan21.dnet.core.ap
+ i.session;version="[1.0.0.M9,1.0.0.M9]",net.nan21.dnet.core.api.setup
+ ,net.nan21.dnet.core.api.ui.extjs;version="[1.0.0.M9,1.0.0.M9]",net.n
  an21.dnet.core.presenter.action,net.nan21.dnet.core.presenter.service
- ,net.nan21.dnet.core.security;version="[1.0.0.M8,1.0.0.M8]",org.activ
+ ,net.nan21.dnet.core.security;version="[1.0.0.M9,1.0.0.M9]",org.activ
  iti.engine;version="[5.6,6.0)",org.activiti.engine.form,org.activiti.
  engine.impl;version="[5.6,6.0)",org.activiti.engine.impl.bpmn.diagram
  ;version="[5.6,6.0)",org.activiti.engine.impl.persistence.entity,org.

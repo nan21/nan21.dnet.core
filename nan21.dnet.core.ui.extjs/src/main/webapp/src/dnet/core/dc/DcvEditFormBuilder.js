@@ -1,20 +1,14 @@
 /**
  * Builder for edit-form views.
  */
-Ext.define("dnet.core.dc.DcvFormBuilder", {
+Ext.define("dnet.core.dc.DcvEditFormBuilder", {
 	extend : "Ext.util.Observable",
 
 	dcv : null,
 
 	addTextField : function(config) {
 		config.xtype = "textfield";
-		
-		// focus is moved to the end of a textfield in some browsers (Chrome)
-		// when editing inside the text - applies to text/date/number field. Doesn't happen with textarea
-		// Not sure what is the cause, temporarily do this hack but should be analyzed
-//		config.xtype = "textarea";
-//		config.rows = 1;
-//		config.enterIsSpecial = true;
+		 
 		if (config.maxLength) {
 			config.enforceMaxLength = true;
 		}

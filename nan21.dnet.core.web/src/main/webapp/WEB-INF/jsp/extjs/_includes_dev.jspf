@@ -46,17 +46,24 @@
  	
  	
     <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/dc/AbstractDc.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/dc/AbstractDNetDcView.js"></script>
     <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/dc/AbstractDNetDcGrid.js"></script>
     <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/dc/AbstractDNetDcForm.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/dc/AbstractDNetDcPropGrid.js"></script>
     <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/dc/AbstractDcvGrid.js"></script>    
     <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/dc/AbstractDcvEditableGrid.js"></script>
      
-
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/dc/AbstractDcvForm.js"></script>      
+ 
+    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/dc/AbstractDcvEditForm.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/dc/AbstractDcvForm.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/dc/AbstractDcvEditPropGrid.js"></script>          
     <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/dc/AbstractDcvTree.js"></script>
     <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/dc/AbstractDcvFilterForm.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/dc/AbstractDcvFilterPropGrid.js"></script>
     <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/dc/DcvFilterFormBuilder.js"></script>
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/dc/DcvFormBuilder.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/dc/DcvEditFormBuilder.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/dc/DcvFilterPropGridBuilder.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/dc/DcvEditPropGridBuilder.js"></script>
     <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/dc/DcvGridBuilder.js"></script>
     <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/dc/DcvEditableGridBuilder.js"></script>
     

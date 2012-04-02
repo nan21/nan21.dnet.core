@@ -90,7 +90,13 @@
 	"text": "AbstractDNetView.js",
 	"path": "src/dnet/core/base/"
 },{
+	"text": "AbstractDNetDcView.js",
+	"path": "src/dnet/core/dc/"
+},{
 	"text": "AbstractDNetDcForm.js",
+	"path": "src/dnet/core/dc/"
+},{
+	"text": "AbstractDNetDcPropGrid.js",
 	"path": "src/dnet/core/dc/"
 },{
 	"text": "AbstractDNetDcGrid.js",
@@ -99,16 +105,31 @@
 	"text": "AbstractDcvForm.js",
 	"path": "src/dnet/core/dc/"
 },{
+	"text": "AbstractDcvEditForm.js",
+	"path": "src/dnet/core/dc/"
+},{
+	"text": "AbstractDcvEditPropGrid.js",
+	"path": "src/dnet/core/dc/"
+},{
 	"text": "AbstractDcvTree.js",
 	"path": "src/dnet/core/dc/"
 },{
 	"text": "AbstractDcvFilterForm.js",
 	"path": "src/dnet/core/dc/"
 },{
+	"text": "AbstractDcvFilterPropGrid.js",
+	"path": "src/dnet/core/dc/"
+},{
 	"text": "DcvFilterFormBuilder.js",
 	"path": "src/dnet/core/dc/"
 },{
-	"text": "DcvFormBuilder.js",
+	"text": "DcvEditFormBuilder.js",
+	"path": "src/dnet/core/dc/"
+},{
+	"text": "DcvEditPropGridBuilder.js",
+	"path": "src/dnet/core/dc/"
+},{
+	"text": "DcvFilterPropGridBuilder.js",
 	"path": "src/dnet/core/dc/"
 },{
 	"text": "DcvGridBuilder.js",

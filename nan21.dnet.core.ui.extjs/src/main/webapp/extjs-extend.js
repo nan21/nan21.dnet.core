@@ -110,7 +110,7 @@ Ext.override(Ext.grid.plugin.CellEditing, {
 			var editor = me.grid._getCustomCellEditor_(record, column);
 			if (editor != null ) {
 				if (!this._isEditAllowed_(record, column, editor.field || editor)) {
-					return null;
+					return null;					 
 				}
 				 
 				if (!(editor instanceof Ext.grid.CellEditor)) {
@@ -146,7 +146,10 @@ Ext.override(Ext.grid.plugin.CellEditing, {
     },
 	 
     
-    _isEditAllowed_: function(record, column, field) {  
+    _isEditAllowed_: function(record, column, field) { 
+    	if (field && field.noEdit ){
+    		return false;
+    	}
     	if (field && field.noUpdate === true && !record.phantom ) {
     		return false;
     	} else if (field && field.noInsert === true && record.phantom ) {

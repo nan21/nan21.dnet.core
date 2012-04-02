@@ -1,15 +1,15 @@
 Manifest-Version: 1.0
 Export-Package: net.nan21.dnet.core.domain.eventhandler;version="1.0.0
- .M8";uses:="org.eclipse.persistence.config,org.eclipse.persistence.de
- scriptors",net.nan21.dnet.core.domain.model;version="1.0.0.M8";uses:=
+ .M9";uses:="org.eclipse.persistence.config,org.eclipse.persistence.de
+ scriptors",net.nan21.dnet.core.domain.model;version="1.0.0.M9";uses:=
  "javax.persistence,javax.validation.constraints,org.hibernate.validat
- or.constraints",net.nan21.dnet.core.domain.sequence;version="1.0.0.M8
+ or.constraints",net.nan21.dnet.core.domain.sequence;version="1.0.0.M9
  ";uses:="org.eclipse.persistence.config,org.eclipse.persistence.inter
  nal.databaseaccess,org.eclipse.persistence.internal.sessions,org.ecli
  pse.persistence.sequencing,org.eclipse.persistence.sessions",net.nan2
- 1.dnet.core.domain.validation;version="1.0.0.M8"
+ 1.dnet.core.domain.validation;version="1.0.0.M9"
 Bundle-Vendor: Nan21 
-Bundle-Version: 1.0.0.M8
+Bundle-Version: 1.0.0.M9
 Tool: Bundlor 1.0.0.RELEASE
 Bundle-Name: DNet Core - domain
 Bundle-ManifestVersion: 2
