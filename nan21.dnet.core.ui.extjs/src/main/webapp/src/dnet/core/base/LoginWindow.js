@@ -152,12 +152,14 @@ Ext.define("dnet.core.base.LoginForm", {
 	 */
 	onActionSuccess : function(response, options) {
 		var r = Ext.JSON.decode(response.responseText);
-		var u = getApplication().getSession().getUser();
-		var c = getApplication().getSession().getClient();
+		var s = getApplication().getSession();
+		var u = s.getUser();
+		var c = s.getClient();
 		var accountChange = false;
 		if (c.id != r.data.clientId || u.name!= r.data.name) {
 			accountChange = true;
 		}
+		s.roles = r.roles;
 		u.name = r.data.name;
 		c.id = r.data.clientId;
 		c.systemClient =  r.data.systemClient;

@@ -166,6 +166,14 @@ Ext.define("dnet.core.dc.AbstractDNetDcView", {
 				} else {
 					return k;
 				}
+			},
+			
+			_beforeDestroyDNetDcView_ : function() {
+				this._controller_ = null;
+				if(this._builder_) {
+					this._builder_.dcv = null;	
+				} 		
 			}
 
+			
 		});

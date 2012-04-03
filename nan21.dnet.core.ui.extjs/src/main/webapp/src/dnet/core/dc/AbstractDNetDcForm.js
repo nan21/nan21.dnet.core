@@ -11,7 +11,9 @@ Ext.define("dnet.core.dc.AbstractDNetDcForm", {
 	},
 	
 	// **************** Properties *****************
- 
+
+	
+	
 	// **************** Public API *****************
 	 
 	
@@ -93,6 +95,16 @@ Ext.define("dnet.core.dc.AbstractDNetDcForm", {
 	},
 	
 	
+	// **************** Defaults and overrides *****************
+	
+	
+	beforeDestroy : function() {
+		// call the contributed helpers from mixins
+		this._beforeDestroyDNetDcView_();
+		this._beforeDestroyDNetView_();
+		this.callParent(arguments);
+	},
+	
 	// **************** Private methods *****************
 	
 	 
@@ -114,39 +126,10 @@ Ext.define("dnet.core.dc.AbstractDNetDcForm", {
 			Dnet.translateField(this._trl_, this._controller_._trl_, item);
 		}
 		return true;
-	},
+	}
 	
  
-	// **************** destroy component *****************
-
-	// TODO: to be reviewed!!
-
-	beforeDestroy : function() {
-		this._controller_ = null;
-		this.callParent();
-		try {
-			this._unlinkElemRefs_();
-		} catch (e) {
-		
-		}
-		this._elems_.each(this.unlinkElem, this);
-		this._elems_.each(this.destroyElement, this);
-	},
-
-	unlinkElem : function(item, index, len) {
-		item._dcView_ = null;
-	},
-
-	destroyElement : function(elemCfg) {
-		try {
-			var c = Ext.getCmp(elemCfg.id);
-			if (c) {
-				Ext.destroy(c);
-			}
-		} catch (e) {
-			// alert(e);
-		}
-	}
+ 
 	
 	
 });

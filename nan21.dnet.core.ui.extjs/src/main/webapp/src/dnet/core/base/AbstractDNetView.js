@@ -223,7 +223,7 @@ Ext.define("dnet.core.base.AbstractDNetView", {
 
 			},
 			
-			_unlinkElemRefs_: function() {
+			_beforeDestroyDNetView_: function() {				
 				for (var p in this._refs_) {
 					delete this._refs_[p];
 				}

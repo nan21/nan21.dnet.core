@@ -104,7 +104,13 @@ Ext.define("dnet.core.dc.AbstractDcvEditForm", {
 			this._onUnbind_(null);
 		}
 	},
-
+	
+	beforeDestroy : function() {		
+		this._elems_.each(function(item,idx,len) {
+			delete item._dcView_;
+		}, this)
+		this.callParent(arguments);
+	},
 	// **************** Private API *****************
 
 	/**

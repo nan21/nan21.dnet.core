@@ -991,18 +991,25 @@ Ext.define("dnet.core.dc.AbstractDc", {
 
 	destroy : function() {
 		// console.log("AbstractDc.destroy");
+		for (var p in this.actions) {
+			delete this.actions[p].dc;
+		}
+		for (var p in this.commands) {
+			delete this.commands[p].dc;
+		} 
+		
 		this.store.clearListeners();
 		this.store.destroyStore();
-		try {
+		//try {
 			if (this.dcContext) {
 				this.dcContext.destroy();
 			}
-		} catch (e) {
-		}
+		//} catch (e) {
+		//}
 		delete this.children;
 		delete this.parent;
 		delete this.dcContext;
-
+		//this.callOverridden(arguments);
 		// delete this.actions;
 		// delete this.commands;
 		// delete this.store;

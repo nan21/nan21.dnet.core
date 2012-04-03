@@ -27,6 +27,12 @@ dnet.core.base.Session = {
 	},
  
 	/**
+	 * User roles
+	 * @type Array
+	 */
+	roles: [],
+	
+	/**
 	 * Is the current session locked by user?
 	 * 
 	 * @type Boolean
@@ -85,6 +91,15 @@ dnet.core.base.Session = {
 		return (!Ext.isEmpty(this.user.name));
 	},
 
+	hasRole: function(role) {
+		for(var i=0,l=this.roles.length; i<l;i++) {
+			if (this.roles[i] == role) {
+				return true;
+			}
+		}
+		return false;
+	},
+	
 	rememberViewState: false
 	
 };

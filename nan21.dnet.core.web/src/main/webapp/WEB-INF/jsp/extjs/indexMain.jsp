@@ -55,7 +55,15 @@
     Ext.onReady(function(){
 
     	<%@ include file="_on_ready.jspf" %>
- 
+
+		dnet.core.base.Session.user.code = '${userUsername}';
+		dnet.core.base.Session.user.name = '${userDisplayName}';
+		dnet.core.base.Session.client.code = '${userClientCode}';
+		dnet.core.base.Session.client.id = '${userClientId}';
+		dnet.core.base.Session.client.systemClient = ${userSystemClient};
+		dnet.core.base.Session.locked = false;
+		dnet.core.base.Session.roles = [${userRolesStr}];
+		
 		${extensionsContent}
         
       	var tr = dnet.core.base.TemplateRepository;

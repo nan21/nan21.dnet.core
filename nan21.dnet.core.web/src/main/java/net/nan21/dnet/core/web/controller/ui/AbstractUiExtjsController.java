@@ -3,6 +3,7 @@ package net.nan21.dnet.core.web.controller.ui;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -21,6 +22,7 @@ import net.nan21.dnet.core.web.settings.UiExtjsSettings;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
@@ -66,7 +68,7 @@ public abstract class AbstractUiExtjsController extends AbstractController {
 		  
 		String decimalSeparator = UserPreferences.DECIMAL_SEPARATOR;
 		String thousandSeparator = UserPreferences.THOUSAND_SEPARATOR;
-
+		String userRolesStr = null;
 		boolean userSystemClient = false;
 
 		try {
@@ -95,6 +97,19 @@ public abstract class AbstractUiExtjsController extends AbstractController {
 			decimalSeparator = prefs.getDecimalSeparator();
 			thousandSeparator = prefs.getThousandSeparator();
 
+			Set<GrantedAuthority> roles = su.getAuthorities();
+			StringBuffer sb = new StringBuffer();
+			int i=0;
+			for(GrantedAuthority role : roles) {
+				if (i>0) {
+					sb.append(",");
+				}
+				sb.append("\""+role.getAuthority()+"\"");		
+				i++;
+			}
+			userRolesStr = sb.toString();
+			
+			
 		} catch (ClassCastException e) {
 			// not authenticated
 		}
@@ -131,7 +146,7 @@ public abstract class AbstractUiExtjsController extends AbstractController {
 		this.model.put("extjsAltFormats", extjsAltFormats);
 		this.model.put("decimalSeparator", decimalSeparator);
 		this.model.put("thousandSeparator", thousandSeparator);
-  
+		this.model.put("userRolesStr", userRolesStr);
 		
 	}
 

@@ -73,15 +73,6 @@ Ext.define("dnet.core.dc.AbstractDNetDcGrid", {
 	 */
 	_layoutWindow_ : null,
 
-//	/**
-//	 * Delayed task to handle the user initiated records selection in grid and
-//	 * synchronize the data-control selectedRecords in
-//	 * 
-//	 * @link dnet.core.dc.AbstractDc.
-//	 * 
-//	 * @type Ext.util.DelayedTask
-//	 */
-//	_routeSelectionTask_ : null,
 
 	// **************** Public API *****************
 
@@ -174,6 +165,13 @@ Ext.define("dnet.core.dc.AbstractDNetDcGrid", {
 	 */
 	applyState : function(state) {
 		return this._applyViewState_(state);
+	},
+	
+	beforeDestroy : function() {
+		// call the contributed helpers from mixins
+		this._beforeDestroyDNetDcView_();
+		this._beforeDestroyDNetView_();
+		this.callParent(arguments);
 	},
 
 	// **************** Private methods *****************
@@ -460,38 +458,7 @@ Ext.define("dnet.core.dc.AbstractDNetDcGrid", {
 			}
 		}
 	},
-				
-	/**
-	 * Get the selection task. If it doesn't exist yet attempts to create it.
-	 * 
-	 * @return {}
-	 */
-//	_getRouteSelectionTask_ : function() {
-//		if (this._routeSelectionTask_ == null) {
-//			this._routeSelectionTask_ = new Ext.util.DelayedTask(function() {
-//
-//				var gridSel = this.getSelectionModel().getSelection();
-//				var dcSel = this._controller_.selectedRecords;
-// 
-//				var ctrl = this._controller_;
-//				ctrl.setSelectedRecords(gridSel, {fromGrid: true});
-//				if (gridSel.length <= 1) {
-//					if (gridSel.length == 1) {
-//						ctrl.setRecord(gridSel[0],{fromGrid: true});
-//					} else {
-//						ctrl.setRecord(null,{fromGrid: true});
-//					}
-//				}
-//				if (gridSel.length > 1) {
-//					if (ctrl.record == null || gridSel.indexOf(ctrl.record) < 0) {
-//						ctrl.setRecord(gridSel[0],{fromGrid: true});
-//					}
-//				}
-//			}, this);
-//		}
-//		return this._routeSelectionTask_;
-//	},
-
+	 
 	/**
 	 * Postprocessor run to inject framework specific settings into the columns.
 	 * 
@@ -506,11 +473,7 @@ Ext.define("dnet.core.dc.AbstractDNetDcGrid", {
 		if (column.header == undefined) {
 			Dnet.translateColumn(this._trl_, this._controller_._trl_, column);
 		}
-	},
- 
-	beforeDestroy : function() {
-		this._controller_ = null;
-		this.callParent();
-	}
+	} 
+
 
 });

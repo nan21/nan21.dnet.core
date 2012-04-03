@@ -476,12 +476,8 @@ Ext.define("dnet.core.ui.AbstractUi", {
 
 	},
 
-	beforeDestroy : function() {// alert("sdfsd");
-		try {
-			this._unlinkElemRefs_();
-		} catch (e) {
-		
-		}
+	beforeDestroy : function() { 
+		this._beforeDestroyDNetView_();
 		this._elems_.each(this.destroyElement, this);
 		this._tlbitms_.each(function(item) {
 					try {

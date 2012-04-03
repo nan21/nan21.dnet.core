@@ -5,6 +5,7 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,6 +22,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
@@ -132,12 +134,14 @@ public class SessionController {
 					.authenticate(authRequest);
 			SecurityContextHolder.getContext().setAuthentication(authResponse);
 
-			User u = ((SessionUser) authResponse.getPrincipal()).getUser();
-			Params params = ((SessionUser) authResponse.getPrincipal())
-					.getParams();
+			SessionUser su = (SessionUser) SecurityContextHolder.getContext()
+			.getAuthentication().getPrincipal();
+			
+			User u = su.getUser();
+			Params params = su.getParams();
 			UserPreferences prefs = u.getPreferences();
 			StringBuffer sb = new StringBuffer();
-
+			String userRolesStr = null;
 			sb.append(",\"extjsDateFormat\":\"" + prefs.getExtjsDateFormat()
 					+ "\"");
 			sb.append(" , \"extjsTimeFormat\": \"" + prefs.getExtjsTimeFormat()
@@ -151,6 +155,20 @@ public class SessionController {
 			sb.append(" , \"thousandSeparator\": \""
 					+ prefs.getThousandSeparator() + "\"");
 
+			
+			Set<GrantedAuthority> roles = su.getAuthorities();
+			StringBuffer sbroles = new StringBuffer();
+			int i=0;
+			for(GrantedAuthority role : roles) {
+				if (i>0) {
+					sbroles.append(",");
+				}
+				sbroles.append("\""+role.getAuthority()+"\"");		
+				i++;
+			}
+			userRolesStr = sbroles.toString();
+			sb.append(" , \"roles\": [" + userRolesStr+ "]");
+			
 			request
 					.getSession()
 					.setAttribute(

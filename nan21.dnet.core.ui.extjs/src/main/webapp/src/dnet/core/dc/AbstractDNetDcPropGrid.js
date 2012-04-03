@@ -117,6 +117,12 @@ Ext.define("dnet.core.dc.AbstractDNetDcPropGrid", {
 		return true;
 	},
 	
+	beforeDestroy : function() {
+		// call the contributed helpers from mixins
+		this._beforeDestroyDNetDcView_();
+		this._beforeDestroyDNetView_();
+		this.callParent(arguments);
+	},
  
 	// **************** destroy component *****************
 

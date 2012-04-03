@@ -1,6 +1,7 @@
 package net.nan21.dnet.core.web.controller.ui;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -12,6 +13,7 @@ import net.nan21.dnet.core.api.ui.extjs.IExtensionContentProvider;
 import net.nan21.dnet.core.api.ui.extjs.IExtensionProvider;
 import net.nan21.dnet.core.security.SessionUser;
 
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -38,13 +40,15 @@ public class UiExtjsMainController extends AbstractUiExtjsController {
 		try {
 			SessionUser su = (SessionUser) SecurityContextHolder.getContext()
 			.getAuthentication().getPrincipal();
+			
 		} catch (java.lang.ClassCastException e) {
 			response.sendRedirect("/nan21.dnet.core.web/security/session/login");
 			return null;
 		}
 		
 		this._prepare(request, response);
-		  
+		 
+		
 		// get extensions scripts 
 		StringBuffer sb = new StringBuffer();
 		for(IExtensionProvider provider : this.extensionProviders) {

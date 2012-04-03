@@ -30,6 +30,13 @@ Ext.define("dnet.core.dc.AbstractDcvEditableGrid", {
 	 */
 	_bulkEditWindow_: null,
 	
+	/**
+	 * Ensure the data-control is configured with multiEdit = true otherwise 
+	 * the grid cannot edit more than one record at a time.
+	 * @type Boolean
+	 */
+	_enforceMultiEditDc_ : true,
+	
 	// **************** Public API *****************
 
 	/**
@@ -105,11 +112,21 @@ Ext.define("dnet.core.dc.AbstractDcvEditableGrid", {
 				});
 	},
 
+	beforeDestroy : function() {		
+		this._columns_.each(function(item,idx,len) {
+			delete item._dcView_;
+			if(item.editor) {
+				delete item.editor._dcView_; 
+			}
+		}, this)
+		this.callParent(arguments);
+	},
+	
 	// **************** Private methods *****************
 
 	initComponent : function(config) {	
-		if (! this._controller_.multiEdit ) {
-			throw new Exception("Editable grids should be used with data-controls having multiEdit enabled.");
+		if (this._enforceMultiEditDc_ && ! this._controller_.multiEdit ) {
+			alert("Editable grids should be used with data-controls having multiEdit enabled.");
 		}
 		this._initDcGrid_();
 		var cfg = this._createDefaultGridConfig_();
@@ -154,7 +171,9 @@ Ext.define("dnet.core.dc.AbstractDcvEditableGrid", {
 	
 	_afterEdit_: function() {
 		
-	}
+	} 
+	
+	
 	 
 
 });
