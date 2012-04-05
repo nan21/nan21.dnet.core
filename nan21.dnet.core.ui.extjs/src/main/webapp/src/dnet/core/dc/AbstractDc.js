@@ -230,13 +230,10 @@ Ext.define("dnet.core.dc.AbstractDc", {
 			// });
 		}
 
-		// this.dsName = this.ds.dsName;
-
 		if (Ext.isEmpty(this.filterModel)) {
 			this.filterModel = this.recordModel;
 		}
-		this.setFilter(this.newFilterInstance()); // Ext.create(this.recordModel,
-		// {})
+		this.setFilter(this.newFilterInstance()); 
 		this.setParams(Ext.create(this.paramModel, {}));
 
 		this.actionNames = dnet.core.dc.DcActionsFactory.actionNames();
@@ -251,9 +248,6 @@ Ext.define("dnet.core.dc.AbstractDc", {
 
 		this.mon(this.store, "beforeload", this.onStore_beforeload, this);
 		this.mon(this.store, "update", this.onStore_update, this);
-		// this.mon(this.store, "add", this.onStore_add, this);
-		// this.mon(this.store, "remove", this.onStore_remove, this);
-		// this.mon(this.store, "clear", this.onStore_clear, this);
 		this.mon(this.store, "datachanged", this.onStore_datachanged, this);
 
 		// after the store is loaded apply an initial selection

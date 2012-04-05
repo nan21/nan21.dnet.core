@@ -13,11 +13,7 @@
   
    <!-- DNet framework --> 
    
-   <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/asgn/AbstractAsgn.js"></script>
-   <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/asgn/AbstractAsgnGrid.js"></script>
-   <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/asgn/AbstractAsgnUi.js"></script>
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/asgn/AsgnGridBuilder.js"></script>
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/asgn/AsgnUiBuilder.js"></script>
+
     
     <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/base/NavigationTree.js"></script>
     <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/base/Logger.js"></script>
@@ -30,6 +26,14 @@
     <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/base/FrameInspector.js"></script>
     <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/base/UserPreferences.js"></script>
     <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/base/AbstractDNetView.js"></script>   
+    
+    
+    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/asgn/AbstractAsgn.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/asgn/AbstractAsgnGrid.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/asgn/AbstractAsgnUi.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/asgn/AsgnGridBuilder.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/asgn/AsgnUiBuilder.js"></script>
+    
     
     <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/base/HomePanel.js"></script>
     <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/base/UrlBuilder.js"></script>

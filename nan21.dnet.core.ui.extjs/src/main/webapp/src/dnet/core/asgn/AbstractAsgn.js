@@ -4,8 +4,18 @@ Ext.define("dnet.core.asgn.AbstractAsgn", {
 		observable : 'Ext.util.Observable'
 	},
 
-	// this.dsName = null
+	/**
+	 * Store for available records
+	 * 
+	 * @type Ext.data.Store
+	 */
 	storeLeft : null,
+
+	/**
+	 * Store for selected records
+	 * 
+	 * @type Ext.data.Store
+	 */
 	storeRight : null,
 
 	/**
@@ -63,122 +73,32 @@ Ext.define("dnet.core.asgn.AbstractAsgn", {
 			}
 		}
 		if (this.storeLeft == null) {
-			this.storeLeft = Ext.create("Ext.data.Store", {
-				model : this.recordModel,
-				remoteSort : true,
-				remoteSort : true,
-
-				autoLoad : false,
-				autoSync : false,
-				clearOnPageLoad : true,
-				pageSize : this.tuning.fetchSize,
-				proxy : {
-					type : 'ajax',
-					api : Dnet.asgnLeftAPI(this.dsName, "json"),
-					model : this.recordModel,
-					extraParams: {
-						params: {}
-					},
-					actionMethods : {
-						create : 'POST',
-						read : 'POST',
-						update : 'POST',
-						destroy : 'POST'
-					},
-					reader : {
-						type : 'json',
-						root : 'data',
-						idProperty : 'id',
-						totalProperty : 'totalCount',
-						messageProperty : 'message'
-					},
-					writer : {
-						type : 'json',
-						encode : true,
-						allowSingle : false,
-						writeAllFields : true
-					},
-					listeners : {
-						"exception" : {
-							fn : this.proxyException,
-							scope : this
-						}
-					},
-					startParam : Dnet.requestParam.START,
-					limitParam : Dnet.requestParam.SIZE,
-					sortParam : Dnet.requestParam.SORT 
-					//directionParam : Dnet.requestParam.SENSE
-				}
-			});
+			this.storeLeft = this.createStore("Left");
 		}
 
 		if (this.storeRight == null) {
-			this.storeRight = Ext.create("Ext.data.Store", {
-				model : this.recordModel,
-				remoteSort : true,
-				remoteSort : true,
-
-				autoLoad : false,
-				autoSync : false,
-				clearOnPageLoad : true,
-				pageSize : this.tuning.fetchSize,
-				proxy : {
-					type : 'ajax',
-					api : Dnet.asgnRightAPI(this.dsName, "json"),
-					model : this.recordModel,
-					extraParams: {
-						params: {}
-					},
-					actionMethods : {
-						create : 'POST',
-						read : 'POST',
-						update : 'POST',
-						destroy : 'POST'
-					},
-					reader : {
-						type : 'json',
-						root : 'data',
-						idProperty : 'id',
-						totalProperty : 'totalCount',
-						messageProperty : 'message'
-					},
-					writer : {
-						type : 'json',
-						encode : true,
-						allowSingle : false,
-						writeAllFields : true
-					},
-					listeners : {
-						"exception" : {
-							fn : this.proxyException,
-							scope : this
-						}
-					},
-					startParam : Dnet.requestParam.START,
-					limitParam : Dnet.requestParam.SIZE,
-					sortParam : Dnet.requestParam.SORT,
-					directionParam : Dnet.requestParam.SENSE
-				}
-			});
+			this.storeRight = this.createStore("Right");
 		}
 
 		this.addEvents("afterDoSaveSuccess");
 		this.mixins.observable.constructor.call(this);
 	},
 
+	// **************** Public API *****************
+
 	initAssignement : function() {
 		this.params.clientId = getApplication().getSession().getClient().id;
 		this.doSetup();
 	},
 
-	// *******************************************
-	// ************* API INTERFACE ***************
-	// *******************************************
-
 	doReset : function() {
 		this.doResetImpl();
 	},
 
+	/**
+	 * Call the setup server-side procedure which prepares a temporary data with
+	 * the existing selections for this context.
+	 */
 	doSetup : function() {
 		this.doSetupImpl();
 	},
@@ -187,34 +107,64 @@ Ext.define("dnet.core.asgn.AbstractAsgn", {
 		this.doCleanupImpl();
 	},
 
+	/**
+	 * Save changes.
+	 */
 	doSave : function() {
 		this.doSaveImpl();
 	},
 
+	/**
+	 * Load the available records.
+	 */
 	doQueryLeft : function() {
 		this.doQueryLeftImpl();
 	},
 
+	/**
+	 * Query the selected records.
+	 */
 	doQueryRight : function() {
 		this.doQueryRightImpl();
 	},
 
+	/**
+	 * Select all available.
+	 */
 	doMoveRightAll : function() {
 		this.doMoveRightAllImpl();
 	},
 
+	/**
+	 * Remove all selected
+	 */
 	doMoveLeftAll : function() {
 		this.doMoveLeftAllImpl();
 	},
 
+	/**
+	 * Select those records which are selected by the user in the available options list. 
+	 * @param {Ext.grid.Panel} theLeftGrid
+	 * @param {Ext.grid.Panel} theRightGrid
+	 */
 	doMoveRight : function(theLeftGrid, theRightGrid) {
 		this.doMoveRightImpl(theLeftGrid, theRightGrid);
 	},
 
+	/**
+	 * Remove those records which are selected by the user in the selected options list. 
+	 * @param {} theLeftGrid
+	 * @param {} theRightGrid
+	 */
 	doMoveLeft : function(theLeftGrid, theRightGrid) {
 		this.doMoveLeftImpl(theLeftGrid, theRightGrid);
 	},
 
+	/**
+	 * Return the store for the specified side.
+	 * @param {String} side 
+	 * @return {Ext.data.Store}
+	 */
 	getStore : function(side) {
 		if (side == "left") {
 			return this.storeLeft;
@@ -224,45 +174,58 @@ Ext.define("dnet.core.asgn.AbstractAsgn", {
 		}
 	},
 
-	/** ************************************************************************* */
-	/** *********************** IMPLEMENTATION => private functions ************ */
-	/** ************************************************************************* */
-
-	doMoveRightImpl : function(theLeftGrid, theRightGrid) {
-		var selection = theLeftGrid.getSelectionModel().getSelection();
-		if (selection.length == 0) {
-			return;
-		}
-		var p_selected_ids = "";
-		for ( var i = 0; i < selection.length; i++) {
-			p_selected_ids += (i > 0) ? "," : "";
-			p_selected_ids += selection[i].data.id;
-		}
-		var p = Ext.apply( {
-			p_selected_ids : p_selected_ids
-		}, this.params);
-		Ext.Ajax.request( {
-			params : p,
-			method : "POST",
-			failure : this.afterAjaxFailure,
-			success : this.afterMoveRightSuccess,
-			scope : this,
-			url : Dnet.asgnUrl + "/" + this.dsName + ".json?action=moveRight",
-			timeout : 600000,
-			options : {
-				action : "moveRight",
-				fnSuccess : null,
-				fnSuccessScope : null,
-				fnFailure : null,
-				fnFailureScope : null,
-				serviceName : name
-			}
-		});
+	afterMoveLeftSuccess : function(response, options) {
+		this.doQueryLeft();
+		this.doQueryRight();
 	},
+
 	afterMoveRightSuccess : function(response, options) {
 		this.doQueryLeft();
 		this.doQueryRight();
 
+	},
+
+	afterMoveLeftAllSuccess : function(response, options) {
+		this.doQueryLeft();
+		this.doQueryRight();
+
+	},
+
+	afterMoveRightAllSuccess : function(response, options) {
+		this.doQueryLeft();
+		this.doQueryRight();
+	},
+
+	afterDoSetupSuccess : function(response, options) {
+		this.params["selectionId"] = response.responseText;
+		this.doQueryLeft();
+		this.doQueryRight();
+	},
+
+	afterDoResetSuccess : function(response, options) {
+		this.doQueryLeft();
+		this.doQueryRight();
+	},
+
+	afterDoSaveSuccess : function(response, options) {
+		Ext.Msg.hide();
+		this.fireEvent("afterDoSaveSuccess", this);
+	},
+
+	// **************** Private API *****************
+
+	doSetupImpl : function() {
+		Ext.Ajax.request({
+					params : this.params,
+					method : "POST",
+					failure : this.afterAjaxFailure,
+					success : this.afterDoSetupSuccess,
+					scope : this,
+					url : Dnet.asgnUrl + "/" + this.dsName
+							+ ".json?action=setup",
+					timeout : 600000
+
+				});
 	},
 
 	doMoveLeftImpl : function(theLeftGrid, theRightGrid) {
@@ -271,78 +234,24 @@ Ext.define("dnet.core.asgn.AbstractAsgn", {
 			return;
 		}
 		var p_selected_ids = "";
-		for ( var i = 0; i < selection.length; i++) {
+		for (var i = 0; i < selection.length; i++) {
 			p_selected_ids += (i > 0) ? "," : "";
 			p_selected_ids += selection[i].data.id;
 		}
-		var p = Ext.apply( {
-			p_selected_ids : p_selected_ids
-		}, this.params);
-		Ext.Ajax.request( {
-			params : p,
-			method : "POST",
-			failure : this.afterAjaxFailure,
-			success : this.afterMoveLeftSuccess,
-			scope : this,
-			url : Dnet.asgnUrl + "/" + this.dsName + ".json?action=moveLeft",
-			timeout : 600000,
-			options : {
-				action : "moveLeft",
-				fnSuccess : null,
-				fnSuccessScope : null,
-				fnFailure : null,
-				fnFailureScope : null,
-				serviceName : name
-			}
-		});
-
-	},
-
-	afterMoveLeftSuccess : function(response, options) {
-		this.doQueryLeft();
-		this.doQueryRight();
-	},
-
-	doMoveRightAllImpl : function() {
-
-		Ext.Ajax.request( {
-			params : this.params,
-			method : "POST",
-			failure : this.afterAjaxFailure,
-			success : this.afterMoveRightAllSuccess,
-			scope : this,
-			url : Dnet.asgnUrl + "/" + this.dsName
-					+ ".json?action=moveRightAll",
-			timeout : 600000,
-			options : {
-				action : "moveRightAll",
-				fnSuccess : null,
-				fnSuccessScope : null,
-				fnFailure : null,
-				fnFailureScope : null,
-				serviceName : name
-			}
-		});
-	},
-
-	afterMoveRightAllSuccess : function(response, options) {
-		this.doQueryLeft();
-		this.doQueryRight();
-	},
-
-	doMoveLeftAllImpl : function() {
-		Ext.Ajax
-				.request( {
-					params : this.params,
+		var p = Ext.apply({
+					p_selected_ids : p_selected_ids
+				}, this.params);
+		Ext.Ajax.request({
+					params : p,
 					method : "POST",
 					failure : this.afterAjaxFailure,
-					success : this.afterMoveLeftAllSuccess,
+					success : this.afterMoveLeftSuccess,
 					scope : this,
 					url : Dnet.asgnUrl + "/" + this.dsName
-							+ ".json?action=moveLeftAll",
+							+ ".json?action=moveLeft",
 					timeout : 600000,
 					options : {
-						action : "moveLeftAll",
+						action : "moveLeft",
 						fnSuccess : null,
 						fnSuccessScope : null,
 						fnFailure : null,
@@ -353,55 +262,50 @@ Ext.define("dnet.core.asgn.AbstractAsgn", {
 
 	},
 
-	afterMoveLeftAllSuccess : function(response, options) {
-		this.doQueryLeft();
-		this.doQueryRight();
-
+	doMoveRightImpl : function(theLeftGrid, theRightGrid) {
+		var selection = theLeftGrid.getSelectionModel().getSelection();
+		if (selection.length == 0) {
+			return;
+		}
+		var p_selected_ids = "";
+		for (var i = 0; i < selection.length; i++) {
+			p_selected_ids += (i > 0) ? "," : "";
+			p_selected_ids += selection[i].data.id;
+		}
+		var p = Ext.apply({
+					p_selected_ids : p_selected_ids
+				}, this.params);
+		Ext.Ajax.request({
+					params : p,
+					method : "POST",
+					failure : this.afterAjaxFailure,
+					success : this.afterMoveRightSuccess,
+					scope : this,
+					url : Dnet.asgnUrl + "/" + this.dsName
+							+ ".json?action=moveRight",
+					timeout : 600000,
+					options : {
+						action : "moveRight",
+						fnSuccess : null,
+						fnSuccessScope : null,
+						fnFailure : null,
+						fnFailureScope : null,
+						serviceName : name
+					}
+				});
 	},
 
-	doSetupImpl : function() {
-		Ext.Ajax.request( {
+	doMoveLeftAllImpl : function() {
+		Ext.Ajax.request({
 			params : this.params,
 			method : "POST",
 			failure : this.afterAjaxFailure,
-			success : this.afterDoSetupSuccess,
+			success : this.afterMoveLeftAllSuccess,
 			scope : this,
-			url : Dnet.asgnUrl + "/" + this.dsName + ".json?action=setup",
-			timeout : 600000
-
-		});
-	},
-
-	doCleanupImpl : function() {
-		Ext.Ajax.request( {
-			params : this.params,
-			method : "POST",
-			failure : this.afterAjaxFailure
-			// ,success:this.afterDoSetupSuccess
-			,
-			scope : this,
-			url : Dnet.asgnUrl + "/" + this.dsName + ".json?action=cleanup",
-			timeout : 600000
-		});
-	},
-
-	afterDoSetupSuccess : function(response, options) {
-		this.params["selectionId"] = response.responseText;
-		this.doQueryLeft();
-		this.doQueryRight();
-	},
-
-	doResetImpl : function() {
-		Ext.Ajax.request( {
-			params : this.params,
-			method : "POST",
-			failure : this.afterAjaxFailure,
-			success : this.afterDoResetSuccess,
-			scope : this,
-			url : Dnet.asgnUrl + "/" + this.dsName + ".json?action=reset",
+			url : Dnet.asgnUrl + "/" + this.dsName + ".json?action=moveLeftAll",
 			timeout : 600000,
 			options : {
-				action : "doReset",
+				action : "moveLeftAll",
 				fnSuccess : null,
 				fnSuccessScope : null,
 				fnFailure : null,
@@ -409,95 +313,192 @@ Ext.define("dnet.core.asgn.AbstractAsgn", {
 				serviceName : name
 			}
 		});
+
 	},
 
-	afterDoResetSuccess : function(response, options) {
-		this.doQueryLeft();
-		this.doQueryRight();
-	},
+	doMoveRightAllImpl : function() {
 
-	doSaveImpl : function() {
-		Ext.Ajax.request( {
-			params : this.params,
-			method : "POST",
-			failure : this.afterAjaxFailure,
-			success : this.afterDoSaveSuccess,
-			scope : this,
-			url : Dnet.asgnUrl + "/" + this.dsName + ".json?action=save",
-			timeout : 600000,
-			options : {
-				action : "doSave",
-				fnSuccess : null,
-				fnSuccessScope : null,
-				fnFailure : null,
-				fnFailureScope : null,
-				serviceName : name
-			}
-		});
-		Ext.Msg.progress('Saving...');
-	},
-
-	afterDoSaveSuccess : function(response, options) {
-		Ext.Msg.hide();
-		this.fireEvent("afterDoSaveSuccess", this);
+		Ext.Ajax.request({
+					params : this.params,
+					method : "POST",
+					failure : this.afterAjaxFailure,
+					success : this.afterMoveRightAllSuccess,
+					scope : this,
+					url : Dnet.asgnUrl + "/" + this.dsName
+							+ ".json?action=moveRightAll",
+					timeout : 600000,
+					options : {
+						action : "moveRightAll",
+						fnSuccess : null,
+						fnSuccessScope : null,
+						fnFailure : null,
+						fnFailureScope : null,
+						serviceName : name
+					}
+				});
 	},
 
 	doQueryLeftImpl : function() {
 		this.storeLeft.removeAll();
 		var lp = {};
 		var data = {};
-		 
+
 		this.storeLeft.proxy.extraParams = this.params;
 		this.storeLeft.currentPage = 1;
-		 
+
 		if (this.filter.left.field) {
 			data[this.filter.left.field] = this.filter.left.value || '*';
 			this.storeLeft.proxy.extraParams.data = Ext.encode(data);
 		}
-		  
+
 		lp[Dnet.requestParam.START] = 0;
 		lp[Dnet.requestParam.SIZE] = this.tuning.fetchSize;
-		
+
 		Ext.apply(lp, this.params);
 		var theCallback = function(recs, options, success) {
 		}
 
-		this.storeLeft.load( {
-			params : lp,
-			scope : this,
-			callback : theCallback
-		});
+		this.storeLeft.load({
+					params : lp,
+					scope : this,
+					callback : theCallback
+				});
 		return true;
-	}
+	},
 
-	,
 	doQueryRightImpl : function() { // alert("AbstractDc("+this.dsName+").doQueryImpl");
 
 		this.storeRight.removeAll();
 		var lp = {};
 		var data = {};
-		
+
 		this.storeRight.proxy.extraParams = this.params;
 		this.storeRight.currentPage = 1;
-		 
-		
+
 		if (this.filter.right.field) {
 			data[this.filter.right.field] = this.filter.right.value || '*';
 			this.storeRight.proxy.extraParams["data"] = Ext.encode(data);
 		}
-		 
+
 		lp[Dnet.requestParam.START] = 0;
 		lp[Dnet.requestParam.SIZE] = this.tuning.fetchSize;
 		Ext.apply(lp, this.params);
 		var theCallback = function(recs, options, success) {
 		}
 
-		this.storeRight.load( {
-			params : lp,
-			scope : this,
-			callback : theCallback
-		});
+		this.storeRight.load({
+					params : lp,
+					scope : this,
+					callback : theCallback
+				});
 		return true;
+	},
+
+	doSaveImpl : function() {
+		Ext.Ajax.request({
+					params : this.params,
+					method : "POST",
+					failure : this.afterAjaxFailure,
+					success : this.afterDoSaveSuccess,
+					scope : this,
+					url : Dnet.asgnUrl + "/" + this.dsName
+							+ ".json?action=save",
+					timeout : 600000,
+					options : {
+						action : "doSave",
+						fnSuccess : null,
+						fnSuccessScope : null,
+						fnFailure : null,
+						fnFailureScope : null,
+						serviceName : name
+					}
+				});
+		Ext.Msg.progress('Saving...');
+	},
+
+	doResetImpl : function() {
+		Ext.Ajax.request({
+					params : this.params,
+					method : "POST",
+					failure : this.afterAjaxFailure,
+					success : this.afterDoResetSuccess,
+					scope : this,
+					url : Dnet.asgnUrl + "/" + this.dsName
+							+ ".json?action=reset",
+					timeout : 600000,
+					options : {
+						action : "doReset",
+						fnSuccess : null,
+						fnSuccessScope : null,
+						fnFailure : null,
+						fnFailureScope : null,
+						serviceName : name
+					}
+				});
+	},
+
+	doCleanupImpl : function() {
+		Ext.Ajax.request({
+					params : this.params,
+					method : "POST",
+					failure : this.afterAjaxFailure
+					// ,success:this.afterDoSetupSuccess
+					,
+					scope : this,
+					url : Dnet.asgnUrl + "/" + this.dsName
+							+ ".json?action=cleanup",
+					timeout : 600000
+				});
+	},
+
+	createStore : function(side) {
+
+		return Ext.create("Ext.data.Store", {
+					model : this.recordModel,
+					remoteSort : true,
+					remoteSort : true,
+					autoLoad : false,
+					autoSync : false,
+					clearOnPageLoad : true,
+					pageSize : this.tuning.fetchSize,
+					proxy : {
+						type : 'ajax',
+						api : Dnet["asgn" + side + "API"](this.dsName, "json"),
+						model : this.recordModel,
+						extraParams : {
+							params : {}
+						},
+						actionMethods : {
+							create : 'POST',
+							read : 'POST',
+							update : 'POST',
+							destroy : 'POST'
+						},
+						reader : {
+							type : 'json',
+							root : 'data',
+							idProperty : 'id',
+							totalProperty : 'totalCount',
+							messageProperty : 'message'
+						},
+						writer : {
+							type : 'json',
+							encode : true,
+							allowSingle : false,
+							writeAllFields : true
+						},
+						listeners : {
+							"exception" : {
+								fn : this.proxyException,
+								scope : this
+							}
+						},
+						startParam : Dnet.requestParam.START,
+						limitParam : Dnet.requestParam.SIZE,
+						sortParam : Dnet.requestParam.SORT,
+						directionParam : Dnet.requestParam.SENSE
+					}
+				});
 	},
 
 	/** ********************************************** */
@@ -505,28 +506,30 @@ Ext.define("dnet.core.asgn.AbstractAsgn", {
 	/** ********************************************** */
 
 	afterAjaxFailure : function(response, options) {
-		//Ext.MessageBox.hide();
-		//Ext.Msg.hide();
+		// Ext.MessageBox.hide();
+		// Ext.Msg.hide();
 		var msg = (response.responseText) ? response.responseText.substr(0,
 				2000) : "No error message returned from server.";
-		Ext.Msg.show( {
-			title : 'HTTP:' + response.status + ' ' + response.statusText,
-			msg : msg,
-			buttons : Ext.Msg.OK,
-			scope : this,
-			icon : Ext.MessageBox.ERROR
-		});
+		Ext.Msg.show({
+					title : 'HTTP:' + response.status + ' '
+							+ response.statusText,
+					msg : msg,
+					buttons : Ext.Msg.OK,
+					scope : this,
+					icon : Ext.MessageBox.ERROR
+				});
 	},
 
 	proxyException : function(dataProxy, response, operation, eopts) {
-		 
-			Ext.Msg.show( {
-				title : 'HTTP:' + response.status + ' ' + response.statusText,
-				msg : response.responseText.substr(0, 1500),
-				buttons : Ext.Msg.OK,
-				icon : Ext.MessageBox.ERROR
-			});
-		 
+
+		Ext.Msg.show({
+					title : 'HTTP:' + response.status + ' '
+							+ response.statusText,
+					msg : response.responseText.substr(0, 1500),
+					buttons : Ext.Msg.OK,
+					icon : Ext.MessageBox.ERROR
+				});
+
 	}
 
 });
