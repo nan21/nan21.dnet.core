@@ -74,7 +74,6 @@ Ext.define("dnet.core.asgn.AbstractAsgnGrid", {
 				this._endDefine_();
 
 				var cfg = {
-
 					columns : this._columns_.getRange(),
 					store : this._controller_.getStore(this._side_),
 					selModel : {
@@ -85,14 +84,24 @@ Ext.define("dnet.core.asgn.AbstractAsgnGrid", {
 						store : this._controller_.getStore(this._side_),
 						displayInfo : true
 					}
-
 				};
 				Ext.apply(cfg, config);
 				Ext.apply(this, cfg);
 				this.callParent(arguments);
-
+				this._registerListeners_();
 			},
 
+			/**
+			 * Register event listeners
+			 */
+			_registerListeners_ : function() {
+				this.mon(this.store, "load", function(store, recs, success, eOpts) {
+					if (store.getCount() > 0) {
+						this.getSelectionModel().select(0);
+					}
+				}, this );	
+			},
+			
 			_defineColumns_ : function() {
 			},
 

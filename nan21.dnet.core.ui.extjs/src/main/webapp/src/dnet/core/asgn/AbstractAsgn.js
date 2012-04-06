@@ -343,7 +343,7 @@ Ext.define("dnet.core.asgn.AbstractAsgn", {
 		var lp = {};
 		var data = {};
 
-		this.storeLeft.proxy.extraParams = this.params;
+		this.storeLeft.proxy.extraParams = Ext.apply({}, this.params);
 		this.storeLeft.currentPage = 1;
 
 		if (this.filter.left.field) {
@@ -354,25 +354,18 @@ Ext.define("dnet.core.asgn.AbstractAsgn", {
 		lp[Dnet.requestParam.START] = 0;
 		lp[Dnet.requestParam.SIZE] = this.tuning.fetchSize;
 
-		Ext.apply(lp, this.params);
-		var theCallback = function(recs, options, success) {
-		}
-
 		this.storeLeft.load({
-					params : lp,
-					scope : this,
-					callback : theCallback
+					params : lp
 				});
 		return true;
 	},
 
-	doQueryRightImpl : function() { // alert("AbstractDc("+this.dsName+").doQueryImpl");
-
+	doQueryRightImpl : function() {
 		this.storeRight.removeAll();
 		var lp = {};
 		var data = {};
 
-		this.storeRight.proxy.extraParams = this.params;
+		this.storeRight.proxy.extraParams =  Ext.apply({}, this.params);
 		this.storeRight.currentPage = 1;
 
 		if (this.filter.right.field) {
@@ -382,14 +375,9 @@ Ext.define("dnet.core.asgn.AbstractAsgn", {
 
 		lp[Dnet.requestParam.START] = 0;
 		lp[Dnet.requestParam.SIZE] = this.tuning.fetchSize;
-		Ext.apply(lp, this.params);
-		var theCallback = function(recs, options, success) {
-		}
 
 		this.storeRight.load({
-					params : lp,
-					scope : this,
-					callback : theCallback
+					params : lp
 				});
 		return true;
 	},

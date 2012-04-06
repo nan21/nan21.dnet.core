@@ -37,10 +37,11 @@ Ext.define("dnet.core.asgn.AbstractAsgnUi", {
 
 			/**
 			 * Configuration object for the window
+			 * 
 			 * @type Object
 			 */
 			_windowConfig_ : null,
-			
+
 			_filterFields_ : null,
 			_defaultFilterField_ : null,
 
@@ -51,6 +52,48 @@ Ext.define("dnet.core.asgn.AbstractAsgnUi", {
 			 * @type Boolean
 			 */
 			_autoCloseAfterSave_ : true,
+
+			/**
+			 * Cancel button id.
+			 * 
+			 * @type String
+			 */
+			_btnCancelId_ : null,
+
+			/**
+			 * Save button id.
+			 * 
+			 * @type String
+			 */
+			_btnSaveId_ : null,
+
+			/**
+			 * Move left selection button id.
+			 * 
+			 * @type String
+			 */
+			_btnMoveLeftId_ : null,
+
+			/**
+			 * Move left all button id.
+			 * 
+			 * @type String
+			 */
+			_btnMoveLeftAllId_ : null,
+
+			/**
+			 * Move right selection button id.
+			 * 
+			 * @type String
+			 */
+			_btnMoveRightId_ : null,
+
+			/**
+			 * Move right all button id.
+			 * 
+			 * @type String
+			 */
+			_btnMoveRightAllId_ : null,
 
 			// **************** Public API *****************
 
@@ -99,6 +142,123 @@ Ext.define("dnet.core.asgn.AbstractAsgnUi", {
 
 			_doQueryRight_ : function() {
 				this._doQueryRightImpl_();
+			},
+
+			/**
+			 * Get left grid instance
+			 * 
+			 * @return {dnet.core.asgn.AbstractAsgnGrid}
+			 */
+			_getLeftGrid_ : function() {
+				return Ext.getCmp(this._leftGridId_);
+			},
+
+			/**
+			 * Get right grid instance
+			 * 
+			 * @return {dnet.core.asgn.AbstractAsgnGrid}
+			 */
+			_getRightGrid_ : function() {
+				return Ext.getCmp(this._rightGridId_);
+			},
+
+			/**
+			 * Get move left button
+			 * 
+			 * @return {Ext.button.Button}
+			 */
+			_getBtnMoveLeft_ : function() {
+				return Ext.getCmp(this._btnMoveLeftId_);
+			},
+
+			/**
+			 * Get move left all button
+			 * 
+			 * @return {Ext.button.Button}
+			 */
+			_getBtnMoveLeftAll_ : function() {
+				return Ext.getCmp(this._btnMoveLeftAllId_);
+			},
+
+			/**
+			 * Get move right button
+			 * 
+			 * @return {Ext.button.Button}
+			 */
+			_getBtnMoveRight_ : function() {
+				return Ext.getCmp(this._btnMoveRightId_);
+			},
+
+			/**
+			 * Get move right all button
+			 * 
+			 * @return {Ext.button.Button}
+			 */
+			_getBtnMoveRightAll_ : function() {
+				return Ext.getCmp(this._btnMoveRightAllId_);
+			},
+
+			/**
+			 * Get save button
+			 * 
+			 * @return {Ext.button.Button}
+			 */
+			_getBtnSave_ : function() {
+				return Ext.getCmp(this._btnSaveId_);
+			},
+
+			/**
+			 * Get cancel button
+			 * 
+			 * @return {Ext.button.Button}
+			 */
+			_getBtnCancel_ : function() {
+				return Ext.getCmp(this._btnCancelId_);
+			},
+
+			/**
+			 * @private Apply state rules to enable/disable or show/hide
+			 *          components.
+			 * 
+			 */
+			_applyStates_ : function() {
+				if (this._beforeApplyStates_() !== false) {
+					this._onApplyStates_();
+				}
+				this._afterApplyStates_();
+			},
+
+			/**
+			 * @protected Template method checked before applying states.
+			 * 
+			 * @return {Boolean}
+			 */
+			_beforeApplyStates_ : function() {
+				return true;
+			},
+
+			/**
+			 * @protected Template method invoked after the state rules are
+			 *            applied.
+			 */
+			_afterApplyStates_ : function() {
+			},
+
+			/**
+			 * @protected Implement the state control logic in subclasses.
+			 * 
+			 */
+			_onApplyStates_ : function() {
+				if(this._getLeftGrid_().getSelectionModel().getSelection().length == 0) {
+					this._getBtnMoveRight_().disable();
+				} else {
+					this._getBtnMoveRight_().enable();
+				}
+				if(this._getRightGrid_().getSelectionModel().getSelection().length == 0) {
+					this._getBtnMoveLeft_().disable();
+				} else {
+					this._getBtnMoveLeft_().enable();
+				}
 			},
 
 			// **************** Defaults and overrides *****************
@@ -174,14 +334,69 @@ Ext.define("dnet.core.asgn.AbstractAsgnUi", {
 							}]
 						});
 				this.callParent(arguments);
+				this._registerListeners_();
+			},
+
+			/**
+			 * Register event listeners
+			 */
+			_registerListeners_ : function() {
 				if (this._autoCloseAfterSave_ == true) {
 					this._controller_.on("afterDoSaveSuccess", function() {
 								this.close();
 							}, this);
 				}
+				var _lg = this._getLeftGrid_();
+				if (_lg) {
+					this.mon(_lg, "itemdblclick", this._onLeftGrid_dblclick_,
+							this);
+					this.mon(_lg.getSelectionModel(), "selectionchange",
+							this._applyStates_, this);
+				}
+				var _rg = this._getRightGrid_();
+				if (_rg) {
+					this.mon(_rg, "itemdblclick", this._onRightGrid_dblclick_,
+							this);
+					this.mon(_rg.getSelectionModel(), "selectionchange",
+							this._applyStates_, this);
+				}
+				this.mon(this._controller_.storeLeft, "load", function(store, recs, success, eOpts) {
+					if (store.totalCount == 0) {
+						this._getBtnMoveRightAll_().disable();
+					} else {
+						this._getBtnMoveRightAll_().enable();
+					}
+				}, this);
+				this.mon(this._controller_.storeRight, "load", function(store, recs, success, eOpts) {
+					if (store.totalCount == 0) {
+						this._getBtnMoveLeftAll_().disable();
+					} else {
+						this._getBtnMoveLeftAll_().enable();
+					}
+				}, this);
 			},
 
 			// **************** Private API *****************
+
+			/**
+			 * When double-click a row automatically move it.
+			 */
+			_onLeftGrid_dblclick_ : function() {
+				var btn = this._getBtnMoveRight_();
+				if (btn && !btn.disabled) {
+					btn.handler.call(btn.scope);
+				}
+			},
+
+			/**
+			 * When double-click a row automatically move it.
+			 */
+			_onRightGrid_dblclick_ : function() {
+				var btn = this._getBtnMoveLeft_();
+				if (btn && !btn.disabled) {
+					btn.handler.call(btn.scope);
+				}
+			},
 
 			/**
 			 * Execute query for the left list which shows the available
@@ -315,10 +530,17 @@ Ext.define("dnet.core.asgn.AbstractAsgnUi", {
 			 * save and initialize.
 			 */
 			_buildToolbarItems_ : function() {
+				this._btnCancelId_ = Ext.id();
+				this._btnSaveId_ = Ext.id();
+				this._btnMoveLeftId_ = Ext.id();
+				this._btnMoveLeftAllId_ = Ext.id();
+				this._btnMoveRightId_ = Ext.id();
+				this._btnMoveRightAllId_ = Ext.id();
 				return [{
 							xtype : "button",
 							text : 'Cancel',
 							tooltip : "Cancel changes and reload initial selection ",
+							id : this._btnCancelId_,
 							scope : this,
 							handler : function() {
 								this._controller_.doReset();
@@ -331,6 +553,7 @@ Ext.define("dnet.core.asgn.AbstractAsgnUi", {
 							// iconCls : 'icon-action-assign_moveright',
 							text : ">",
 							tooltip : "Add selected",
+							id : this._btnMoveRightId_,
 							scope : this,
 							handler : function() {
 								this._controller_.doMoveRight(Ext
@@ -345,6 +568,7 @@ Ext.define("dnet.core.asgn.AbstractAsgnUi", {
 							// iconCls : 'icon-action-assign_moveleft',
 							text : "<",
 							tooltip : "Remove selected",
+							id : this._btnMoveLeftId_,
 							scope : this,
 							handler : function() {
 								this._controller_.doMoveLeft(Ext
@@ -359,6 +583,7 @@ Ext.define("dnet.core.asgn.AbstractAsgnUi", {
 							// iconCls : 'icon-action-assign_moverightall',
 							text : ">>",
 							tooltip : "Add all",
+							id : this._btnMoveRightAllId_,
 							scope : this,
 							handler : function() {
 								this._controller_.doMoveRightAll();
@@ -371,6 +596,7 @@ Ext.define("dnet.core.asgn.AbstractAsgnUi", {
 							// iconCls : 'icon-action-assign_moveleftall',
 							text : "<<",
 							tooltip : "Remove all",
+							id : this._btnMoveLeftAllId_,
 							scope : this,
 							handler : function() {
 								this._controller_.doMoveLeftAll();
@@ -382,6 +608,7 @@ Ext.define("dnet.core.asgn.AbstractAsgnUi", {
 							xtype : "button",
 							text : 'Save',
 							tooltip : "Save changes",
+							id : this._btnSaveId_,
 							scope : this,
 							handler : function() {
 								this._controller_.doSave();
