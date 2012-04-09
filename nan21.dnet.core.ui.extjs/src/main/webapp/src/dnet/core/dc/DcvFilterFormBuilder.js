@@ -149,9 +149,9 @@ Ext.define("dnet.core.dc.DcvFilterFormBuilder", {
                 name : 'created',
                 combineErrors: true,
                 msgTarget : 'side',
-                layout: 'hbox',
+                layout: 'hbox',margin:0,padding:0, 
                 defaults: {
-                	flex: 3,padding:0,
+                	flex: 3,padding:0,margin:0,
                     hideLabel: true
                 } 
             })
@@ -163,11 +163,11 @@ Ext.define("dnet.core.dc.DcvFilterFormBuilder", {
                 msgTarget : 'side',
                 layout: 'hbox',
                 defaults: {
-                	flex: 3,padding: 0,
+                	flex: 3,padding: 0, margin:0,
                     hideLabel: true
                 } 
             })
-            .addPanel({ name:"colAudit", xtype:"fieldset", defaults:{labelWidth:70 }, padding:1,  title:"Audit", border:true, collapsible: true, layout:"form"
+            .addPanel({ name:"colAudit", xtype:"fieldset", defaults:{labelWidth:70 }, padding:'0 10 0 0',  margin:'0 0 0 5',   title:"Audit", border:true, collapsible: true, layout:"form"
             //, style:"border:1px solid red !important;"
             ,width:390})
             .addChildrenTo("colAudit",["created", "modified" ])

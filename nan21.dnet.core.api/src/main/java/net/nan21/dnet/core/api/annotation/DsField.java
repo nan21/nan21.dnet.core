@@ -33,10 +33,11 @@ public @interface DsField {
 	 * Used to specify the join type to be used if it is a nested expression.<br>
 	 * By default an inner join is used.<br>
 	 * For nested expressions a proper fetch-join is appended to the query or a
-	 * FETCH/LEFT_FECTH query hint for deep nesting.
-	 * However, if a {@link DsQueryHints} is specified at data-source level no hints are appended. 
-	 * In this case you'll have add in the {@link DsQueryHints} the hints required for nested fetches.
-	 * <br>Possible values: left
+	 * FETCH/LEFT_FECTH query hint for deep nesting. However, if a
+	 * {@link DsQueryHints} is specified at data-source level no hints are
+	 * appended. In this case you'll have add in the {@link DsQueryHints} the
+	 * hints required for nested fetches. <br>
+	 * Possible values: left
 	 * 
 	 * @return
 	 */
@@ -50,18 +51,28 @@ public @interface DsField {
 	 * @return
 	 */
 	String jpqlFilter() default "";
-	
-	
+
 	/**
-	 * DS-field marked with this flag with true value doesn't update the value in the corresponding entity field on insert operation.<br>
+	 * Specifies the field(s) to be used for sort instead of the current field
+	 * mapped. It is useful when the ds-field is mapped to a transient entity
+	 * field. Allowed values: comma delimited entity attribute names.
+	 * 
+	 * @return
+	 */
+	String orderBy() default "";
+
+	/**
+	 * DS-field marked with this flag with true value doesn't update the value
+	 * in the corresponding entity field on insert operation.<br>
 	 * By default is false.
 	 * 
 	 * @return
 	 */
 	boolean noInsert() default false;
-	
+
 	/**
-	 * DS-field marked with this flag with true value doesn't update the value in the corresponding entity field on update operation.<br>
+	 * DS-field marked with this flag with true value doesn't update the value
+	 * in the corresponding entity field on update operation.<br>
 	 * By default is false.
 	 * 
 	 * @return

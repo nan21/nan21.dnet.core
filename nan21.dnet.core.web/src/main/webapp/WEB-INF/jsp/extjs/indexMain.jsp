@@ -75,9 +75,7 @@
 			 layout:'card', activeItem:0
 			,forceLayout:true
 			,items:[
-				 { html:"" } 
-			   	  
-			   	 
+				  { xtype:"container", html:"" } 
 			   	 ,{ xtype:"container", padding:0
 			    	,layout:'border'
 				    ,forceLayout:true

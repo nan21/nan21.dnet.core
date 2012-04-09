@@ -62,7 +62,8 @@
     	${extensionsContent}
  
      	var cfg = { 
-			layout:"fit"	 	     			  
+			layout:"fit"
+			,xtype:"container"		 	     			  
 			,items: [{					      	 
 				xtype:"${item}"	
 				,border: false 

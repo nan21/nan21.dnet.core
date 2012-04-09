@@ -44,6 +44,7 @@ public abstract class AbstractViewModelDescriptor<M> implements IViewModelDescri
 	private List<String> noUpdates;
 	//private Map<String, String> nestedFetchJoins;
 	
+	private Map<String, String[]> orderBys;
 	
 	private Map<String, Object> queryHints;
 	
@@ -59,6 +60,10 @@ public abstract class AbstractViewModelDescriptor<M> implements IViewModelDescri
 		this.buildElements();
 		this.buildHeaders();
 	}
+	
+	/**
+	 * Process model level annotations
+	 */
 	protected void buildHeaders () {
 		if (this.modelClass.isAnnotationPresent(Ds.class)) {
 			this.jpqlDefaultWhere = this.modelClass.getAnnotation(Ds.class).jpqlWhere();
@@ -87,6 +92,9 @@ public abstract class AbstractViewModelDescriptor<M> implements IViewModelDescri
 		}
 	}
 	
+	/**
+	 * Process field annotations
+	 */
 	protected void buildElements() {
 		if (this.refPaths == null) {
 			this.refPaths = new HashMap<String, String>();
@@ -98,6 +106,7 @@ public abstract class AbstractViewModelDescriptor<M> implements IViewModelDescri
 			 
 			this.jpqlFieldFilterRules = new HashMap<String, String>();
 			this.fetchJoins = new HashMap<String, String>();
+			this.orderBys = new HashMap<String, String[]>();
 			
 			boolean createHintsForNestedFetchJoins = false;
 			if (queryHints == null) {
@@ -119,6 +128,22 @@ public abstract class AbstractViewModelDescriptor<M> implements IViewModelDescri
 					if (path.equals("")) {
 						path = field.getName();
 					}
+					
+					String orderBy = field.getAnnotation(DsField.class).orderBy();
+					if (!orderBy.equals("")) {
+						String[] orderByFields = orderBy.split(",");
+						String[] orderBys = new String[orderByFields.length] ;
+						String prefix = path.substring(0, path.lastIndexOf("."));
+						for (int y=0,l=orderByFields.length; y<l;y++) {
+							if (prefix != null && !prefix.equals("")) {
+								orderBys[y] = prefix + "."+ orderByFields[y];
+							} else {
+								orderBys[y] = orderByFields[y];
+							}
+						}
+						this.orderBys.put(fieldName, orderBys);
+					}
+					
 					this.e2mConv.put(fieldName, path);
 					if (field.getAnnotation(DsField.class).fetch()) {
 						this.refPaths.put(fieldName, path);
@@ -208,6 +233,10 @@ public abstract class AbstractViewModelDescriptor<M> implements IViewModelDescri
 
 	public List<String> getNoUpdates() {
 		return noUpdates;
+	}
+
+	public Map<String, String[]> getOrderBys() {
+		return orderBys;
 	}
 	 
 	

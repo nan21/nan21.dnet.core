@@ -42,7 +42,7 @@ Ext.define("dnet.core.dc.AbstractDcvFilterForm", {
 	maskDisabled : false,
 	layout : "fit",
 	buttonAlign : "left",
-	bodyCls : 'dcv-edit-form',
+	bodyCls : 'dcv-filter-form',
 	bodyPadding : '5 5 0 0',
 
 	fieldDefaults : {

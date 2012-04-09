@@ -74,22 +74,22 @@ public class AuthorizeDsActionService  extends JdbcDaoSupport
     
     
     private String getSqlDsAction() {
-    	return "select distinct 1 from AD_ACCESS_CONTROL_DS acl where acl.dsname = ? "
+    	return "select distinct 1 from AD_ACCESSCTRL_DS acl where acl.dsname = ? "
 		+" and exists ( "
 		+" select 1 "
-		+"   from AD_ROLES_ACCESSCTRL rac"
+		+"   from AD_ROLE_ACCESSCTRLS rac"
 		+"  where rac.accessControls_id = acl.accessControl_id and rac.roles_id in ( "
-		+" 		select ur.roles_id from ad_users_roles ur where ur.users_id in ( select u.id from ad_users u where u.code = ? )"
+		+" 		select ur.roles_id from AD_USER_ROLES ur where ur.users_id in ( select u.id from AD_USER u where u.code = ? )"
 		+"	)"
 		+")";
     }
     private String getSqlDsServiceMethod() {
-    	return "select distinct 1 from AD_ACCESS_CONTROL_DSMTHD acl where acl.dsname = ? "
+    	return "select distinct 1 from AD_ACCESSCTRL_DSMTHD acl where acl.dsname = ? "
 		+" and exists ( "
 		+" select 1 "
-		+"   from AD_ROLES_ACCESSCTRL rac"
+		+"   from AD_ROLE_ACCESSCTRLS rac"
 		+"  where rac.accessControls_id = acl.accessControl_id and rac.roles_id in ( "
-		+" 		select ur.roles_id from ad_users_roles ur where ur.users_id in ( select u.id from ad_users u where u.code = ? )"
+		+" 		select ur.roles_id from AD_USER_ROLES ur where ur.users_id in ( select u.id from AD_USER u where u.code = ? )"
 		+"	)"
 		+")";
     }

@@ -13,7 +13,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
-public class QueryBuilderWithJpql<M,F,P> extends AbstractQueryBuilder<M,F,P> {
+public class QueryBuilderWithJpql<M, F, P> extends
+		AbstractQueryBuilder<M, F, P> {
 
 	final static Logger logger = LoggerFactory
 			.getLogger(QueryBuilderWithJpql.class);
@@ -32,11 +33,12 @@ public class QueryBuilderWithJpql<M,F,P> extends AbstractQueryBuilder<M,F,P> {
 	protected List<String> noFilterItems;
 
 	/**
-	 * Dirty work-around to avoid eclipselink bug when using fetch-groups with Cursor
+	 * Dirty work-around to avoid eclipselink bug when using fetch-groups with
+	 * Cursor
 	 * 
 	 */
 	protected boolean forExport;
-	
+
 	private String entityAlias = "e";
 
 	public String getBaseEql() {
@@ -196,11 +198,26 @@ public class QueryBuilderWithJpql<M,F,P> extends AbstractQueryBuilder<M,F,P> {
 				if (i > 0) {
 					this.sort.append(",");
 				}
-				this.sort.append(this.entityAlias
-						+ "."
-						+ this.getDescriptor().getRefPaths().get(
-								this.sortColumnNames[i]) + " "
-						+ this.sortColumnSense[i]);
+				if (this.getDescriptor().getOrderBys().containsKey(
+						this.sortColumnNames[i])) {
+					String[] fields = this.getDescriptor().getOrderBys().get(
+							this.sortColumnNames[i]);
+
+					for (int k = 0, l = fields.length; k < l; k++) {
+						if (k > 0) {
+							this.sort.append(",");
+						}
+						this.sort.append(this.entityAlias + "." + fields[k]
+								+ " " + this.sortColumnSense[i]);
+					}
+				} else {
+					this.sort.append(this.entityAlias
+							+ "."
+							+ this.getDescriptor().getRefPaths().get(
+									this.sortColumnNames[i]) + " "
+							+ this.sortColumnSense[i]);
+				}
+
 			}
 		}
 	}
@@ -225,24 +242,25 @@ public class QueryBuilderWithJpql<M,F,P> extends AbstractQueryBuilder<M,F,P> {
 		this.defaultFilterItems = new HashMap<String, Object>();
 		boolean isFrom = false;
 		boolean isTo = false;
-		
+
 		for (Method m : methods) {
 			isFrom = false;
 			isTo = false;
-			
+
 			if (m.getName().startsWith("get")) {
-				String fieldName = StringUtils.uncapitalize(m.getName().substring(3));
+				String fieldName = StringUtils.uncapitalize(m.getName()
+						.substring(3));
 				String filterFieldName = fieldName;
 				if (fieldName.endsWith("_From")) {
-					fieldName = fieldName.substring(0, fieldName.length()-5);
+					fieldName = fieldName.substring(0, fieldName.length() - 5);
 					isFrom = true;
 				}
-				
+
 				if (fieldName.endsWith("_To")) {
-					fieldName = fieldName.substring(0, fieldName.length()-3);
+					fieldName = fieldName.substring(0, fieldName.length() - 3);
 					isTo = true;
 				}
-				
+
 				if (!(this.noFilterItems != null && this.noFilterItems
 						.contains(fieldName))
 						&& !(this.customFilterItems != null && this.customFilterItems
@@ -252,40 +270,45 @@ public class QueryBuilderWithJpql<M,F,P> extends AbstractQueryBuilder<M,F,P> {
 					if (fv != null) {
 						if (m.getReturnType() == java.lang.String.class) {
 							if (jpqlFilterRules.containsKey(fieldName)) {
-								addFilterCondition(jpqlFilterRules.get(fieldName));
-								this.defaultFilterItems.put(fieldName, (String) fv);
+								addFilterCondition(jpqlFilterRules
+										.get(fieldName));
+								this.defaultFilterItems.put(fieldName,
+										(String) fv);
 							} else {
 								if (refpaths.containsKey(fieldName)) {
 									addFilterCondition(entityAlias + "."
-											+ refpaths.get(fieldName) + " like :" + fieldName);
-									this.defaultFilterItems
-											.put(fieldName, (String) fv);
+											+ refpaths.get(fieldName)
+											+ " like :" + fieldName);
+									this.defaultFilterItems.put(fieldName,
+											(String) fv);
 								}
 							}
 						} else {
-							if (isFrom || isTo) {								
+							if (isFrom || isTo) {
 								if (isFrom) {
 									this.addFilterCondition(entityAlias + "."
-											+ refpaths.get(fieldName) + " >= :" + filterFieldName);
+											+ refpaths.get(fieldName) + " >= :"
+											+ filterFieldName);
 								} else {
 									this.addFilterCondition(entityAlias + "."
-											+ refpaths.get(fieldName) + " < :" + filterFieldName);
+											+ refpaths.get(fieldName) + " < :"
+											+ filterFieldName);
 								}
-								
-								this.defaultFilterItems.put(filterFieldName, fv);
+
+								this.defaultFilterItems
+										.put(filterFieldName, fv);
 							} else {
 								if (jpqlFilterRules.containsKey(fieldName)) {
-									addFilterCondition(jpqlFilterRules.get(fieldName));
+									addFilterCondition(jpqlFilterRules
+											.get(fieldName));
 								} else {
 									this.addFilterCondition(entityAlias + "."
-											+ refpaths.get(fieldName) + " = :" + fieldName);
+											+ refpaths.get(fieldName) + " = :"
+											+ fieldName);
 								}
 								this.defaultFilterItems.put(fieldName, fv);
 							}
-							
-							
-							
-							
+
 						}
 					}
 				}
@@ -342,7 +365,8 @@ public class QueryBuilderWithJpql<M,F,P> extends AbstractQueryBuilder<M,F,P> {
 
 	protected void addFetchGroup(Query q) {
 		// see the reason of forExport flag
-		if (this.forExport || this.systemConfig.isDisableFetchGroups()) return;
+		if (this.forExport || this.systemConfig.isDisableFetchGroups())
+			return;
 		logger.debug("Adding fetchGroup...");
 		FetchGroup fg = new FetchGroup("default");
 		fg.setShouldLoad(true);
@@ -363,21 +387,20 @@ public class QueryBuilderWithJpql<M,F,P> extends AbstractQueryBuilder<M,F,P> {
 		String jpql = this.buildQueryStatement();
 		Query q = this.em.createQuery(jpql);
 		if (this.descriptor.getQueryHints() != null) {
-			Map<String, Object> queryHints = this.descriptor
-					.getQueryHints();
+			Map<String, Object> queryHints = this.descriptor.getQueryHints();
 			Iterator<String> it = queryHints.keySet().iterator();
-			while (it.hasNext()) { 
+			while (it.hasNext()) {
 				String p = it.next();
 				q.setHint(p, queryHints.get(p));
-				
-//				if(p!=null && !p.equals("")) {
-//					String type = nestedFetchJoins.get(p);
-//					if (type != null && type.equals("left")) {
-//						q.setHint(QueryHints.LEFT_FETCH, p);
-//					} else {
-//						q.setHint(QueryHints.FETCH, p);
-//					}
-//				}				
+
+				// if(p!=null && !p.equals("")) {
+				// String type = nestedFetchJoins.get(p);
+				// if (type != null && type.equals("left")) {
+				// q.setHint(QueryHints.LEFT_FETCH, p);
+				// } else {
+				// q.setHint(QueryHints.FETCH, p);
+				// }
+				// }
 			}
 		}
 		addFetchGroup(q);
@@ -414,5 +437,5 @@ public class QueryBuilderWithJpql<M,F,P> extends AbstractQueryBuilder<M,F,P> {
 	public void setForExport(boolean forExport) {
 		this.forExport = forExport;
 	}
-	
+
 }

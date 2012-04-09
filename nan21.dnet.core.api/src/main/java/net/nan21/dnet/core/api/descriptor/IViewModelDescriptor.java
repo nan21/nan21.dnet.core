@@ -12,5 +12,5 @@ public interface IViewModelDescriptor<M> {
 	public Map<String, String> getJpqlFieldFilterRules();
 	public Map<String, String> getFetchJoins();
 	public Map<String, Object> getQueryHints();
-	
+	public Map<String, String[]> getOrderBys();
 }
