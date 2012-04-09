@@ -75,8 +75,8 @@
 			 layout:'card', activeItem:0
 			,forceLayout:true
 			,items:[
-				  { xtype:"container", html:"" } 
-			   	 ,{ xtype:"container", padding:0
+				  { html:"" } 
+			   	 ,{ padding:0
 			    	,layout:'border'
 				    ,forceLayout:true
 				    ,items:[
@@ -95,8 +95,7 @@
 								 }    
 							]   
 						}				    	        
-				    	,__application__.menu 
-				    	          								    	        
+				    	,__application__.menu 				    	          								    	        
 				    ]
 				}   
 				 

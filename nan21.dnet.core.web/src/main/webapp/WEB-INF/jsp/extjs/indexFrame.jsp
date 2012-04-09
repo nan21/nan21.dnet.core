@@ -63,7 +63,7 @@
  
      	var cfg = { 
 			layout:"fit"
-			,xtype:"container"		 	     			  
+			//,xtype:"container"		 	     			  
 			,items: [{					      	 
 				xtype:"${item}"	
 				,border: false 
