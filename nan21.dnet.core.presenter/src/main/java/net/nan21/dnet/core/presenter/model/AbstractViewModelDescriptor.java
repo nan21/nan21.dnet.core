@@ -113,66 +113,76 @@ public abstract class AbstractViewModelDescriptor<M> implements IViewModelDescri
 				queryHints = new HashMap<String, Object>();
 			}
 			//this.nestedFetchJoins = new HashMap<String, String>();
-			Field[] fields = this.modelClass.getDeclaredFields();
-			for (Field field : fields) {
-				if(field.isAnnotationPresent(DsField.class)) {
-					String fieldName = field.getName();
-					
-					if (field.getAnnotation(DsField.class).noInsert()) {
-						this.noInserts.add(fieldName);
-					}
-					if (field.getAnnotation(DsField.class).noUpdate()) {
-						this.noUpdates.add(fieldName);
-					}
-					String path = field.getAnnotation(DsField.class).path();
-					if (path.equals("")) {
-						path = field.getName();
-					}
-					
-					String orderBy = field.getAnnotation(DsField.class).orderBy();
-					if (!orderBy.equals("")) {
-						String[] orderByFields = orderBy.split(",");
-						String[] orderBys = new String[orderByFields.length] ;
-						String prefix = path.substring(0, path.lastIndexOf("."));
-						for (int y=0,l=orderByFields.length; y<l;y++) {
-							if (prefix != null && !prefix.equals("")) {
-								orderBys[y] = prefix + "."+ orderByFields[y];
-							} else {
-								orderBys[y] = orderByFields[y];
-							}
+			Class clz = this.modelClass;
+			
+			while (clz != null ) {
+				Field[] fields = clz.getDeclaredFields();
+				clz = clz.getSuperclass();
+				for (Field field : fields) {
+					if(field.isAnnotationPresent(DsField.class)) {
+						String fieldName = field.getName();
+						
+						if (field.getAnnotation(DsField.class).noInsert()) {
+							this.noInserts.add(fieldName);
 						}
-						this.orderBys.put(fieldName, orderBys);
-					}
-					
-					this.e2mConv.put(fieldName, path);
-					if (field.getAnnotation(DsField.class).fetch()) {
-						this.refPaths.put(fieldName, path);
-						int firstDot = path.indexOf(".");
-						if (firstDot > 0) {
-							if (firstDot == path.lastIndexOf(".")) {
-								this.fetchJoins.put("e."+path.substring(0, path.lastIndexOf(".")), field.getAnnotation(DsField.class).join());
-							} else {
-								if (createHintsForNestedFetchJoins) {
-									String p = "e."+path.substring(0, path.lastIndexOf("."));
-									String type = field.getAnnotation(DsField.class).join();
-									if (type != null && type.equals("left")) {
-										this.queryHints.put(QueryHints.LEFT_FETCH, p);										 
-									} else {
-										this.queryHints.put(QueryHints.FETCH, p);										 
-									}									
+						if (field.getAnnotation(DsField.class).noUpdate()) {
+							this.noUpdates.add(fieldName);
+						}
+						String path = field.getAnnotation(DsField.class).path();
+						if (path.equals("")) {
+							path = field.getName();
+						}
+						
+						String orderBy = field.getAnnotation(DsField.class).orderBy();
+						if (!orderBy.equals("")) {
+							String[] orderByFields = orderBy.split(",");
+							String[] orderBys = new String[orderByFields.length] ;
+							String prefix = path.substring(0, path.lastIndexOf("."));
+							for (int y=0,l=orderByFields.length; y<l;y++) {
+								if (prefix != null && !prefix.equals("")) {
+									orderBys[y] = prefix + "."+ orderByFields[y];
+								} else {
+									orderBys[y] = orderByFields[y];
 								}
- 
-							}						
-						} else {
-							this.m2eConv.put(path, fieldName);
+							}
+							this.orderBys.put(fieldName, orderBys);
 						}
-					}					
-					String jpqlFieldFilterRule = field.getAnnotation(DsField.class).jpqlFilter();
-					if(jpqlFieldFilterRule!=null && !"".equals(jpqlFieldFilterRule)) {
-						this.jpqlFieldFilterRules.put(fieldName, jpqlFieldFilterRule);
-					}					 
+						
+						this.e2mConv.put(fieldName, path);
+						if (field.getAnnotation(DsField.class).fetch()) {
+							this.refPaths.put(fieldName, path);
+							int firstDot = path.indexOf(".");
+							if (firstDot > 0) {
+								if (firstDot == path.lastIndexOf(".")) {
+									this.fetchJoins.put("e."+path.substring(0, path.lastIndexOf(".")), field.getAnnotation(DsField.class).join());
+								} else {
+									if (createHintsForNestedFetchJoins) {
+										String p = "e."+path.substring(0, path.lastIndexOf("."));
+										String type = field.getAnnotation(DsField.class).join();
+										if (type != null && type.equals("left")) {
+											this.queryHints.put(QueryHints.LEFT_FETCH, p);										 
+										} else {
+											this.queryHints.put(QueryHints.FETCH, p);										 
+										}									
+									}
+	 
+								}						
+							} else {
+								this.m2eConv.put(path, fieldName);
+							}
+						}					
+						String jpqlFieldFilterRule = field.getAnnotation(DsField.class).jpqlFilter();
+						if(jpqlFieldFilterRule!=null && !"".equals(jpqlFieldFilterRule)) {
+							this.jpqlFieldFilterRules.put(fieldName, jpqlFieldFilterRule);
+						}					 
+					}
 				}
-			}		 
+			}
+			
+			
+			
+			
+			
 		}
 	}
 

@@ -695,9 +695,6 @@ Ext.define("dnet.core.dc.AbstractDc", {
 		}
 	},
 
-//	shouldRecordNotifySelection : true,
-//	shouldSelectionNotifyRecord : true,
-
 	/**
 	 * Returns the selected records
 	 */
@@ -716,21 +713,6 @@ Ext.define("dnet.core.dc.AbstractDc", {
 
 		if (this.selectedRecords !== recArray) {
 			this.selectedRecords = recArray;
-//			if (this.shouldSelectionNotifyRecord) {
-//				if (recArray.length == 0) {
-//					this.shouldRecordNotifySelection = false;
-//					this.setRecord(null);
-//					this.shouldRecordNotifySelection = true;
-//				} else {
-//					if (this.record == null || recArray.length == 1) { // ||
-//						// !Ext.Array.contains(recArray,
-//						// this.record)
-//						this.shouldRecordNotifySelection = false;
-//						this.setRecord(recArray[0]);
-//						this.shouldRecordNotifySelection = true;
-//					}
-//				}
-//			}
 			this.fireEvent('selectionChange', {
 						dc : this,
 						eOpts: eOpts

@@ -13,13 +13,15 @@ Export-Package: net.nan21.dnet.core.presenter.action;version="1.0.0.M9
  action,net.nan21.dnet.core.api.marshall",net.nan21.dnet.core.presente
  r.model;version="1.0.0.M9";uses:="net.nan21.dnet.core.api.descriptor,
  org.springframework.beans.factory.annotation,org.springframework.cont
- ext",net.nan21.dnet.core.presenter.propertyeditors;version="1.0.0.M9"
- ,net.nan21.dnet.core.presenter.service;version="1.0.0.M9";uses:="net.
- nan21.dnet.core.api,net.nan21.dnet.core.api.action,net.nan21.dnet.cor
- e.api.converter,net.nan21.dnet.core.api.marshall,net.nan21.dnet.core.
- api.service,net.nan21.dnet.core.api.setup,net.nan21.dnet.core.present
- er.model,org.activiti.engine,org.springframework.beans.factory.annota
- tion,org.springframework.context"
+ ext",net.nan21.dnet.core.presenter.model.base;version="1.0.0.M9";uses
+ :="net.nan21.dnet.core.api.annotation,net.nan21.dnet.core.api.model,n
+ et.nan21.dnet.core.presenter.model",net.nan21.dnet.core.presenter.pro
+ pertyeditors;version="1.0.0.M9",net.nan21.dnet.core.presenter.service
+ ;version="1.0.0.M9";uses:="net.nan21.dnet.core.api,net.nan21.dnet.cor
+ e.api.action,net.nan21.dnet.core.api.converter,net.nan21.dnet.core.ap
+ i.marshall,net.nan21.dnet.core.api.service,net.nan21.dnet.core.api.se
+ tup,net.nan21.dnet.core.presenter.model,org.activiti.engine,org.sprin
+ gframework.beans.factory.annotation,org.springframework.context"
 Bundle-Vendor: Nan21 
 Bundle-Version: 1.0.0.M9
 Tool: Bundlor 1.0.0.RELEASE

@@ -3,8 +3,14 @@ Ext.override(Ext.data.Model, {
 	clientIdProperty:"__clientRecordId__"
 });
 
+ Ext.override(Ext.form.Basic, { 
+ 	findField: function(id) {
+		return this.getFields().findBy(function(f) {
+			return f.dataIndex === id ||f.id === id || f.getName() === id;
+		});
+	}
+ });
  
-
 Ext.override(Ext.form.field.Text, { 
 	getRawValue: function() {
 		var me = this,

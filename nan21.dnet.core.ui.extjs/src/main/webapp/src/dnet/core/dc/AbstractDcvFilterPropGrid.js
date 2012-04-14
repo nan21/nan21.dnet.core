@@ -100,7 +100,6 @@ Ext.define("dnet.core.dc.AbstractDcvFilterPropGrid", {
 			 * Register event listeners
 			 */
 			_registerListeners_ : function() {
-				// this.mon(this, "afterrender", this.on_afterrender, this);
 				this.mon(this._controller_, "parameterValueChanged",
 						this._onParameterValueChanged_, this);
 				this.mon(this._controller_, "filterValueChanged",
@@ -108,29 +107,7 @@ Ext.define("dnet.core.dc.AbstractDcvFilterPropGrid", {
 				this.mon(this, "edit" ,function (editor, evnt, eOpts ) {// alert(22);
 						this._controller_.setFilterValue(evnt.record.data.name, evnt.value);
 						return true; 
-					} , this  );
-				// if (this._controller_.commands.doQuery) {
-				// this._controller_.commands.doQuery.beforeExecute =
-				// Ext.Function
-				// .createInterceptor(
-				// this._controller_.commands.doQuery.beforeExecute,
-				// function() {
-				// if (this._shouldValidate_()
-				// && !this.getForm().isValid()) {
-				// Ext.Msg.show({
-				// title : "Validation info",
-				// msg : "Filter contains invalid data.<br> Please fix the
-				// errors then try again.",
-				// scope : this,
-				// icon : Ext.MessageBox.ERROR,
-				// buttons : Ext.MessageBox.OK
-				// });
-				// return false;
-				// } else {
-				// return true;
-				// }
-				// }, this, -1);
-				// }
+					} , this  ); 
 			},
 
 			/**
@@ -170,7 +147,6 @@ Ext.define("dnet.core.dc.AbstractDcvFilterPropGrid", {
 			_updateBound_ : function(filter) {
 				if (!filter) {
 					this.disable();
-					// this.form.reset();
 				} else {
 					if (this.disabled) {
 						this.enable();

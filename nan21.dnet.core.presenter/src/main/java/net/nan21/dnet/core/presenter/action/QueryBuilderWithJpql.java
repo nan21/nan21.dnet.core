@@ -1,5 +1,6 @@
 package net.nan21.dnet.core.presenter.action;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -234,7 +235,7 @@ public class QueryBuilderWithJpql<M, F, P> extends
 
 	protected void onBuildWhere() throws Exception {
 
-		Method[] methods = this.getFilterClass().getDeclaredMethods();
+		
 		Map<String, String> refpaths = this.descriptor.getRefPaths();
 		Map<String, String> jpqlFilterRules = this.descriptor
 				.getJpqlFieldFilterRules();
@@ -243,76 +244,109 @@ public class QueryBuilderWithJpql<M, F, P> extends
 		boolean isFrom = false;
 		boolean isTo = false;
 
-		for (Method m : methods) {
-			isFrom = false;
-			isTo = false;
+		
+		Method[] methods = this.getFilterClass().getMethods();
+		
+		Class clz = this.getFilterClass();
+		
+		while (clz != null ) {
+			Field[] fields = clz.getDeclaredFields();
+			
+			for (Field field : fields) {
+				isFrom = false;
+				isTo = false;
 
-			if (m.getName().startsWith("get")) {
-				String fieldName = StringUtils.uncapitalize(m.getName()
-						.substring(3));
-				String filterFieldName = fieldName;
-				if (fieldName.endsWith("_From")) {
-					fieldName = fieldName.substring(0, fieldName.length() - 5);
-					isFrom = true;
-				}
+				 
+					String fieldName = field.getName();
+					String filterFieldName = fieldName;
+					if (fieldName.endsWith("_From")) {
+						fieldName = fieldName.substring(0, fieldName.length() - 5);
+						isFrom = true;
+					}
 
-				if (fieldName.endsWith("_To")) {
-					fieldName = fieldName.substring(0, fieldName.length() - 3);
-					isTo = true;
-				}
+					if (fieldName.endsWith("_To")) {
+						fieldName = fieldName.substring(0, fieldName.length() - 3);
+						isTo = true;
+					}
 
-				if (!(this.noFilterItems != null && this.noFilterItems
-						.contains(fieldName))
-						&& !(this.customFilterItems != null && this.customFilterItems
-								.containsKey(filterFieldName))) {
-
-					Object fv = m.invoke(filter);
-					if (fv != null) {
-						if (m.getReturnType() == java.lang.String.class) {
-							if (jpqlFilterRules.containsKey(fieldName)) {
-								addFilterCondition(jpqlFilterRules
-										.get(fieldName));
-								this.defaultFilterItems.put(fieldName,
-										(String) fv);
-							} else {
-								if (refpaths.containsKey(fieldName)) {
-									addFilterCondition(entityAlias + "."
-											+ refpaths.get(fieldName)
-											+ " like :" + fieldName);
-									this.defaultFilterItems.put(fieldName,
-											(String) fv);
-								}
-							}
-						} else {
-							if (isFrom || isTo) {
-								if (isFrom) {
-									this.addFilterCondition(entityAlias + "."
-											+ refpaths.get(fieldName) + " >= :"
-											+ filterFieldName);
-								} else {
-									this.addFilterCondition(entityAlias + "."
-											+ refpaths.get(fieldName) + " < :"
-											+ filterFieldName);
-								}
-
-								this.defaultFilterItems
-										.put(filterFieldName, fv);
-							} else {
+					if (!(this.noFilterItems != null && this.noFilterItems
+							.contains(fieldName))
+							&& !(this.customFilterItems != null && this.customFilterItems
+									.containsKey(filterFieldName))) {
+						Method m = null;
+						try { 
+							m = clz.getMethod("get"+StringUtils.capitalize(filterFieldName));
+						} catch (Exception e) {
+							break;
+						}
+						 
+						Object fv = m.invoke(filter);
+						if (fv != null) {
+							if (m.getReturnType() == java.lang.String.class) {
 								if (jpqlFilterRules.containsKey(fieldName)) {
 									addFilterCondition(jpqlFilterRules
 											.get(fieldName));
+									this.defaultFilterItems.put(fieldName,
+											(String) fv);
 								} else {
-									this.addFilterCondition(entityAlias + "."
-											+ refpaths.get(fieldName) + " = :"
-											+ fieldName);
+									if (refpaths.containsKey(fieldName)) {
+										addFilterCondition(entityAlias + "."
+												+ refpaths.get(fieldName)
+												+ " like :" + fieldName);
+										this.defaultFilterItems.put(fieldName,
+												(String) fv);
+									}
 								}
-								this.defaultFilterItems.put(fieldName, fv);
-							}
+							} else {
+								if (isFrom || isTo) {
+									if (isFrom) {
+										this.addFilterCondition(entityAlias + "."
+												+ refpaths.get(fieldName) + " >= :"
+												+ filterFieldName);
+									} else {
+										this.addFilterCondition(entityAlias + "."
+												+ refpaths.get(fieldName) + " < :"
+												+ filterFieldName);
+									}
 
+									this.defaultFilterItems
+											.put(filterFieldName, fv);
+								} else {
+									if (jpqlFilterRules.containsKey(fieldName)) {
+										addFilterCondition(jpqlFilterRules
+												.get(fieldName));
+									} else {
+										this.addFilterCondition(entityAlias + "."
+												+ refpaths.get(fieldName) + " = :"
+												+ fieldName);
+									}
+									this.defaultFilterItems.put(fieldName, fv);
+								}
+
+							}
 						}
 					}
-				}
+				 
+				
+				
+				
 			}
+			
+			clz = clz.getSuperclass();
+		}
+		
+		
+		
+		
+		
+		for (Method m : methods) {
+		
+			
+			
+			
+			
+			
+			
 		}
 
 	}
