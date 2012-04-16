@@ -32,13 +32,6 @@
 			<type>jar</type>
 			<scope>provided</scope>
 		</dependency>	
-		<dependency>
-			<groupId>net.nan21.dnet</groupId>
-			<artifactId>nan21.dnet.core.domain</artifactId>
-			<version>1.0.0.M9</version>
-			<type>jar</type>
-			<scope>provided</scope>
-		</dependency>	
 		 
 		<!-- External libraries -->
 		<dependency>

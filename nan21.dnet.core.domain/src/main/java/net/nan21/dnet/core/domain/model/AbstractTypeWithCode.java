@@ -20,10 +20,37 @@ import org.eclipse.persistence.descriptors.DescriptorEvent;
 import org.hibernate.validator.constraints.NotBlank;
 
 @MappedSuperclass
-public abstract class AbstractAuditable implements Serializable, IModelWithId,
+public abstract class AbstractTypeWithCode implements Serializable, IModelWithId,
 		IModelWithClientId {
 
 	private static final long serialVersionUID = -1L;
+	
+	/**
+	 * Code of entity.
+	 */
+	@Column(name = "CODE", nullable = false, length = 32)
+	@NotBlank
+	protected String code;
+
+	/**
+	 * Name of entity.
+	 */
+	@Column(name = "NAME", nullable = false, length = 255)
+	@NotBlank
+	protected String name;
+
+	/**
+	 * Flag which indicates if this record is actively used.
+	 */
+	@Column(name = "ACTIVE", nullable = false)
+	@NotNull
+	protected Boolean active;
+
+	/**
+	 * Notes about this record.
+	 */
+	@Column(name = "NOTES", length = 4000)
+	protected String notes;
 
 	/** Owner client */
 	@Column(name = "CLIENTID", nullable = false)
@@ -63,7 +90,7 @@ public abstract class AbstractAuditable implements Serializable, IModelWithId,
 	 */
 	@Column(name = "UUID", length = 36)
 	protected String uuid;
-	
+
 	@Transient
 	public String getClassName() {
 		return this.getClass().getCanonicalName();
@@ -72,6 +99,38 @@ public abstract class AbstractAuditable implements Serializable, IModelWithId,
 	public abstract Long getId();
 
 	public abstract void setId(Long id);
+
+	public String getCode() {
+		return this.code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	public String getName() {
+		return this.name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Boolean getActive() {
+		return this.active;
+	}
+
+	public void setActive(Boolean active) {
+		this.active = active;
+	}
+
+	public String getNotes() {
+		return this.notes;
+	}
+
+	public void setNotes(String notes) {
+		this.notes = notes;
+	}
 
 	public Long getClientId() {
 		return clientId;
@@ -128,7 +187,6 @@ public abstract class AbstractAuditable implements Serializable, IModelWithId,
 	public void setUuid(String uuid) {
 		this.uuid = uuid;
 	}
-	
 	public void aboutToInsert(DescriptorEvent event) {
 
 		event.updateAttributeWithObject("createdAt", new Date());
@@ -143,7 +201,9 @@ public abstract class AbstractAuditable implements Serializable, IModelWithId,
 			event.updateAttributeWithObject("uuid", UUID.randomUUID()
 					.toString().toUpperCase());
 		}
-		 
+		if (this.active == null) {
+			event.updateAttributeWithObject("active", false);
+		}
 	}
 
 	public void aboutToUpdate(DescriptorEvent event) {

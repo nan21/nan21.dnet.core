@@ -18,6 +18,13 @@
 
 	<dependencies>
 		<!-- DNet dependencies -->
+		<dependency>
+			<groupId>net.nan21.dnet</groupId>
+			<artifactId>nan21.dnet.core.api</artifactId>
+			<version>1.0.0.M9</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>	
 		 
 		<!-- External libraries -->
 		<dependency>
@@ -141,7 +148,39 @@
 			</archive>
 		</configuration> 
 				 
-			</plugin>				
+			</plugin>		
+			
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.6</version>
+				<!-- ECLIPSELINK WEAVE -->				
+					<executions>
+						<execution>
+							<phase>process-classes</phase>
+							<configuration>
+							  
+							  <target>
+	                               <echo>Beginning process-classes phase...</echo>
+	                               <property name="compile_classpath" refid="maven.compile.classpath"/>                                
+	                               <echo>Compile classpath : ${compile_classpath}</echo>                   
+	                                <property name="path_source"  value="${basedir}/target/classes"/>
+	                                <property name="path_target"  value="${basedir}/target/classes"/>
+	                                <property name="path_persistenceinfo"  value="${basedir}/target/classes"/>                 
+	                                <property name="my_repo"  value="${user.home}/.m2/repository"/>
+	                                
+	                                <ant antfile="${basedir}/eclipselink-static-weave.xml">
+	                                    <target name="weaving"/>
+	                                </ant>
+	                            </target>                            
+							</configuration>
+							<goals>
+								<goal>run</goal>
+							</goals>
+						</execution>
+					</executions> 
+				 
+			</plugin>			
  	</plugins>
  	</build>
 </project>	 

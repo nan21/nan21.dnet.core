@@ -1,0 +1,29 @@
+
+<project name="Weaver" default="weaving" basedir=".">
+	<description>Ant task for static weaving on eclipselink model classes.
+	</description>
+	<target name="define.task"
+		description="New task definition for eclipseLink static weaving">
+		<taskdef name="weave"
+			classname="org.eclipse.persistence.tools.weaving.jpa.StaticWeaveAntTask">
+			<classpath>	
+				<path path="${compile_classpath}"/>
+				 
+			</classpath>
+		</taskdef>
+	</target>
+	<target name="weaving" description="perform weaving" depends="define.task">
+		<echo>Performing static weaving on model classes</echo>
+		<echo>Source path: ${path_source} </echo>	
+		 
+		<weave source="${path_source}" 
+		       target="${path_target}"
+			 	persistenceinfo="${path_persistenceinfo}"			 
+			   loglevel="FINEST">			
+			<classpath>
+              <path path="${compile_classpath}"/>  
+            </classpath>            
+		</weave>
+		 
+	</target>
+</project>

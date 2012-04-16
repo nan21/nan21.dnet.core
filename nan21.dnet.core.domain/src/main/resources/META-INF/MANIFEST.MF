@@ -2,12 +2,19 @@ Manifest-Version: 1.0
 Export-Package: net.nan21.dnet.core.domain.eventhandler;version="1.0.0
  .M9";uses:="org.eclipse.persistence.config,org.eclipse.persistence.de
  scriptors",net.nan21.dnet.core.domain.model;version="1.0.0.M9";uses:=
- "javax.persistence,javax.validation.constraints,org.hibernate.validat
- or.constraints",net.nan21.dnet.core.domain.sequence;version="1.0.0.M9
- ";uses:="org.eclipse.persistence.config,org.eclipse.persistence.inter
- nal.databaseaccess,org.eclipse.persistence.internal.sessions,org.ecli
- pse.persistence.sequencing,org.eclipse.persistence.sessions",net.nan2
- 1.dnet.core.domain.validation;version="1.0.0.M9"
+ "javax.persistence,javax.validation.constraints,javax.xml.bind.annota
+ tion,net.nan21.dnet.core.api.model,org.eclipse.persistence.descriptor
+ s,org.eclipse.persistence.descriptors.changetracking,org.eclipse.pers
+ istence.internal.descriptors,org.eclipse.persistence.internal.weaving
+ ,org.eclipse.persistence.queries,org.eclipse.persistence.sessions,org
+ .hibernate.validator.constraints",net.nan21.dnet.core.domain.model.im
+ pldummy;version="1.0.0.M9";uses:="javax.persistence,net.nan21.dnet.co
+ re.domain.model,org.eclipse.persistence.internal.descriptors,org.ecli
+ pse.persistence.internal.weaving",net.nan21.dnet.core.domain.sequence
+ ;version="1.0.0.M9";uses:="org.eclipse.persistence.config,org.eclipse
+ .persistence.internal.databaseaccess,org.eclipse.persistence.internal
+ .sessions,org.eclipse.persistence.sequencing,org.eclipse.persistence.
+ sessions",net.nan21.dnet.core.domain.validation;version="1.0.0.M9"
 Bundle-Vendor: Nan21 
 Bundle-Version: 1.0.0.M9
 Tool: Bundlor 1.0.0.RELEASE
@@ -16,10 +23,15 @@ Bundle-ManifestVersion: 2
 Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.html
 Bundle-SymbolicName: nan21.dnet.core.domain
 Import-Package: javax.persistence;version="[2.0,2.1)",javax.validation
- .constraints,org.eclipse.persistence.config,org.eclipse.persistence.d
- escriptors,org.eclipse.persistence.internal.databaseaccess,org.eclips
- e.persistence.internal.sessions,org.eclipse.persistence.sequencing,or
- g.eclipse.persistence.sessions,org.hibernate.validator.constraints,or
- g.springframework.context.config;version="[3.0,3.1)",org.springframew
- ork.orm.jpa;version="[3.0,3.1)"
+ .constraints,javax.xml.bind.annotation,net.nan21.dnet.core.api.model;
+ version="[1.0.0.M9,1.0.0.M9]",net.nan21.dnet.core.api.session,org.ecl
+ ipse.persistence.config,org.eclipse.persistence.descriptors,org.eclip
+ se.persistence.descriptors.changetracking,org.eclipse.persistence.int
+ ernal.databaseaccess,org.eclipse.persistence.internal.descriptors,org
+ .eclipse.persistence.internal.jpa,org.eclipse.persistence.internal.se
+ ssions,org.eclipse.persistence.internal.weaving,org.eclipse.persisten
+ ce.queries,org.eclipse.persistence.sequencing,org.eclipse.persistence
+ .sessions,org.hibernate.validator.constraints,org.springframework.con
+ text.config;version="[3.0,3.1)",org.springframework.orm.jpa;version="
+ [3.0,3.1)"
 
