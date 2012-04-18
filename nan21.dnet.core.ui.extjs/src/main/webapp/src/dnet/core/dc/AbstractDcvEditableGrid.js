@@ -122,6 +122,8 @@ Ext.define("dnet.core.dc.AbstractDcvEditableGrid", {
 		this.callParent(arguments);
 	},
 	
+	
+	
 	// **************** Private methods *****************
 
 	initComponent : function(config) {	
@@ -132,7 +134,7 @@ Ext.define("dnet.core.dc.AbstractDcvEditableGrid", {
 		var cfg = this._createDefaultGridConfig_();
 		  
 		this.plugins = [Ext.create('Ext.grid.plugin.CellEditing', {
-					clicksToEdit : 1
+					clicksToEdit : 1 					
 				})];
   
 		Ext.apply(cfg, {

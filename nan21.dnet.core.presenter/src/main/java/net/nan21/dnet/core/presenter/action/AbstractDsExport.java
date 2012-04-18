@@ -49,22 +49,27 @@ public abstract class AbstractDsExport<M> {
 		if (this.outFileName == null) {
 			this.outFileName = UUID.randomUUID().toString();
 		}
-
+		
 		this.fieldGetters = new HashMap<String, Method>();
-		Method[] methods = this.modelClass.getDeclaredMethods();
-
 		this.fieldGetterNames = new HashMap<String, String>();
+		
 		if (this.getFieldNames() == null) {
-			for (int i = 0; i < methods.length; i++) {
-				Method m = methods[i];
-				if (m.getName().startsWith("get")) {
-					String fn = m.getName().substring(3);
-					fn = fn.substring(0, 1).toLowerCase() + fn.substring(1);
-					this.addFieldName(fn);
-					this.fieldGetterNames.put(fn, m.getName());
-					this.fieldGetters.put(m.getName(), m);
+			Class<?> clz = this.modelClass;
+			while (clz != null) {
+				Method[] methods = clz.getDeclaredMethods();
+				for (int i = 0; i < methods.length; i++) {
+					Method m = methods[i];
+					if (m.getName().startsWith("get")) {
+						String fn = m.getName().substring(3);
+						fn = fn.substring(0, 1).toLowerCase() + fn.substring(1);
+						this.addFieldName(fn);
+						this.fieldGetterNames.put(fn, m.getName());
+						this.fieldGetters.put(m.getName(), m);
+					}
 				}
+				clz = clz.getSuperclass();
 			}
+			
 		} else {
 
 			for (String fn : this.getFieldNames()) {

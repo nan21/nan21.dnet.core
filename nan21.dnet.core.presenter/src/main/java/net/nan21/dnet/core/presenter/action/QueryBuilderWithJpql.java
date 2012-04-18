@@ -2,6 +2,7 @@ package net.nan21.dnet.core.presenter.action;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -235,7 +236,6 @@ public class QueryBuilderWithJpql<M, F, P> extends
 
 	protected void onBuildWhere() throws Exception {
 
-		
 		Map<String, String> refpaths = this.descriptor.getRefPaths();
 		Map<String, String> jpqlFilterRules = this.descriptor
 				.getJpqlFieldFilterRules();
@@ -243,29 +243,37 @@ public class QueryBuilderWithJpql<M, F, P> extends
 		this.defaultFilterItems = new HashMap<String, Object>();
 		boolean isFrom = false;
 		boolean isTo = false;
+		// Method[] methods = this.getFilterClass().getMethods();
 
-		
-		Method[] methods = this.getFilterClass().getMethods();
-		
-		Class clz = this.getFilterClass();
-		
-		while (clz != null ) {
+		Class<?> clz = this.getFilterClass();
+
+		// The filter used may be a ds model, ensure we do not apply filter on
+		// the framework specific properties
+
+		String nofield1 = "_entity_";
+		String nofield2 = "__clientRecordId__";
+		while (clz != null) {
 			Field[] fields = clz.getDeclaredFields();
-			
+
 			for (Field field : fields) {
 				isFrom = false;
 				isTo = false;
+				String fieldName = field.getName();
+				String filterFieldName = fieldName;
 
-				 
-					String fieldName = field.getName();
-					String filterFieldName = fieldName;
+				if (!Modifier.isStatic(field.getModifiers())
+						&& !fieldName.equals(nofield1)
+						&& !fieldName.equals(nofield2)) {
+
 					if (fieldName.endsWith("_From")) {
-						fieldName = fieldName.substring(0, fieldName.length() - 5);
+						fieldName = fieldName.substring(0,
+								fieldName.length() - 5);
 						isFrom = true;
 					}
 
 					if (fieldName.endsWith("_To")) {
-						fieldName = fieldName.substring(0, fieldName.length() - 3);
+						fieldName = fieldName.substring(0,
+								fieldName.length() - 3);
 						isTo = true;
 					}
 
@@ -274,12 +282,13 @@ public class QueryBuilderWithJpql<M, F, P> extends
 							&& !(this.customFilterItems != null && this.customFilterItems
 									.containsKey(filterFieldName))) {
 						Method m = null;
-						try { 
-							m = clz.getMethod("get"+StringUtils.capitalize(filterFieldName));
+						try {
+							m = clz.getMethod("get"
+									+ StringUtils.capitalize(filterFieldName));
 						} catch (Exception e) {
-							break;
+							// break;
 						}
-						 
+
 						Object fv = m.invoke(filter);
 						if (fv != null) {
 							if (m.getReturnType() == java.lang.String.class) {
@@ -300,25 +309,25 @@ public class QueryBuilderWithJpql<M, F, P> extends
 							} else {
 								if (isFrom || isTo) {
 									if (isFrom) {
-										this.addFilterCondition(entityAlias + "."
-												+ refpaths.get(fieldName) + " >= :"
-												+ filterFieldName);
+										this.addFilterCondition(entityAlias
+												+ "." + refpaths.get(fieldName)
+												+ " >= :" + filterFieldName);
 									} else {
-										this.addFilterCondition(entityAlias + "."
-												+ refpaths.get(fieldName) + " < :"
-												+ filterFieldName);
+										this.addFilterCondition(entityAlias
+												+ "." + refpaths.get(fieldName)
+												+ " < :" + filterFieldName);
 									}
 
-									this.defaultFilterItems
-											.put(filterFieldName, fv);
+									this.defaultFilterItems.put(
+											filterFieldName, fv);
 								} else {
 									if (jpqlFilterRules.containsKey(fieldName)) {
 										addFilterCondition(jpqlFilterRules
 												.get(fieldName));
 									} else {
-										this.addFilterCondition(entityAlias + "."
-												+ refpaths.get(fieldName) + " = :"
-												+ fieldName);
+										this.addFilterCondition(entityAlias
+												+ "." + refpaths.get(fieldName)
+												+ " = :" + fieldName);
 									}
 									this.defaultFilterItems.put(fieldName, fv);
 								}
@@ -326,27 +335,11 @@ public class QueryBuilderWithJpql<M, F, P> extends
 							}
 						}
 					}
-				 
-				
-				
-				
+				}
+
 			}
-			
+
 			clz = clz.getSuperclass();
-		}
-		
-		
-		
-		
-		
-		for (Method m : methods) {
-		
-			
-			
-			
-			
-			
-			
 		}
 
 	}

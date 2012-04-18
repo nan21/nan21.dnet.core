@@ -238,33 +238,42 @@ Ext.define("dnet.core.lov.AbstractCombo", {
 	 } ,
 	 
 	 
-	 _mapFilterFields_: function(bp) {    
+	 _mapFilterFields_: function(bp) {
+	 	
+	 	var mrec = null;
+	 	var dcv = this._dcView_;
+	 	var prec = dcv._controller_.getParams();
+	 	
 		if (this.inEditor) {
-	       var mrec = this._targetRecord_;
-           this._mapFilterFieldsExecute_(bp,mrec);
-		} else {
-			var dcv = this._dcView_, mrec = null;
+	       mrec = this._targetRecord_;
+           this._mapFilterFieldsExecute_(bp,mrec, prec);
+		} else {			
 			if (dcv._dcViewType_ == "edit-form") {
 	           mrec = dcv._controller_.getRecord();
 			}
 	        if (dcv._dcViewType_ == "filter-form") {
 	           mrec = dcv._controller_.getFilter();
 			}
-           this._mapFilterFieldsExecute_(bp, mrec);
+           this._mapFilterFieldsExecute_(bp, mrec, prec);
 		}
     },
     /**
      * Parameters:
      * bp: base params for the store
      */
-    _mapFilterFieldsExecute_: function(bp, mrec) {  
+    _mapFilterFieldsExecute_: function(bp, mrec, prec) {  
 		if (!mrec) {return; }
         if (this.filterFieldMapping != null) {
         	for(var i=0, len=this.filterFieldMapping.length; i<len; i++ ) {
 			   if (this.filterFieldMapping[i]["value"]) {
 			   		bp[this.filterFieldMapping[i]["lovField"]] =  this.filterFieldMapping[i]["value"];
 			   	} else {
-        			bp[this.filterFieldMapping[i]["lovField"]] =   mrec.get( this.filterFieldMapping[i]["dsField"]);
+			   		var isParam  =  !Ext.isEmpty(this.filterFieldMapping[i]["dsParam"]);
+			   		if (isParam) {
+			   			bp[this.filterFieldMapping[i]["lovField"]] =  prec.get(this.filterFieldMapping[i]["dsParam"]);
+			   		} else {
+			   			bp[this.filterFieldMapping[i]["lovField"]] =   mrec.get( this.filterFieldMapping[i]["dsField"]);	
+			   		}        			
 				}
 			}
 		 }
@@ -276,13 +285,7 @@ Ext.define("dnet.core.lov.AbstractCombo", {
 	proxyException : function(proxy, response, operation, eOpts) {
 		this.showAjaxErrors(response, eOpts);
 	},
-
-	
-    
-	
-    
-
-    
+ 
     /**
 	 * Show errors to user. TODO: Externalize it as command.
 	 */
