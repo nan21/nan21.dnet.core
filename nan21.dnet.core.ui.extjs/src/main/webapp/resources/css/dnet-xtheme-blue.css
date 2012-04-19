@@ -4,12 +4,12 @@
 .dcv-filter-form  {
    background: none repeat scroll 0 0 transparent ;
 }
-.x-item-disabled {
-	opacity:0.75; 	 
-	filter: alpha(opacity=99);
-	filter:progid:DXImageTransform.Microsoft.Alpha(Opacity=99);
-}
- 
+.x-item-disabled .x-form-item-label,.x-item-disabled .x-form-field, .x-item-disabled .x-form-cb-label {
+   filter:alpha(opacity=80) ;
+   opacity:.80 ;
+} 
+  
+
 .important-field {
 	font-weight:bold;
 } 
