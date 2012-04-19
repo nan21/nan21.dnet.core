@@ -602,8 +602,8 @@ public abstract class AbstractDsService<M, F, P, E> extends AbstractDsProcessor 
 		 
 		//TODO: ******************   optimize me to do the work in batches !! ***************
 		
-		Method filterUkFieldSetter = this.filterClass.getDeclaredMethod("set"+ StringUtils.capitalize(ukFieldName), String.class);
-		Method modelUkFieldGetter = this.modelClass.getDeclaredMethod("get"+ StringUtils.capitalize(ukFieldName));
+		Method filterUkFieldSetter = this.filterClass.getMethod("set"+ StringUtils.capitalize(ukFieldName), String.class);
+		Method modelUkFieldGetter = this.modelClass.getMethod("get"+ StringUtils.capitalize(ukFieldName));
 		
 		Map<String, Method> modelSetters = new HashMap<String, Method>();
 		Map<String, Method> modelGetters = new HashMap<String, Method>();
@@ -612,14 +612,26 @@ public abstract class AbstractDsService<M, F, P, E> extends AbstractDsProcessor 
 		
 		for(int i=0;i<len;i++) {
 			String fieldName = columns[i];
-			Field f = this.modelClass.getDeclaredField(fieldName);			
-			
-			Method modelSetter = this.modelClass.getDeclaredMethod("set"+ StringUtils.capitalize(fieldName), f.getType());
-			modelSetters.put(fieldName, modelSetter);
-			
-			Method modelGetter = this.modelClass.getDeclaredMethod("get"+ StringUtils.capitalize(fieldName));
-			modelGetters.put(fieldName, modelGetter);
-			
+			Class<?> clz = this.modelClass;
+			Field f = null;
+			while (f==null && clz != null) {				
+				try {
+					f = clz.getDeclaredField(fieldName);
+				} catch(Exception e) {
+					
+				}
+				clz=clz.getSuperclass();
+			}
+			 		
+			if (f!=null) {
+				Method modelSetter = this.modelClass.getMethod("set"+ StringUtils.capitalize(fieldName), f.getType());
+				modelSetters.put(fieldName, modelSetter);
+				
+				Method modelGetter = this.modelClass.getMethod("get"+ StringUtils.capitalize(fieldName));
+				modelGetters.put(fieldName, modelGetter);	
+			} else {
+				
+			}
 		}
 		
 		for (M newDs : list) {
@@ -630,7 +642,6 @@ public abstract class AbstractDsService<M, F, P, E> extends AbstractDsProcessor 
 			}
 			this.update(oldDs, null);
 		}
- 
 	}
 
 	public void doExport(F filter, P params, IQueryBuilder<M, F, P> builder,

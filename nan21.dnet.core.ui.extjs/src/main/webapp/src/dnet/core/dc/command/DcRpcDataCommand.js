@@ -139,12 +139,11 @@ Ext.define("dnet.core.dc.command.DcRpcDataCommand", {
 		}
 		var o = options.options || {}, serviceName = o.name, s = o || {};
 		var dc = this.dc;
+		dc.showAjaxErrors(response,options);
 		if (s.callbacks && s.callbacks.failureFn) {
 			s.callbacks.failureFn.call(s.callbacks.failureScope || dc, dc,
 					response, serviceName, options);
-		} else {
-			dc.showAjaxErrors(response,options);
-		}
+		} 
 		if (!(s.callbacks && s.callbacks.silentFailure === true)) {
 			dc.fireEvent("afterDoServiceFailure", dc, response, name, options);
 		}

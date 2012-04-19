@@ -268,13 +268,11 @@ Ext.define("dnet.core.dc.DcvFilterFormBuilder", {
 					var rd = Ext.Date.parse(Ext.Date.format(rv, f.format),
 							f.format);
 					if (!r.isEqual(rd, nv)) {
-						ctrl.setFilterValue(f.paramIndex, nv);
-						//r.set(f.paramIndex, nv);
+						ctrl.setParamValue(f.paramIndex, nv);
 					}
 				} else {
 					if (!r.isEqual(rv, nv)) {
-						ctrl.setFilterValue(f.paramIndex, nv);
-						//r.set(f.paramIndex, nv);
+						ctrl.setParamValue(f.paramIndex, nv);
 					}
 				}
 			};
@@ -292,15 +290,11 @@ Ext.define("dnet.core.dc.DcvFilterFormBuilder", {
 					var rd = Ext.Date.parse(Ext.Date.format(rv, f.format),
 							f.format);
 					if (!r.isEqual(rd, nv)) {
-						//r.set(f.dataIndex, nv);
 						ctrl.setFilterValue(f.dataIndex, nv);
 					}
 				} else {
 					if (!r.isEqual(rv, nv)) {
-						//r.beginEdit();
-						//r.set(f.dataIndex, nv);
 						ctrl.setFilterValue(f.dataIndex, nv);
-						//r.endEdit();
 					}
 				}
 			}
