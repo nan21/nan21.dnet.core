@@ -49,7 +49,15 @@ dnet.core.base.ApplicationMenu$Items = [
 									handler : function() {
 										getApplication().changeCurrentTheme("access");
 									}
-								} ]
+								}
+//								, {
+//									text : Dnet.translate("appmenuitem",
+//											"theme_neptune__lbl"),
+//									handler : function() {
+//										getApplication().changeCurrentTheme("neptune");
+//									}
+//								}
+								]
 							})
 			}, {
 
@@ -73,6 +81,11 @@ dnet.core.base.ApplicationMenu$Items = [
 			text : Dnet.translate("appmenuitem", "changepswd__lbl"),
 			handler : function() {
 				(new dnet.core.base.ChangePasswordWindow({})).show();
+			}
+		},"-", {
+			text : Dnet.translate("msg", "preferences_wdw"),
+			handler : function() {
+				(new dnet.core.base.UserPreferences()).show();
 			}
 		}, "-", {
 			text : Dnet.translate("appmenuitem", "mysettings__lbl"),

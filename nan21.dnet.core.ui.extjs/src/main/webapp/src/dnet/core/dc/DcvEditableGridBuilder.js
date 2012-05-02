@@ -61,6 +61,7 @@ Ext.define("dnet.core.dc.DcvEditableGridBuilder", {
 		return this;
 	},
 
+	
 	addNumberColumn : function(config) {
 		config.xtype = "numbercolumn";
 		config.format = Dnet.getNumberFormat(config.decimals || 0 );

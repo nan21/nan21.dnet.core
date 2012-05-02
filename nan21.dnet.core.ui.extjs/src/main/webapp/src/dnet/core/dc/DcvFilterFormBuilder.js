@@ -7,13 +7,7 @@ Ext.define("dnet.core.dc.DcvFilterFormBuilder", {
 	dcv : null,
 
 	addTextField : function(config) {
-		config.xtype = "textfield";
-		if (config.maxLength) {
-			config.enforceMaxLength = true;
-		}
-		if (config.caseRestriction ) {
-			config.fieldStyle = "text-transform:"+config.caseRestriction+";";
-		}
+		config.xtype = "textfield";		
 		this.applyModelUpdater(config);
 		this.applySharedConfig(config);		  
 		return this;
@@ -41,12 +35,7 @@ Ext.define("dnet.core.dc.DcvFilterFormBuilder", {
 
 		var yesNoStore = Ext.create('Ext.data.Store', {
 			fields : [ "bv", "tv" ],
-			data : [ 
-//			{
-//				"bv" : null,
-//				"tv" : "*"
-//			},
-				{
+			data : [{
 				"bv" : true,
 				"tv" : Dnet.translate("msg", "bool_true")
 			}, {
@@ -132,18 +121,28 @@ Ext.define("dnet.core.dc.DcvFilterFormBuilder", {
 		this.dcv._elems_.get(c)["items"] = items;
 		return this;
 	},
-
 	addAuditFilter: function() {
+	
+	
+	},	
+	addAuditFilter: function() { 
+			return this.createAuditFilter2();		
+	},
+ 
+ 
+	createAuditFilter2: function() {
 		this
 			.addDateField({ name:"createdAt_From", dataIndex:"createdAt_From" , emptyText:"From" })
 			.addDateField({ name:"createdAt_To", dataIndex:"createdAt_To" , emptyText:"To"  })
-			.addTextField({ name:"createdBy", dataIndex:"createdBy" , flex: 2,emptyText:"By"  })
+			.addTextField({ name:"createdBy", dataIndex:"createdBy" ,  emptyText:"Created"  })
 		
 			.addDateField({ name:"modifiedAt_From", dataIndex:"modifiedAt_From" , emptyText:"From" })
 			.addDateField({ name:"modifiedAt_To", dataIndex:"modifiedAt_To" , emptyText:"To"  })
-			.addTextField({ name:"modifiedBy", dataIndex:"modifiedBy" , flex: 2,emptyText:"By"  })
+			.addTextField({ name:"modifiedBy", dataIndex:"modifiedBy" ,  emptyText:"Modified"  })
 			
-			.add({
+			.addTextField({ name:"id", dataIndex:"id" , fieldLabel:"ID", emptyText:"ID"  })
+			.addTextField({ name:"uuid", dataIndex:"uuid" , fieldLabel:"UUID",  emptyText:"UUID"  });
+		this.add({
                 xtype: 'fieldcontainer',
                 fieldLabel: 'Created',
                 name : 'created',
@@ -151,7 +150,7 @@ Ext.define("dnet.core.dc.DcvFilterFormBuilder", {
                 msgTarget : 'side',
                 layout: 'hbox',margin:0,padding:0, 
                 defaults: {
-                	flex: 3,padding:0,margin:0,
+                	flex: 1,padding:0,margin:0,
                     hideLabel: true
                 } 
             })
@@ -163,16 +162,41 @@ Ext.define("dnet.core.dc.DcvFilterFormBuilder", {
                 msgTarget : 'side',
                 layout: 'hbox',
                 defaults: {
-                	flex: 3,padding: 0, margin:0,
+                	flex: 1,padding: 0, margin:0,
                     hideLabel: true
                 } 
-            })
-            .addPanel({ name:"colAudit", xtype:"fieldset", defaults:{labelWidth:70 }, padding:'0 10 0 0',  margin:'0 0 0 5',   title:"Audit", border:true, collapsible: true, layout:"form"
-            //, style:"border:1px solid red !important;"
-            ,width:390})
-            .addChildrenTo("colAudit",["created", "modified" ])
-            .addChildrenTo("created",["createdAt_From", "createdAt_To", "createdBy" ])
-			.addChildrenTo("modified",["modifiedAt_From", "modifiedAt_To", "modifiedBy" ])
+            }).add({
+                xtype: 'fieldcontainer',
+                fieldLabel: 'By',
+                name : 'cre_mod_user',
+                combineErrors: true,
+                msgTarget : 'side',
+                layout: 'hbox',
+                defaults: {
+                	flex: 1,padding: 0, margin:0,
+                    hideLabel: true
+                } 
+            }).add({
+                xtype: 'fieldcontainer',
+                fieldLabel: 'ID/UUID',
+                name : 'id_uuid',
+                combineErrors: true,
+                msgTarget : 'side',
+                layout: 'hbox',
+                defaults: {
+                	flex: 1,padding: 0, margin:0,
+                    hideLabel: true
+                } 
+            });	
+		this
+            .addPanel({ name:"colAudit", xtype:"fieldset",collapsed:true, defaults:{labelWidth:70 }, 
+            	padding:'0 10 0 0',  margin:'0 0 0 5',   title:"Audit", border:true, collapsible: true, layout:"form"
+            ,width:280})
+            .addChildrenTo("colAudit",["created", "modified", "cre_mod_user","id_uuid" ])
+            .addChildrenTo("created",["createdAt_From", "createdAt_To" ])
+			.addChildrenTo("modified",["modifiedAt_From", "modifiedAt_To" ])
+			.addChildrenTo("cre_mod_user",["createdBy", "modifiedBy" ])
+			.addChildrenTo("id_uuid",["id", "uuid" ])
 			.addChildrenTo("main",["colAudit"])
 			return this;
 	},
@@ -302,20 +326,22 @@ Ext.define("dnet.core.dc.DcvFilterFormBuilder", {
 		return fn;
 	},
 	
-	
 	 
-	
 	// ==============================================
 	// ==============================================
-	
-	
-	
+	 
 	applySharedConfig : function(config) {
 		Ext.applyIf(config, {
 			id : Ext.id(),
 			selectOnFocus : true,
 			_dcView_ : this.dcv
 		});
+		if (config.maxLength) {
+			config.enforceMaxLength = true;
+		}
+		if (config.caseRestriction ) {
+			config.fieldStyle = "text-transform:"+config.caseRestriction+";";
+		}
 		if (config.allowBlank === false) {
 			config.labelSeparator = "*";
 		}

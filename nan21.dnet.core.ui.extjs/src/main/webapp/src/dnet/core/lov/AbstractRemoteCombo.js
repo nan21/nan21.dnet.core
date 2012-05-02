@@ -264,11 +264,15 @@ Ext.define('dnet.core.lov.AbstractRemoteCombo', {
     onLoad: function() {
         var me = this,
             value = me.value;
-
+		
         me.syncSelection();
         if (me.picker && !me.picker.getSelectionModel().hasSelection()) {
             me.doAutoSelect();
         }
+        me.focus(true,true);
+       // if(me.isExpanded) {
+        	
+       // }	
     },
 
     /**

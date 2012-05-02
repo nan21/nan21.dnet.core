@@ -14,8 +14,8 @@
 
 <table align=center style='vertical-align:middle;align:center'>
 <tr>
-	<td style='font-family:arial,verdana;font-size:14px;'>
-        	Open source Human Resources & Customer Relationships Management software
+	<td style='font-family:arial,verdana;font-size:16px;text-align:center;font-weight:bold;'>
+        	Open source ERP / CRM / HRM
 	</td>
 </tr>
 <tr>

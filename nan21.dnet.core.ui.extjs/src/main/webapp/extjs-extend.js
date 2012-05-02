@@ -1,3 +1,65 @@
+//
+//Ext.override(Ext.form.field.Trigger , {
+//
+//triggerBlur: function(e) {
+//        var me = this;
+//        me.mimicing = false;
+//        me.mun(me.doc, 'mousedown', me.mimicBlur, me);
+//        if (me.monitorTab && me.inputEl) {
+//            me.un('specialkey', me.checkTab, me);
+//        }
+//        Ext.form.field.Trigger.superclass.onBlur.call(me, e);
+//        if (me.bodyEl) {
+//            me.bodyEl.removeCls(me.wrapFocusCls);
+//        }
+//    },
+//    
+//    onFocus: function() {
+//        var me = this;
+//        me.callParent(arguments);
+//        if (!me.mimicing) {
+//            me.bodyEl.addCls(me.wrapFocusCls);
+//            me.mimicing = true;
+//            me.mon(me.doc, 'mousedown', me.mimicBlur, me, {
+//                delay: 10
+//            });
+//            if (me.monitorTab) {
+//                me.on('specialkey', me.checkTab, me);
+//            }
+//        }
+//    }
+//});
+
+Ext.override(Ext.form.field.Picker, {
+	collapse: function() {
+		if (this.isExpanded && !this.isDestroyed) {
+            var me = this,
+                openCls = me.openCls,
+                picker = me.picker,
+                doc = Ext.getDoc(),
+                collapseIf = me.collapseIf,
+                aboveSfx = '-above';
+
+            // hide the picker and set isExpanded flag
+            picker.hide();
+            me.isExpanded = false;
+
+            // remove the openCls
+            me.bodyEl.removeCls([openCls, openCls + aboveSfx]);
+            picker.el.removeCls(picker.baseCls + aboveSfx);
+
+            // remove event listeners
+            doc.un('mousewheel', collapseIf, me);
+            doc.un('mousedown', collapseIf, me);
+            Ext.EventManager.removeResizeListener(me.alignPicker, me);
+            me.fireEvent('collapse', me);
+            me.onCollapse();
+            this.focus(true);
+        }
+		
+    }
+});
+
 Ext.override(Ext.data.Model, {
 			clientIdProperty : "__clientRecordId__"
 		});
@@ -11,6 +73,27 @@ Ext.override(Ext.form.Basic, {
 			}
 		});
 
+		
+//Ext.override(Ext.form.field.Base, {
+//	nextFocusElement: null,
+//	prevFocusElement: null,
+//	
+//	
+//	  afterRender : function() {
+//        this.callParent(arguments);
+//        
+//        console.log("extend Ext.form.field.Base.initComponent ");
+//        if (this.nextFocusElement != null && this._dcView_) {
+//        	this.el.dom.setAttribute('aria-flowto', this._dcView_._getConfig_(this.nextFocusElement).id);
+//        }
+//    }
+//    
+//    
+//    
+//	 
+//});
+		
+		
 Ext.override(Ext.form.field.Text, {
 			getRawValue : function() {
 				var me = this, v = me.callParent();
@@ -81,7 +164,6 @@ Ext.define("dnet.base.DisplayFieldBoolean", {
 				if (rawValue === "false") {
 					return Dnet.translate("msg", "bool_false");
 				}
-				// return !(!rawValue);
 				return Dnet.translate("msg", "bool_" + (!!rawValue));
 			}
 		});
@@ -118,11 +200,11 @@ Ext.override(Ext.grid.plugin.CellEditing, {
 	 * @return {Boolean}
 	 */
 	beforeEdit : function(context) {
-		if (context.grid._controller_.readOnly) {
-			return false;
+		if (context.grid && context.grid.beforeEdit) {
+			return context.grid.beforeEdit(context);
 		}
 	},
-	
+
 	getEditor : function(record, column) {
 		var me = this;
 		if (me.grid._getCustomCellEditor_) {
@@ -138,6 +220,7 @@ Ext.override(Ext.grid.plugin.CellEditing, {
 					editor = new Ext.grid.CellEditor({
 								editorId : editorId,
 								field : editor,
+								completeOnEnter: false,
 								ownerCt : me.grid
 							});
 				}
@@ -177,6 +260,38 @@ Ext.override(Ext.grid.plugin.CellEditing, {
 			return false;
 		}
 		return true;
-	}
+	},
+	
+	onEditComplete : function(ed, value, startValue) {
+        var me = this,
+            grid = me.grid,
+            activeColumn = me.getActiveColumn(),
+            record;
 
+        if (activeColumn) {
+            record = me.context.record;
+
+            me.setActiveEditor(null);
+            me.setActiveColumn(null);
+            me.setActiveRecord(null);
+    
+            if (!me.validateEdit()) {
+                return;
+            }
+            // Only update the record if the new value is different than the
+            // startValue. When the view refreshes its el will gain focus
+            if (!record.isEqual(value, startValue)) {
+                record.set(activeColumn.dataIndex, value);
+            // Restore focus back to the view's element.
+            } else {
+                
+            }
+            grid.getView().getEl(activeColumn).focus();
+            me.context.value = value;
+            me.fireEvent('edit', me, me.context);
+        }
+    }
+
+    
+	
 });

@@ -8,13 +8,6 @@ Ext.define("dnet.core.dc.DcvEditFormBuilder", {
 
 	addTextField : function(config) {
 		config.xtype = "textfield";
-		 
-		if (config.maxLength) {
-			config.enforceMaxLength = true;
-		}
-		if (config.caseRestriction ) {
-			config.fieldStyle = "text-transform:"+config.caseRestriction+";";
-		}
 		this.applyModelUpdater(config);
 		this.applySharedConfig(config);		  
 		return this;
@@ -65,16 +58,18 @@ Ext.define("dnet.core.dc.DcvEditFormBuilder", {
 	},
 
 	
-	addLov : function(config) {
-		
+	addLov : function(config) {		
 		Ext.applyIf(config, {			
 			_validateListValue_ : true
-		});		 
+		});		 		
 		this.applySharedConfig(config);
 		return this;
 	},
 
 	addCombo : function(config) {
+		Ext.applyIf(config, {			
+			xtype:"localcombo"
+		});			 
 		this.applyModelUpdater(config);
 		this.applySharedConfig(config);
 		return this;
@@ -84,10 +79,7 @@ Ext.define("dnet.core.dc.DcvEditFormBuilder", {
 	addHiddenField : function(config) {
 		config.xtype = "hiddenfield";
 		Ext.applyIf(config, {
-			maxLength:20
-//			anchor:"-20" ,
-//			fieldCls: "displayfield"
-			 
+			maxLength:20		 
 		});
 		this.applySharedConfig(config);
 		return this;
@@ -289,6 +281,12 @@ Ext.define("dnet.core.dc.DcvEditFormBuilder", {
 			checkChangeBuffer : 700,
 			_dcView_ : this.dcv
 		});
+		if (config.maxLength) {
+			config.enforceMaxLength = true;
+		}
+		if (config.caseRestriction ) {
+			config.fieldStyle = "text-transform:"+config.caseRestriction+";";
+		}
 		if (config.allowBlank === false) {
 			config.labelSeparator = "*";
 		}

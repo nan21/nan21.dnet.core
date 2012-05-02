@@ -99,7 +99,7 @@ dnet.core.base.Session = {
 		}
 		return false;
 	},
-	
+	useFocusManager: false,
 	rememberViewState: false
 	
 };

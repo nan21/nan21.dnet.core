@@ -12,6 +12,10 @@ Ext.define("dnet.core.dc.DcvGridBuilder", {
 
 	addTextColumn : function(config) {
 		config.xtype = "gridcolumn";
+		config.field = {
+                xtype: 'textfield',
+                readOnly: true
+            };
 		this.applySharedConfig(config);
 		return this;
 	},
@@ -31,13 +35,23 @@ Ext.define("dnet.core.dc.DcvGridBuilder", {
 		Ext.applyIf(config, {
 			format : Dnet.DATE_FORMAT
 		});
+		config.field = {
+                xtype: 'datefield',
+                hideTrigger:true,
+                format : config.format,
+                readOnly: true
+            };
+		
 		this.applySharedConfig(config);
 		return this;
 	},
-	
-	 
+ 
 	addNumberColumn : function(config) {
 		config.xtype = "numbercolumn";
+		config.field = {
+                xtype: 'textfield',
+                readOnly: true
+            };
 		config.format = Dnet.getNumberFormat(config.decimals || 0 );
 		Ext.applyIf(config, {
 			align : "right"
@@ -56,10 +70,10 @@ Ext.define("dnet.core.dc.DcvGridBuilder", {
 				this.addTextColumn({ name:"uuid", dataIndex:"uuid", hidden:true,width:100 })   	
 			}
 			if(f.name=="createdAt") {
-				this.addDateColumn({ name:"createdAt", dataIndex:"createdAt", hidden:true,format:Dnet.DATETIME_FORMAT})   
+				this.addDateColumn({ name:"createdAt", dataIndex:"createdAt", hidden:true,format:Dnet.DATETIMESEC_FORMAT})   
 			}
 			if(f.name=="modifiedAt") {
-				this.addDateColumn({ name:"modifiedAt", dataIndex:"modifiedAt", hidden:true,format:Dnet.DATETIME_FORMAT}) 
+				this.addDateColumn({ name:"modifiedAt", dataIndex:"modifiedAt", hidden:true,format:Dnet.DATETIMESEC_FORMAT}) 
 			}
 			if(f.name=="createdBy") {
 				this.addTextColumn({ name:"createdBy", dataIndex:"createdBy", hidden:true,width:100 })   	

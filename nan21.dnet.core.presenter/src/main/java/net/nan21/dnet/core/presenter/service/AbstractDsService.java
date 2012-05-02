@@ -152,7 +152,7 @@ public abstract class AbstractDsService<M, F, P, E> extends AbstractDsProcessor 
 	}
 
 	public M findById(Object id, P params) throws Exception {
-		Method setter = this.getFilterClass().getDeclaredMethod("setId",
+		Method setter = this.getFilterClass().getMethod("setId",
 				Object.class);
 		F filter = this.getFilterClass().newInstance();
 		setter.invoke(filter, id);
@@ -636,11 +636,16 @@ public abstract class AbstractDsService<M, F, P, E> extends AbstractDsProcessor 
 		
 		for (M newDs : list) {
 			filterUkFieldSetter.invoke(filter, modelUkFieldGetter.invoke(newDs));
-			M oldDs = this.find(filter).get(0);
-			for(Map.Entry<String, Method> entry : modelSetters.entrySet()) {
-				entry.getValue().invoke(oldDs, modelGetters.get(entry.getKey()).invoke(newDs) );
+			List<M> res =  this.find(filter);
+			// TODO: add an extra flag for what to do if the target is not found:
+			// ignore or raise an error
+			if (res.size() > 0) {
+				M oldDs = this.find(filter).get(0);
+				for(Map.Entry<String, Method> entry : modelSetters.entrySet()) {
+					entry.getValue().invoke(oldDs, modelGetters.get(entry.getKey()).invoke(newDs) );
+				}
+				this.update(oldDs, null);
 			}
-			this.update(oldDs, null);
 		}
 	}
 

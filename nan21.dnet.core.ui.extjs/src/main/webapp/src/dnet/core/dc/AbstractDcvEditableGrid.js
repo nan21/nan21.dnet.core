@@ -26,17 +26,19 @@ Ext.define("dnet.core.dc.AbstractDcvEditableGrid", {
 
 	/**
 	 * Bulk-editor window.
-	 * @type 
+	 * 
+	 * @type
 	 */
-	_bulkEditWindow_: null,
-	
+	_bulkEditWindow_ : null,
+
 	/**
-	 * Ensure the data-control is configured with multiEdit = true otherwise 
-	 * the grid cannot edit more than one record at a time.
+	 * Ensure the data-control is configured with multiEdit = true otherwise the
+	 * grid cannot edit more than one record at a time.
+	 * 
 	 * @type Boolean
 	 */
 	_enforceMultiEditDc_ : true,
-	
+
 	// **************** Public API *****************
 
 	/**
@@ -70,9 +72,9 @@ Ext.define("dnet.core.dc.AbstractDcvEditableGrid", {
 		}
 		if (this._bulkEditWindow_ == null) {
 			this._bulkEditWindow_ = new dnet.core.dc.BulkEditWindow({
-					_grid_ : this
-				});
-		}		
+						_grid_ : this
+					});
+		}
 		this._bulkEditWindow_.show();
 	},
 
@@ -104,7 +106,6 @@ Ext.define("dnet.core.dc.AbstractDcvEditableGrid", {
 		this._elems_.add("_btnBulkEdit_", {
 					xtype : "button",
 					id : Ext.id(),
-					// text : Dnet.translate("dcvgrid", "btn_bulkedit"),
 					tooltip : Dnet.translate("dcvgrid", "btn_bulkedit_tlp"),
 					iconCls : 'icon-action-edit',
 					handler : this._doBulkEdit_,
@@ -112,70 +113,71 @@ Ext.define("dnet.core.dc.AbstractDcvEditableGrid", {
 				});
 	},
 
-	beforeDestroy : function() {		
-		this._columns_.each(function(item,idx,len) {
-			delete item._dcView_;
-			if(item.editor) {
-				delete item.editor._dcView_; 
-			}
-		}, this)
+	beforeEdit : function(context) {
+		if (this._controller_.readOnly) {
+			return false;
+		}
+	},
+
+	beforeDestroy : function() {
+		this._columns_.each(function(item, idx, len) {
+					delete item._dcView_;
+					if (item.editor) {
+						delete item.editor._dcView_;
+					}
+				}, this)
 		this.callParent(arguments);
 	},
-	
-	
-	
+
 	// **************** Private methods *****************
 
-	initComponent : function(config) {	
-		if (this._enforceMultiEditDc_ && ! this._controller_.multiEdit ) {
+	initComponent : function(config) {
+		if (this._enforceMultiEditDc_ && !this._controller_.multiEdit) {
 			alert("Editable grids should be used with data-controls having multiEdit enabled.");
 		}
 		this._initDcGrid_();
 		var cfg = this._createDefaultGridConfig_();
-		  
+
 		this.plugins = [Ext.create('Ext.grid.plugin.CellEditing', {
-					clicksToEdit : 1 					
+					clicksToEdit : 1
 				})];
-  
+
 		Ext.apply(cfg, {
-			selModel : {
-				mode : "MULTI",
-				listeners : {
-					"selectionchange" : {
-						scope : this,
-						fn : this._selectionHandler_ ,
-						buffer: 200
-					}
-				},
-				"beforedeselect" : {
-						scope : this,
-						fn : function(sm, record, index, eopts) {
-							if (record == this._controller_.record
-									&& !this._controller_
-											.isRecordChangeAllowed()) {
-								return false;
+					selModel : {
+						mode : "MULTI",
+						listeners : {
+							"selectionchange" : {
+								scope : this,
+								fn : this._selectionHandler_,
+								buffer : 200
+							}
+						},
+						"beforedeselect" : {
+							scope : this,
+							fn : function(sm, record, index, eopts) {
+								if (record == this._controller_.record
+										&& !this._controller_
+												.isRecordChangeAllowed()) {
+									return false;
+								}
 							}
 						}
 					}
-			} 
-		});
+				});
 
 		if (this._noPaginator_) {
-			this._noBulkEdit_ = true; 
+			this._noBulkEdit_ = true;
 		}
 		Ext.apply(this, cfg);
 		this.callParent(arguments);
 		this._registerListeners_();
- 
+
 		this.on("afteredit", this._afterEdit_, this);
-		  
+
 	},
-	
-	_afterEdit_: function() {
-		
-	} 
-	
-	
-	 
+
+	_afterEdit_ : function() {
+
+	}
 
 });

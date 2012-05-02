@@ -74,7 +74,7 @@ Ext.define("dnet.core.ui.FrameBuilder" , {
 	
 	addDcView: function(dc, config) {	
 		Ext.apply(config, {
-			_controller_:this.frame._dcs_.get(dc)
+			_controller_:this.frame._dcs_.get(dc) 			 
 			//,listeners:{ activate:{scope:this,fn:function(p){p.doLayout(false,true);} } }
 		});
 		var ttlKey = config.name + "__ttl";
@@ -97,15 +97,17 @@ Ext.define("dnet.core.ui.FrameBuilder" , {
 					for (var i=0;i<onActivateDoLayoutFor.length;i++) {  
 						var e = this._getElement_(onActivateDoLayoutFor[i]);
 						// workaround for the dissapearing scrollbars when returning from an editor after a new+ cancel combination  
-						if (e instanceof dnet.core.dc.AbstractDcvGrid) {
-							//alert(onActivateDoLayoutFor[i] + " instanceof dnet.core.dc.AbstractDcvGrid");
-							//e.getView().refresh();
-							//e.determineScrollbars( );
-							e.getView().refresh();
-							e.invalidateScroller();
-						} else {
+						// hopefully not needed anymore
+						
+//						if (e instanceof dnet.core.dc.AbstractDcvGrid) {
+//							//alert(onActivateDoLayoutFor[i] + " instanceof dnet.core.dc.AbstractDcvGrid");
+//							//e.getView().refresh();
+//							//e.determineScrollbars( );
+//							e.getView().refresh();
+//							e.invalidateScroller();
+//						} else {
 							e.doLayout(); 
-						}
+//						}
 						
 					} 
 				}

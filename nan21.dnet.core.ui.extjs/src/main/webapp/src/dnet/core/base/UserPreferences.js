@@ -12,28 +12,29 @@ Ext.define("dnet.core.base.UserPreferences", {
 			closable : true,
 			constrain : true,
 			buttonAlign : "center",
-			fieldDefaults:{
+			defaults:{
 		  	   labelAlign:"right",
-		  	   labelWidth:180  
+		  	   labelWidth:150  
 		  	},
 			modal : true,
 			layout:"form",
 			items : [{
 	            xtype: 'checkbox',
-	            fieldLabel : Dnet.translate("msg", "remember_view_state"),
+	           // fieldLabel : Dnet.translate("msg", "remember_view_state"),
+	             fieldLabel :"Use focus manager",
 	            //value: getApplication().getSession().rememberViewState,
 	            //checked: getApplication().getSession().rememberViewState,
 	            listeners: {
 	            	change: {
 	            		scope:this,
 	            		fn: function(field,nv,ov) {
-	            			getApplication().getSession().rememberViewState = nv;
+	            			getApplication().getSession().useFocusManager = nv;
 	            		}
 	            	},
 	            	afterrender: {
 	            		scope:this,
 	            		fn: function(field ) {
-	            			field.setValue(getApplication().getSession().rememberViewState); // = nv;
+	            			field.setValue(getApplication().getSession().useFocusManager); // = nv;
 	            		}
 	            	}
 	            } 

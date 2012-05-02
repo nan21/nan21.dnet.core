@@ -88,7 +88,7 @@ Ext.define("dnet.core.dc.AbstractDcvEditForm", {
 	initComponent : function() {
 		this._runElementBuilder_();
 		this.callParent(arguments);
-		this._registerListeners_();
+		this._registerListeners_(); 
 	},
 
 	/**

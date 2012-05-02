@@ -313,25 +313,25 @@ Ext.define("dnet.core.ui.AbstractUi", {
 		}
 		var view = this._elems_.get(viewName);
 		view["tbar"] = tlb;
-		var keys = [];
-		var n, kb = null;
-		for (var i = 0; i < tlb.length; i++) {
-			var ic = tlb[i]["initialConfig"];
-			if (ic) {
-				n = ic["_name_"];
-				kb = dnet.core.ui.DefaultKeyMap[n];
-				if (kb) {
-					keys[keys.length] = {
-						key : kb.key,
-						alt : kb.alt,
-						handler : this._createKeyBindingHandler_(n, tlbName),
-						scope : this,
-						stopEvent : true
-					}
-				}
-			}
-		}
-		view["keys"] = keys;
+//		var keys = [];
+//		var n, kb = null;
+//		for (var i = 0; i < tlb.length; i++) {
+//			var ic = tlb[i]["initialConfig"];
+//			if (ic) {
+//				n = ic["_name_"];
+//				kb = dnet.core.ui.DefaultKeyMap[n];
+//				if (kb) {
+//					keys[keys.length] = {
+//						key : kb.key,
+//						alt : kb.alt,
+//						handler : this._createKeyBindingHandler_(n, tlbName),
+//						scope : this,
+//						stopEvent : true
+//					}
+//				}
+//			}
+//		}
+//		view["keys"] = keys;
 	},
 
 	_onReady_ : function(p) {
@@ -473,7 +473,7 @@ Ext.define("dnet.core.ui.AbstractUi", {
 
 		this.callParent(arguments);
 		this.mon(this, "afterlayout", this._onReady_, this);
-
+ 
 	},
 
 	beforeDestroy : function() { 
@@ -518,62 +518,62 @@ Ext.define("dnet.core.ui.AbstractUi", {
  * key code 65, 68, .... 3) Ext.EventObject.F2 , Ext.EventObject.ENTER , ....
  * are defined in Ext.EventManager
  */
-dnet.core.ui.DefaultKeyMap = Ext.apply({}, {
-			load : {
-				key : "l",
-				alt : true
-			},
-			save : {
-				key : "s",
-				alt : true
-			},
-			save_mr : {
-				key : "s",
-				alt : true
-			},
-			new_sr : {
-				key : "n",
-				alt : true
-			},
-			new_mr : {
-				key : "n",
-				alt : true
-			},
-			copy_sr : {
-				key : "c",
-				alt : true
-			},
-			copy_mr : {
-				key : "c",
-				alt : true
-			},
-			delete_sr : {
-				key : "d",
-				alt : true
-			},
-			delete_mr : {
-				key : "d",
-				alt : true
-			},
-			edit_sr : {
-				key : Ext.EventObject.ENTER,
-				alt : false
-			},
-			rollback_sr : {
-				key : "z",
-				alt : true
-			},
-			rollback_mr : {
-				key : "z",
-				alt : true
-			},
-			back_sr : {
-				key : "q",
-				alt : true
-			},
-			back_mr : {
-				key : "q",
-				alt : true
-			}
-
-		});
+//dnet.core.ui.DefaultKeyMap = Ext.apply({}, {
+//			load : {
+//				key : "l",
+//				alt : true
+//			},
+//			save : {
+//				key : "s",
+//				alt : true
+//			},
+//			save_mr : {
+//				key : "s",
+//				alt : true
+//			},
+//			new_sr : {
+//				key : "n",
+//				alt : true
+//			},
+//			new_mr : {
+//				key : "n",
+//				alt : true
+//			},
+//			copy_sr : {
+//				key : "c",
+//				alt : true
+//			},
+//			copy_mr : {
+//				key : "c",
+//				alt : true
+//			},
+//			delete_sr : {
+//				key : "d",
+//				alt : true
+//			},
+//			delete_mr : {
+//				key : "d",
+//				alt : true
+//			},
+//			edit_sr : {
+//				key : Ext.EventObject.ENTER,
+//				alt : false
+//			},
+//			rollback_sr : {
+//				key : "z",
+//				alt : true
+//			},
+//			rollback_mr : {
+//				key : "z",
+//				alt : true
+//			},
+//			back_sr : {
+//				key : "q",
+//				alt : true
+//			},
+//			back_mr : {
+//				key : "q",
+//				alt : true
+//			}
+//
+//		});

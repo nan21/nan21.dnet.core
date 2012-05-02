@@ -55,7 +55,9 @@
 	var theFrameInstance = null;
 	var __theViewport__ = null;
     Ext.onReady(function(){
-
+		if(getApplication().getSession().useFocusManager) {
+			Ext.FocusManager.enable(true);
+		}    	
     	<%@ include file="_on_ready.jspf" %>
 
     	var frameReports = [];
@@ -63,7 +65,7 @@
  
      	var cfg = { 
 			layout:"fit"
-			//,xtype:"container"		 	     			  
+			,xtype:"container"		 	     			  
 			,items: [{					      	 
 				xtype:"${item}"	
 				,border: false 

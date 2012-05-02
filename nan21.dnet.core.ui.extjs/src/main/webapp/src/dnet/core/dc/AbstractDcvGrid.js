@@ -36,6 +36,10 @@ Ext.define("dnet.core.dc.AbstractDcvGrid", {
 
 		this._initDcGrid_();
 		var cfg = this._createDefaultGridConfig_();
+		this.plugins = [Ext.create('Ext.grid.plugin.CellEditing', {
+					clicksToEdit : 2
+					
+				})];
 		Ext.apply(cfg, {			
 			selModel : {
 				mode : "MULTI",
@@ -62,7 +66,9 @@ Ext.define("dnet.core.dc.AbstractDcvGrid", {
 				"itemdblclick" : {
 					scope : this,
 					fn : function(view, model, item, idx, evnt, evntOpts) {
-						this._controller_.onEdit();
+						if(evnt.altKey === false) {
+							this._controller_.onEdit();
+						}
 					}
 				}
 			}

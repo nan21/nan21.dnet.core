@@ -139,14 +139,16 @@ Ext.define("dnet.core.dc.AbstractDNetDcGrid", {
 	forceFit : false,
 	autoScroll : false,
 	scroll : "both",
-	loadMask : true,
+	
 	stripeRows : true,
 	border : true,
 	frame : true,
 	deferRowRender : true,
 	// enableLocking : true,
 	viewConfig : {
+		loadMask : true,
 		emptyText : Dnet.translate("msg", "grid_emptytext")
+		
 	},
 
 	/**

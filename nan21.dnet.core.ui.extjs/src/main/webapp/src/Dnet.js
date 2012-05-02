@@ -29,6 +29,7 @@ Dnet = {
 	DATE_FORMAT 		: 'Y-m-d',
 	TIME_FORMAT 		: 'H:i',
 	DATETIME_FORMAT 	: 'Y-m-d H:i',
+	DATETIMESEC_FORMAT 	: 'Y-m-d H:i:s',
 	MONTH_FORMAT 		: 'Y-m',
 	MODEL_DATE_FORMAT 	: "Y-m-d\\TH:i:s",
 	DATE_ALTFORMATS 	: "j|j.n|d|d.m",

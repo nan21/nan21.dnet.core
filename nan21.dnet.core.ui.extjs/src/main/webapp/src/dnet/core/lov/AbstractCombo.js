@@ -286,6 +286,7 @@ Ext.define("dnet.core.lov.AbstractCombo", {
 		this.showAjaxErrors(response, eOpts);
 	},
  
+	
     /**
 	 * Show errors to user. TODO: Externalize it as command.
 	 */
@@ -305,8 +306,9 @@ Ext.define("dnet.core.lov.AbstractCombo", {
 		var alertCfg = {
 			msg : msg,
 			scope : this,
+			//fn: this.focus,
 			icon : Ext.MessageBox.ERROR,
-			buttons : Ext.MessageBox.OK
+			buttons : Ext.MessageBox.OK			
 		}
 		if (withDetails) {
 			alertCfg.buttons['cancel'] = 'Details';
