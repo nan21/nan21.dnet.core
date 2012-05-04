@@ -14,9 +14,7 @@ dnet.core.base.TemplateRepository = {
         +"<tr><td ><br>"
        
         +"  <ul>"
-        +"  <li> Customer Relationships Management</li>"
-        +"  <li> Human Capital Management</li>"
-        +"  <li> Project / Incident Management </li>"
+        +"  <li> Open source ERP / CRM / HRM</li>"
         +"  </ul>"
         + " <br><a href='http://www.dnet-ebusiness-suite.com' target=_blank>www.dnet-ebusiness-suite.com</a>"
         +"</td></tr>"
