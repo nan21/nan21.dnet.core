@@ -724,6 +724,8 @@ public abstract class AbstractDsService<M, F, P, E> extends AbstractDsProcessor 
 		} else {
 			m.invoke(delegate, ds);
 		}
+		E e = (E) this.getEntityService().getEntityManager().find(this.getEntityClass(), ((IModelWithId) ds).getId());
+		this.getConverter().entityToModel(e, ds);
 		// delegate.execute(ds);
 	}
 

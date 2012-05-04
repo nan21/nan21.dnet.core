@@ -788,6 +788,10 @@ Ext.define("dnet.core.dc.AbstractDc", {
 	 */
 	proxyException : function(proxy, response, operation, eOpts) {
 		this.showAjaxErrors(response, eOpts);
+		if(operation && operation.action == "destroy" && !this.multiEdit) {
+			this.store.rejectChanges();
+		}
+		//this.updateActionsState();
 	},
 
 	/**

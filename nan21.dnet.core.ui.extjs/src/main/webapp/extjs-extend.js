@@ -1,34 +1,4 @@
-//
-//Ext.override(Ext.form.field.Trigger , {
-//
-//triggerBlur: function(e) {
-//        var me = this;
-//        me.mimicing = false;
-//        me.mun(me.doc, 'mousedown', me.mimicBlur, me);
-//        if (me.monitorTab && me.inputEl) {
-//            me.un('specialkey', me.checkTab, me);
-//        }
-//        Ext.form.field.Trigger.superclass.onBlur.call(me, e);
-//        if (me.bodyEl) {
-//            me.bodyEl.removeCls(me.wrapFocusCls);
-//        }
-//    },
-//    
-//    onFocus: function() {
-//        var me = this;
-//        me.callParent(arguments);
-//        if (!me.mimicing) {
-//            me.bodyEl.addCls(me.wrapFocusCls);
-//            me.mimicing = true;
-//            me.mon(me.doc, 'mousedown', me.mimicBlur, me, {
-//                delay: 10
-//            });
-//            if (me.monitorTab) {
-//                me.on('specialkey', me.checkTab, me);
-//            }
-//        }
-//    }
-//});
+ 
 
 Ext.override(Ext.form.field.Picker, {
 	collapse: function() {
@@ -73,27 +43,7 @@ Ext.override(Ext.form.Basic, {
 			}
 		});
 
-		
-//Ext.override(Ext.form.field.Base, {
-//	nextFocusElement: null,
-//	prevFocusElement: null,
-//	
-//	
-//	  afterRender : function() {
-//        this.callParent(arguments);
-//        
-//        console.log("extend Ext.form.field.Base.initComponent ");
-//        if (this.nextFocusElement != null && this._dcView_) {
-//        	this.el.dom.setAttribute('aria-flowto', this._dcView_._getConfig_(this.nextFocusElement).id);
-//        }
-//    }
-//    
-//    
-//    
-//	 
-//});
-		
-		
+ 
 Ext.override(Ext.form.field.Text, {
 			getRawValue : function() {
 				var me = this, v = me.callParent();
