@@ -3,13 +3,13 @@ Bundle-ManifestVersion: 2
 Bundle-Name: DNet Core - domain
 Bundle-SymbolicName: nan21.dnet.core.domain
 Bundle-Vendor: Nan21 
-Bundle-Version: 1.0.0.M9
+Bundle-Version: 1.0.0.RC1
 Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.html
 Import-Template: 
  javax.persistence.*;version="[2.0,2.1)",
  org.eclipse.persistence.jpa.*;version="[2.1,2.5)"
 Import-Package: 
- net.nan21.dnet.core.api.model;version="[1.0.0.M9,1.0.0.M9]",
+ net.nan21.dnet.core.api.model;version="[1.0.0.RC1,1.0.0.RC1]",
  org.springframework.context.config;version="[3.0,3.1)",
  org.springframework.orm.jpa;version="[3.0,3.1)"
 Export-Package: net.nan21.dnet.core.domain.eventhandler,net.nan21.dnet.core.domain.validation

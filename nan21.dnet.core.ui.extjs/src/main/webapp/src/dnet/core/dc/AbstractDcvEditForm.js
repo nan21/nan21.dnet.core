@@ -230,7 +230,17 @@ Ext.define("dnet.core.dc.AbstractDcvEditForm", {
 			fields.each(function(field) {
 						field.suspendEvents();
 					});
-			this.getForm().loadRecord(record);
+			var trackResetOnLoad = this.getForm().trackResetOnLoad; 
+			fields.each(function(field) {
+				if(field.dataIndex) {
+					field.setValue(record.get(field.dataIndex));
+					if ( trackResetOnLoad) {
+	                    field.resetOriginalValue();
+	                }
+				}					
+			});
+			this.getForm()._record = record;
+			//this.getForm().loadRecord(record);
 			fields.each(function(field) {
 						field.resumeEvents();
 					});

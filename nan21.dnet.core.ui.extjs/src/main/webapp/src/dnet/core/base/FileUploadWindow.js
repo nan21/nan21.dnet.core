@@ -97,6 +97,7 @@ Ext.define("dnet.core.base.FileUploadWindow" , {
 			            case Ext.form.Action.SERVER_INVALID:
 			               Ext.Msg.alert('Failure', action.result.msg);
 			       }
+			       this.close();
 			    }
             });
         } else {

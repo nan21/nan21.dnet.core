@@ -46,6 +46,7 @@ public abstract class AbstractDsService<M, F, P, E> extends AbstractDsProcessor 
 	protected boolean noInsert = false;
 	protected boolean noUpdate = false;
 	protected boolean noDelete = false;
+	protected boolean readOnly = false;
 
 	protected Class<M> modelClass;
 	protected Class<F> filterClass;
@@ -119,7 +120,7 @@ public abstract class AbstractDsService<M, F, P, E> extends AbstractDsProcessor 
 			bld = (QueryBuilderWithJpql<M, F, P>) this.createQueryBuilder();
 		}
 
-		if(filter!=null) {
+		if (filter != null) {
 			bld.setFilter(filter);
 		} else {
 			bld.setFilter(this.filterClass.newInstance());
@@ -129,7 +130,6 @@ public abstract class AbstractDsService<M, F, P, E> extends AbstractDsProcessor 
 		} else {
 			bld.setParams(this.paramClass.newInstance());
 		}
-		
 
 		List<M> result = new ArrayList<M>();
 
@@ -152,8 +152,7 @@ public abstract class AbstractDsService<M, F, P, E> extends AbstractDsProcessor 
 	}
 
 	public M findById(Object id, P params) throws Exception {
-		Method setter = this.getFilterClass().getMethod("setId",
-				Object.class);
+		Method setter = this.getFilterClass().getMethod("setId", Object.class);
 		F filter = this.getFilterClass().newInstance();
 		setter.invoke(filter, id);
 		List<M> result = this.find(filter, params, null);
@@ -249,7 +248,7 @@ public abstract class AbstractDsService<M, F, P, E> extends AbstractDsProcessor 
 	 * @throws Exception
 	 */
 	public void insert(M ds, P params) throws Exception {
-		if (this.noInsert || !this.canInsert(ds, params)) {
+		if (this.readOnly || this.noInsert || !this.canInsert(ds, params)) {
 			throw new ActionNotSupportedException("Insert not allowed.");
 		}
 		// add the client
@@ -282,7 +281,7 @@ public abstract class AbstractDsService<M, F, P, E> extends AbstractDsProcessor 
 	}
 
 	public void insert(List<M> list, P params) throws Exception {
-		if (this.noInsert) {
+		if (this.readOnly || this.noInsert) {
 			throw new ActionNotSupportedException("Insert not allowed.");
 		}
 		// add the client
@@ -423,7 +422,7 @@ public abstract class AbstractDsService<M, F, P, E> extends AbstractDsProcessor 
 	 * @throws Exception
 	 */
 	public void update(M ds, P params) throws Exception {
-		if (this.noUpdate || !this.canUpdate(ds, params)) {
+		if (this.readOnly || this.noUpdate || !this.canUpdate(ds, params)) {
 			throw new ActionNotSupportedException("Update not allowed.");
 		}
 
@@ -448,7 +447,7 @@ public abstract class AbstractDsService<M, F, P, E> extends AbstractDsProcessor 
 	}
 
 	public void update(List<M> list, P params) throws Exception {
-		if (this.noUpdate || !this.canUpdate(list, params)) {
+		if (this.readOnly || this.noUpdate || !this.canUpdate(list, params)) {
 			throw new ActionNotSupportedException("Update not allowed.");
 		}
 		this.preUpdate(list, params);
@@ -528,7 +527,7 @@ public abstract class AbstractDsService<M, F, P, E> extends AbstractDsProcessor 
 	 * @throws Exception
 	 */
 	public void deleteById(Object id) throws Exception {
-		if (this.noDelete || !this.canDelete(id)) {
+		if (this.readOnly || this.noDelete || !this.canDelete(id)) {
 			throw new ActionNotSupportedException("Delete not allowed.");
 		}
 		preDelete(id);
@@ -549,7 +548,7 @@ public abstract class AbstractDsService<M, F, P, E> extends AbstractDsProcessor 
 	 * @throws Exception
 	 */
 	public void deleteByIds(List<Object> ids) throws Exception {
-		if (this.noDelete || !this.canDelete(ids)) {
+		if (this.readOnly || this.noDelete || !this.canDelete(ids)) {
 			throw new ActionNotSupportedException("Delete not allowed.");
 		}
 		preDelete(ids);
@@ -580,6 +579,9 @@ public abstract class AbstractDsService<M, F, P, E> extends AbstractDsProcessor 
 	}
 
 	protected void doImportAsInsert_(File file) throws Exception {
+		if (this.readOnly) {
+			throw new ActionNotSupportedException("Import not allowed.");
+		}
 		DsCsvLoader l = new DsCsvLoader();
 		List<M> list = l.run(file, this.modelClass, null);
 		this.insert(list, null);
@@ -587,7 +589,9 @@ public abstract class AbstractDsService<M, F, P, E> extends AbstractDsProcessor 
 
 	protected void doImportAsUpdate_(File file, String ukFieldName,
 			int batchSize) throws Exception {
-
+		if (this.readOnly) {
+			throw new ActionNotSupportedException("Import not allowed.");
+		}
 		Assert.notNull(ukFieldName,
 				"For import as update you must specify the unique-key "
 						+ "field which is used to lookup the existing record.");
@@ -597,52 +601,60 @@ public abstract class AbstractDsService<M, F, P, E> extends AbstractDsProcessor 
 		DsCsvLoaderResult<M> result = l.run2(file, this.modelClass, null);
 		List<M> list = result.getResult();
 		String[] columns = result.getHeader();
-		
+
 		F filter = this.filterClass.newInstance();
-		 
-		//TODO: ******************   optimize me to do the work in batches !! ***************
-		
-		Method filterUkFieldSetter = this.filterClass.getMethod("set"+ StringUtils.capitalize(ukFieldName), String.class);
-		Method modelUkFieldGetter = this.modelClass.getMethod("get"+ StringUtils.capitalize(ukFieldName));
-		
+
+		// TODO: ****************** optimize me to do the work in batches !!
+		// ***************
+
+		Method filterUkFieldSetter = this.filterClass.getMethod("set"
+				+ StringUtils.capitalize(ukFieldName), String.class);
+		Method modelUkFieldGetter = this.modelClass.getMethod("get"
+				+ StringUtils.capitalize(ukFieldName));
+
 		Map<String, Method> modelSetters = new HashMap<String, Method>();
 		Map<String, Method> modelGetters = new HashMap<String, Method>();
-		
+
 		int len = columns.length;
-		
-		for(int i=0;i<len;i++) {
+
+		for (int i = 0; i < len; i++) {
 			String fieldName = columns[i];
 			Class<?> clz = this.modelClass;
 			Field f = null;
-			while (f==null && clz != null) {				
+			while (f == null && clz != null) {
 				try {
 					f = clz.getDeclaredField(fieldName);
-				} catch(Exception e) {
-					
+				} catch (Exception e) {
+
 				}
-				clz=clz.getSuperclass();
+				clz = clz.getSuperclass();
 			}
-			 		
-			if (f!=null) {
-				Method modelSetter = this.modelClass.getMethod("set"+ StringUtils.capitalize(fieldName), f.getType());
+
+			if (f != null) {
+				Method modelSetter = this.modelClass.getMethod("set"
+						+ StringUtils.capitalize(fieldName), f.getType());
 				modelSetters.put(fieldName, modelSetter);
-				
-				Method modelGetter = this.modelClass.getMethod("get"+ StringUtils.capitalize(fieldName));
-				modelGetters.put(fieldName, modelGetter);	
+
+				Method modelGetter = this.modelClass.getMethod("get"
+						+ StringUtils.capitalize(fieldName));
+				modelGetters.put(fieldName, modelGetter);
 			} else {
-				
+
 			}
 		}
-		
+
 		for (M newDs : list) {
-			filterUkFieldSetter.invoke(filter, modelUkFieldGetter.invoke(newDs));
-			List<M> res =  this.find(filter);
-			// TODO: add an extra flag for what to do if the target is not found:
+			filterUkFieldSetter
+					.invoke(filter, modelUkFieldGetter.invoke(newDs));
+			List<M> res = this.find(filter);
+			// TODO: add an extra flag for what to do if the target is not
+			// found:
 			// ignore or raise an error
 			if (res.size() > 0) {
 				M oldDs = this.find(filter).get(0);
-				for(Map.Entry<String, Method> entry : modelSetters.entrySet()) {
-					entry.getValue().invoke(oldDs, modelGetters.get(entry.getKey()).invoke(newDs) );
+				for (Map.Entry<String, Method> entry : modelSetters.entrySet()) {
+					entry.getValue().invoke(oldDs,
+							modelGetters.get(entry.getKey()).invoke(newDs));
 				}
 				this.update(oldDs, null);
 			}
@@ -702,6 +714,9 @@ public abstract class AbstractDsService<M, F, P, E> extends AbstractDsProcessor 
 
 	// ======================== RPC ===========================
 
+	/**
+	 * Execute an arbitrary service method with the data object.
+	 */
 	public void rpcData(String procedureName, M ds, P params) throws Exception {
 		if (!rpcData.containsKey(procedureName)) {
 			throw new Exception("No such procedure defined: " + procedureName);
@@ -724,11 +739,22 @@ public abstract class AbstractDsService<M, F, P, E> extends AbstractDsProcessor 
 		} else {
 			m.invoke(delegate, ds);
 		}
-		E e = (E) this.getEntityService().getEntityManager().find(this.getEntityClass(), ((IModelWithId) ds).getId());
+		E e = (E) this.getEntityService().getEntityManager().find(
+				this.getEntityClass(), ((IModelWithId) ds).getId());
 		this.getConverter().entityToModel(e, ds);
 		// delegate.execute(ds);
 	}
 
+	/**
+	 * Execute an arbitrary service method with the data object returning a
+	 * stream as result.
+	 * 
+	 * @param procedureName
+	 * @param ds
+	 * @param params
+	 * @return
+	 * @throws Exception
+	 */
 	public InputStream rpcDataStream(String procedureName, M ds, P params)
 			throws Exception {
 		if (!rpcData.containsKey(procedureName)) {
@@ -759,6 +785,14 @@ public abstract class AbstractDsService<M, F, P, E> extends AbstractDsProcessor 
 		return result;
 	}
 
+	/**
+	 * Execute an arbitrary service method with the filter object.
+	 * 
+	 * @param procedureName
+	 * @param filter
+	 * @param params
+	 * @throws Exception
+	 */
 	public void rpcFilter(String procedureName, F filter, P params)
 			throws Exception {
 		if (!rpcFilter.containsKey(procedureName)) {
@@ -786,6 +820,16 @@ public abstract class AbstractDsService<M, F, P, E> extends AbstractDsProcessor 
 		// delegate.execute(filter);
 	}
 
+	/**
+	 * Execute an arbitrary service method with the filter object returning a
+	 * stream as result.
+	 * 
+	 * @param procedureName
+	 * @param filter
+	 * @param params
+	 * @return
+	 * @throws Exception
+	 */
 	public InputStream rpcFilterStream(String procedureName, F filter, P params)
 			throws Exception {
 		if (!rpcFilter.containsKey(procedureName)) {
@@ -988,6 +1032,38 @@ public abstract class AbstractDsService<M, F, P, E> extends AbstractDsProcessor 
 					.getFilterClass(), this.getParamClass());
 		}
 		return marshaller;
+	}
+
+	public boolean isNoInsert() {
+		return noInsert;
+	}
+
+	public void setNoInsert(boolean noInsert) {
+		this.noInsert = noInsert;
+	}
+
+	public boolean isNoUpdate() {
+		return noUpdate;
+	}
+
+	public void setNoUpdate(boolean noUpdate) {
+		this.noUpdate = noUpdate;
+	}
+
+	public boolean isNoDelete() {
+		return noDelete;
+	}
+
+	public void setNoDelete(boolean noDelete) {
+		this.noDelete = noDelete;
+	}
+
+	public boolean isReadOnly() {
+		return readOnly;
+	}
+
+	public void setReadOnly(boolean readOnly) {
+		this.readOnly = readOnly;
 	}
 
 }

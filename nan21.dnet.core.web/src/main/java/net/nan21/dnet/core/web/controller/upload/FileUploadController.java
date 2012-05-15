@@ -29,67 +29,59 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.multipart.MultipartFile;
 
 @Controller
-@Scope(value="request")
+@Scope(value = "request")
 public class FileUploadController {
 
 	@Autowired
 	protected WebApplicationContext webappContext;
-	
+
 	protected List<IFileUploadServiceFactory> serviceFactories;
 
-    @RequestMapping(value = "/{dsName}", method = RequestMethod.POST)
-    @ResponseBody
-    public String handleFormUpload(
-    		@PathVariable("dsName") String dsName,
-    		@RequestParam("name") String name,
-    		@RequestParam("file") MultipartFile file,
-    		@RequestParam("p1") String p1,
-    		@RequestParam("p2") String p2
-    		) throws Exception {
+	@RequestMapping(value = "/{dsName}", method = RequestMethod.POST)
+	@ResponseBody
+	public String handleFormUpload(@PathVariable("dsName") String dsName,
+			@RequestParam("name") String name,
+			@RequestParam("file") MultipartFile file,
+			@RequestParam("p1") String p1, @RequestParam("p2") String p2)
+			throws Exception {
 
-    	SessionUser su;		
+		SessionUser su;
 		User user;
 		Params params;
 		try {
-            su = (SessionUser) SecurityContextHolder.getContext()
-                    .getAuthentication().getPrincipal();
-            user = (User)su.getUser();
-            params = (Params)su.getParams();                          
-             
-        } catch (ClassCastException e) {
-            throw new Exception(
-                    "<b>Session expired.</b>"
-                            + "<br> Logout from application and login again.");
-        }
-        Session.user.set(user);
-        Session.params.set(params); 
-    	this.serviceFactories =
-    		(List<IFileUploadServiceFactory>)this.webappContext.getBean("osgiFileUploadServiceFactories");
-    	
-       IFileUploadResult result = this.getService(dsName).execute(name, file, p1, p2);
-       return "{success:true}";
-    }
-    @ExceptionHandler(value=Exception.class) 
-    @ResponseBody
-    protected String handleException(Exception e, HttpServletResponse response)  throws IOException {
-		
-    	String msg = "";
-    	
-    	response.setStatus(500);
-    	return this.buildErrorMessage(e.getLocalizedMessage());
-//    	
-//		if (e.getCause() != null ) {
-//			response.getOutputStream().print(this.buildErrorMessage(e.getCause().getLocalizedMessage()));	
-//		} else {
-//			response.getOutputStream().print(this.buildErrorMessage(e.getLocalizedMessage()));		
-//		}			 
-//		return null;
+			su = (SessionUser) SecurityContextHolder.getContext()
+					.getAuthentication().getPrincipal();
+			user = (User) su.getUser();
+			params = (Params) su.getParams();
+
+		} catch (ClassCastException e) {
+			throw new Exception("<b>Session expired.</b>"
+					+ "<br> Logout from application and login again.");
+		}
+		Session.user.set(user);
+		Session.params.set(params);
+		this.serviceFactories = (List<IFileUploadServiceFactory>) this.webappContext
+				.getBean("osgiFileUploadServiceFactories");
+		IFileUploadResult result = this.getService(dsName).execute(name, file,
+				p1, p2);
+		return "{success:true}";
 	}
-    
-    private String buildErrorMessage(String msg) {
-    	return "{ \"success\":false, \"msg\":\""+ msg +"\"}";
-    }
-    
+
+	@ExceptionHandler(value = Exception.class)
+	@ResponseBody
+	protected String handleException(Exception e, HttpServletResponse response)
+			throws IOException {
+
+		String msg = "";
+
+		response.setStatus(500);
+		return this.buildErrorMessage(e.getLocalizedMessage());
+	}
+
+	private String buildErrorMessage(String msg) {
+		return "{ \"success\":false, \"msg\":\"" + msg + "\"}";
+	}
+
 	public WebApplicationContext getWebappContext() {
 		return webappContext;
 	}
@@ -98,31 +90,31 @@ public class FileUploadController {
 		this.webappContext = webappContext;
 	}
 
-	  
 	public List<IFileUploadServiceFactory> getServiceFactories() {
 		return serviceFactories;
 	}
 
-	public void setServiceFactories(List<IFileUploadServiceFactory> serviceFactories) {
+	public void setServiceFactories(
+			List<IFileUploadServiceFactory> serviceFactories) {
 		this.serviceFactories = serviceFactories;
 	}
 
-	protected IFileUploadService  getService(String dsName) throws Exception {
+	protected IFileUploadService getService(String dsName) throws Exception {
 		IFileUploadService srv = null;
 		for (IFileUploadServiceFactory f : serviceFactories) {
 			try {
 				srv = f.create(dsName + "Service");
 				if (srv != null) {
-					srv.setSystemConfig(this.webappContext.getBean(ISystemConfig.class));
+					srv.setSystemConfig(this.webappContext
+							.getBean(ISystemConfig.class));
 					return srv;
 				}
 			} catch (NoSuchBeanDefinitionException e) {
 				// service not found in this factory, ignore
 			}
 		}
-		throw new Exception(dsName + "File upload service not found for name "+dsName+"!");
+		throw new Exception(dsName + "File upload service not found for name "
+				+ dsName + "!");
 	}
-    
-    
-}
 
+}

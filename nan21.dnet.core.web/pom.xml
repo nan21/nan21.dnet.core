@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>net.nan21.dnet</groupId>
 		<artifactId>nan21.dnet.core.parent</artifactId>
-		<version>1.0.0.M9</version>
+		<version>1.0.0.RC1</version>
 		<relativePath>../nan21.dnet.core.parent</relativePath>
 	</parent>
 	<groupId>net.nan21.dnet</groupId>
@@ -21,21 +21,21 @@
 		<dependency>
 			<groupId>net.nan21.dnet</groupId>
 			<artifactId>nan21.dnet.core.api</artifactId>
-			<version>1.0.0.M9</version>
+			<version>1.0.0.RC1</version>
 			<type>jar</type>
 			<scope>provided</scope>
 		</dependency>	
 		<dependency>
 			<groupId>net.nan21.dnet</groupId>
 			<artifactId>nan21.dnet.core.presenter</artifactId>
-			<version>1.0.0.M9</version>
+			<version>1.0.0.RC1</version>
 			<type>jar</type>
 			<scope>provided</scope>
 		</dependency>	
 		<dependency>
 			<groupId>net.nan21.dnet</groupId>
 			<artifactId>nan21.dnet.core.security</artifactId>
-			<version>1.0.0.M9</version>
+			<version>1.0.0.RC1</version>
 			<type>jar</type>
 			<scope>provided</scope>
 		</dependency>	

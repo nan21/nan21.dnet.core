@@ -58,7 +58,7 @@ Ext.define("dnet.core.lov.AbstractLov", {
 	}
 	,_hideLov_: function() {
 	   this._window_.hide();
-	   this.el.focus();
+	   //this.el.focus();
 	}
 	,_createLov_: function() {
 		this._createFilter_();
