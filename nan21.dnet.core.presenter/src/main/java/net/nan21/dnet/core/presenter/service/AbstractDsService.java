@@ -41,7 +41,7 @@ import net.nan21.dnet.core.presenter.model.EmptyParam;
 import net.nan21.dnet.core.presenter.model.RpcDefinition;
 import net.nan21.dnet.core.presenter.model.ViewModelDescriptorManager;
 
-public abstract class AbstractDsService<M, F, P, E> extends AbstractDsProcessor {
+public abstract class AbstractDsService<M, F, P, E> extends AbstractPresenterProcessor {
 
 	protected boolean noInsert = false;
 	protected boolean noUpdate = false;
@@ -739,9 +739,15 @@ public abstract class AbstractDsService<M, F, P, E> extends AbstractDsProcessor 
 		} else {
 			m.invoke(delegate, ds);
 		}
-		E e = (E) this.getEntityService().getEntityManager().find(
-				this.getEntityClass(), ((IModelWithId) ds).getId());
-		this.getConverter().entityToModel(e, ds);
+		if (def.getReloadFromEntity()) {
+			if (ds instanceof IModelWithId) {
+				if (((IModelWithId) ds).getId() != null) {
+					E e = (E) this.getEntityService().getEntityManager().find(
+							this.getEntityClass(), ((IModelWithId) ds).getId());
+					this.getConverter().entityToModel(e, ds);
+				}
+			}
+		}
 		// delegate.execute(ds);
 	}
 

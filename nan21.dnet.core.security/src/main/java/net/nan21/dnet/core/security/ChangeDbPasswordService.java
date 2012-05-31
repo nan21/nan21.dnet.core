@@ -21,7 +21,7 @@ public class ChangeDbPasswordService extends JdbcDaoSupport implements IChangePa
 			String oldPassword, Long clientId, String clientCode) throws Exception {
     	
     	int exists = this.getJdbcTemplate()
-    		.queryForInt("select count(1) from AD_USER a where a.code = ? and a.password = ? ", userName, oldPassword)
+    		.queryForInt("select count(1) from AD_USR a where a.code = ? and a.password = ? ", userName, oldPassword)
     		 ;
     	if (exists == 0 ) {
     		throw new Exception("Incorrect password!");

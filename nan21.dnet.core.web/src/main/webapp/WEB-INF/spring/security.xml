@@ -34,12 +34,12 @@
 			c.defaultDsAccessRule, c.defaultImportPath, c.defaultExportPath, c.tempPath, c.adminRole, c.systemClient, '', 0, 
 					f.extjsDateFormat, f.extjsTimeFormat, f.extjsDateTimeFormat, f.extjsAltFormats,	f.javaDateFormat, f.javaTimeFormat, f.javaDateTimeFormat ,
 					 u.decimalseparator, u.thousandseparator, asg.name asgnName, asg.id asgnId
-				  from AD_USER u join AD_CLIENT c on u.clientid = c.id left join AD_SYSDATEFORMAT f on u.dateformat_id = f.id
-				  left join ad_assignable asg on u.code = asg.usercode
+				  from AD_USR u join AD_CLIENT c on u.clientid = c.id left join AD_SYS_DTFMT f on u.dateformat_id = f.id
+				  left join AD_ASGNBL asg on u.code = asg.usercode
 				where u.code = ? and c.code = ?" />
 		<property name="authoritiesByUsernameQuery"
 			value="select u.code , r.name 
-				  from AD_USER_ROLES ur, AD_ROLE r, AD_USER u, AD_CLIENT c 
+				  from AD_USR_ROLE ur, AD_ROLE r, AD_USR u, AD_CLIENT c 
 				where ur.users_id = u.id and ur.roles_id = r.id and u.clientid = c.id and u.code = ? and c.code = ?" />
 		<property name="dataSource" ref="osgiDataSource" />
 	</bean>
@@ -50,6 +50,6 @@
 	
 	<bean class="net.nan21.dnet.core.security.ChangeDbPasswordService" scope="request">  
 		<property name="dataSource" ref="osgiDataSource"></property>
-		<property name="sql" value="update AD_USER set password = ? where code = ? and clientid = ?"></property>
+		<property name="sql" value="update AD_USR set password = ? where code = ? and clientid = ?"></property>
 	</bean>	
 </beans>

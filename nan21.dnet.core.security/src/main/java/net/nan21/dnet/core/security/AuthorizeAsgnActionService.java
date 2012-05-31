@@ -44,12 +44,12 @@ public class AuthorizeAsgnActionService  extends JdbcDaoSupport
     }
     
     private String buildSql(String dsName, String action ) {
-    	String baseSql = "select distinct 1 from AD_ACCESSCTRL_ASGN acl where acl.dsname = ? "
+    	String baseSql = "select distinct 1 from AD_ACL_ASGN acl where acl.dsname = ? "
     		+" and exists ( "
     		+" select 1 "
-    		+"   from AD_ROLE_ACCESSCTRLS rac"
+    		+"   from AD_ROLE_ACLS rac"
     		+"  where rac.accessControls_id = acl.accessControl_id and rac.roles_id in ( "
-    		+" 		select ur.roles_id from AD_USER_ROLES ur where ur.users_id in ( select u.id from AD_USER u where u.code = ? )"
+    		+" 		select ur.roles_id from AD_USR_ROLE ur where ur.users_id in ( select u.id from AD_USR u where u.code = ? )"
     		+"	)"
     		+")";
     	

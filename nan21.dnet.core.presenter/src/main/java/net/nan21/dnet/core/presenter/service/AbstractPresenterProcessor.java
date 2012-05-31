@@ -13,10 +13,10 @@ import net.nan21.dnet.core.api.ISystemConfig;
 import net.nan21.dnet.core.api.service.IDsService;
 import net.nan21.dnet.core.api.service.IEntityService;
 
-public abstract class AbstractDsProcessor {
+public abstract class AbstractPresenterProcessor {
 
 	@Autowired
-	protected ApplicationContext appContext;
+	private ApplicationContext appContext;
 
 	@Autowired
 	private ISystemConfig systemConfig;

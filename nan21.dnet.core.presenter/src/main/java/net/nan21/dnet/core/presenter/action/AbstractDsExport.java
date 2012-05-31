@@ -41,7 +41,7 @@ public abstract class AbstractDsExport<M> {
 		this.init();
 	}
 
-	public abstract void write(M data, boolean isFirst) throws IOException ;
+	public abstract void write(M data, boolean isFirst) throws Exception ;
 	
 	private void init() {
 		this.serverDateFormat = new SimpleDateFormat("yyyy-MM-dd kk:mm");

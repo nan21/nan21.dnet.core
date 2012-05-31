@@ -269,10 +269,6 @@ Ext.define('dnet.core.lov.AbstractRemoteCombo', {
         if (me.picker && !me.picker.getSelectionModel().hasSelection()) {
             me.doAutoSelect();
         }
-        me.focus(true,true);
-       // if(me.isExpanded) {
-        	
-       // }	
     },
 
     /**

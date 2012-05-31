@@ -1,12 +1,9 @@
 package net.nan21.dnet.core.business.service;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -14,13 +11,9 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
-import net.nan21.dnet.core.api.ISystemConfig;
 import net.nan21.dnet.core.api.model.IModelWithClientId;
-import net.nan21.dnet.core.api.service.IEntityService;
 import net.nan21.dnet.core.api.session.Session;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.util.Assert;
 
 /**
@@ -31,36 +24,10 @@ import org.springframework.util.Assert;
  * @param <E>
  *            domain entity
  */
-public abstract class AbstractEntityService<E> {
-
-	@Autowired
-	protected ApplicationContext appContext;
-
-	@Autowired
-	protected ISystemConfig systemConfig;
-
-	@Autowired
-	private ServiceLocatorBusiness serviceLocator;
-
-	@PersistenceContext
-	@Autowired
-	protected EntityManager em;
+public abstract class AbstractEntityService<E> extends
+		AbstractBusinessProcessor {
 
 	protected abstract Class<E> getEntityClass();
-
-	/*
-	 * @return the entity manager
-	 */
-	public EntityManager getEntityManager() {
-		return this.em;
-	}
-
-	/*
-	 * @param em the entity manager to set
-	 */
-	public void setEntityManager(EntityManager em) {
-		this.em = em;
-	}
 
 	/**
 	 * Find entity by id.
@@ -484,84 +451,9 @@ public abstract class AbstractEntityService<E> {
 	public <T extends AbstractBusinessDelegate> T getBusinessDelegate(
 			Class<T> clazz) throws Exception {
 		T delegate = clazz.newInstance();
-		delegate.setAppContext(this.appContext);
+		delegate.setAppContext(this.getAppContext());
 		delegate.setEntityManager(this.em);
 		return delegate;
-	}
-
-	/**
-	 * Lookup an entity service.
-	 * 
-	 * @param <T>
-	 * @param entityClass
-	 * @return
-	 * @throws Exception
-	 */
-	public <T> IEntityService<T> findEntityService(Class<T> entityClass)
-			throws Exception {
-		return this.getServiceLocator().findEntityService(entityClass);
-	}
-
-	/**
-	 * Get spring application context.
-	 * 
-	 * @return
-	 */
-	public ApplicationContext getAppContext() {
-		return appContext;
-	}
-
-	/**
-	 * Set spring application context.
-	 * 
-	 * @param appContext
-	 */
-	public void setAppContext(ApplicationContext appContext) {
-		this.appContext = appContext;
-	}
-
-	/**
-	 * Get system configuration object. If it is null attempts to retrieve it
-	 * from Spring context.
-	 * 
-	 * @return
-	 */
-	public ISystemConfig getSystemConfig() {
-		if (this.systemConfig == null) {
-			this.systemConfig = this.appContext.getBean(ISystemConfig.class);
-		}
-		return systemConfig;
-	}
-
-	/**
-	 * Set system configuration object.
-	 * 
-	 * @param systemConfig
-	 */
-	public void setSystemConfig(ISystemConfig systemConfig) {
-		this.systemConfig = systemConfig;
-	}
-
-	/**
-	 * Get business service locator. If it is null attempts to retrieve it
-	 * 
-	 * @return
-	 */
-	public ServiceLocatorBusiness getServiceLocator() {
-		if (this.serviceLocator == null) {
-			this.serviceLocator = this.appContext
-					.getBean(ServiceLocatorBusiness.class);
-		}
-		return serviceLocator;
-	}
-
-	/**
-	 * Set business service locator.
-	 * 
-	 * @param serviceLocator
-	 */
-	public void setServiceLocator(ServiceLocatorBusiness serviceLocator) {
-		this.serviceLocator = serviceLocator;
 	}
 
 }

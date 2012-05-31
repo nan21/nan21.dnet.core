@@ -1,11 +1,13 @@
 Manifest-Version: 1.0
-Export-Package: net.nan21.dnet.core.business.persistenceunit;version="
- 1.0.0.RC1";uses:="javax.sql,org.springframework.orm.jpa.persistenceun
- it",net.nan21.dnet.core.business.pu;version="1.0.0.RC1",net.nan21.dne
- t.core.business.service;version="1.0.0.RC1";uses:="javax.persistence,
- net.nan21.dnet.core.api,net.nan21.dnet.core.api.service,net.nan21.dne
- t.core.api.setup,org.springframework.beans.factory.annotation,org.spr
- ingframework.context"
+Export-Package: net.nan21.dnet.core.business.job;version="1.0.0.RC1";u
+ ses:="net.nan21.dnet.core.api.job,net.nan21.dnet.core.business.servic
+ e,org.springframework.beans.factory.annotation,org.springframework.co
+ ntext",net.nan21.dnet.core.business.persistenceunit;version="1.0.0.RC
+ 1";uses:="javax.sql,org.springframework.orm.jpa.persistenceunit",net.
+ nan21.dnet.core.business.service;version="1.0.0.RC1";uses:="javax.per
+ sistence,net.nan21.dnet.core.api,net.nan21.dnet.core.api.service,net.
+ nan21.dnet.core.api.setup,org.springframework.beans.factory.annotatio
+ n,org.springframework.context"
 Bundle-Vendor: Nan21 
 Bundle-Version: 1.0.0.RC1
 Tool: Bundlor 1.0.0.RELEASE
@@ -15,13 +17,14 @@ Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.html
 Bundle-SymbolicName: nan21.dnet.core.business
 Import-Package: javax.persistence;version="[2.0,2.1)",javax.persistenc
  e.criteria;version="[2.0,2.1)",javax.sql,net.nan21.dnet.core.api,net.
- nan21.dnet.core.api.model;version="[1.0.0.RC1,1.0.0.RC1]",net.nan21.d
- net.core.api.service;version="[1.0.0.RC1,1.0.0.RC1]",net.nan21.dnet.c
- ore.api.session;version="[1.0.0.RC1,1.0.0.RC1]",net.nan21.dnet.core.a
- pi.setup;version="[1.0.0.RC1,1.0.0.RC1]",org.slf4j;version="[1.0,2.0]
- ",org.springframework.beans.factory,org.springframework.beans.factory
- .annotation;version="[3.0,3.1)",org.springframework.context;version="
- [3.0,3.1)",org.springframework.context.config;version="[3.0,3.1)",org
- .springframework.orm.jpa;version="[3.0,3.1)",org.springframework.orm.
- jpa.persistenceunit;version="[3.0,3.1)",org.springframework.util
+ nan21.dnet.core.api.job,net.nan21.dnet.core.api.model;version="[1.0.0
+ .RC1,1.0.0.RC1]",net.nan21.dnet.core.api.service;version="[1.0.0.RC1,
+ 1.0.0.RC1]",net.nan21.dnet.core.api.session;version="[1.0.0.RC1,1.0.0
+ .RC1]",net.nan21.dnet.core.api.setup;version="[1.0.0.RC1,1.0.0.RC1]",
+ org.slf4j;version="[1.0,2.0]",org.springframework.beans.factory,org.s
+ pringframework.beans.factory.annotation;version="[3.0,3.1)",org.sprin
+ gframework.context;version="[3.0,3.1)",org.springframework.context.co
+ nfig;version="[3.0,3.1)",org.springframework.orm.jpa;version="[3.0,3.
+ 1)",org.springframework.orm.jpa.persistenceunit;version="[3.0,3.1)",o
+ rg.springframework.util
 

@@ -5,6 +5,7 @@ dnet.core.base.ApplicationMenu$ContributedMenus = [];
 
 dnet.core.base.ApplicationMenu$LogoItems = [{
 	xtype : "container",
+	
 	items : [Ext.create('Ext.Img', {
 				src : __STATIC_RESOURCE_URL_CORE__ + "/resources/images/"
 						+ __THEME__ + "/logo/logo.png",
@@ -33,6 +34,12 @@ dnet.core.base.ApplicationMenu$Items = [
 					menu : new Ext.menu.Menu({
 								items : [{
 									text : Dnet.translate("appmenuitem",
+											"theme_aqua__lbl"),
+									handler : function() {
+										getApplication().changeCurrentTheme("aqua");
+									}
+								},{
+									text : Dnet.translate("appmenuitem",
 											"theme_gray__lbl"),
 									handler : function() {
 										getApplication().changeCurrentTheme("gray");
@@ -43,13 +50,14 @@ dnet.core.base.ApplicationMenu$Items = [
 									handler : function() {
 										getApplication().changeCurrentTheme("blue");
 									}
-								}, {
-									text : Dnet.translate("appmenuitem",
-											"theme_access__lbl"),
-									handler : function() {
-										getApplication().changeCurrentTheme("access");
-									}
 								}
+//								, {
+//									text : Dnet.translate("appmenuitem",
+//											"theme_access__lbl"),
+//									handler : function() {
+//										getApplication().changeCurrentTheme("access");
+//									}
+//								}
 //								, {
 //									text : Dnet.translate("appmenuitem",
 //											"theme_neptune__lbl"),
@@ -185,7 +193,7 @@ Ext.define("dnet.core.base.ApplicationMenu", {
 	height : 50,
 	systemClientMenu : null,
 	systemClientMenuAdded : null,
-
+	ui : "main-app-menu",
 	dbMenu : null,
 	dbMenuAdded : null,
 

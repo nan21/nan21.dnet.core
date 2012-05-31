@@ -14,7 +14,7 @@
         <a href="ui/extjs"><IMG style="border:0px solid #ccc;"  src="../resources/images/logo.png" ></a>
 	</td>
 	<td style='font-family:arial,verdana;font-size:14px;'>
-        	Open source Human Resources & Customer Relationships Management software
+        	Open source ERP / CRM / HRM
 	</td>
 </tr>
 <tr>
@@ -60,7 +60,7 @@
 </tr>
 <tr>
 	<td style='border-top:1px solid gray;font-family:arial,verdana;font-size:11px;' colspan=2><br>
-	  Copyright &copy; 2010-2011 Nan21 Electronics SRL. All Rights Reserved.
+	  Copyright &copy; 2010-2012 Nan21 Electronics SRL. All Rights Reserved.
 	</td>
 </tr>
 </table>

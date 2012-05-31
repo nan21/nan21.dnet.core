@@ -55,7 +55,7 @@
 </tr>
 <tr>
 	<td style='border-top:1px solid gray;font-family:arial,verdana;font-size:11px;' colspan=2 align=center ><br>
-	  Copyright &copy; 2010-2011 Nan21 Electronics SRL. All Rights Reserved.
+	  Copyright &copy; 2010-2012 Nan21 Electronics SRL. All Rights Reserved.
 	</td>
 </tr>
 </table>

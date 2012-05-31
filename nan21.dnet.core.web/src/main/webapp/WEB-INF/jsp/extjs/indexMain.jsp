@@ -85,7 +85,7 @@
 					   		,xtype:"tabpanel"
 						   	,deferredRender:false
 						   	,activeTab:0
-						   	,plain:true
+						   	,plain : true
 						   	,plugins: new Ext.ux.TabCloseMenu()
 				   			,id:"dnet-application-view-body"
 				    	    ,items:[

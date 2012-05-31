@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:osgi-compendium="http://www.springframework.org/schema/osgi-compendium"
+	xsi:schemaLocation="
+			http://www.springframework.org/schema/beans
+				http://www.springframework.org/schema/beans/spring-beans.xsd
+			http://www.springframework.org/schema/context 
+				http://www.springframework.org/schema/context/spring-context.xsd
+			http://www.springframework.org/schema/osgi-compendium
+    			http://www.springframework.org/schema/osgi-compendium/spring-osgi-compendium.xsd">
+	<context:property-placeholder
+		properties-ref="net.nan21.dnet.properties" />
+
+	<!-- Default properties -->
+	<osgi-compendium:cm-properties id="net.nan21.dnet.properties"
+		persistent-id="net.nan21.dnet" />
+	<context:annotation-config />
+	<bean id="serviceLocatorJob" class="net.nan21.dnet.core.scheduler.ServiceLocatorJob">
+		<property name="dsJobFactories" ref="osgiDsJobFactories"></property>
+		<property name="entityJobFactories" ref="osgiEntityJobFactories"></property>
+	</bean>
+	<bean id="jobFactory" class="net.nan21.dnet.core.scheduler.MyJobFactory">
+		<property name="serviceLocatorJob" ref="serviceLocatorJob"></property>
+	</bean>
+	<bean id="jobScheduler" class="net.nan21.dnet.core.scheduler.JobScheduler"
+		init-method="init">
+		<property name="autoStart" value="true"></property>
+		<property name="autoStartDelay" value="60"></property>
+		<property name="serviceLocatorJob" ref="serviceLocatorJob"></property>
+		<property name="jobFactory" ref="jobFactory"></property>
+		<property name="dataSource" ref="osgiDataSource"></property>
+		<property name="quartzProperties">
+			<map>
+				<entry key="org.quartz.jobStore.class" value="org.quartz.impl.jdbcjobstore.JobStoreTX" />
+				<entry key="org.quartz.jobStore.driverDelegateClass" value="org.quartz.impl.jdbcjobstore.StdJDBCDelegate" />
+				<entry key="org.quartz.jobStore.dataSource" value="default" />
+				<entry key="org.quartz.threadPool.class" value="org.quartz.simpl.SimpleThreadPool" />
+				<entry key="org.quartz.threadPool.threadCount" value="2" />
+				<entry key="org.quartz.threadPool.threadPriority" value="5" />
+				<entry key="org.quartz.jobStore.tablePrefix" value="XT_QRTZ_" />
+			</map>
+		</property>
+	</bean>
+</beans>
