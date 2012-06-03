@@ -20,7 +20,7 @@ import org.eclipse.persistence.descriptors.DescriptorEvent;
 import org.hibernate.validator.constraints.NotBlank;
 
 @MappedSuperclass
-public abstract class AbstractTypeWithCode implements Serializable, IModelWithId,
+public abstract class AbstractTypeWithCode extends AbstractEntityWithClientId implements Serializable, IModelWithId,
 		IModelWithClientId {
 
 	private static final long serialVersionUID = -1L;
@@ -207,7 +207,7 @@ public abstract class AbstractTypeWithCode implements Serializable, IModelWithId
 	}
 
 	public void aboutToUpdate(DescriptorEvent event) {
-
+		this.__validate_client_context__(this.clientId);
 		event.updateAttributeWithObject("modifiedAt", new Date());
 		event.updateAttributeWithObject("modifiedBy", Session.user.get()
 				.getUsername());

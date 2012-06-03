@@ -20,7 +20,7 @@ import org.eclipse.persistence.descriptors.DescriptorEvent;
 import org.hibernate.validator.constraints.NotBlank;
 
 @MappedSuperclass
-public abstract class AbstractAuditable implements Serializable, IModelWithId,
+public abstract class AbstractAuditable extends AbstractEntityWithClientId implements Serializable, IModelWithId,
 		IModelWithClientId {
 
 	private static final long serialVersionUID = -1L;
@@ -63,7 +63,7 @@ public abstract class AbstractAuditable implements Serializable, IModelWithId,
 	 */
 	@Column(name = "UUID", length = 36)
 	protected String uuid;
-	
+
 	@Transient
 	public String getClassName() {
 		return this.getClass().getCanonicalName();
@@ -128,7 +128,7 @@ public abstract class AbstractAuditable implements Serializable, IModelWithId,
 	public void setUuid(String uuid) {
 		this.uuid = uuid;
 	}
-	
+
 	public void aboutToInsert(DescriptorEvent event) {
 
 		event.updateAttributeWithObject("createdAt", new Date());
@@ -143,11 +143,11 @@ public abstract class AbstractAuditable implements Serializable, IModelWithId,
 			event.updateAttributeWithObject("uuid", UUID.randomUUID()
 					.toString().toUpperCase());
 		}
-		 
+
 	}
 
 	public void aboutToUpdate(DescriptorEvent event) {
-
+		this.__validate_client_context__(this.clientId);
 		event.updateAttributeWithObject("modifiedAt", new Date());
 		event.updateAttributeWithObject("modifiedBy", Session.user.get()
 				.getUsername());

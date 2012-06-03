@@ -15,7 +15,7 @@ import net.nan21.dnet.core.api.session.Session;
 import org.eclipse.persistence.descriptors.DescriptorEvent;
 
 @MappedSuperclass
-public abstract class AbstractSimpleEntity implements Serializable,
+public abstract class AbstractSimpleEntity extends AbstractEntityWithClientId implements Serializable,
 		IModelWithId, IModelWithClientId {
 
 	private static final long serialVersionUID = -1L;
@@ -64,6 +64,6 @@ public abstract class AbstractSimpleEntity implements Serializable,
 	}
 
 	public void aboutToUpdate(DescriptorEvent event) {
-
+		this.__validate_client_context__(this.clientId);
 	}
 }

@@ -137,7 +137,8 @@ public abstract class AbstractViewModelDescriptor<M> implements IViewModelDescri
 						if (!orderBy.equals("")) {
 							String[] orderByFields = orderBy.split(",");
 							String[] orderBys = new String[orderByFields.length] ;
-							String prefix = path.substring(0, path.lastIndexOf("."));
+							int pos = path.lastIndexOf(".");
+							String prefix = (pos>0)?path.substring(0, pos):null;
 							for (int y=0,l=orderByFields.length; y<l;y++) {
 								if (prefix != null && !prefix.equals("")) {
 									orderBys[y] = prefix + "."+ orderByFields[y];
