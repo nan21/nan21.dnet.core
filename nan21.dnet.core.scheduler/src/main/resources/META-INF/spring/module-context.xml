@@ -25,7 +25,7 @@
 	</bean>
 	<bean id="jobScheduler" class="net.nan21.dnet.core.scheduler.JobScheduler"
 		init-method="init">
-		<property name="autoStart" value="true"></property>
+		<property name="autoStart" value="false"></property>
 		<property name="autoStartDelay" value="60"></property>
 		<property name="serviceLocatorJob" ref="serviceLocatorJob"></property>
 		<property name="jobFactory" ref="jobFactory"></property>
