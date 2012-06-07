@@ -5,13 +5,4 @@ Bundle-SymbolicName: nan21.dnet.core.db
 Bundle-Vendor: Nan21 
 Bundle-Version: 1.0.0.RC1
 Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.html
-Import-Template: 
- org.apache.commons.dbcp.*;version="[1.0,2.0)"
-Import-Package: 
- oracle.jdbc;resolution:=optional,
- org.apache.derby;resolution:=optional;version="[10.0,11.0)",
- org.apache.derby.jdbc;resolution:=optional;version="[10.0,11.0)",
- com.mysql.jdbc;resolution:=optional;version="[5.0,6.0)",
- javax.sql;resolution:=optional;version="0",
- org.h2;resolution:=optional;version="[1.0,2.0)"
 

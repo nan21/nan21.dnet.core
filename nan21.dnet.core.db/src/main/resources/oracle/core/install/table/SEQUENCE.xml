@@ -4,7 +4,7 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
     <changeSet author="amathe" id="TBL">
         <createTable tableName="SEQUENCE">
-			<column name="SEQ_NAME" type="VARCHAR2(50)">
+			<column name="SEQ_NAME" type="VARCHAR(50)">
 				<constraints nullable="false" /></column>	 
 			<column name="SEQ_COUNT" type="NUMBER(38)">
 				<constraints /></column>

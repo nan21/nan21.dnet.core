@@ -13,11 +13,12 @@
 	
 	<modules>
 		<module>nan21.dnet.core.parent</module>
+		<module>nan21.dnet.core.api</module>
 		<module>nan21.dnet.core.db</module>
+		<module>nan21.dnet.core.jdbc</module>
 		<module>nan21.dnet.core.scheduler</module>
 		<module>nan21.dnet.core.domain</module>
 		<module>nan21.dnet.core.business</module>
-		<module>nan21.dnet.core.api</module>
 		<module>nan21.dnet.core.workflow</module>
 		<module>nan21.dnet.core.presenter</module>
 		<module>nan21.dnet.core.ui.extjs</module>

@@ -6,10 +6,4 @@ Bundle-Name: DNet Core - db
 Bundle-ManifestVersion: 2
 Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.html
 Bundle-SymbolicName: nan21.dnet.core.db
-Import-Package: com.mysql.jdbc;version="[5.0,6.0)";resolution:="option
- al",javax.sql;version="0";resolution:="optional",oracle.jdbc;resoluti
- on:="optional",org.apache.commons.dbcp;version="[1.0,2.0)",org.apache
- .derby;version="[10.0,11.0)";resolution:="optional",org.apache.derby.
- jdbc;version="[10.0,11.0)";resolution:="optional",org.h2;version="[1.
- 0,2.0)";resolution:="optional"
 
