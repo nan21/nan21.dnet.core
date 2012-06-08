@@ -264,7 +264,7 @@ public abstract class AbstractUiExtjsController extends AbstractController {
 		} else {
 			msg = e.getMessage();	
 		}	
-		logger.error("Exception occured during transactional request execution: ", e.getCause());
+		logger.error("Exception occured during transactional request execution: ", msg );
 		response.setStatus(500);		
 		return new ModelAndView("error").addObject("message", msg); //e.getLocalizedMessage();
 		  
