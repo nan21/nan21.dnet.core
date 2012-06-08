@@ -1,6 +1,8 @@
 /**
  * Builder for edit-form views.
  */
+
+ 
 Ext.define("dnet.core.dc.DcvEditFormBuilder", {
 	extend : "Ext.util.Observable",
 
@@ -186,7 +188,7 @@ Ext.define("dnet.core.dc.DcvEditFormBuilder", {
 		if (!config.listeners[en]) {
 			config.listeners[en] = {};
 		}
-		//config.listeners[en]['buffer'] = 700;
+		config.listeners[en]['buffer'] = 500;
 		if(fn!=null) {
 			if (config.listeners[en].fn) {
 				config.listeners[en].fn = Ext.Function.createInterceptor(config.listeners[en].fn, fn);
@@ -221,6 +223,12 @@ Ext.define("dnet.core.dc.DcvEditFormBuilder", {
 		}
 		return fn;
 	},
+	
+	
+	// move these functions out, onChange call them buffered , 
+	// on blur call immediatly and cancel the buffered event 
+	// -> fix for very fast typing
+	  
 	createModelUpdaterField: function(config) {
 		var fn = null;
 		if (config.paramIndex) {
@@ -278,7 +286,7 @@ Ext.define("dnet.core.dc.DcvEditFormBuilder", {
 			id : Ext.id(),
 			itemId : config.name,
 			selectOnFocus : true,
-			checkChangeBuffer : 700,
+			//checkChangeBuffer : 700,
 			_dcView_ : this.dcv
 		});
 		if (config.maxLength) {

@@ -39,7 +39,8 @@ public class JobScheduler implements IScheduler {
 	Properties quartzProperties;
 	boolean autoStart;
 	int autoStartDelay;
-
+	boolean startOnDemand;
+	
 	DataSource dataSource;
 
 	public void init() throws Exception {
@@ -67,7 +68,7 @@ public class JobScheduler implements IScheduler {
 	}
 
 	private void ensureDelegateIsStarted() throws SchedulerException {
-		if (this.delegate != null && !this.delegate.isStarted()) {
+		if ( this.startOnDemand && this.delegate != null && !this.delegate.isStarted()) {
 			this.delegate.start();
 		}
 	}
@@ -143,6 +144,14 @@ public class JobScheduler implements IScheduler {
 
 	public void setServiceLocatorJob(ServiceLocatorJob serviceLocatorJob) {
 		this.serviceLocatorJob = serviceLocatorJob;
+	}
+
+	public boolean isStartOnDemand() {
+		return startOnDemand;
+	}
+
+	public void setStartOnDemand(boolean startOnDemand) {
+		this.startOnDemand = startOnDemand;
 	}
 
 }

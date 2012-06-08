@@ -281,17 +281,24 @@ Ext.define("dnet.core.dc.AbstractDcvEditForm", {
 		var msg = "null";
 		if (record) {
 			var fields = this.getForm().getFields();
+			
 			fields.each(function(field) {
 
 						if (field.dataIndex) {
 							var nv = record.data[field.dataIndex];
 							if (field.getValue() != nv) {
 								// field.suspendEvents();
-								field.setValue(nv);
+								//this.suspendCheckChange++;
+								if ( !(field.hasFocus && field.isDirty)) {
+									field.setValue(nv);
+								}
+								//this.suspendCheckChange--;
 								// field.resumeEvents();
 							}
 						}
 					});
+			
+			
 		}
 	},
 

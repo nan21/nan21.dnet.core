@@ -15,7 +15,7 @@
 		<repository>
 			<id>Alfresco</id>
 			<name>Alfresco</name>
-			<url>https://maven.alfresco.com/nexus/content/repositories/activiti</url>
+			<url>http://maven.alfresco.com/nexus/content/repositories/activiti</url>
 		</repository>
 		<repository>
 			<id>Eclipselink</id>
