@@ -1,11 +1,13 @@
 Manifest-Version: 1.0
 Export-Package: net.nan21.dnet.core.security;version="1.0.0.RC1";uses:
- ="javax.servlet,javax.servlet.http,net.nan21.dnet.core.api.session,or
- g.springframework.dao,org.springframework.jdbc.core,org.springframewo
- rk.jdbc.core.support,org.springframework.security.access,org.springfr
- amework.security.core,org.springframework.security.core.userdetails,o
- rg.springframework.security.core.userdetails.jdbc,org.springframework
- .security.web,org.springframework.security.web.access"
+ ="javax.servlet,javax.servlet.http,net.nan21.dnet.core.api.security,n
+ et.nan21.dnet.core.api.session,org.springframework.beans.factory.anno
+ tation,org.springframework.context,org.springframework.dao,org.spring
+ framework.jdbc.core,org.springframework.jdbc.core.support,org.springf
+ ramework.security.access,org.springframework.security.core,org.spring
+ framework.security.core.userdetails,org.springframework.security.core
+ .userdetails.jdbc,org.springframework.security.web,org.springframewor
+ k.security.web.access"
 Bundle-Vendor: Nan21 
 Bundle-Version: 1.0.0.RC1
 Tool: Bundlor 1.0.0.RELEASE
@@ -13,13 +15,15 @@ Bundle-Name: DNet Core - security
 Bundle-ManifestVersion: 2
 Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.html
 Bundle-SymbolicName: nan21.dnet.core.security
-Import-Package: javax.servlet,javax.servlet.http,net.nan21.dnet.core.a
- pi.session,org.apache.commons.logging,org.springframework.context.sup
- port,org.springframework.dao,org.springframework.jdbc.core,org.spring
- framework.jdbc.core.support,org.springframework.security.access,org.s
- pringframework.security.core,org.springframework.security.core.author
- ity,org.springframework.security.core.context,org.springframework.sec
- urity.core.userdetails,org.springframework.security.core.userdetails.
- jdbc,org.springframework.security.web,org.springframework.security.we
- b.access,org.springframework.util
+Import-Package: javax.servlet,javax.servlet.http,javax.sql,net.nan21.d
+ net.core.api.security,net.nan21.dnet.core.api.session,org.apache.comm
+ ons.logging,org.springframework.beans.factory.annotation,org.springfr
+ amework.context,org.springframework.context.support,org.springframewo
+ rk.dao,org.springframework.jdbc.core,org.springframework.jdbc.core.su
+ pport,org.springframework.security.access,org.springframework.securit
+ y.core,org.springframework.security.core.authority,org.springframewor
+ k.security.core.context,org.springframework.security.core.userdetails
+ ,org.springframework.security.core.userdetails.jdbc,org.springframewo
+ rk.security.web,org.springframework.security.web.access,org.springfra
+ mework.util
 

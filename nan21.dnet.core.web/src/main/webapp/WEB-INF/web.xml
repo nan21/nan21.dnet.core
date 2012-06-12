@@ -108,7 +108,7 @@
 		<servlet-name>workflow</servlet-name>
 		<url-pattern>/workflow/*</url-pattern>
 	</servlet-mapping>
-	
+ 
 	<!-- ============== Others ================ -->
 	<welcome-file-list>
 		<welcome-file>index.jsp</welcome-file>

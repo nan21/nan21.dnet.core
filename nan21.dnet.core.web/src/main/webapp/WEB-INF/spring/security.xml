@@ -19,7 +19,7 @@
 	</security:http>
  
 	<security:authentication-manager  alias="authenticationManager" >
-		 <security:authentication-provider user-service-ref="defaultAuthenticationDbUserService" /> 		 	 	 
+		 <security:authentication-provider  user-service-ref="osgiAuthenticationForDbUser" /> 		 	 	 
 	</security:authentication-manager>
  	 
  	<bean name="accessDeniedHandler"
@@ -27,7 +27,7 @@
 	<bean name="defaultAuthenticationEntryPoint"
 		class="net.nan21.dnet.core.security.DefaultNotAuthenticatedEntryPoint" />
   
- 	<bean name="defaultAuthenticationDbUserService"
+ 	<!-- <bean name="defaultAuthenticationDbUserService"
 		class="net.nan21.dnet.core.security.DbUserService">
 		<property name="usersByUsernameQuery"
 			value="select u.code, u.name, u.password, u.active, 0 accountExpired, 0 credentialsExpired,0 accountLocked, u.clientid clientId, c.code clientCode, 
@@ -42,14 +42,8 @@
 				  from AD_USR_ROLE ur, AD_ROLE r, AD_USR u, AD_CLIENT c 
 				where ur.users_id = u.id and ur.roles_id = r.id and u.clientid = c.id and u.code = ? and c.code = ?" />
 		<property name="dataSource" ref="osgiDataSource" />
-	</bean>
+	</bean> -->
  
-  	<osgi:reference id="osgiDataSource" cardinality="0..1"
-		interface="javax.sql.DataSource" />
-	
-	
-	<bean class="net.nan21.dnet.core.security.ChangeDbPasswordService" scope="request">  
-		<property name="dataSource" ref="osgiDataSource"></property>
-		<property name="sql" value="update AD_USR set password = ? where code = ? and clientid = ?"></property>
-	</bean>	
+ 
+ 
 </beans>

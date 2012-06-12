@@ -9,14 +9,14 @@ Export-Package: net.nan21.dnet.core.api;version="1.0.0.RC1";uses:="org
  .dnet.core.api.exceptions;version="1.0.0.RC1",net.nan21.dnet.core.api
  .job;version="1.0.0.RC1",net.nan21.dnet.core.api.marshall;version="1.
  0.0.RC1";uses:="net.nan21.dnet.core.api.action",net.nan21.dnet.core.a
- pi.model;version="1.0.0.RC1",net.nan21.dnet.core.api.service;version=
- "1.0.0.RC1";uses:="javax.persistence,net.nan21.dnet.core.api,net.nan2
- 1.dnet.core.api.action,net.nan21.dnet.core.api.marshall,org.springfra
- mework.web.multipart",net.nan21.dnet.core.api.session;version="1.0.0.
- RC1",net.nan21.dnet.core.api.setup;version="1.0.0.RC1";uses:="net.nan
- 21.dnet.core.api,org.springframework.beans.factory.annotation,org.spr
- ingframework.context",net.nan21.dnet.core.api.ui.extjs;version="1.0.0
- .RC1"
+ pi.model;version="1.0.0.RC1",net.nan21.dnet.core.api.security;version
+ ="1.0.0.RC1",net.nan21.dnet.core.api.service;version="1.0.0.RC1";uses
+ :="javax.persistence,net.nan21.dnet.core.api,net.nan21.dnet.core.api.
+ action,net.nan21.dnet.core.api.marshall,org.springframework.web.multi
+ part",net.nan21.dnet.core.api.session;version="1.0.0.RC1",net.nan21.d
+ net.core.api.setup;version="1.0.0.RC1";uses:="net.nan21.dnet.core.api
+ ,org.springframework.beans.factory.annotation,org.springframework.con
+ text",net.nan21.dnet.core.api.ui.extjs;version="1.0.0.RC1"
 Bundle-Vendor: Nan21 
 Bundle-Version: 1.0.0.RC1
 Tool: Bundlor 1.0.0.RELEASE

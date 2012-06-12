@@ -13,6 +13,7 @@ Import-Package:
  net.nan21.dnet.core.api.action;version="[1.0.0.RC1,1.0.0.RC1]",
  net.nan21.dnet.core.api.ui.extjs;version="[1.0.0.RC1,1.0.0.RC1]",
  net.nan21.dnet.core.api.session;version="[1.0.0.RC1,1.0.0.RC1]",
+ net.nan21.dnet.core.api.security;version="[1.0.0.RC1,1.0.0.RC1]",
  net.nan21.dnet.core.api.service;version="[1.0.0.RC1,1.0.0.RC1]",
  net.nan21.dnet.core.api.marshall;version="[1.0.0.RC1,1.0.0.RC1]",
  net.nan21.dnet.core.security;version="[1.0.0.RC1,1.0.0.RC1]",

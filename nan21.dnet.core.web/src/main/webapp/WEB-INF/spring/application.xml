@@ -7,8 +7,7 @@
 			http://www.springframework.org/schema/beans	http://www.springframework.org/schema/beans/spring-beans.xsd
 			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
 			http://www.springframework.org/schema/osgi http://www.springframework.org/schema/osgi/spring-osgi.xsd
-			http://www.springframework.org/schema/osgi-compendium http://www.springframework.org/schema/osgi-compendium/spring-osgi-compendium.xsd">
-	 
+			http://www.springframework.org/schema/osgi-compendium http://www.springframework.org/schema/osgi-compendium/spring-osgi-compendium.xsd">	 
 	 
 	<context:property-placeholder  properties-ref="dnetProperties" />
 	
@@ -50,7 +49,16 @@
 	
 	<osgi:reference id="osgiDataSource" cardinality="0..1"
 		interface="javax.sql.DataSource" />
+	
+	<osgi:reference id="osgiAuthenticationForDbUser" cardinality="0..1"
+		interface="org.springframework.security.core.userdetails.UserDetailsService" />
 		
+	<osgi:reference id="osgiAuthorizationFactory" cardinality="0..1"
+		interface="net.nan21.dnet.core.api.security.IAuthorizationFactory" />
+		  
+	<osgi:reference id="osgiChangePassword" cardinality="0..1"
+		interface="net.nan21.dnet.core.api.session.IChangePasswordService" />
+ 
 	<osgi:list id="osgiEntityManagerFactory" cardinality="0..N"
 		interface="javax.persistence.EntityManagerFactory"></osgi:list>
 		

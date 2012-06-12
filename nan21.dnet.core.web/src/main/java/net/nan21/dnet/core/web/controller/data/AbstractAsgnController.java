@@ -16,17 +16,15 @@ import net.nan21.dnet.core.api.action.IActionResultFind;
 import net.nan21.dnet.core.api.action.IQueryBuilder;
 import net.nan21.dnet.core.api.marshall.IDsMarshaller;
 import net.nan21.dnet.core.api.service.IAsgnService;
-import net.nan21.dnet.core.api.session.IAuthorizeDsAction;
 import net.nan21.dnet.core.presenter.service.ServiceLocator;
 import net.nan21.dnet.core.web.result.ActionResultFind;
 
-public abstract class AbstractAsgnController<M, F, P> extends AbstractDataController {
+public abstract class AbstractAsgnController<M, F, P> extends
+		AbstractDataController {
 
 	protected Class<M> modelClass;
 	protected Class<F> filterClass;
 	protected Class<P> paramClass;
-
-	protected IAuthorizeDsAction authorizeActionService;
 
 	@Autowired
 	private ServiceLocator serviceLocator;
@@ -480,18 +478,10 @@ public abstract class AbstractAsgnController<M, F, P> extends AbstractDataContro
 		this.serviceLocator = serviceLocator;
 	}
 
-	public IAuthorizeDsAction getAuthorizeActionService() {
-		return authorizeActionService;
-	}
-
-	public void setAuthorizeActionService(
-			IAuthorizeDsAction authorizeActionService) {
-		this.authorizeActionService = authorizeActionService;
-	}
-
-	private void authorizeAction(String resourceName, String action)
+	protected void authorizeAction(String resourceName, String action)
 			throws Exception {
-		this.authorizeActionService.authorize(resourceName, action);
+		this.getAuthorizationFactory().getAsgnAuthorizationProvider()
+				.authorize(resourceName, action);
 	}
 
 }

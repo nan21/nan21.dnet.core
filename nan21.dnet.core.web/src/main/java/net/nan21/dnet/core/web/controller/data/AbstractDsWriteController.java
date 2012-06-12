@@ -16,11 +16,12 @@ import net.nan21.dnet.core.api.model.IModelWithId;
 import net.nan21.dnet.core.api.service.IDsService;
 import net.nan21.dnet.core.web.result.ActionResultSave;
 
-public class AbstractDsWriteController<M,F,P>
-	extends AbstractDsRpcController<M,F,P>{
+public class AbstractDsWriteController<M, F, P> extends
+		AbstractDsRpcController<M, F, P> {
 
 	/**
 	 * Default handler for insert action.
+	 * 
 	 * @param resourceName
 	 * @param dataformat
 	 * @param dataString
@@ -28,46 +29,48 @@ public class AbstractDsWriteController<M,F,P>
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(method=RequestMethod.POST , params="action=insert")
+	@RequestMapping(method = RequestMethod.POST, params = "action=insert")
 	@ResponseBody
 	public String insert(
-				@PathVariable String resourceName,
-				@PathVariable String dataFormat,
-				@RequestParam(value="data", required=false, defaultValue="[]") String dataString,
-				@RequestParam(value="params", required=false, defaultValue="{}") String paramString,
-				HttpServletResponse response
-	) throws Exception {		 
+			@PathVariable String resourceName,
+			@PathVariable String dataFormat,
+			@RequestParam(value = "data", required = false, defaultValue = "[]") String dataString,
+			@RequestParam(value = "params", required = false, defaultValue = "{}") String paramString,
+			HttpServletResponse response) throws Exception {
 		try {
 			this.prepareRequest();
-			
-			this.resourceName = resourceName;		
+
+			this.resourceName = resourceName;
 			this.dataFormat = dataFormat;
-			
-			authorizeActionService.authorize(resourceName.substring(0, resourceName.length()-2), "insert");	
-			
+
+			this.authorizeAction(resourceName.substring(0, resourceName
+					.length() - 2), "insert");
+
 			if (!dataString.startsWith("[")) {
 				dataString = "[" + dataString + "]";
 			}
-			
-			IDsService<M,F,P> service = this.findDsService(this.resourceName);		
-			IDsMarshaller<M,F,P> marshaller = service.createMarshaller(dataFormat);
-			
+
+			IDsService<M, F, P> service = this.findDsService(this.resourceName);
+			IDsMarshaller<M, F, P> marshaller = service
+					.createMarshaller(dataFormat);
+
 			List<M> list = marshaller.readListFromString(dataString);
-			P params = marshaller.readParamsFromString(paramString); 	
-			
+			P params = marshaller.readParamsFromString(paramString);
+
 			service.insert(list, params);
-			
-			IActionResultSave result = this.packResult(list, params); 
+
+			IActionResultSave result = this.packResult(list, params);
 			return marshaller.writeResultToString(result);
-		} catch(Exception e) {
-			 return this.handleException(e, response);
+		} catch (Exception e) {
+			return this.handleException(e, response);
 		} finally {
 			this.finishRequest();
 		}
 	}
-	
+
 	/**
 	 * Default handler for update action.
+	 * 
 	 * @param resourceName
 	 * @param dataformat
 	 * @param dataString
@@ -75,47 +78,48 @@ public class AbstractDsWriteController<M,F,P>
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(method=RequestMethod.POST , params="action=update")
-	@ResponseBody	
+	@RequestMapping(method = RequestMethod.POST, params = "action=update")
+	@ResponseBody
 	public String update(
-				@PathVariable String resourceName,
-				@PathVariable String dataFormat,
-				@RequestParam(value="data", required=false, defaultValue="[]") String dataString,
-				@RequestParam(value="params", required=false, defaultValue="{}") String paramString,	
-				HttpServletResponse response
-	) throws Exception {
-		
+			@PathVariable String resourceName,
+			@PathVariable String dataFormat,
+			@RequestParam(value = "data", required = false, defaultValue = "[]") String dataString,
+			@RequestParam(value = "params", required = false, defaultValue = "{}") String paramString,
+			HttpServletResponse response) throws Exception {
+
 		try {
 			this.prepareRequest();
-			this.resourceName = resourceName;		
+			this.resourceName = resourceName;
 			this.dataFormat = dataFormat;
-			
-			authorizeActionService.authorize(resourceName.substring(0, resourceName.length()-2), "update");	
-			
+
+			this.authorizeAction(resourceName.substring(0, resourceName
+					.length() - 2), "update");
+
 			if (!dataString.startsWith("[")) {
 				dataString = "[" + dataString + "]";
 			}
-			IDsService<M,F,P> service = this.findDsService(this.resourceName);
-			IDsMarshaller<M,F,P> marshaller = service.createMarshaller(dataFormat);
-			
+			IDsService<M, F, P> service = this.findDsService(this.resourceName);
+			IDsMarshaller<M, F, P> marshaller = service
+					.createMarshaller(dataFormat);
+
 			List<M> list = marshaller.readListFromString(dataString);
-			P params = marshaller.readParamsFromString(paramString); 	
-			
+			P params = marshaller.readParamsFromString(paramString);
+
 			service.update(list, params);
 
-			IActionResultSave result = this.packResult(list, params); 
+			IActionResultSave result = this.packResult(list, params);
 			return marshaller.writeResultToString(result);
-		} catch(Exception e) {
-			 this.handleException(e, response);
-			 return null;
+		} catch (Exception e) {
+			this.handleException(e, response);
+			return null;
 		} finally {
 			this.finishRequest();
 		}
 	}
-	
-	
+
 	/**
 	 * Default handler for delete action.
+	 * 
 	 * @param resourceName
 	 * @param dataformat
 	 * @param idsString
@@ -123,51 +127,52 @@ public class AbstractDsWriteController<M,F,P>
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(method=RequestMethod.POST , params="action=delete")
-	@ResponseBody	
+	@RequestMapping(method = RequestMethod.POST, params = "action=delete")
+	@ResponseBody
 	public String delete(
-				@PathVariable String resourceName,
-				@PathVariable String dataFormat,
-				@RequestParam(value="data", required=false, defaultValue="[]") String dataString,
-				@RequestParam(value="params", required=false, defaultValue="{}") String paramString,	
-				HttpServletResponse response
-	) throws Exception {
-		
+			@PathVariable String resourceName,
+			@PathVariable String dataFormat,
+			@RequestParam(value = "data", required = false, defaultValue = "[]") String dataString,
+			@RequestParam(value = "params", required = false, defaultValue = "{}") String paramString,
+			HttpServletResponse response) throws Exception {
+
 		try {
 			this.prepareRequest();
-			this.resourceName = resourceName;		
+			this.resourceName = resourceName;
 			this.dataFormat = dataFormat;
-			
-			authorizeActionService.authorize(resourceName.substring(0, resourceName.length()-2), "delete");	
-			
+
+			this.authorizeAction(resourceName.substring(0, resourceName
+					.length() - 2), "delete");
+
 			if (!dataString.startsWith("[")) {
 				dataString = "[" + dataString + "]";
 			}
-			IDsService<M,F,P> service = this.findDsService(this.resourceName);
-			IDsMarshaller<M,F,P> marshaller = service.createMarshaller(dataFormat);
-			
+			IDsService<M, F, P> service = this.findDsService(this.resourceName);
+			IDsMarshaller<M, F, P> marshaller = service
+					.createMarshaller(dataFormat);
+
 			List<M> list = marshaller.readListFromString(dataString);
-			P params = marshaller.readParamsFromString(paramString); 	
-			
+			//P params = marshaller.readParamsFromString(paramString);
+
 			List<Object> ids = new ArrayList<Object>();
-			for(M ds: list) {
-				ids.add( ((IModelWithId) ds ).getId());
+			for (M ds : list) {
+				ids.add(((IModelWithId) ds).getId());
 			}
 			service.deleteByIds(ids);
 
-			//IActionResultSave result = this.packResult(list, params); 
+			// IActionResultSave result = this.packResult(list, params);
 			return "{'success':true}"; // marshaller.writeResultToString(result);
-		} catch(Exception e) {
-			 this.handleException(e, response);
-			 return null;
+		} catch (Exception e) {
+			this.handleException(e, response);
+			return null;
 		} finally {
 			this.finishRequest();
 		}
 	}
-	
-	
+
 	/**
 	 * Default handler for delete action.
+	 * 
 	 * @param resourceName
 	 * @param dataformat
 	 * @param idsString
@@ -175,50 +180,51 @@ public class AbstractDsWriteController<M,F,P>
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(method=RequestMethod.POST , params="action=deleteById")
-	@ResponseBody	
+	@RequestMapping(method = RequestMethod.POST, params = "action=deleteById")
+	@ResponseBody
 	public String deleteById(
-				@PathVariable String resourceName,
-				@PathVariable String dataFormat,
-				@RequestParam(value="data", required=false, defaultValue="[]") String idsString,
-				@RequestParam(value="params", required=false, defaultValue="{}") String paramString,	
-				HttpServletResponse response
-	) throws Exception {
-		
+			@PathVariable String resourceName,
+			@PathVariable String dataFormat,
+			@RequestParam(value = "data", required = false, defaultValue = "[]") String idsString,
+			@RequestParam(value = "params", required = false, defaultValue = "{}") String paramString,
+			HttpServletResponse response) throws Exception {
+
 		try {
 			this.prepareRequest();
-			this.resourceName = resourceName;		
+			this.resourceName = resourceName;
 			this.dataFormat = dataFormat;
-			
-			authorizeActionService.authorize(resourceName.substring(0, resourceName.length()-2), "delete");	
-			
+
+			this.authorizeAction(resourceName.substring(0, resourceName
+					.length() - 2), "delete");
+
 			if (!idsString.startsWith("[")) {
 				idsString = "[" + idsString + "]";
 			}
-			IDsService<M,F,P> service = this.findDsService(this.resourceName);
-			IDsMarshaller<M,F,P> marshaller = service.createMarshaller(dataFormat);
-			
-			List<Object> list = marshaller.readListFromString(idsString, Object.class );
-			P params = marshaller.readParamsFromString(paramString); 	
-			
+			IDsService<M, F, P> service = this.findDsService(this.resourceName);
+			IDsMarshaller<M, F, P> marshaller = service
+					.createMarshaller(dataFormat);
+
+			List<Object> list = marshaller.readListFromString(idsString,
+					Object.class);
+			//P params = marshaller.readParamsFromString(paramString);
+
 			service.deleteByIds(list);
 
-			//IActionResultSave result = this.packResult(list, params); 
+			// IActionResultSave result = this.packResult(list, params);
 			return "{'success':true}"; // marshaller.writeResultToString(result);
-		} catch(Exception e) {
-			 this.handleException(e, response);
-			 return null;
+		} catch (Exception e) {
+			this.handleException(e, response);
+			return null;
 		} finally {
 			this.finishRequest();
 		}
 	}
-	
-	public IActionResultSave packResult(List<M> data, P params ) {
+
+	public IActionResultSave packResult(List<M> data, P params) {
 		IActionResultSave pack = new ActionResultSave();
 		pack.setData(data);
-		//pack.setParams(params);
+		// pack.setParams(params);
 		return pack;
 	}
-	
-	 
+
 }

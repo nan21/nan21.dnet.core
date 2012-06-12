@@ -62,7 +62,7 @@ public class AbstractDsReadController<M,F,P> extends
 			this.resourceName = resourceName;
 			this.dataFormat = dataFormat;
 
-			authorizeActionService.authorize(resourceName.substring(0,
+			this.authorizeAction( resourceName.substring(0,
 					resourceName.length() - 2), "find");
 
 			IDsService<M,F,P> service = this.findDsService(this.resourceName);
@@ -136,7 +136,7 @@ public class AbstractDsReadController<M,F,P> extends
 			this.resourceName = resourceName;
 			this.dataFormat = dataFormat;
  
-			authorizeActionService.authorize(resourceName.substring(0,
+			this.authorizeAction(resourceName.substring(0,
 					resourceName.length() - 2), "export");
 
 			IDsService<M,F,P> service = this.findDsService(this.resourceName);

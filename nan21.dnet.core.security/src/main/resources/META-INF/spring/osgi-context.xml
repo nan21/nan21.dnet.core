@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:osgi="http://www.springframework.org/schema/osgi"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/osgi 
+	http://www.springframework.org/schema/osgi/spring-osgi.xsd">
+	
+	<osgi:reference id="osgiDataSource" cardinality="0..1"
+		interface="javax.sql.DataSource" />
+	
+	<osgi:service id="osgiAuthenticationForDbUser" ref="authenticationForDbUser"
+		interface="org.springframework.security.core.userdetails.UserDetailsService" />
+		
+	<osgi:service id="osgiChangePassword" ref="changePassword"
+		interface="net.nan21.dnet.core.api.session.IChangePasswordService" />
+			
+	<osgi:service id="osgiAuthorizationFactory" ref="authorizationFactory"
+		interface="net.nan21.dnet.core.api.security.IAuthorizationFactory" />
+	
+	
+</beans>
