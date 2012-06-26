@@ -18,6 +18,11 @@
 			<url>https://maven.alfresco.com/nexus/content/repositories/activiti</url>
 		</repository>
 		<repository>
+			<id>Alfresco2</id>
+			<name>Alfresco2</name>
+			<url>https://artifacts.alfresco.com/nexus/content/groups/public</url>
+		</repository>
+		<repository>
 			<id>Eclipselink</id>
 			<name>Eclipselink</name>
 			<url>http://www.eclipse.org/downloads/download.php?r=1&amp;nf=1&amp;file=/rt/eclipselink/maven.repo</url>
