@@ -42,7 +42,23 @@ Ext.define("dnet.core.dc.AbstractDNetDcForm", {
 	},
 	
  
+	_setFieldsEnabledState_: function(names, model) {
+		if(!model) return;
+		for(var i=0,l=names.length; i<l; i++) {
+			var n = names[i];
+			this._getElement_(n).setDisabled( !this._canSetEnabled_(n, model ) );			 
+		}
+	},
 
+	_setFieldsVisibleState_: function(names, model) {
+		if(!model) return;
+		var fields = this.getForm().getFields();
+		for(var i=0,l=names.length; i<l; i++) {
+			var n = names[i];
+			this._getElement_(n).setVisible( this._canSetVisible_(n, model ) );	
+		}
+	},
+	
 	_canSetEnabled_ : function(name, model) {
 		var fn = this._elems_.get(name)._enableFn_;
 		if (fn) {

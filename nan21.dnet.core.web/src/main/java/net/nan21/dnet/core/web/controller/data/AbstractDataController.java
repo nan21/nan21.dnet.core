@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
@@ -139,17 +140,21 @@ public class AbstractDataController {
 			return this.handleException((NotAuthorizedRequestException) e,
 					response);
 		} else {
-			logger
-					.error(
-							"Exception occured during transactional request execution: ",
-							e.getCause());
-			e.printStackTrace();
-			response.setStatus(500);
-			if (e.getCause() != null) {
-				response.getOutputStream().print(e.getCause().getMessage());
-			} else {
-				response.getOutputStream().print(e.getMessage());
+			String msg = null;
+			 
+			Exception exc = e;
+			if (e instanceof InvocationTargetException) {
+				exc = (Exception) ((InvocationTargetException) e)
+						.getTargetException();
 			}
+			if (exc.getCause() != null ) {
+				exc = (Exception) exc.getCause();
+			}
+			 
+			exc.printStackTrace();
+			response.setStatus(500);
+			response.getOutputStream().print(exc.getMessage());
+
 			return null; // e.getLocalizedMessage();
 		}
 

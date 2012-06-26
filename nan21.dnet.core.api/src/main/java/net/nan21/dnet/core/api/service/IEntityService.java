@@ -24,7 +24,7 @@ import net.nan21.dnet.core.api.ISystemConfig;
  * ones. Specific methods should be declared in the entity specific interface
  * which should extend this.
  * 
- *  
+ * 
  * 
  * @author amathe
  * 
@@ -85,14 +85,18 @@ public interface IEntityService<E> {
 	public E findByUk(String namedQueryName, Map<String, Object> params)
 			throws Exception;
 
-	
-	public <T> List<T> findEntitiesByAttributes(Class<T> entityClass, Map<String, Object> params) throws Exception;
-	public <T> T findEntityByAttributes(Class<T> entityClass, Map<String, Object> params) throws Exception;
-	
-	public List<E> findEntitiesByAttributes( Map<String, Object> params) throws Exception ;
-	
-	public E findEntityByAttributes( Map<String, Object> params) throws Exception;
-	
+	public <T> List<T> findEntitiesByAttributes(Class<T> entityClass,
+			Map<String, Object> params) throws Exception;
+
+	public <T> T findEntityByAttributes(Class<T> entityClass,
+			Map<String, Object> params) throws Exception;
+
+	public List<E> findEntitiesByAttributes(Map<String, Object> params)
+			throws Exception;
+
+	public E findEntityByAttributes(Map<String, Object> params)
+			throws Exception;
+
 	public void deleteById(Object id) throws Exception;
 
 	public void deleteByIds(List<Object> ids) throws Exception;
@@ -159,5 +163,15 @@ public interface IEntityService<E> {
 	 * @param systemConfig
 	 */
 	public void setSystemConfig(ISystemConfig systemConfig);
+
+	public void doStartWfProcessInstanceByKey(String processDefinitionKey,
+			String businessKey, Map<String, Object> variables) throws Exception;
+
+	public void doStartWfProcessInstanceById(String processDefinitionId,
+			String businessKey, Map<String, Object> variables) throws Exception;
+
+	public void doStartWfProcessInstanceByMessage(String messageName,
+			String businessKey, Map<String, Object> processVariables)
+			throws Exception;
 
 }

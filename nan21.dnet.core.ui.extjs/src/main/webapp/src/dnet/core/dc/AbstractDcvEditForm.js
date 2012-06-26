@@ -327,24 +327,18 @@ Ext.define("dnet.core.dc.AbstractDcvEditForm", {
 						if (item.noEdit === true || item.noInsert === true) {
 							item.disable();
 						} else {
-							if (this._canSetEnabled_(item.name, record)) {
-								item.enable();
-							} else {
-								item.disable();
-							}
+							item.setDisabled(!this._canSetEnabled_(item.name, record));							 
 						}
+						item.setVisible( this._canSetVisible_(item.name, record ) );	
 					}, this);
 		} else {
 			this.getForm().getFields().each(function(item, index, length) {
 						if (item.noEdit === true || item.noUpdate === true) {
 							item.disable();
 						} else {
-							if (this._canSetEnabled_(item.name, record)) {
-								item.enable();
-							} else {
-								item.disable();
-							}
+							item.setDisabled(!this._canSetEnabled_(item.name, record));
 						}
+						item.setVisible( this._canSetVisible_(item.name, record ) );
 					}, this);
 		}
 

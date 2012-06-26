@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>net.nan21.dnet</groupId>
 		<artifactId>nan21.dnet.core.parent</artifactId>
-		<version>1.0.0.RC1</version>
+		<version>1.0.0.RC2</version>
 		<relativePath>../nan21.dnet.core.parent</relativePath>
 	</parent>
 	<groupId>net.nan21.dnet</groupId>
@@ -21,19 +21,12 @@
 		<dependency>
 			<groupId>net.nan21.dnet</groupId>
 			<artifactId>nan21.dnet.core.api</artifactId>
-			<version>1.0.0.RC1</version>
+			<version>1.0.0.RC2</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>	
 		 
 		<!-- External libraries -->
-		<dependency>
-			<groupId>net.nan21.osgi</groupId>
-			<artifactId>net.nan21.osgi.activiti-spring</artifactId>
-			<version>5.6</version>
-			<type>jar</type>
-			<scope>provided</scope>
-		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>org.springframework.beans</artifactId>
@@ -105,18 +98,18 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.activiti</groupId>
-			<artifactId>activiti-engine</artifactId>
-			<version>5.6</version>
-			<type>jar</type>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
 			<version>1.6.2</version>
 			<type>jar</type>
 			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.activiti</groupId>
+			<artifactId>activiti-engine</artifactId>
+			<version>5.9</version>
+			<type>jar</type>
+			<scope>provided</scope>
 		</dependency>
 		 
 		<dependency>

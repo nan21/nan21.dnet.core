@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:osgi-compendium="http://www.springframework.org/schema/osgi-compendium"
+	xsi:schemaLocation="
+			http://www.springframework.org/schema/beans
+				http://www.springframework.org/schema/beans/spring-beans.xsd
+			http://www.springframework.org/schema/context 
+				http://www.springframework.org/schema/context/spring-context.xsd
+			http://www.springframework.org/schema/osgi-compendium
+    			http://www.springframework.org/schema/osgi-compendium/spring-osgi-compendium.xsd">
+	<context:property-placeholder
+		properties-ref="net.nan21.dnet.properties" />
+
+	<!-- Default properties -->
+	<osgi-compendium:cm-properties id="net.nan21.dnet.properties"
+		persistent-id="net.nan21.dnet" />
+
+	<!-- Data-source -->
+	<bean id="emailFactory" class="net.nan21.dnet.core.email.EmailFactory">
+		<property name="mailServerProperties">
+			<props>
+				<prop key="mail.smtp.host">${mail.smtp.host}</prop>
+				<prop key="mail.smtp.port">${mail.smtp.port}</prop>
+				<prop key="mail.smtp.user">${mail.smtp.user}</prop>
+				<prop key="mail.smtp.password">${mail.smtp.password}</prop>
+				<prop key="mail.smtp.from">${mail.smtp.from}</prop>
+			</props>
+		</property>
+	</bean>
+</beans>

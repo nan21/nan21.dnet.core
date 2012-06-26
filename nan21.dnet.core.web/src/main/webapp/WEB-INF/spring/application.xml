@@ -20,7 +20,7 @@
 	 
    	<bean id="productInfo" class="net.nan21.dnet.core.web.settings.ProductInfo" scope="singleton">
 		<property name="name" value="DNet eBusiness Suite" />
-		<property name="version" value="1.0.0.RC1" />
+		<property name="version" value="1.0.0.RC2" />
 	</bean>
 	
 	<bean id="application_uiExtjsSettings" class="net.nan21.dnet.core.web.settings.UiExtjsSettings"
@@ -89,9 +89,9 @@
 	<osgi:list id="osgiStartupParticipants" cardinality="0..N"
 		interface="net.nan21.dnet.core.api.setup.IStartupParticipant"/>
 		
-	<osgi:reference id="osgiActivitiProcessEngine" cardinality="0..1"
-			interface="org.activiti.engine.ProcessEngine" /> 
-					
+ 	<osgi:reference id="osgiActivitiProcessEngineHolder" cardinality="0..1"
+			interface="net.nan21.dnet.core.api.wf.IActivitiProcessEngineHolder" />
+	
 	<!-- Configures global application security --> 
 	<import resource="security.xml" />
 	 

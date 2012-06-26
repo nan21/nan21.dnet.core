@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: DNet Core - www
 Bundle-SymbolicName: nan21.dnet.core.www
 Bundle-Vendor: Nan21 
-Bundle-Version: 1.0.0.RC1
+Bundle-Version: 1.0.0.RC2
 Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.html
 Import-Package: 
  javax.servlet.jsp.jstl.core;version="[1.2,2.0)",
@@ -36,6 +36,5 @@ Import-Package:
  org.springframework.web.servlet.handler;version="[3.0,3.1)",
  org.springframework.web.servlet.mvc;version="[3.0,3.1)",
  org.springframework.web.servlet.view;version="[3.0,3.1)"
-Import-Bundle:  
- org.eclipse.virgo.snaps.api;version="[3.0,4.0)"
+Import-Bundle:  org.eclipse.virgo.snaps.api;version="[3.0,4.0)"
 

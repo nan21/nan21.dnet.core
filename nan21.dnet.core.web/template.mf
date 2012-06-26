@@ -3,28 +3,20 @@ Bundle-ManifestVersion: 2
 Bundle-Name: DNet Core - web
 Bundle-SymbolicName: nan21.dnet.core.web
 Bundle-Vendor: Nan21 
-Bundle-Version: 1.0.0.RC1
+Bundle-Version: 1.0.0.RC2
 Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.html
 Bundle-ClassPath: WEB-INF/classes
 Import-Template: 
  org.eclipse.persistence.jpa.*;version="[2.1,2.5)"
 Import-Package: 
- net.nan21.dnet.core.api;version="[1.0.0.RC1,1.0.0.RC1]",
- net.nan21.dnet.core.api.action;version="[1.0.0.RC1,1.0.0.RC1]",
- net.nan21.dnet.core.api.ui.extjs;version="[1.0.0.RC1,1.0.0.RC1]",
- net.nan21.dnet.core.api.session;version="[1.0.0.RC1,1.0.0.RC1]",
- net.nan21.dnet.core.api.security;version="[1.0.0.RC1,1.0.0.RC1]",
- net.nan21.dnet.core.api.service;version="[1.0.0.RC1,1.0.0.RC1]",
- net.nan21.dnet.core.api.marshall;version="[1.0.0.RC1,1.0.0.RC1]",
- net.nan21.dnet.core.security;version="[1.0.0.RC1,1.0.0.RC1]",
- org.activiti.engine;version="[5.6,6.0)",
- org.activiti.engine.impl;version="[5.6,6.0)",
- org.activiti.engine.impl.pvm;version="[5.6,6.0)",
- org.activiti.engine.impl.util;version="[5.6,6.0)",
- org.activiti.engine.impl.util.json;version="[5.6,6.0)",
- org.activiti.engine.repository;version="[5.6,6.0)",
- org.activiti.engine.runtime;version="[5.6,6.0)",
- org.activiti.engine.impl.bpmn.diagram;version="[5.6,6.0)",
+ net.nan21.dnet.core.api;version="[1.0.0.RC2,1.0.0.RC2]",
+ net.nan21.dnet.core.api.action;version="[1.0.0.RC2,1.0.0.RC2]",
+ net.nan21.dnet.core.api.ui.extjs;version="[1.0.0.RC2,1.0.0.RC2]",
+ net.nan21.dnet.core.api.session;version="[1.0.0.RC2,1.0.0.RC2]",
+ net.nan21.dnet.core.api.security;version="[1.0.0.RC2,1.0.0.RC2]",
+ net.nan21.dnet.core.api.service;version="[1.0.0.RC2,1.0.0.RC2]",
+ net.nan21.dnet.core.api.marshall;version="[1.0.0.RC2,1.0.0.RC2]",
+ net.nan21.dnet.core.security;version="[1.0.0.RC2,1.0.0.RC2]",
  org.springframework.security.config;version="[3.0,3.1)",
  org.springframework.security.core;version="[3.0,3.1)",
  org.springframework.security.web;version="[3.0,3.1)",
@@ -74,5 +66,6 @@ Import-Package:
  javax.servlet.jsp.jstl.core;version="[1.2,2.0)",
  javax.persistence;version="[2.0,2.1)",
  javax.persistence.criteria;version="[2.0,2.1)"
+Import-Bundle:  activiti-engine;version="[5.9,5.9]", activiti-spring
 Export-Package: net.nan21.dnet.core.web,net.nan21.dnet.core.web.controller,net.nan21.dnet.core.web.controller.data,net.nan21.dnet.core.web.controller.workflow,net.nan21.dnet.core.web.controller.upload,net.nan21.dnet.core.web.controller.session,net.nan21.dnet.core.web.controller.ui,net.nan21.dnet.core.web.result,net.nan21.dnet.core.web.settings
 

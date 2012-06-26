@@ -14,6 +14,9 @@ import net.nan21.dnet.core.api.session.Session;
 import net.nan21.dnet.core.api.session.User;
 import net.nan21.dnet.core.security.SessionUser;
 
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -72,14 +75,21 @@ public class FileUploadController {
 	protected String handleException(Exception e, HttpServletResponse response)
 			throws IOException {
 
-		String msg = "";
-
 		response.setStatus(500);
-		return this.buildErrorMessage(e.getLocalizedMessage());
+		return this.buildErrorMessage(e.getMessage());
 	}
 
 	private String buildErrorMessage(String msg) {
-		return "{ \"success\":false, \"msg\":\"" + msg + "\"}";
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			return "{ \"success\":false, \"msg\":"
+					+ mapper.writeValueAsString(msg) + "}";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "{ \"success\":false, \"msg\":\"There was an error while trying to serialize the business logic exception. Check the application logs for more details. \"}";
+
+		}
+
 	}
 
 	public WebApplicationContext getWebappContext() {

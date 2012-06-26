@@ -72,7 +72,13 @@
 	"text": "WorkflowFormWithHtmlWindow.js",
 	"path": "src/dnet/core/base/"
 },{
-	"text": "WorkflowFormWithExtjsWindow.js",
+	"text": "WfAbstractFormWindowExtjs.js",
+	"path": "src/dnet/core/base/"
+},{
+	"text": "WfStartFormWindowExtjs.js",
+	"path": "src/dnet/core/base/"
+},{
+	"text": "WfTaskFormWindowExtjs.js",
 	"path": "src/dnet/core/base/"
 },{
 	"text": "WorkflowFormFactory.js",

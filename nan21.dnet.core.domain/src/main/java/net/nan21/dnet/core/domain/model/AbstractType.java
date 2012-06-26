@@ -20,7 +20,7 @@ import org.eclipse.persistence.descriptors.DescriptorEvent;
 import org.hibernate.validator.constraints.NotBlank;
 
 @MappedSuperclass
-public abstract class AbstractType extends AbstractEntityWithClientId implements Serializable, IModelWithId,
+public abstract class AbstractType extends AbstractEntityBase implements Serializable, IModelWithId,
 		IModelWithClientId {
 
 	private static final long serialVersionUID = -1L;

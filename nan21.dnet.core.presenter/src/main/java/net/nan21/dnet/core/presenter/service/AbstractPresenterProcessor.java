@@ -12,6 +12,7 @@ import org.springframework.context.ApplicationContext;
 import net.nan21.dnet.core.api.ISystemConfig;
 import net.nan21.dnet.core.api.service.IDsService;
 import net.nan21.dnet.core.api.service.IEntityService;
+import net.nan21.dnet.core.api.wf.IActivitiProcessEngineHolder;
 
 public abstract class AbstractPresenterProcessor {
 
@@ -20,22 +21,27 @@ public abstract class AbstractPresenterProcessor {
 
 	@Autowired
 	private ISystemConfig systemConfig;
-	
+
 	@Autowired
 	private ServiceLocator serviceLocator;
-	
+
+	private ProcessEngine workflowEngine;
+
 	/**
 	 * Lookup a data-source service.
+	 * 
 	 * @param dsName
 	 * @return
 	 * @throws Exception
 	 */
-	public <M,F,P> IDsService<M,F,P> findDsService(String dsName) throws Exception {
+	public <M, F, P> IDsService<M, F, P> findDsService(String dsName)
+			throws Exception {
 		return this.getServiceLocator().findDsService(dsName);
 	}
 
 	/**
 	 * Lookup an entity service.
+	 * 
 	 * @param <E>
 	 * @param entityClass
 	 * @return
@@ -48,49 +54,48 @@ public abstract class AbstractPresenterProcessor {
 
 	/**
 	 * Prepare a data-source delegate. Inject all required dependencies marked
-	 * with <code>@Autowired</code> for which there is no attempt to auto-load 
+	 * with <code>@Autowired</code> for which there is no attempt to auto-load
 	 * on-demand from the spring-context.
 	 */
-	protected <M,F,P> void prepareDelegate(AbstractDsDelegate delegate) {
+	protected <M, F, P> void prepareDelegate(AbstractDsDelegate delegate) {
 		delegate.setAppContext(this.appContext);
 		// delegate.setEntityServiceFactories(this.getEntityServiceFactories());
 		// delegate.setDsServiceFactories(this.getDsServiceFactories());
 		// delegate.setSystemConfig(this.getSystemConfig());
 		// delegate.setServiceLocator(this.getServiceLocator());
 	}
-	
-	public ProcessEngine getWorkflowEngine() {
-		// if (this.workflowEngine == null ) {
-		return (ProcessEngine) this.getAppContext().getBean(
-				"osgiActivitiProcessEngine");
-		// }
-		// return this.workflowEngine ;
+
+	public ProcessEngine getWorkflowEngine() throws Exception {
+		if (this.workflowEngine == null) {
+			this.workflowEngine = (ProcessEngine) this.getAppContext().getBean(
+					IActivitiProcessEngineHolder.class).getProcessEngine();
+		}
+		return this.workflowEngine;
 	}
 
-	public RuntimeService getWorkflowRuntimeService() {
+	public RuntimeService getWorkflowRuntimeService() throws Exception {
 		return this.getWorkflowEngine().getRuntimeService();
 	}
 
-	public TaskService getWorkflowTaskService() {
+	public TaskService getWorkflowTaskService() throws Exception {
 		return this.getWorkflowEngine().getTaskService();
 	}
 
-	public RepositoryService getWorkflowRepositoryService() {
+	public RepositoryService getWorkflowRepositoryService() throws Exception {
 		return this.getWorkflowEngine().getRepositoryService();
 	}
 
-	public HistoryService getWorkflowHistoryService() {
+	public HistoryService getWorkflowHistoryService() throws Exception {
 		return this.getWorkflowEngine().getHistoryService();
 	}
 
-	public FormService getWorkflowFormService() {
+	public FormService getWorkflowFormService() throws Exception {
 		return this.getWorkflowEngine().getFormService();
 	}
 
-	
-
 	/**
 	 * Get application context.
+	 * 
 	 * @return
 	 */
 	public ApplicationContext getAppContext() {
@@ -99,6 +104,7 @@ public abstract class AbstractPresenterProcessor {
 
 	/**
 	 * Set application context.
+	 * 
 	 * @param appContext
 	 */
 	public void setAppContext(ApplicationContext appContext) {
@@ -108,6 +114,7 @@ public abstract class AbstractPresenterProcessor {
 	/**
 	 * Get system configuration object. If it is null attempts to retrieve it
 	 * from Spring context.
+	 * 
 	 * @return
 	 */
 	public ISystemConfig getSystemConfig() {
@@ -119,19 +126,20 @@ public abstract class AbstractPresenterProcessor {
 
 	/**
 	 * Set system configuration object
+	 * 
 	 * @param systemConfig
 	 */
 	public void setSystemConfig(ISystemConfig systemConfig) {
 		this.systemConfig = systemConfig;
 	}
 
-	
 	/**
-	 * Get presenter service locator. If it is null attempts to retrieve it
-	 * from Spring context.
+	 * Get presenter service locator. If it is null attempts to retrieve it from
+	 * Spring context.
+	 * 
 	 * @return
 	 */
-	public ServiceLocator getServiceLocator()  {
+	public ServiceLocator getServiceLocator() {
 		if (this.serviceLocator == null) {
 			this.serviceLocator = this.appContext.getBean(ServiceLocator.class);
 		}
@@ -140,10 +148,11 @@ public abstract class AbstractPresenterProcessor {
 
 	/**
 	 * Set presenter service locator.
+	 * 
 	 * @param serviceLocator
 	 */
 	public void setServiceLocator(ServiceLocator serviceLocator) {
 		this.serviceLocator = serviceLocator;
 	}
-	
+
 }

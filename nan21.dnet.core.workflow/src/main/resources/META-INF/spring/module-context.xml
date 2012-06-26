@@ -1,39 +1,74 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:util="http://www.springframework.org/schema/util" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:osgi-compendium="http://www.springframework.org/schema/osgi-compendium"
 	xsi:schemaLocation="
 			http://www.springframework.org/schema/beans
 				http://www.springframework.org/schema/beans/spring-beans.xsd
+			http://www.springframework.org/schema/util 
+				http://www.springframework.org/schema/util/spring-util.xsd	
 			http://www.springframework.org/schema/context 
 				http://www.springframework.org/schema/context/spring-context.xsd
+			http://www.springframework.org/schema/aop 
+       			http://www.springframework.org/schema/aop/spring-aop.xsd	
 			http://www.springframework.org/schema/osgi-compendium
-    			http://www.springframework.org/schema/osgi-compendium/spring-osgi-compendium.xsd">
+    			http://www.springframework.org/schema/osgi-compendium/spring-osgi-compendium.xsd
+    		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+	<context:annotation-config />
+	<context:property-placeholder
+		properties-ref="net.nan21.dnet.properties" />
+
+	<!-- Default properties -->
+	<osgi-compendium:cm-properties id="net.nan21.dnet.properties"
+		persistent-id="net.nan21.dnet" />
 		
-		<bean id="processEngineConfiguration" class="org.activiti.spring.SpringProcessEngineConfiguration">
+	<bean id="serviceLocator" class="net.nan21.dnet.core.workflow.ServiceLocator">
+		<property name="entityServiceFactories" ref="osgiEntityServiceFactories" />
+		<property name="dsServiceFactories" ref="osgiDsServiceFactories" />
+		<property name="systemConfig" ref="systemConfig" />
+	</bean>
+	<!--
+		<bean id="wfDataSource"
+		class="org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy">
+		<property name="targetDataSource" ref="osgiDataSource" /> <property
+		name="reobtainTransactionalConnections" value="true" /> </bean>
+	-->
+	<bean id="processEngineConfiguration"
+		class="net.nan21.dnet.core.workflow.DNetProcessEngineConfiguration">
 		<property name="dataSource" ref="osgiDataSource" />
 		<property name="transactionManager">
 			<bean id="transactionManager"
 				class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 				<property name="dataSource" ref="osgiDataSource" />
+				<property name="nestedTransactionAllowed" value="true" />
 			</bean>
-		</property> 
-		<property name="databaseSchemaUpdate" value="true" />
+		</property>
+		<property name="databaseSchemaUpdate" value="false" />
 		<property name="jobExecutorActivate" value="false" />
-		   
-		<!-- 	<property name="deploymentResources"
-			value="classpath*:/org/activiti/spring/test/autodeployment/autodeploy.*.bpmn20.xml"
-		 />	 -->	 
+		<property name="preParseListeners">
+			<list>
+				<bean
+					class="net.nan21.dnet.core.workflow.activiti_ext.DNetBpmnParseListener" />
+			</list>
+		</property>
 	</bean>
 	
-	<bean id="processEngineConfigurationPostProcessor" 
+<!-- 	<bean id="processEngineConfigurationPostProcessor"
 		class="net.nan21.dnet.core.workflow.ProcessEngineConfigurationPostProcessor">
-		<constructor-arg name="processEngineConfiguration" ref="processEngineConfiguration" />
+		<constructor-arg name="processEngineConfiguration"
+			ref="processEngineConfiguration" />
 		<constructor-arg name="processEngine" ref="activitiProcessEngine" />
-	</bean>
-	 
-  	<bean id="activitiProcessEngine" class="org.activiti.spring.ProcessEngineFactoryBean">
+	</bean> -->
+	
+	
+	<bean id="activitiProcessEngineHolder" class="net.nan21.dnet.core.workflow.ActivitiProcessEngineHolder">
 		<property name="processEngineConfiguration" ref="processEngineConfiguration" />
-	</bean>  
-  
+	</bean>
+	
+	<!-- <bean id="activitiProcessEngine" class="org.activiti.spring.ProcessEngineFactoryBean">
+		<property name="processEngineConfiguration" ref="processEngineConfiguration" />
+	</bean> -->
+	
 </beans>

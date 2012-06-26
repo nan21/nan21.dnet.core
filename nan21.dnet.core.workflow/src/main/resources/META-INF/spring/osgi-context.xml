@@ -8,10 +8,22 @@
 	http://www.springframework.org/schema/osgi 
 		http://www.springframework.org/schema/osgi/spring-osgi.xsd"	>
   
+  	<osgi:reference id="systemConfig" cardinality="1..1"
+		interface="net.nan21.dnet.core.api.ISystemConfig" />
+  
+	<osgi:list id="osgiDsServiceFactories" cardinality="0..N"
+		interface="net.nan21.dnet.core.api.service.IDsServiceFactory" />
+	 
+	<osgi:list id="osgiEntityServiceFactories" cardinality="0..N"
+		interface="net.nan21.dnet.core.api.service.IEntityServiceFactory" />
+		 
  	<osgi:reference id="osgiDataSource" cardinality="1..1"
 		interface="javax.sql.DataSource"  />
 	
-	<osgi:service ref="activitiProcessEngine"
-			interface="org.activiti.engine.ProcessEngine" /> 
+	<osgi:reference id="osgiEmailFactory" cardinality="0..1"
+		interface="net.nan21.dnet.core.api.email.IEmailFactory" />
+		
+	<osgi:service ref="activitiProcessEngineHolder"
+			interface="net.nan21.dnet.core.api.wf.IActivitiProcessEngineHolder" /> 
   
 </beans> 

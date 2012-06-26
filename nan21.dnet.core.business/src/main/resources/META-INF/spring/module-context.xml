@@ -10,5 +10,4 @@
 			http://www.springframework.org/schema/osgi-compendium
     			http://www.springframework.org/schema/osgi-compendium/spring-osgi-compendium.xsd">
 	
-
 </beans>

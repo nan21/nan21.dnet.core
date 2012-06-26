@@ -112,7 +112,9 @@ Dnet = {
    	,wfProcessDefinitionAPI: function(processDefinitionId) {
    		return {
    			 form : this.wfUrl + '/process-definition/'+processDefinitionId+'/form'
-   			,diagram : this.wfUrl + '/process-definition/'+processDefinitionId+'/diagram'   			 
+   			,diagram : this.wfUrl + '/process-definition/'+processDefinitionId+'/diagram'
+   			,xml : this.wfUrl + '/process-definition/'+processDefinitionId+'/xml'
+   			,properties : this.wfUrl + '/process-definition/'+processDefinitionId+'/properties'  
    		}
    	}
 	,wfProcessInstanceAPI: function(processInstanceId) {
@@ -124,7 +126,8 @@ Dnet = {
 	,wfTaskAPI: function(taskId) {
    		return {
    			form : this.wfUrl + '/task/'+taskId+'/form'   
-   			,complete : this.wfUrl + '/task/'+taskId+'/complete'   
+   			,complete : this.wfUrl + '/task/'+taskId+'/complete'
+   			,properties : this.wfUrl + '/task/'+taskId+'/properties'   
    		}
    	}
 	,wfDeploymentAPI: function(deploymentId) {
@@ -261,6 +264,28 @@ Dnet = {
 			}]
 		})
 	}
+	
+	
+	, doWithGetResult: function(url, params, fn, scope ) {
+		Ext.Ajax
+				.request( {
+					url : url,
+					method : "GET",
+					params : params,
+					success : function(response, options) {
+						var r = Ext.decode( response.responseText );
+						fn.call(scope || window, r, response,  options);
+					},
+					failure : function(response, options) {
+						try {
+							Ext.Msg.hide();
+						}catch(e)  {							
+						}
+						dnet.core.dc.AbstractDc.prototype.showAjaxErrors(response, options)
+					},
+					scope : scope 					 
+				});
+	} 
 };
 
 

@@ -42,7 +42,10 @@
     <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/base/FrameNavigator.js"></script>
     <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/base/FileUploadWindow.js"></script>
     <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/base/WorkflowFormWithHtmlWindow.js"></script>
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/base/WorkflowFormWithExtjsWindow.js"></script>
+    
+    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/base/WfAbstractFormWindowExtjs.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/base/WfStartFormWindowExtjs.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/base/WfTaskFormWindowExtjs.js"></script>      
     <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/base/WorkflowFormFactory.js"></script>
      
  	<script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/ds/AbstractDs.js"></script>

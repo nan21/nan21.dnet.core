@@ -1,18 +1,18 @@
 Manifest-Version: 1.0
-Export-Package: net.nan21.dnet.core.scheduler;version="1.0.0.RC1";uses
+Export-Package: net.nan21.dnet.core.scheduler;version="1.0.0.RC2";uses
  :="javax.sql,net.nan21.dnet.core.api.job,org.quartz,org.quartz.simpl,
  org.quartz.spi,org.quartz.utils,org.springframework.beans,org.springf
  ramework.beans.factory.annotation,org.springframework.context"
 Bundle-Vendor: Nan21 
-Bundle-Version: 1.0.0.RC1
+Bundle-Version: 1.0.0.RC2
 Tool: Bundlor 1.0.0.RELEASE
 Bundle-Name: DNet Core - Scheduler
 Bundle-ManifestVersion: 2
 Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.html
 Bundle-SymbolicName: nan21.dnet.core.scheduler
 Import-Package: javax.sql,net.nan21.dnet.core.api.job;version="[1.0.0.
- RC1,1.0.0.RC1]",net.nan21.dnet.core.api.service;version="[1.0.0.RC1,1
- .0.0.RC1]",oracle.jdbc;resolution:="optional",org.quartz,org.quartz.i
+ RC2,1.0.0.RC2]",net.nan21.dnet.core.api.service;version="[1.0.0.RC2,1
+ .0.0.RC2]",oracle.jdbc;resolution:="optional",org.quartz,org.quartz.i
  mpl,org.quartz.simpl,org.quartz.spi,org.quartz.utils,org.slf4j,org.sp
  ringframework.beans,org.springframework.beans.factory,org.springframe
  work.beans.factory.annotation;version="[3.0,3.1)",org.springframework

@@ -1,11 +1,11 @@
 Manifest-Version: 1.0
-Export-Package: net.nan21.dnet.core.setup;version="1.0.0.RC1";uses:="j
+Export-Package: net.nan21.dnet.core.setup;version="1.0.0.RC2";uses:="j
  avax.servlet.http,org.springframework.beans.factory.annotation,org.sp
  ringframework.stereotype,org.springframework.web.bind.annotation,org.
  springframework.web.context,org.springframework.web.servlet"
 Bundle-Vendor: Nan21 
 Bundle-ClassPath: WEB-INF/classes
-Bundle-Version: 1.0.0.RC1
+Bundle-Version: 1.0.0.RC2
 Tool: Bundlor 1.0.0.RELEASE
 Bundle-Name: DNet Core - setup
 Bundle-ManifestVersion: 2
@@ -14,9 +14,9 @@ Bundle-SymbolicName: nan21.dnet.core.setup
 Import-Package: javax.persistence;version="[2.0,2.1)",javax.persistenc
  e.criteria;version="[2.0,2.1)",javax.servlet.http,javax.servlet.jsp.j
  stl.core;version="[1.2,2.0)",net.nan21.dnet.core.api.service;version=
- "[1.0.0.RC1,1.0.0.RC1]",net.nan21.dnet.core.api.session;version="[1.0
- .0.RC1,1.0.0.RC1]",net.nan21.dnet.core.api.setup;version="[1.0.0.RC1,
- 1.0.0.RC1]",org.apache.taglibs.standard;version="[1.1.2,2.0)",org.apa
+ "[1.0.0.RC2,1.0.0.RC2]",net.nan21.dnet.core.api.session;version="[1.0
+ .0.RC2,1.0.0.RC2]",net.nan21.dnet.core.api.setup;version="[1.0.0.RC2,
+ 1.0.0.RC2]",org.apache.taglibs.standard;version="[1.1.2,2.0)",org.apa
  che.taglibs.standard.extra.spath;version="[1.1.2,2.0)",org.apache.tag
  libs.standard.functions;version="[1.1.2,2.0)",org.apache.taglibs.stan
  dard.lang.jstl;version="[1.1.2,2.0)",org.apache.taglibs.standard.lang

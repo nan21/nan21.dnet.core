@@ -3,18 +3,18 @@ Bundle-ManifestVersion: 2
 Bundle-Name: DNet Core - presenter
 Bundle-SymbolicName: nan21.dnet.core.presenter
 Bundle-Vendor: Nan21 
-Bundle-Version: 1.0.0.RC1
+Bundle-Version: 1.0.0.RC2
 Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.html
 Import-Package: 
- net.nan21.dnet.core.api.action;version="[1.0.0.RC1,1.0.0.RC1]",
- net.nan21.dnet.core.api.annotation;version="[1.0.0.RC1,1.0.0.RC1]",
- net.nan21.dnet.core.api.descriptor;version="[1.0.0.RC1,1.0.0.RC1]",
- net.nan21.dnet.core.api.session;version="[1.0.0.RC1,1.0.0.RC1]",
- net.nan21.dnet.core.api.service;version="[1.0.0.RC1,1.0.0.RC1]",
- net.nan21.dnet.core.api.model;version="[1.0.0.RC1,1.0.0.RC1]",
- net.nan21.dnet.core.api.converter;version="[1.0.0.RC1,1.0.0.RC1]",
- net.nan21.dnet.core.api.marshall;version="[1.0.0.RC1,1.0.0.RC1]",
- org.activiti.spring;version="[5.6,6.0)",
+ net.nan21.dnet.core.api.action;version="[1.0.0.RC2,1.0.0.RC2]",
+ net.nan21.dnet.core.api.annotation;version="[1.0.0.RC2,1.0.0.RC2]",
+ net.nan21.dnet.core.api.descriptor;version="[1.0.0.RC2,1.0.0.RC2]",
+ net.nan21.dnet.core.api.session;version="[1.0.0.RC2,1.0.0.RC2]",
+ net.nan21.dnet.core.api.service;version="[1.0.0.RC2,1.0.0.RC2]",
+ net.nan21.dnet.core.api.model;version="[1.0.0.RC2,1.0.0.RC2]",
+ net.nan21.dnet.core.api.converter;version="[1.0.0.RC2,1.0.0.RC2]",
+ net.nan21.dnet.core.api.marshall;version="[1.0.0.RC2,1.0.0.RC2]",
+ net.nan21.dnet.core.api.wf;version="[1.0.0.RC2,1.0.0.RC2]",
  org.apache.commons.lang;version="[2.0,3.0)",
  org.springframework.context;version="[3.0,3.1)",
  org.springframework.context.config;version="[3.0,3.1)",
@@ -22,8 +22,11 @@ Import-Package:
  org.springframework.beans.factory;version="[3.0,3.1)",
  org.springframework.beans.factory.annotation;version="[3.0,3.1)",
  org.springframework.transaction.annotation;version="[3.0,3.1)",
- org.activiti.engine;version="[5.6,6.0)",
- org.activiti.engine.impl.el;version="[5.6,6.0)",
+ javax.mail;version="[1.4.0,1.4.1]",
+ javax.mail.internet;version="[1.4.0,1.4.1]",
+ com.sun.mail.handlers;version="[1.4.0,1.4.1]",
+ com.sun.mail.smtp;version="[1.4.0,1.4.1]",
+ javax.activation;version="[1.1.0,1.1.1]",
  au.com.bytecode.opencsv;version="[2.0,3.0)",
  au.com.bytecode.opencsv.bean;version="[2.0,3.0)",
  javax.persistence;version="[2.0,2.1)",
@@ -34,5 +37,6 @@ Import-Package:
  org.codehaus.jackson.type;version="[1.4,2.0)",
  org.codehaus.jackson.map;version="[1.4,2.0)",
  org.codehaus.jackson.map.type;version="[1.4,2.0)"
-Export-Package: net.nan21.dnet.core.presenter.action,net.nan21.dnet.core.presenter.converter,net.nan21.dnet.core.presenter.exception,net.nan21.dnet.core.presenter.marshaller,net.nan21.dnet.core.presenter.model,net.nan21.dnet.core.presenter.propertyeditors,net.nan21.dnet.core.presenter.service
+Import-Bundle:  activiti-engine;version="[5.9,5.9]"
+Export-Package: net.nan21.dnet.core.presenter,net.nan21.dnet.core.presenter.action,net.nan21.dnet.core.presenter.converter,net.nan21.dnet.core.presenter.exception,net.nan21.dnet.core.presenter.marshaller,net.nan21.dnet.core.presenter.model,net.nan21.dnet.core.presenter.propertyeditors,net.nan21.dnet.core.presenter.service
 

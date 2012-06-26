@@ -20,9 +20,5 @@
 			http://www.springframework.org/schema/osgi-compendium 
     			http://www.springframework.org/schema/osgi-compendium/spring-osgi-compendium.xsd">
    
-   	<context:property-placeholder properties-ref="net.nan21.dnet.properties"/>	  
-	<osgi-compendium:cm-properties  id="net.nan21.dnet.properties"  persistent-id="net.nan21.dnet" />
-		
-	 
 	
 </beans>	

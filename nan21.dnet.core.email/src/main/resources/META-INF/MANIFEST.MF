@@ -1,0 +1,21 @@
+Manifest-Version: 1.0
+Export-Package: net.nan21.dnet.core.email;version="1.0.0.RC2";uses:="j
+ avax.activation,javax.mail,javax.mail.internet,javax.naming,net.nan21
+ .dnet.core.api.email,net.nan21.dnet.core.api.exceptions"
+Bundle-Vendor: Nan21 
+Bundle-Version: 1.0.0.RC2
+Tool: Bundlor 1.0.0.RELEASE
+Bundle-Name: DNet Core - email
+Bundle-ManifestVersion: 2
+Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.html
+Bundle-SymbolicName: nan21.dnet.core.email
+Import-Package: com.sun.mail.handlers;version="[1.4.0,1.4.1]",com.sun.
+ mail.smtp;version="[1.4.0,1.4.1]",javax.activation;version="[1.1.0,1.
+ 1.1]",javax.mail;version="[1.4.0,1.4.1]",javax.mail.internet;version=
+ "[1.4.0,1.4.1]",javax.naming,net.nan21.dnet.core.api.email;version="[
+ 1.0.0.RC2,1.0.0.RC2]",net.nan21.dnet.core.api.exceptions,org.springfr
+ amework.beans;version="[3.0,3.1)",org.springframework.beans.factory;v
+ ersion="[3.0,3.1)",org.springframework.beans.factory.annotation;versi
+ on="[3.0,3.1)",org.springframework.context;version="[3.0,3.1)",org.sp
+ ringframework.context.config;version="[3.0,3.1)"
+

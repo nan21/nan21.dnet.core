@@ -130,15 +130,30 @@ public class AuthenticationForDbUser extends JdbcDaoImpl implements
 							// build the objects
 							UserPreferences preferences = new UserPreferences();
 
-							preferences.setExtjsDateFormat(extjsDateFormat);
-							preferences.setExtjsTimeFormat(extjsTimeFormat);
-							preferences
-									.setExtjsDateTimeFormat(extjsDateTimeFormat);
-							preferences.setExtjsAltFormats(extjsAltFormats);
-							preferences.setJavaDateFormat(javaDateFormat);
-							preferences.setJavaTimeFormat(javaTimeFormat);
-							preferences
-									.setJavaDateTimeFormat(javaDateTimeFormat);
+							if (extjsDateFormat!=null &&
+									extjsTimeFormat!=null &&
+									extjsDateTimeFormat!=null &&
+									extjsAltFormats!=null ) {
+								
+							} {
+								preferences.setExtjsDateFormat(extjsDateFormat);
+								preferences.setExtjsTimeFormat(extjsTimeFormat);
+								preferences
+										.setExtjsDateTimeFormat(extjsDateTimeFormat);
+								preferences.setExtjsAltFormats(extjsAltFormats);
+							}
+							 
+							if(javaDateFormat !=null && 
+									javaTimeFormat !=null && 
+									javaDateTimeFormat !=null ) {
+								
+							} {
+								preferences.setJavaDateFormat(javaDateFormat);
+								preferences.setJavaTimeFormat(javaTimeFormat);
+								preferences
+										.setJavaDateTimeFormat(javaDateTimeFormat);
+							}
+							
 
 							preferences.setDecimalSeparator(decimalSeparator);
 							preferences.setThousandSeparator(thousandSeparator);

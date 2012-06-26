@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>net.nan21.dnet</groupId>
 		<artifactId>nan21.dnet.core.parent</artifactId>
-		<version>1.0.0.RC1</version>
+		<version>1.0.0.RC2</version>
 		<relativePath>../nan21.dnet.core.parent</relativePath>
 	</parent>
 	<groupId>net.nan21.dnet</groupId>
