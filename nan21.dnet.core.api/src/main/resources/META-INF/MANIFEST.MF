@@ -18,7 +18,8 @@ Export-Package: net.nan21.dnet.core.api;version="1.0.0.RC2";uses:="org
  ="1.0.0.RC2",net.nan21.dnet.core.api.setup;version="1.0.0.RC2";uses:=
  "net.nan21.dnet.core.api,org.springframework.beans.factory.annotation
  ,org.springframework.context",net.nan21.dnet.core.api.ui.extjs;versio
- n="1.0.0.RC2",net.nan21.dnet.core.api.wf;version="1.0.0.RC2"
+ n="1.0.0.RC2",net.nan21.dnet.core.api.util;version="1.0.0.RC2",net.na
+ n21.dnet.core.api.wf;version="1.0.0.RC2"
 Bundle-Vendor: Nan21 
 Bundle-Version: 1.0.0.RC2
 Tool: Bundlor 1.0.0.RELEASE

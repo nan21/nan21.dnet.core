@@ -26,7 +26,6 @@ Import-Package:
  javax.mail.internet;version="[1.4.0,1.4.1]",
  com.sun.mail.handlers;version="[1.4.0,1.4.1]",
  com.sun.mail.smtp;version="[1.4.0,1.4.1]",
- javax.activation;version="[1.1.0,1.1.1]",
  au.com.bytecode.opencsv;version="[2.0,3.0)",
  au.com.bytecode.opencsv.bean;version="[2.0,3.0)",
  javax.persistence;version="[2.0,2.1)",

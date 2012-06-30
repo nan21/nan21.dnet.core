@@ -105,7 +105,11 @@ Ext.define("dnet.core.dc.AbstractDcvFilterPropGrid", {
 				this.mon(this._controller_, "filterValueChanged",
 						this._onFilterValueChanged_, this);
 				this.mon(this, "edit" ,function (editor, evnt, eOpts ) {// alert(22);
-						this._controller_.setFilterValue(evnt.record.data.name, evnt.value);
+						if(this._getElementConfig_(evnt.record.data.name).paramIndex != undefined) {
+							this._controller_.setParamValue(evnt.record.data.name, evnt.value);
+						} else {
+							this._controller_.setFilterValue(evnt.record.data.name, evnt.value);
+						}
 						return true; 
 					} , this  ); 
 			},
@@ -153,7 +157,7 @@ Ext.define("dnet.core.dc.AbstractDcvFilterPropGrid", {
 					}
 					var s = this.getSource();
 					for (var p in s) {
-						if (filter.data.hasOwnProperty(p)) {
+						if (filter.data.hasOwnProperty(p) === true ) {
 							this.setProperty(p, filter.data[p], true);
 						}
 					}

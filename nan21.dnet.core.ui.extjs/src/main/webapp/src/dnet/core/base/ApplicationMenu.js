@@ -147,7 +147,7 @@ dnet.core.base.ApplicationMenu$Items = [
 					handler : function() {
 						(new Ext.Window({
 							width : 300,
-							height : 350,
+							height : 250,
 							title : "About",
 							tpl : dnet.core.base.TemplateRepository.APPLICATION_ABOUT_BOX,
 							data : {

@@ -25,14 +25,15 @@ Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.html
 Bundle-SymbolicName: nan21.dnet.core.domain
 Import-Package: javax.persistence;version="[2.0,2.1)",javax.validation
  .constraints,javax.xml.bind.annotation,net.nan21.dnet.core.api.model;
- version="[1.0.0.RC2,1.0.0.RC2]",net.nan21.dnet.core.api.session,org.e
- clipse.persistence.config,org.eclipse.persistence.descriptors,org.ecl
- ipse.persistence.descriptors.changetracking,org.eclipse.persistence.i
- nternal.databaseaccess,org.eclipse.persistence.internal.descriptors,o
- rg.eclipse.persistence.internal.jpa,org.eclipse.persistence.internal.
- sessions,org.eclipse.persistence.internal.weaving,org.eclipse.persist
- ence.queries,org.eclipse.persistence.sequencing,org.eclipse.persisten
- ce.sessions,org.hibernate.validator.constraints,org.springframework.c
- ontext.config;version="[3.0,3.1)",org.springframework.orm.jpa;version
- ="[3.0,3.1)"
+ version="[1.0.0.RC2,1.0.0.RC2]",net.nan21.dnet.core.api.session,net.n
+ an21.dnet.core.api.util;version="[1.0.0.RC2,1.0.0.RC2]",org.eclipse.p
+ ersistence.config,org.eclipse.persistence.descriptors,org.eclipse.per
+ sistence.descriptors.changetracking,org.eclipse.persistence.internal.
+ databaseaccess,org.eclipse.persistence.internal.descriptors,org.eclip
+ se.persistence.internal.jpa,org.eclipse.persistence.internal.sessions
+ ,org.eclipse.persistence.internal.weaving,org.eclipse.persistence.que
+ ries,org.eclipse.persistence.sequencing,org.eclipse.persistence.sessi
+ ons,org.hibernate.validator.constraints,org.springframework.context.c
+ onfig;version="[3.0,3.1)",org.springframework.orm.jpa;version="[3.0,3
+ .1)"
 

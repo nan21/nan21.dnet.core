@@ -30,11 +30,10 @@ Import-Package: com.sun.mail.handlers;version="[1.4.0,1.4.1]",com.sun.
  or,org.activiti.engine.impl.bpmn.parser,org.activiti.engine.impl.cfg,
  org.activiti.engine.impl.pvm.delegate,org.activiti.engine.impl.pvm.pr
  ocess,org.activiti.engine.impl.scripting,org.activiti.engine.impl.uti
- l.xml,org.activiti.spring,org.apache.commons.mail;version="[1.2,2.0)"
- ,org.springframework.beans;version="[3.0,3.1)",org.springframework.be
- ans.factory;version="[3.0,3.1)",org.springframework.beans.factory.ann
- otation;version="[3.0,3.1)",org.springframework.context;version="[3.0
- ,3.1)",org.springframework.context.config;version="[3.0,3.1)",org.spr
- ingframework.jdbc.datasource,org.springframework.transaction.annotati
- on;version="[3.0,3.1)"
+ l.xml,org.activiti.spring,org.springframework.beans;version="[3.0,3.1
+ )",org.springframework.beans.factory;version="[3.0,3.1)",org.springfr
+ amework.beans.factory.annotation;version="[3.0,3.1)",org.springframew
+ ork.context;version="[3.0,3.1)",org.springframework.context.config;ve
+ rsion="[3.0,3.1)",org.springframework.jdbc.datasource,org.springframe
+ work.transaction.annotation;version="[3.0,3.1)"
 

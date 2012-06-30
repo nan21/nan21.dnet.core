@@ -26,10 +26,16 @@ Ext.define("dnet.core.dc.DcvFilterPropGridBuilder", {
 	},
 
 	addDateField : function(config) {
-		config.xtype = "datefield";
-		config.editorInstance = Ext.create('Ext.form.field.Date', Ext.apply(config.editor||{}, {
-			format : Dnet.DATE_FORMAT 
+		if(!config.editor) {
+			config.editor = {};
+		}		 
+		var e = config.editor;
+		//config.xtype = "datefield";
+		config.editorInstance = Ext.create('Ext.form.field.Date', Ext.applyIf(e, {
+			format : Dnet.DATE_FORMAT,
+			selectOnFocus: true
 		}));
+		config._default_ = "";
 		config.renderer = config.renderer || Ext.util.Format.dateRenderer(Dnet.DATE_FORMAT);
 		this.applySharedConfig(config);
 		return this;
@@ -37,9 +43,13 @@ Ext.define("dnet.core.dc.DcvFilterPropGridBuilder", {
 	
 	
 	addNumberField : function(config) {
-		config.xtype = "numberfield";
-		config.editorInstance = Ext.create('Ext.form.field.Number',  Ext.apply(config.editor||{}, {
-			fieldStyle: "text-align:right;" 
+		if(!config.editor) {
+			config.editor = {};
+		}		 
+		var e = config.editor;
+		config.editorInstance = Ext.create('Ext.form.field.Number',  Ext.applyIf(e, {
+			fieldStyle: "text-align:right;" ,
+			selectOnFocus: true
 		}));
 		this.applySharedConfig(config);
 		return this;
