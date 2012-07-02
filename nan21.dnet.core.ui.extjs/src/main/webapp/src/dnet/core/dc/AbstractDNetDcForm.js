@@ -25,7 +25,15 @@ Ext.define("dnet.core.dc.AbstractDNetDcForm", {
 					item.disable();
 				});
 	},
- 
+
+	/**
+	 * @public Helper method to enable all fields.
+	 */
+	_enableAllFields_ : function() {
+		this.getForm().getFields().each(function(item, index, length) {
+					item.enable();
+				});
+	},
  
 	/**
 	 * There may be situations when a form should not validate. For example a
