@@ -23,5 +23,7 @@ Import-Package:
  com.sun.mail.handlers;version="[1.4.0,1.4.1]",
  com.sun.mail.smtp;version="[1.4.0,1.4.1]"
 Import-Bundle:  activiti-engine;version="[5.9,5.9]", activiti-spring
-Export-Package: net.nan21.dnet.core.workflow,net.nan21.dnet.core.workflow.activiti_ext
+Export-Package: 
+ net.nan21.dnet.core.workflow,
+ net.nan21.dnet.core.workflow.activiti_ext
 

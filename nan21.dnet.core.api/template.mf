@@ -8,9 +8,21 @@ Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.html
 Import-Package: 
  javax.persistence;version="[2.0,2.1)",
  org.springframework.web.multipart;version="[3.0,3.1)"
-Export-Package: net.nan21.dnet.core.api,net.nan21.dnet.core.api.action,
- net.nan21.dnet.core.api.annotation,net.nan21.dnet.core.api.converter,net.nan21.dnet.core.api.descriptor,
- net.nan21.dnet.core.api.marshall,net.nan21.dnet.core.api.model,net.nan21.dnet.core.api.service,
- net.nan21.dnet.core.api.security,net.nan21.dnet.core.api.job,net.nan21.dnet.core.api.session,
- net.nan21.dnet.core.api.setup,net.nan21.dnet.core.api.email,net.nan21.dnet.core.api.util,net.nan21.dnet.core.api.wf,net.nan21.dnet.core.api.ui.extjs
+Export-Package: 
+ net.nan21.dnet.core.api,
+ net.nan21.dnet.core.api.action,
+ net.nan21.dnet.core.api.annotation,
+ net.nan21.dnet.core.api.converter,
+ net.nan21.dnet.core.api.descriptor,
+ net.nan21.dnet.core.api.marshall,
+ net.nan21.dnet.core.api.model,
+ net.nan21.dnet.core.api.service,
+ net.nan21.dnet.core.api.security,
+ net.nan21.dnet.core.api.job,
+ net.nan21.dnet.core.api.session,
+ net.nan21.dnet.core.api.setup,
+ net.nan21.dnet.core.api.email,
+ net.nan21.dnet.core.api.util,
+ net.nan21.dnet.core.api.wf,
+ net.nan21.dnet.core.api.ui.extjs
 

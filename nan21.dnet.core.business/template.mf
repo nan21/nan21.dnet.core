@@ -21,5 +21,7 @@ Import-Package:
  org.springframework.orm.jpa.persistenceunit;version="[3.0,3.1)",
  org.slf4j;version="[1.0,2.0]"
 Import-Bundle:  activiti-engine;version="[5.9,5.9]"
-Export-Package: net.nan21.dnet.core.business.service,net.nan21.dnet.core.business.persistenceunit
+Export-Package: 
+ net.nan21.dnet.core.business.service,
+ net.nan21.dnet.core.business.persistenceunit
 

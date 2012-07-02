@@ -67,5 +67,14 @@ Import-Package:
  javax.persistence;version="[2.0,2.1)",
  javax.persistence.criteria;version="[2.0,2.1)"
 Import-Bundle:  activiti-engine;version="[5.9,5.9]", activiti-spring
-Export-Package: net.nan21.dnet.core.web,net.nan21.dnet.core.web.controller,net.nan21.dnet.core.web.controller.data,net.nan21.dnet.core.web.controller.workflow,net.nan21.dnet.core.web.controller.upload,net.nan21.dnet.core.web.controller.session,net.nan21.dnet.core.web.controller.ui,net.nan21.dnet.core.web.result,net.nan21.dnet.core.web.settings
+Export-Package: 
+ net.nan21.dnet.core.web,
+ net.nan21.dnet.core.web.controller,
+ net.nan21.dnet.core.web.controller.data,
+ net.nan21.dnet.core.web.controller.workflow,
+ net.nan21.dnet.core.web.controller.upload,
+ net.nan21.dnet.core.web.controller.session,
+ net.nan21.dnet.core.web.controller.ui,
+ net.nan21.dnet.core.web.result,
+ net.nan21.dnet.core.web.settings
 

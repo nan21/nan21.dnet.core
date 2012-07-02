@@ -13,5 +13,7 @@ Import-Package:
  net.nan21.dnet.core.api.util;version="[1.0.0.RC2,1.0.0.RC2]",
  org.springframework.context.config;version="[3.0,3.1)",
  org.springframework.orm.jpa;version="[3.0,3.1)"
-Export-Package: net.nan21.dnet.core.domain.eventhandler,net.nan21.dnet.core.domain.validation
+Export-Package: 
+ net.nan21.dnet.core.domain.eventhandler,
+ net.nan21.dnet.core.domain.validation
 

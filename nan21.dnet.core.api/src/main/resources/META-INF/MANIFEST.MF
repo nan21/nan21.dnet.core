@@ -20,13 +20,29 @@ Export-Package: net.nan21.dnet.core.api;version="1.0.0.RC2";uses:="org
  ,org.springframework.context",net.nan21.dnet.core.api.ui.extjs;versio
  n="1.0.0.RC2",net.nan21.dnet.core.api.util;version="1.0.0.RC2",net.na
  n21.dnet.core.api.wf;version="1.0.0.RC2"
-Bundle-Vendor: Nan21 
-Bundle-Version: 1.0.0.RC2
+netnan21dnetcoreapisecurity: 
 Tool: Bundlor 1.0.0.RELEASE
-Bundle-Name: DNet Core - api
-Bundle-ManifestVersion: 2
+netnan21dnetcoreapimarshall: 
+netnan21dnetcoreapi: 
+netnan21dnetcoreapiaction: 
+netnan21dnetcoreapidescriptor: 
+netnan21dnetcoreapiuiextjs: 
+netnan21dnetcoreapiannotation: 
+netnan21dnetcoreapisetup: 
 Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.html
+netnan21dnetcoreapiconverter: 
 Bundle-SymbolicName: nan21.dnet.core.api
+netnan21dnetcoreapiservice: 
+netnan21dnetcoreapiutil: 
+netnan21dnetcoreapijob: 
+netnan21dnetcoreapimodel: 
+netnan21dnetcoreapisession: 
+Bundle-Name: DNet Core - api
+netnan21dnetcoreapiwf: 
+Bundle-Vendor: Nan21 
+netnan21dnetcoreapiemail: 
+Bundle-Version: 1.0.0.RC2
+Bundle-ManifestVersion: 2
 Import-Package: javax.persistence;version="[2.0,2.1)",org.springframew
  ork.beans.factory.annotation,org.springframework.context,org.springfr
  amework.web.multipart;version="[3.0,3.1)"

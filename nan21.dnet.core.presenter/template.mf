@@ -37,5 +37,13 @@ Import-Package:
  org.codehaus.jackson.map;version="[1.4,2.0)",
  org.codehaus.jackson.map.type;version="[1.4,2.0)"
 Import-Bundle:  activiti-engine;version="[5.9,5.9]"
-Export-Package: net.nan21.dnet.core.presenter,net.nan21.dnet.core.presenter.action,net.nan21.dnet.core.presenter.converter,net.nan21.dnet.core.presenter.exception,net.nan21.dnet.core.presenter.marshaller,net.nan21.dnet.core.presenter.model,net.nan21.dnet.core.presenter.propertyeditors,net.nan21.dnet.core.presenter.service
+Export-Package: 
+ net.nan21.dnet.core.presenter,
+ net.nan21.dnet.core.presenter.action,
+ net.nan21.dnet.core.presenter.converter,
+ net.nan21.dnet.core.presenter.exception,
+ net.nan21.dnet.core.presenter.marshaller,
+ net.nan21.dnet.core.presenter.model,
+ net.nan21.dnet.core.presenter.propertyeditors,
+ net.nan21.dnet.core.presenter.service
 

@@ -16,5 +16,6 @@ Import-Package:
  org.quartz,
  org.quartz.impl,
  oracle.jdbc;resolution:=optional
-Export-Package: net.nan21.dnet.core.scheduler
+Export-Package: 
+ net.nan21.dnet.core.scheduler
 
