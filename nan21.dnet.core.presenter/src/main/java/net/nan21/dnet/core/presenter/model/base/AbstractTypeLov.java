@@ -23,6 +23,9 @@ public class AbstractTypeLov<E> extends AbstractDsModel<E> implements
 	protected String name;
 
 	@DsField()
+	protected String description;
+
+	@DsField()
 	protected Boolean active;
 
 	public AbstractTypeLov() {
@@ -64,6 +67,14 @@ public class AbstractTypeLov<E> extends AbstractDsModel<E> implements
 
 	public void setActive(Boolean active) {
 		this.active = active;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 }

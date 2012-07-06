@@ -30,7 +30,7 @@
 						   </tr>
 						   <tr>
 						   	   <td class='label'>Password</td>
-						   	   <td> <input name='pswd' class='field' type="password" ></td>
+						   	   <td> <input name='pswd' class='field' autocomplete="off" type="password" ></td>
 						   </tr>
 						   <tr>
 						   	   <td class='label'>Client</td>
