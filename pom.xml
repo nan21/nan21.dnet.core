@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.nan21.dnet</groupId>
 	<artifactId>nan21.dnet.core</artifactId>
-	<version>1.0.0.RC2</version>
+	<version>1.0.0</version>
 	<name>DNet Core</name>	
 	<description>DNet Core</description>
 	<packaging>pom</packaging>	

@@ -3,11 +3,11 @@ Bundle-ManifestVersion: 2
 Bundle-Name: DNet fragment - activiti
 Bundle-SymbolicName: nan21.dnet.fragment.activiti
 Bundle-Vendor: Nan21 
-Bundle-Version: 1.0.0.RC2
+Bundle-Version: 1.0.0
 Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.html
 Fragment-Host: activiti-engine;bundle-version="[5.9,5.9]"
 Import-Package: 
- net.nan21.dnet.core.workflow.activiti_ext;version="[1.0.0.RC2,1.0.0.RC2]",
+ net.nan21.dnet.core.workflow.activiti_ext;version="[1.0.0,1.0.0]",
  javax.mail;version="[1.4.0,1.4.1]",
  javax.mail.internet;version="[1.4.0,1.4.1]",
  com.sun.mail.handlers;version="[1.4.0,1.4.1]",

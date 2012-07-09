@@ -1,21 +1,20 @@
 Manifest-Version: 1.0
-Export-Package: net.nan21.dnet.core.scheduler;version="1.0.0.RC2";uses
- :="javax.sql,net.nan21.dnet.core.api.job,org.quartz,org.quartz.simpl,
- org.quartz.spi,org.quartz.utils,org.springframework.beans,org.springf
- ramework.beans.factory.annotation,org.springframework.context"
+Export-Package: net.nan21.dnet.core.scheduler;version="1.0.0";uses:="j
+ avax.sql,net.nan21.dnet.core.api.job,org.quartz,org.quartz.simpl,org.
+ quartz.spi,org.quartz.utils,org.springframework.beans,org.springframe
+ work.beans.factory.annotation,org.springframework.context"
 Bundle-Vendor: Nan21 
-Bundle-Version: 1.0.0.RC2
+Bundle-Version: 1.0.0
 Tool: Bundlor 1.0.0.RELEASE
 Bundle-Name: DNet Core - Scheduler
 Bundle-ManifestVersion: 2
 Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.html
 Bundle-SymbolicName: nan21.dnet.core.scheduler
-Import-Package: javax.sql,net.nan21.dnet.core.api.job;version="[1.0.0.
- RC2,1.0.0.RC2]",net.nan21.dnet.core.api.service;version="[1.0.0.RC2,1
- .0.0.RC2]",oracle.jdbc;resolution:="optional",org.quartz,org.quartz.i
- mpl,org.quartz.simpl,org.quartz.spi,org.quartz.utils,org.slf4j,org.sp
- ringframework.beans,org.springframework.beans.factory,org.springframe
- work.beans.factory.annotation;version="[3.0,3.1)",org.springframework
- .context;version="[3.0,3.1)",org.springframework.context.config;versi
- on="[3.0,3.1)"
+Import-Package: javax.sql,net.nan21.dnet.core.api.job;version="[1.0.0,
+ 1.0.0]",net.nan21.dnet.core.api.service;version="[1.0.0,1.0.0]",oracl
+ e.jdbc;resolution:="optional",org.quartz,org.quartz.impl,org.quartz.s
+ impl,org.quartz.spi,org.quartz.utils,org.slf4j,org.springframework.be
+ ans,org.springframework.beans.factory,org.springframework.beans.facto
+ ry.annotation;version="[3.0,3.1)",org.springframework.context;version
+ ="[3.0,3.1)",org.springframework.context.config;version="[3.0,3.1)"
 

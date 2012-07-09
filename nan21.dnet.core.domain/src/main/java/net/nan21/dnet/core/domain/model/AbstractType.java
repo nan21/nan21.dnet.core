@@ -26,7 +26,7 @@ public abstract class AbstractType extends AbstractEntityBase implements Seriali
 	private static final long serialVersionUID = -1L;
 
 	/**
-	 * Name of entity.
+	 * Name of record.
 	 */
 	@Column(name = "NAME", nullable = false, length = 255)
 	@NotBlank
@@ -40,7 +40,7 @@ public abstract class AbstractType extends AbstractEntityBase implements Seriali
 	protected Boolean active;
 
 	/**
-	 * Description of entity.
+	 * Description of record.
 	 */
 	@Column(name = "DESCRIPTION", length = 400)
 	protected String description;

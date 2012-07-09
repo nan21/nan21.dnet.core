@@ -13,6 +13,7 @@ public class AbstractTypeWithCodeDs<E> extends AbstractDsModel<E> implements
 	public static final String fNAME = "name";
 	public static final String fCODE = "code";
 	public static final String fACTIVE = "active";
+	public static final String fDESCRIPTION = "description";
 	public static final String fNOTES = "notes";
 	public static final String fID = "id";
 	public static final String fUUID = "uuid";
@@ -31,6 +32,9 @@ public class AbstractTypeWithCodeDs<E> extends AbstractDsModel<E> implements
 
 	@DsField()
 	protected Boolean active;
+
+	@DsField()
+	protected String description;
 
 	@DsField()
 	protected String notes;
@@ -92,6 +96,14 @@ public class AbstractTypeWithCodeDs<E> extends AbstractDsModel<E> implements
 
 	public void setActive(Boolean active) {
 		this.active = active;
+	}
+
+	public String getDescription() {
+		return this.description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public String getNotes() {

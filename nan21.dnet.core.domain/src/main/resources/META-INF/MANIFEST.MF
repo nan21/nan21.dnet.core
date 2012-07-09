@@ -1,23 +1,22 @@
 Manifest-Version: 1.0
 Export-Package: net.nan21.dnet.core.domain.eventhandler;version="1.0.0
- .RC2";uses:="org.eclipse.persistence.config,org.eclipse.persistence.d
- escriptors",net.nan21.dnet.core.domain.model;version="1.0.0.RC2";uses
- :="javax.persistence,javax.validation.constraints,javax.xml.bind.anno
- tation,net.nan21.dnet.core.api.model,org.eclipse.persistence.descript
- ors,org.eclipse.persistence.descriptors.changetracking,org.eclipse.pe
- rsistence.internal.descriptors,org.eclipse.persistence.internal.weavi
- ng,org.eclipse.persistence.queries,org.eclipse.persistence.sessions,o
- rg.hibernate.validator.constraints",net.nan21.dnet.core.domain.model.
- impldummy;version="1.0.0.RC2";uses:="javax.persistence,net.nan21.dnet
- .core.domain.model,org.eclipse.persistence.internal.descriptors,org.e
- clipse.persistence.internal.weaving",net.nan21.dnet.core.domain.seque
- nce;version="1.0.0.RC2";uses:="org.eclipse.persistence.config,org.ecl
- ipse.persistence.internal.databaseaccess,org.eclipse.persistence.inte
- rnal.sessions,org.eclipse.persistence.sequencing,org.eclipse.persiste
- nce.sessions",net.nan21.dnet.core.domain.validation;version="1.0.0.RC
- 2"
+ ";uses:="org.eclipse.persistence.config,org.eclipse.persistence.descr
+ iptors",net.nan21.dnet.core.domain.model;version="1.0.0";uses:="javax
+ .persistence,javax.validation.constraints,javax.xml.bind.annotation,n
+ et.nan21.dnet.core.api.model,org.eclipse.persistence.descriptors,org.
+ eclipse.persistence.descriptors.changetracking,org.eclipse.persistenc
+ e.internal.descriptors,org.eclipse.persistence.internal.weaving,org.e
+ clipse.persistence.queries,org.eclipse.persistence.sessions,org.hiber
+ nate.validator.constraints",net.nan21.dnet.core.domain.model.impldumm
+ y;version="1.0.0";uses:="javax.persistence,net.nan21.dnet.core.domain
+ .model,org.eclipse.persistence.internal.descriptors,org.eclipse.persi
+ stence.internal.weaving",net.nan21.dnet.core.domain.sequence;version=
+ "1.0.0";uses:="org.eclipse.persistence.config,org.eclipse.persistence
+ .internal.databaseaccess,org.eclipse.persistence.internal.sessions,or
+ g.eclipse.persistence.sequencing,org.eclipse.persistence.sessions",ne
+ t.nan21.dnet.core.domain.validation;version="1.0.0"
 Bundle-Vendor: Nan21 
-Bundle-Version: 1.0.0.RC2
+Bundle-Version: 1.0.0
 Tool: Bundlor 1.0.0.RELEASE
 Bundle-Name: DNet Core - domain
 Bundle-ManifestVersion: 2
@@ -25,15 +24,14 @@ Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.html
 Bundle-SymbolicName: nan21.dnet.core.domain
 Import-Package: javax.persistence;version="[2.0,2.1)",javax.validation
  .constraints,javax.xml.bind.annotation,net.nan21.dnet.core.api.model;
- version="[1.0.0.RC2,1.0.0.RC2]",net.nan21.dnet.core.api.session,net.n
- an21.dnet.core.api.util;version="[1.0.0.RC2,1.0.0.RC2]",org.eclipse.p
- ersistence.config,org.eclipse.persistence.descriptors,org.eclipse.per
- sistence.descriptors.changetracking,org.eclipse.persistence.internal.
- databaseaccess,org.eclipse.persistence.internal.descriptors,org.eclip
- se.persistence.internal.jpa,org.eclipse.persistence.internal.sessions
- ,org.eclipse.persistence.internal.weaving,org.eclipse.persistence.que
- ries,org.eclipse.persistence.sequencing,org.eclipse.persistence.sessi
- ons,org.hibernate.validator.constraints,org.springframework.context.c
- onfig;version="[3.0,3.1)",org.springframework.orm.jpa;version="[3.0,3
- .1)"
+ version="[1.0.0,1.0.0]",net.nan21.dnet.core.api.session,net.nan21.dne
+ t.core.api.util;version="[1.0.0,1.0.0]",org.eclipse.persistence.confi
+ g,org.eclipse.persistence.descriptors,org.eclipse.persistence.descrip
+ tors.changetracking,org.eclipse.persistence.internal.databaseaccess,o
+ rg.eclipse.persistence.internal.descriptors,org.eclipse.persistence.i
+ nternal.jpa,org.eclipse.persistence.internal.sessions,org.eclipse.per
+ sistence.internal.weaving,org.eclipse.persistence.queries,org.eclipse
+ .persistence.sequencing,org.eclipse.persistence.sessions,org.hibernat
+ e.validator.constraints,org.springframework.context.config;version="[
+ 3.0,3.1)",org.springframework.orm.jpa;version="[3.0,3.1)"
 

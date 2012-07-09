@@ -15,6 +15,8 @@ public class AbstractTypeWithCodeDsFilter extends AbstractDsFilter implements
 
 	protected Boolean active;
 
+	protected String description;
+
 	protected String notes;
 
 	protected Long id;
@@ -63,6 +65,14 @@ public class AbstractTypeWithCodeDsFilter extends AbstractDsFilter implements
 
 	public void setActive(Boolean active) {
 		this.active = active;
+	}
+
+	public String getDescription() {
+		return this.description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public String getNotes() {

@@ -20,20 +20,20 @@ import org.eclipse.persistence.descriptors.DescriptorEvent;
 import org.hibernate.validator.constraints.NotBlank;
 
 @MappedSuperclass
-public abstract class AbstractTypeWithCode extends AbstractEntityBase implements Serializable, IModelWithId,
-		IModelWithClientId {
+public abstract class AbstractTypeWithCode extends AbstractEntityBase implements
+		Serializable, IModelWithId, IModelWithClientId {
 
 	private static final long serialVersionUID = -1L;
-	
+
 	/**
-	 * Code of entity.
+	 * Code of record.
 	 */
 	@Column(name = "CODE", nullable = false, length = 32)
 	@NotBlank
 	protected String code;
 
 	/**
-	 * Name of entity.
+	 * Name of record.
 	 */
 	@Column(name = "NAME", nullable = false, length = 255)
 	@NotBlank
@@ -47,7 +47,13 @@ public abstract class AbstractTypeWithCode extends AbstractEntityBase implements
 	protected Boolean active;
 
 	/**
-	 * Notes about this record.
+	 * Description of record.
+	 */
+	@Column(name = "DESCRIPTION", length = 400)
+	protected String description;
+
+	/**
+	 * Notes about record.
 	 */
 	@Column(name = "NOTES", length = 4000)
 	protected String notes;
@@ -187,6 +193,15 @@ public abstract class AbstractTypeWithCode extends AbstractEntityBase implements
 	public void setUuid(String uuid) {
 		this.uuid = uuid;
 	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
 	public void aboutToInsert(DescriptorEvent event) {
 
 		event.updateAttributeWithObject("createdAt", new Date());
