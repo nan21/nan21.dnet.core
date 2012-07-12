@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 
 import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.nan21.dnet.core.api.ISystemConfig;
@@ -44,7 +45,10 @@ public class AbstractDataController {
 			.getLogger(AbstractDataController.class);
 	protected final static int FILE_TRANSFER_BUFFER_SIZE = 4 * 1024;
 
-	protected void prepareRequest() throws Exception {
+	protected void prepareRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		request.setCharacterEncoding("UTF-8");
+		response.setCharacterEncoding("UTF-8");		
+		
 		SessionUser su;
 		User user;
 		Params params;
@@ -61,9 +65,19 @@ public class AbstractDataController {
 			throw new Exception("<b>Session expired.</b>"
 					+ "<br> Logout from application and login again.");
 		}
+
 		Session.user.set(user);
 		Session.profile.set(profile);
 		Session.params.set(params);
+
+		String checkIp = this.systemConfig.getSysParamValue("SESSION_CHECK_IP");
+		if (checkIp != null && checkIp.equals("true")) {
+			String ip = request.getRemoteAddr();
+			if (!su.getClientIp().equals(ip)) {
+				throw new Exception(
+						"Request comes from different IP as expected.");
+			}
+		}
 	}
 
 	protected void finishRequest() {
@@ -141,16 +155,16 @@ public class AbstractDataController {
 					response);
 		} else {
 			String msg = null;
-			 
+
 			Exception exc = e;
 			if (e instanceof InvocationTargetException) {
 				exc = (Exception) ((InvocationTargetException) e)
 						.getTargetException();
 			}
-			if (exc.getCause() != null ) {
+			if (exc.getCause() != null) {
 				exc = (Exception) exc.getCause();
 			}
-			 
+
 			exc.printStackTrace();
 			response.setStatus(500);
 			response.getOutputStream().print(exc.getMessage());

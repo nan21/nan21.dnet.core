@@ -16,7 +16,7 @@
 	
 	<bean name="authenticationForDbUser" class="net.nan21.dnet.core.security.AuthenticationForDbUser">
 		<property name="usersByUsernameQuery"
-			value="select u.code, u.name, u.password, u.active, 0 accountExpired, 0 credentialsExpired,0 accountLocked, u.clientid clientId, c.code clientCode, 
+			value="select u.code, u.name, u.password, u.active, 0 accountExpired, 0 credentialsExpired, u.locked accountLocked, u.clientid clientId, c.code clientCode, 
 			c.defaultDsAccessRule, c.defaultImportPath, c.defaultExportPath, c.tempPath, c.adminRole, c.systemClient, '', 0, 
 					f.extjsDateFormat, f.extjsTimeFormat, f.extjsDateTimeFormat, f.extjsAltFormats,	f.javaDateFormat, f.javaTimeFormat, f.javaDateTimeFormat ,
 					 u.decimalseparator, u.thousandseparator, asg.name asgnName, asg.id asgnId

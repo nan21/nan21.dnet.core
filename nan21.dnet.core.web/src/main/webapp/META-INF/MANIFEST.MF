@@ -80,21 +80,23 @@ Import-Package: javax.persistence;version="[2.0,2.1)",javax.persistenc
  g.springframework.beans.factory;version="[3.0,3.1)",org.springframewo
  rk.beans.factory.annotation;version="[3.0,3.1)",org.springframework.c
  ontext.annotation;version="[3.0,3.1)",org.springframework.context.con
- fig;version="[3.0,3.1)",org.springframework.orm.jpa;version="[3.0,3.1
- )",org.springframework.osgi;version="[1.2.1,1.2.1]",org.springframewo
- rk.osgi.compendium.config;version="[1.2.1,1.2.1]",org.springframework
- .osgi.config;version="[1.2.1,1.2.1]",org.springframework.osgi.context
- ;version="[1.2.1,1.2.1]",org.springframework.security.authentication,
- org.springframework.security.config;version="[3.0,3.1)",org.springfra
- mework.security.core;version="[3.0,3.1)",org.springframework.security
- .core.context,org.springframework.security.core.userdetails,org.sprin
- gframework.security.web;version="[3.0,3.1)",org.springframework.secur
- ity.web.authentication;version="[3.0,3.1)",org.springframework.stereo
- type,org.springframework.web.bind.annotation;version="[3.0,3.1)",org.
- springframework.web.context;version="[3.0,3.1)",org.springframework.w
- eb.filter;version="[3.0,3.1)",org.springframework.web.multipart,org.s
- pringframework.web.multipart.commons,org.springframework.web.servlet;
- version="[3.0,3.1)",org.springframework.web.servlet.handler;version="
- [3.0,3.1)",org.springframework.web.servlet.mvc;version="[3.0,3.1)",or
- g.springframework.web.servlet.view;version="[3.0,3.1)"
+ fig;version="[3.0,3.1)",org.springframework.http.converter,org.spring
+ framework.orm.jpa;version="[3.0,3.1)",org.springframework.osgi;versio
+ n="[1.2.1,1.2.1]",org.springframework.osgi.compendium.config;version=
+ "[1.2.1,1.2.1]",org.springframework.osgi.config;version="[1.2.1,1.2.1
+ ]",org.springframework.osgi.context;version="[1.2.1,1.2.1]",org.sprin
+ gframework.security.authentication,org.springframework.security.confi
+ g;version="[3.0,3.1)",org.springframework.security.core;version="[3.0
+ ,3.1)",org.springframework.security.core.context,org.springframework.
+ security.core.userdetails,org.springframework.security.web;version="[
+ 3.0,3.1)",org.springframework.security.web.authentication;version="[3
+ .0,3.1)",org.springframework.stereotype,org.springframework.web.bind.
+ annotation;version="[3.0,3.1)",org.springframework.web.context;versio
+ n="[3.0,3.1)",org.springframework.web.filter;version="[3.0,3.1)",org.
+ springframework.web.multipart,org.springframework.web.multipart.commo
+ ns,org.springframework.web.servlet;version="[3.0,3.1)",org.springfram
+ ework.web.servlet.handler;version="[3.0,3.1)",org.springframework.web
+ .servlet.mvc;version="[3.0,3.1)",org.springframework.web.servlet.mvc.
+ annotation;version="[3.0,3.1)",org.springframework.web.servlet.view;v
+ ersion="[3.0,3.1)"
 

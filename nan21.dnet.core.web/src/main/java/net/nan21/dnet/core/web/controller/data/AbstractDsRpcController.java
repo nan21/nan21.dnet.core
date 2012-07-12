@@ -2,6 +2,7 @@ package net.nan21.dnet.core.web.controller.data;
 
 import java.io.InputStream;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.nan21.dnet.core.api.action.IActionResultRpcData;
@@ -38,10 +39,11 @@ public class AbstractDsRpcController<M, F, P> extends
 			@RequestParam(value = "rpcName", required = true) String rpcName,
 			@RequestParam(value = "data", required = false, defaultValue = "[]") String dataString,
 			@RequestParam(value = "params", required = false, defaultValue = "{}") String paramString,
-			HttpServletResponse response) throws Exception {
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
 
 		try {
-			this.prepareRequest();
+			this.prepareRequest(request, response);
 			this.resourceName = resourceName;
 			this.dataFormat = dataFormat;
 
@@ -101,10 +103,11 @@ public class AbstractDsRpcController<M, F, P> extends
 			@RequestParam(value = "rpcName", required = true) String rpcName,
 			@RequestParam(value = "data", required = false, defaultValue = "{}") String dataString,
 			@RequestParam(value = "params", required = false, defaultValue = "{}") String paramString,
-			HttpServletResponse response) throws Exception {
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
 
 		try {
-			this.prepareRequest();
+			this.prepareRequest(request, response);
 			this.resourceName = resourceName;
 			this.dataFormat = dataFormat;
 

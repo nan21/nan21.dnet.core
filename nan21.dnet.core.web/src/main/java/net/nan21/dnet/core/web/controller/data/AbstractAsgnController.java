@@ -3,6 +3,7 @@ package net.nan21.dnet.core.web.controller.data;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,9 +57,10 @@ public abstract class AbstractAsgnController<M, F, P> extends
 			@RequestParam(value = "resultSize", required = false, defaultValue = "500") int resultSize,
 			@RequestParam(value = "orderByCol", required = false, defaultValue = "") String orderByCol,
 			@RequestParam(value = "orderBySense", required = false, defaultValue = "") String orderBySense,
-			HttpServletResponse response) throws Exception {
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
 		try {
-			this.prepareRequest();
+			this.prepareRequest(request, response);
 			this.resourceName = resourceName;
 			this.dataFormat = dataFormat;
 
@@ -123,9 +125,10 @@ public abstract class AbstractAsgnController<M, F, P> extends
 			@RequestParam(value = "resultSize", required = false, defaultValue = "500") int resultSize,
 			@RequestParam(value = "orderByCol", required = false, defaultValue = "") String orderByCol,
 			@RequestParam(value = "orderBySense", required = false, defaultValue = "") String orderBySense,
-			HttpServletResponse response) throws Exception {
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
 		try {
-			this.prepareRequest();
+			this.prepareRequest(request, response);
 			this.resourceName = resourceName;
 			this.dataFormat = dataFormat;
 
@@ -179,9 +182,10 @@ public abstract class AbstractAsgnController<M, F, P> extends
 			@PathVariable String dataFormat,
 			@RequestParam(value = "objectId", required = true) Long objectId,
 			@RequestParam(value = "selectionId", required = true) String selectionId,
-			HttpServletResponse response) throws Exception {
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
 		try {
-			this.prepareRequest();
+			this.prepareRequest(request, response);
 			this.resourceName = resourceName;
 			this.dataFormat = dataFormat;
 
@@ -218,9 +222,10 @@ public abstract class AbstractAsgnController<M, F, P> extends
 			@RequestParam(value = "objectId", required = true) Long objectId,
 			@RequestParam(value = "selectionId", required = true) String selectionId,
 			@RequestParam(value = "p_selected_ids", required = true) String selectedIds,
-			HttpServletResponse response) throws Exception {
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
 		try {
-			this.prepareRequest();
+			this.prepareRequest(request, response);
 			this.resourceName = resourceName;
 			this.dataFormat = dataFormat;
 
@@ -265,9 +270,10 @@ public abstract class AbstractAsgnController<M, F, P> extends
 			@RequestParam(value = "objectId", required = true) Long objectId,
 			@RequestParam(value = "selectionId", required = true) String selectionId,
 			@RequestParam(value = "p_selected_ids", required = true) String selectedIds,
-			HttpServletResponse response) throws Exception {
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
 		try {
-			this.prepareRequest();
+			this.prepareRequest(request, response);
 			this.resourceName = resourceName;
 			this.dataFormat = dataFormat;
 
@@ -302,9 +308,10 @@ public abstract class AbstractAsgnController<M, F, P> extends
 			@RequestParam(value = "params", required = false, defaultValue = "{}") String paramString,
 			@RequestParam(value = "objectId", required = true) Long objectId,
 			@RequestParam(value = "selectionId", required = true) String selectionId,
-			HttpServletResponse response) throws Exception {
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
 		try {
-			this.prepareRequest();
+			this.prepareRequest(request, response);
 			this.resourceName = resourceName;
 			this.dataFormat = dataFormat;
 
@@ -341,9 +348,10 @@ public abstract class AbstractAsgnController<M, F, P> extends
 			@RequestParam(value = "params", required = false, defaultValue = "{}") String paramString,
 			@RequestParam(value = "objectId", required = true) Long objectId,
 			@RequestParam(value = "selectionId", required = true) String selectionId,
-			HttpServletResponse response) throws Exception {
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
 		try {
-			this.prepareRequest();
+			this.prepareRequest(request, response);
 			this.resourceName = resourceName;
 			this.dataFormat = dataFormat;
 
@@ -379,9 +387,10 @@ public abstract class AbstractAsgnController<M, F, P> extends
 			@PathVariable String dataFormat,
 			@RequestParam(value = "objectId", required = true) Long objectId,
 			@RequestParam(value = "selectionId", required = true) String selectionId,
-			HttpServletResponse response) throws Exception {
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
 		try {
-			this.prepareRequest();
+			this.prepareRequest(request, response);
 			this.resourceName = resourceName;
 			this.dataFormat = dataFormat;
 			IAsgnService<M, F, P> service = this.findAsgnService(this
@@ -405,9 +414,10 @@ public abstract class AbstractAsgnController<M, F, P> extends
 			@PathVariable String dataFormat,
 			@RequestParam(value = "objectId", required = true) Long objectId,
 			@RequestParam(value = "selectionId", required = true) String selectionId,
-			HttpServletResponse response) throws Exception {
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
 		try {
-			this.prepareRequest();
+			this.prepareRequest(request, response);
 			this.resourceName = resourceName;
 			this.dataFormat = dataFormat;
 

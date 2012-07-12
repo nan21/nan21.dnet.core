@@ -16,18 +16,18 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 
-public class DefaultNotAuthenticatedEntryPoint implements AuthenticationEntryPoint {
+public class DefaultNotAuthenticatedEntryPoint implements
+		AuthenticationEntryPoint {
 
-    @Override
-    public void commence(HttpServletRequest request,
-            HttpServletResponse response, AuthenticationException authException)
-            throws IOException, ServletException {
-         
-        System.out.print("-------------- in DefaultNotAuthenticatedEntryPoint");
-        response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-        response.getWriter().write("Not authenticated");
-        response.flushBuffer();
+	@Override
+	public void commence(HttpServletRequest request,
+			HttpServletResponse response, AuthenticationException authException)
+			throws IOException, ServletException {
 
-    }
+		response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+		response.getWriter().write("Not authenticated");
+		response.flushBuffer();
+
+	}
 
 }

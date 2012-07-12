@@ -3,6 +3,7 @@ package net.nan21.dnet.core.web.controller.session;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -45,26 +46,23 @@ public class SessionController {
 	@Autowired
 	private AuthenticationManager authenticationManager;
 
-	
-	// ************* HTML LOGIN ************* 
-	
+	// ************* HTML LOGIN *************
+
 	/**
 	 * Show login page
+	 * 
 	 * @return
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/login")
-	public ModelAndView showLogin(
-			 )
-			throws Exception {
+	public ModelAndView showLogin() throws Exception {
 		return new ModelAndView("login");
-	
+
 	}
-	
-	 
-	
+
 	/**
 	 * Process login action
+	 * 
 	 * @param username
 	 * @param password
 	 * @param clientCode
@@ -79,53 +77,54 @@ public class SessionController {
 			@RequestParam(value = "user", required = true) String username,
 			@RequestParam(value = "pswd", required = true) String password,
 			@RequestParam(value = "client", required = true) String clientCode,
-			@RequestParam(value = "lang", required = false ) String language,
+			@RequestParam(value = "lang", required = false) String language,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		try {
+
 			DefaultLoginAuthParams.clientCode.set(clientCode);
 			DefaultLoginAuthParams.language.set(language);
-			
+
 			String thePassword = password;
 			MessageDigest messageDigest = MessageDigest.getInstance("MD5");
-	        messageDigest.update(thePassword.getBytes(), 0, thePassword.length());
-	        String hashedPass = new BigInteger(1, messageDigest.digest())
-	                .toString(16);
-	        if (hashedPass.length() < 32) {
-	            hashedPass = "0" + hashedPass;
-	        }
-	        
+			messageDigest.update(thePassword.getBytes(), 0, thePassword
+					.length());
+			String hashedPass = new BigInteger(1, messageDigest.digest())
+					.toString(16);
+			if (hashedPass.length() < 32) {
+				hashedPass = "0" + hashedPass;
+			}
+
 			Authentication authRequest = new UsernamePasswordAuthenticationToken(
 					username, hashedPass);
 			Authentication authResponse = this.authenticationManager
 					.authenticate(authRequest);
 			SecurityContextHolder.getContext().setAuthentication(authResponse);
 
-			User u = ((SessionUser) authResponse.getPrincipal()).getUser();
-			Params params = ((SessionUser) authResponse.getPrincipal())
-					.getParams();
-			UserPreferences prefs = u.getPreferences();
+			this.auditLogin((SessionUser) authResponse.getPrincipal(), request);
+
 			response.sendRedirect("/nan21.dnet.core.web/ui/extjs/");
 			return null;
 		} catch (Exception e) {
 			Map<String, String> model = new HashMap<String, String>();
-			model.put("error",
-					"Invalid credentials. Authentication failed.");
+			model.put("error", "Invalid credentials. Authentication failed.");
 			return new ModelAndView("login", model);
 		}
 	}
-	
-	
+
 	@ResponseBody
 	@RequestMapping(params = "action=login")
 	public String doLoginExtjs(
 			@RequestParam(value = "user", required = true) String username,
 			@RequestParam(value = "pswd", required = true) String password,
 			@RequestParam(value = "client", required = true) String clientCode,
-			@RequestParam(value = "lang", required = false ) String language,
+			@RequestParam(value = "lang", required = false) String language,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		try {
+			// TODO: copy attributes
+			request.getSession().invalidate();
+
 			DefaultLoginAuthParams.clientCode.set(clientCode);
 			DefaultLoginAuthParams.language.set(language);
 			Authentication authRequest = new UsernamePasswordAuthenticationToken(
@@ -135,8 +134,10 @@ public class SessionController {
 			SecurityContextHolder.getContext().setAuthentication(authResponse);
 
 			SessionUser su = (SessionUser) SecurityContextHolder.getContext()
-			.getAuthentication().getPrincipal();
-			
+					.getAuthentication().getPrincipal();
+
+			this.auditLogin(su, request);
+
 			User u = su.getUser();
 			Params params = su.getParams();
 			UserPreferences prefs = u.getPreferences();
@@ -155,20 +156,19 @@ public class SessionController {
 			sb.append(" , \"thousandSeparator\": \""
 					+ prefs.getThousandSeparator() + "\"");
 
-			
 			Set<GrantedAuthority> roles = su.getAuthorities();
 			StringBuffer sbroles = new StringBuffer();
-			int i=0;
-			for(GrantedAuthority role : roles) {
-				if (i>0) {
+			int i = 0;
+			for (GrantedAuthority role : roles) {
+				if (i > 0) {
 					sbroles.append(",");
 				}
-				sbroles.append("\""+role.getAuthority()+"\"");		
+				sbroles.append("\"" + role.getAuthority() + "\"");
 				i++;
 			}
 			userRolesStr = sbroles.toString();
-			sb.append(" , \"roles\": [" + userRolesStr+ "]");
-			
+			sb.append(" , \"roles\": [" + userRolesStr + "]");
+
 			request
 					.getSession()
 					.setAttribute(
@@ -189,15 +189,14 @@ public class SessionController {
 	public String doLogout(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		SecurityContextHolder.getContext().setAuthentication(null);
-		request
-				.getSession()
-				.removeAttribute(
-						HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY);
+		request.getSession().invalidate();
+		// .removeAttribute(
+		// HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY);
 		return "";
 	}
-	
-	// ************* EXTJS LOGIN ************* 
-	
+
+	// ************* EXTJS LOGIN *************
+
 	@ResponseBody
 	@RequestMapping(params = "action=lock")
 	public String lock(HttpServletRequest request, HttpServletResponse response)
@@ -256,6 +255,12 @@ public class SessionController {
 	public void setAuthenticationManager(
 			AuthenticationManager authenticationManager) {
 		this.authenticationManager = authenticationManager;
+	}
+
+	private void auditLogin(SessionUser su, HttpServletRequest request) {
+		su.setClientIp(request.getRemoteAddr());
+		//su.setClientHost(request.getRemoteHost());
+		su.setLoginDate(new Date());
 	}
 
 	protected String handleException(Exception e, HttpServletResponse response)

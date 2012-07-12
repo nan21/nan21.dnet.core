@@ -7,29 +7,25 @@
 			http://www.springframework.org/schema/beans	http://www.springframework.org/schema/beans/spring-beans.xsd
 			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
 			http://www.springframework.org/schema/osgi http://www.springframework.org/schema/osgi/spring-osgi.xsd
-			http://www.springframework.org/schema/osgi-compendium http://www.springframework.org/schema/osgi-compendium/spring-osgi-compendium.xsd">	 
-	 
-	<context:property-placeholder  properties-ref="dnetProperties" />
-	
-	<osgi-compendium:cm-properties  id="dnetProperties"
-		persistent-id="net.nan21.dnet" >		 
-		 
-	</osgi-compendium:cm-properties>	
-	  
-	<!--  Local  --> 
-	 
-   	<bean id="productInfo" class="net.nan21.dnet.core.web.settings.ProductInfo" scope="singleton">
+			http://www.springframework.org/schema/osgi-compendium http://www.springframework.org/schema/osgi-compendium/spring-osgi-compendium.xsd">
+	<context:property-placeholder
+		properties-ref="dnetProperties" />
+	<osgi-compendium:cm-properties id="dnetProperties"
+		persistent-id="net.nan21.dnet">
+	</osgi-compendium:cm-properties>
+
+	<!--  Local  -->
+	<bean id="productInfo" class="net.nan21.dnet.core.web.settings.ProductInfo"
+		scope="singleton">
 		<property name="name" value="DNet eBusiness Suite" />
 		<property name="version" value="1.0.0" />
 	</bean>
-	
 	<bean id="application_uiExtjsSettings" class="net.nan21.dnet.core.web.settings.UiExtjsSettings"
 		scope="singleton">
 		<property name="urlUiExtjs" value="${url.ui.extjs}" />
 		<property name="urlUiExtjsCore" value="${url.ui.extjs.core}" />
 		<property name="urlUiExtjsLibExtjs" value="${url.ui.extjs.lib.extjs}" />
 	</bean>
-	
 	<bean id="systemConfig" class="net.nan21.dnet.core.api.SystemConfig"
 		scope="singleton">
 		<property name="disableFetchGroups" value="${sys.disableFetchGroups}" />
@@ -37,62 +33,47 @@
 		<property name="portalClientCode" value="${sys.portalClientCode}" />
 		<property name="portalClientId" value="${sys.portalClientId}" />
 	</bean>
-	 
 	<bean id="serviceLocator" class="net.nan21.dnet.core.presenter.service.ServiceLocator">
-	</bean> 
-	
+	</bean>
 	<context:annotation-config />
 	
+
+
 	<!--  Osgi  -->
-	
-	<osgi:service ref="systemConfig" interface="net.nan21.dnet.core.api.ISystemConfig"/>
-	
+	<osgi:service ref="systemConfig" interface="net.nan21.dnet.core.api.ISystemConfig" />
 	<osgi:reference id="osgiDataSource" cardinality="0..1"
 		interface="javax.sql.DataSource" />
-	
-	<osgi:reference id="osgiAuthenticationForDbUser" cardinality="0..1"
+	<osgi:reference id="osgiAuthenticationForDbUser"
+		cardinality="0..1"
 		interface="org.springframework.security.core.userdetails.UserDetailsService" />
-		
-	<osgi:reference id="osgiAuthorizationFactory" cardinality="0..1"
-		interface="net.nan21.dnet.core.api.security.IAuthorizationFactory" />
-		  
+	<osgi:reference id="osgiAuthorizationFactory"
+		cardinality="0..1" interface="net.nan21.dnet.core.api.security.IAuthorizationFactory" />
 	<osgi:reference id="osgiChangePassword" cardinality="0..1"
 		interface="net.nan21.dnet.core.api.session.IChangePasswordService" />
- 
 	<osgi:list id="osgiEntityManagerFactory" cardinality="0..N"
 		interface="javax.persistence.EntityManagerFactory"></osgi:list>
-		
 	<osgi:list id="osgiExtensionProviders" cardinality="0..N"
 		interface="net.nan21.dnet.core.api.ui.extjs.IExtensionProvider" />
-		
 	<osgi:list id="osgiExtensionProvidersFrame" cardinality="0..N"
 		interface="net.nan21.dnet.core.api.ui.extjs.IExtensionProviderFrame" />
-	
 	<osgi:list id="osgiExtensionContentProviders" cardinality="0..N"
 		interface="net.nan21.dnet.core.api.ui.extjs.IExtensionContentProvider" />
-		
-	<osgi:list id="osgiExtensionContentProvidersFrame" cardinality="0..N"
+	<osgi:list id="osgiExtensionContentProvidersFrame"
+		cardinality="0..N"
 		interface="net.nan21.dnet.core.api.ui.extjs.IExtensionContentProviderFrame" />
-			
 	<osgi:list id="osgiDsServiceFactories" cardinality="0..N"
-		interface="net.nan21.dnet.core.api.service.IDsServiceFactory"/>
-	
+		interface="net.nan21.dnet.core.api.service.IDsServiceFactory" />
 	<osgi:list id="osgiFileUploadServiceFactories" cardinality="0..N"
-		interface="net.nan21.dnet.core.api.service.IFileUploadServiceFactory"/>
-			
+		interface="net.nan21.dnet.core.api.service.IFileUploadServiceFactory" />
 	<osgi:list id="osgiAsgnServiceFactories" cardinality="0..N"
-		interface="net.nan21.dnet.core.api.service.IAsgnServiceFactory"/>
-	
+		interface="net.nan21.dnet.core.api.service.IAsgnServiceFactory" />
 	<osgi:list id="osgiSetupParticipants" cardinality="0..N"
-		interface="net.nan21.dnet.core.api.setup.ISetupParticipant"/>
-	
+		interface="net.nan21.dnet.core.api.setup.ISetupParticipant" />
 	<osgi:list id="osgiStartupParticipants" cardinality="0..N"
-		interface="net.nan21.dnet.core.api.setup.IStartupParticipant"/>
-		
- 	<osgi:reference id="osgiActivitiProcessEngineHolder" cardinality="0..1"
-			interface="net.nan21.dnet.core.api.wf.IActivitiProcessEngineHolder" />
-	
-	<!-- Configures global application security --> 
+		interface="net.nan21.dnet.core.api.setup.IStartupParticipant" />
+	<osgi:reference id="osgiActivitiProcessEngineHolder"
+		cardinality="0..1" interface="net.nan21.dnet.core.api.wf.IActivitiProcessEngineHolder" />
+
+	<!-- Configures global application security -->
 	<import resource="security.xml" />
-	 
 </beans>

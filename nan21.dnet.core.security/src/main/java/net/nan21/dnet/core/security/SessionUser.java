@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.SortedSet;
@@ -26,180 +27,207 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.Assert;
 
 public class SessionUser implements UserDetails {
- 
-    private static final long serialVersionUID = 1L;
-    private Boolean administrator;
-    private Set<GrantedAuthority> authorities;
-    private List<String> roles;
-    
-    private User user;
-    private Params params;
 
-    public SessionUser(User user, Params params) {
-        super();
-        this.user = user;
-        this.params = params; 
-        //Authentication.setAuthenticatedUserId(user.getUsername());
-        /*
-         * try {
-			  identityService.setAuthenticatedUserId("bono");
-			  runtimeService.startProcessInstanceByKey("someProcessKey");
-			} finally {
-			  identityService.setAuthenticatedUserId(null);
+	private static final long serialVersionUID = 1L;
+	private Boolean administrator;
+	private Set<GrantedAuthority> authorities;
+	private List<String> roles;
+
+	private User user;
+	private Params params;
+
+	private String clientIp;
+	private String clientHost;
+	private Date loginDate;
+
+	public SessionUser(User user, Params params) {
+		super();
+		this.user = user;
+		this.params = params;
+		// Authentication.setAuthenticatedUserId(user.getUsername());
+		/*
+		 * try { identityService.setAuthenticatedUserId("bono");
+		 * runtimeService.startProcessInstanceByKey("someProcessKey"); } finally
+		 * { identityService.setAuthenticatedUserId(null); }
+		 */
+
+	}
+
+	public void addAuthorities(
+			Collection<? extends GrantedAuthority> authoritiesList) {
+		if (this.authorities == null) {
+			this.authorities = Collections
+					.unmodifiableSet(sortAuthorities(authoritiesList));
+		}
+	}
+
+	/**
+	 * @return the administrator
+	 */
+	public Boolean isAdministrator() {
+		if (this.administrator == null) {
+			String adminRole = this.params.getAdminRole();
+			this.administrator = false;
+			for (GrantedAuthority a : authorities) {
+				if (a.getAuthority().equals(adminRole)) {
+					this.administrator = true;
+					break;
+				}
 			}
-			*/
-        
-    }
+		}
+		return this.administrator;
+	}
 
-    public void addAuthorities(Collection<? extends GrantedAuthority> authoritiesList) {
-        if (this.authorities == null) {
-            this.authorities = Collections
-            .unmodifiableSet(sortAuthorities(authoritiesList)); 
-        }        
-    }
-     
-    /**
-     * @return the administrator
-     */
-    public Boolean isAdministrator() {
-    	if (this.administrator == null) { 
-    		String adminRole = this.params.getAdminRole();
-    		this.administrator = false;
-    		for(GrantedAuthority a : authorities) {
-    			if (a.getAuthority().equals(adminRole)) {
-    				this.administrator = true;
-    				break;
-    			}
-    		}    		
-    	}
-    	return this.administrator;
-    } 
-     
-    /**
-     * @param administrator the administrator to set
-     */
-    public void setAdministrator(Boolean administrator) {
-        if (this.administrator == null) {
-            this.administrator = administrator;
-        }           
-    }
- 
-    /**
-     * @return the user
-     */
-    public User getUser() {
-        return this.user;
-    }
+	/**
+	 * @param administrator
+	 *            the administrator to set
+	 */
+	public void setAdministrator(Boolean administrator) {
+		if (this.administrator == null) {
+			this.administrator = administrator;
+		}
+	}
 
-    /**
-     * @return the params
-     */
-    public Params getParams() {
-        return this.params;
-    }
+	/**
+	 * @return the user
+	 */
+	public User getUser() {
+		return this.user;
+	}
 
-    /**
-     * @return the defaultAccessAllow
-     */
-    public boolean isDefaultAccessAllow() {
-        return this.params.isDefaultAccessAllow();
-    }
+	/**
+	 * @return the params
+	 */
+	public Params getParams() {
+		return this.params;
+	}
 
-    /**
-     * @return the password
-     */
-    public String getPassword() {
-        return new String(this.user.getPassword());
-    }
+	/**
+	 * @return the defaultAccessAllow
+	 */
+	public boolean isDefaultAccessAllow() {
+		return this.params.isDefaultAccessAllow();
+	}
 
-    /**
-     * @return the username
-     */
-    public String getUsername() {
-        return this.user.getUsername();
-    }
+	/**
+	 * @return the password
+	 */
+	public String getPassword() {
+		return new String(this.user.getPassword());
+	}
 
-    
-    public List<String> getRoles() {
-    	if (this.roles == null) {
-    		this.roles = new ArrayList<String>();
-    		for(GrantedAuthority a : authorities) {
-    			this.roles.add(a.getAuthority());
-    		}   
-    	}
-    	return this.roles;
-    }
-    /**
-     * @return the authorities
-     */
-    public Set<GrantedAuthority> getAuthorities() {
-        return this.authorities;
-    }
+	/**
+	 * @return the username
+	 */
+	public String getUsername() {
+		return this.user.getUsername();
+	}
 
-    /**
-     * @return the accountNonExpired
-     */
-    public boolean isAccountNonExpired() {
-        return !this.user.isAccountExpired();
-    }
+	public List<String> getRoles() {
+		if (this.roles == null) {
+			this.roles = new ArrayList<String>();
+			for (GrantedAuthority a : authorities) {
+				this.roles.add(a.getAuthority());
+			}
+		}
+		return this.roles;
+	}
 
-    /**
-     * @return the accountNonLocked
-     */
-    public boolean isAccountNonLocked() {
-        return !this.user.isAccountLocked();
-    }
+	/**
+	 * @return the authorities
+	 */
+	public Set<GrantedAuthority> getAuthorities() {
+		return this.authorities;
+	}
 
-    /**
-     * @return the credentialsNonExpired
-     */
-    public boolean isCredentialsNonExpired() {
-        return !this.user.isCredentialsExpired();
-    }
+	/**
+	 * @return the accountNonExpired
+	 */
+	public boolean isAccountNonExpired() {
+		return !this.user.isAccountExpired();
+	}
 
-    /**
-     * @return the enabled
-     */
-    public boolean isEnabled() {
-        return this.user.isEnabled();
-    }
+	/**
+	 * @return the accountNonLocked
+	 */
+	public boolean isAccountNonLocked() {
+		return !this.user.isAccountLocked();
+	}
 
-    private static SortedSet<GrantedAuthority> sortAuthorities(
-            Collection<? extends GrantedAuthority> authorities) {
-        Assert.notNull(authorities,
-                "Cannot pass a null GrantedAuthority collection");
-        // Ensure array iteration order is predictable (as per
-        // UserDetails.getAuthorities() contract and SEC-717)
-        SortedSet<GrantedAuthority> sortedAuthorities = new TreeSet<GrantedAuthority>(
-                new AuthorityComparator());
+	/**
+	 * @return the credentialsNonExpired
+	 */
+	public boolean isCredentialsNonExpired() {
+		return !this.user.isCredentialsExpired();
+	}
 
-        for (GrantedAuthority grantedAuthority : authorities) {
-            Assert.notNull(grantedAuthority,
-                    "GrantedAuthority list cannot contain any null elements");
-            sortedAuthorities.add(grantedAuthority);
-        }
+	/**
+	 * @return the enabled
+	 */
+	public boolean isEnabled() {
+		return this.user.isEnabled();
+	}
 
-        return sortedAuthorities;
-    }
+	public String getClientIp() {
+		return clientIp;
+	}
 
-    private static class AuthorityComparator implements
-            Comparator<GrantedAuthority>, Serializable {
-        private static final long serialVersionUID = 1L;
+	public void setClientIp(String clientIp) {
+		this.clientIp = clientIp;
+	}
 
-        public int compare(GrantedAuthority g1, GrantedAuthority g2) {
-            // Neither should ever be null as each entry is checked before
-            // adding it to the set.
-            // If the authority is null, it is a custom authority and should
-            // precede others.
-            if (g2.getAuthority() == null) {
-                return -1;
-            }
+	public String getClientHost() {
+		return clientHost;
+	}
 
-            if (g1.getAuthority() == null) {
-                return 1;
-            }
+	public void setClientHost(String clientHost) {
+		this.clientHost = clientHost;
+	}
 
-            return g1.getAuthority().compareTo(g2.getAuthority());
-        }
-    }
+	public Date getLoginDate() {
+		return loginDate;
+	}
+
+	public void setLoginDate(Date loginDate) {
+		this.loginDate = loginDate;
+	}
+
+	private static SortedSet<GrantedAuthority> sortAuthorities(
+			Collection<? extends GrantedAuthority> authorities) {
+		Assert.notNull(authorities,
+				"Cannot pass a null GrantedAuthority collection");
+		// Ensure array iteration order is predictable (as per
+		// UserDetails.getAuthorities() contract and SEC-717)
+		SortedSet<GrantedAuthority> sortedAuthorities = new TreeSet<GrantedAuthority>(
+				new AuthorityComparator());
+
+		for (GrantedAuthority grantedAuthority : authorities) {
+			Assert.notNull(grantedAuthority,
+					"GrantedAuthority list cannot contain any null elements");
+			sortedAuthorities.add(grantedAuthority);
+		}
+
+		return sortedAuthorities;
+	}
+
+	private static class AuthorityComparator implements
+			Comparator<GrantedAuthority>, Serializable {
+		private static final long serialVersionUID = 1L;
+
+		public int compare(GrantedAuthority g1, GrantedAuthority g2) {
+			// Neither should ever be null as each entry is checked before
+			// adding it to the set.
+			// If the authority is null, it is a custom authority and should
+			// precede others.
+			if (g2.getAuthority() == null) {
+				return -1;
+			}
+
+			if (g1.getAuthority() == null) {
+				return 1;
+			}
+
+			return g1.getAuthority().compareTo(g2.getAuthority());
+		}
+	}
 }

@@ -3,6 +3,7 @@ package net.nan21.dnet.core.web.controller.data;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,9 +37,10 @@ public class AbstractDsWriteController<M, F, P> extends
 			@PathVariable String dataFormat,
 			@RequestParam(value = "data", required = false, defaultValue = "[]") String dataString,
 			@RequestParam(value = "params", required = false, defaultValue = "{}") String paramString,
-			HttpServletResponse response) throws Exception {
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
 		try {
-			this.prepareRequest();
+			this.prepareRequest(request, response);
 
 			this.resourceName = resourceName;
 			this.dataFormat = dataFormat;
@@ -85,10 +87,11 @@ public class AbstractDsWriteController<M, F, P> extends
 			@PathVariable String dataFormat,
 			@RequestParam(value = "data", required = false, defaultValue = "[]") String dataString,
 			@RequestParam(value = "params", required = false, defaultValue = "{}") String paramString,
-			HttpServletResponse response) throws Exception {
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
 
 		try {
-			this.prepareRequest();
+			this.prepareRequest(request, response);
 			this.resourceName = resourceName;
 			this.dataFormat = dataFormat;
 
@@ -134,10 +137,11 @@ public class AbstractDsWriteController<M, F, P> extends
 			@PathVariable String dataFormat,
 			@RequestParam(value = "data", required = false, defaultValue = "[]") String dataString,
 			@RequestParam(value = "params", required = false, defaultValue = "{}") String paramString,
-			HttpServletResponse response) throws Exception {
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
 
 		try {
-			this.prepareRequest();
+			this.prepareRequest(request, response);
 			this.resourceName = resourceName;
 			this.dataFormat = dataFormat;
 
@@ -152,7 +156,7 @@ public class AbstractDsWriteController<M, F, P> extends
 					.createMarshaller(dataFormat);
 
 			List<M> list = marshaller.readListFromString(dataString);
-			//P params = marshaller.readParamsFromString(paramString);
+			// P params = marshaller.readParamsFromString(paramString);
 
 			List<Object> ids = new ArrayList<Object>();
 			for (M ds : list) {
@@ -187,10 +191,11 @@ public class AbstractDsWriteController<M, F, P> extends
 			@PathVariable String dataFormat,
 			@RequestParam(value = "data", required = false, defaultValue = "[]") String idsString,
 			@RequestParam(value = "params", required = false, defaultValue = "{}") String paramString,
-			HttpServletResponse response) throws Exception {
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
 
 		try {
-			this.prepareRequest();
+			this.prepareRequest(request, response);
 			this.resourceName = resourceName;
 			this.dataFormat = dataFormat;
 
@@ -206,12 +211,10 @@ public class AbstractDsWriteController<M, F, P> extends
 
 			List<Object> list = marshaller.readListFromString(idsString,
 					Object.class);
-			//P params = marshaller.readParamsFromString(paramString);
 
 			service.deleteByIds(list);
 
-			// IActionResultSave result = this.packResult(list, params);
-			return "{'success':true}"; // marshaller.writeResultToString(result);
+			return "{'success':true}";
 		} catch (Exception e) {
 			this.handleException(e, response);
 			return null;

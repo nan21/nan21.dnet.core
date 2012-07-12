@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.nan21.dnet.core.api.action.IActionResultFind;
@@ -26,8 +27,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-public class AbstractDsReadController<M,F,P> extends
-		AbstractDsBaseController<M,F,P> {
+public class AbstractDsReadController<M, F, P> extends
+		AbstractDsBaseController<M, F, P> {
 
 	/**
 	 * Default handler for find action.
@@ -56,20 +57,21 @@ public class AbstractDsReadController<M,F,P> extends
 			@RequestParam(value = "orderByCol", required = false, defaultValue = "") String orderByCol,
 			@RequestParam(value = "orderBySense", required = false, defaultValue = "") String orderBySense,
 			@RequestParam(value = "orderBy", required = false, defaultValue = "") String orderBy,
-			HttpServletResponse response) throws Exception {
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
 		try {
-			this.prepareRequest();
+			this.prepareRequest(request, response);
 			this.resourceName = resourceName;
 			this.dataFormat = dataFormat;
 
-			this.authorizeAction( resourceName.substring(0,
-					resourceName.length() - 2), "find");
+			this.authorizeAction(resourceName.substring(0, resourceName
+					.length() - 2), "find");
 
-			IDsService<M,F,P> service = this.findDsService(this.resourceName);
-			IDsMarshaller<M,F,P> marshaller = service
+			IDsService<M, F, P> service = this.findDsService(this.resourceName);
+			IDsMarshaller<M, F, P> marshaller = service
 					.createMarshaller(dataFormat);
 
-			IQueryBuilder<M,F,P> builder = service.createQueryBuilder()
+			IQueryBuilder<M, F, P> builder = service.createQueryBuilder()
 					.addFetchLimit(resultStart, resultSize);
 
 			if (orderBy != null && !orderBy.equals("")) {
@@ -85,8 +87,8 @@ public class AbstractDsReadController<M,F,P> extends
 
 			List<M> list = service.find(filter, params, builder);
 			long totalCount = service.count(filter, params, builder); // service.count(filter,
-																		// params,
-																		// builder);
+			// params,
+			// builder);
 
 			IActionResultFind result = this.packfindResult(list, params,
 					totalCount);
@@ -129,21 +131,22 @@ public class AbstractDsReadController<M,F,P> extends
 			@RequestParam(value = "c[export_col_names]", required = true, defaultValue = "") String colNames,
 			@RequestParam(value = "c[export_col_titles]", required = true, defaultValue = "") String colTitles,
 			@RequestParam(value = "c[export_col_widths]", required = true, defaultValue = "") String colWidths,
-
-			HttpServletResponse response) throws Exception {
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
 		try {
-			this.prepareRequest();
+			this.prepareRequest(request, response);
 			this.resourceName = resourceName;
 			this.dataFormat = dataFormat;
- 
-			this.authorizeAction(resourceName.substring(0,
-					resourceName.length() - 2), "export");
 
-			IDsService<M,F,P> service = this.findDsService(this.resourceName);
-			IQueryBuilder<M,F,P> builder = service.createQueryBuilder() 
+			this.authorizeAction(resourceName.substring(0, resourceName
+					.length() - 2), "export");
+
+			IDsService<M, F, P> service = this.findDsService(this.resourceName);
+			IQueryBuilder<M, F, P> builder = service.createQueryBuilder()
 					.addFetchLimit(resultStart, resultSize);
-			IDsMarshaller<M,F,P> marshaller = service.createMarshaller("json");
-  
+			IDsMarshaller<M, F, P> marshaller = service
+					.createMarshaller("json");
+
 			if (orderBy != null && !orderBy.equals("")) {
 				List<SortToken> sortTokens = marshaller.readListFromString(
 						orderBy, SortToken.class);
@@ -171,7 +174,8 @@ public class AbstractDsReadController<M,F,P> extends
 			if (dataFormat.equalsIgnoreCase("html")) {
 				writer = new DsHtmlExport<M>(service.getModelClass());
 				Map<String, Object> properties = new HashMap<String, Object>();
-				properties.put("cssUrl", this.getSystemConfig().getSysParamValue("CORE_EXP_HTML_CSS"));
+				properties.put("cssUrl", this.getSystemConfig()
+						.getSysParamValue("CORE_EXP_HTML_CSS"));
 				writer.setProperties(properties);
 			}
 			if (writer == null) {

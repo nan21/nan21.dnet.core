@@ -25,6 +25,7 @@ Import-Package:
  org.springframework.web.servlet;version="[3.0,3.1)",
  org.springframework.web.servlet.handler;version="[3.0,3.1)",
  org.springframework.web.servlet.mvc;version="[3.0,3.1)",
+ org.springframework.web.servlet.mvc.annotation;version="[3.0,3.1)",
  org.springframework.web.servlet.view;version="[3.0,3.1)",
  org.springframework.web.bind.annotation;version="[3.0,3.1)",
  org.springframework.web.context;version="[3.0,3.1)",
