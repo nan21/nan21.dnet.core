@@ -259,6 +259,7 @@ public class SessionController {
 
 	private void auditLogin(SessionUser su, HttpServletRequest request) {
 		su.setClientIp(request.getRemoteAddr());
+		su.setUserAgent(request.getHeader("User-Agent"));
 		//su.setClientHost(request.getRemoteHost());
 		su.setLoginDate(new Date());
 	}

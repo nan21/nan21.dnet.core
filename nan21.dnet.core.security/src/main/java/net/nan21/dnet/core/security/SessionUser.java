@@ -38,6 +38,7 @@ public class SessionUser implements UserDetails {
 
 	private String clientIp;
 	private String clientHost;
+	private String userAgent;
 	private Date loginDate;
 
 	public SessionUser(User user, Params params) {
@@ -190,6 +191,14 @@ public class SessionUser implements UserDetails {
 
 	public void setLoginDate(Date loginDate) {
 		this.loginDate = loginDate;
+	}
+
+	public String getUserAgent() {
+		return userAgent;
+	}
+
+	public void setUserAgent(String userAgent) {
+		this.userAgent = userAgent;
 	}
 
 	private static SortedSet<GrantedAuthority> sortAuthorities(

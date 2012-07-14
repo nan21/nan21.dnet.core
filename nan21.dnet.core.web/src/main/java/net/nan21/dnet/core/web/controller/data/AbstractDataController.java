@@ -74,8 +74,19 @@ public class AbstractDataController {
 		if (checkIp != null && checkIp.equals("true")) {
 			String ip = request.getRemoteAddr();
 			if (!su.getClientIp().equals(ip)) {
+				logger.debug("Request comes from different IP as expected. Expected: " + su.getClientIp() + ", real "+ip );
 				throw new Exception(
-						"Request comes from different IP as expected.");
+						"Security settings do not allow to process request. Check log file for details.");
+			}
+		}
+		
+		String checkAgent = this.systemConfig.getSysParamValue("SESSION_CHECK_USER_AGENT");
+		if (checkAgent != null && checkAgent.equals("true")) {
+			String agent = request.getHeader("User-Agent");
+			if (!su.getUserAgent().equals(agent)) {
+				logger.debug("Request comes from different user-agent as expected. Expected: " + su.getUserAgent() + ", real "+agent );
+				throw new Exception(
+						"Security settings do not allow to process request. Check log file for details.");
 			}
 		}
 	}
