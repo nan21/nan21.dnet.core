@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-Vendor: Nan21 
 Fragment-Host: activiti-engine;bundle-version="[5.9,5.9]"
-Bundle-Version: 1.0.0
+Bundle-Version: 1.1.0
 Tool: Bundlor 1.0.0.RELEASE
 Bundle-Name: DNet fragment - activiti
 Bundle-ManifestVersion: 2
@@ -10,5 +10,5 @@ Bundle-SymbolicName: nan21.dnet.fragment.activiti
 Import-Package: com.sun.mail.handlers;version="[1.4.0,1.4.1]",com.sun.
  mail.smtp;version="[1.4.0,1.4.1]",javax.mail;version="[1.4.0,1.4.1]",
  javax.mail.internet;version="[1.4.0,1.4.1]",net.nan21.dnet.core.workf
- low.activiti_ext;version="[1.0.0,1.0.0]"
+ low.activiti_ext;version="[1.1.0,1.1.0]"
 

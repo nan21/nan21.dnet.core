@@ -1,24 +1,24 @@
 Manifest-Version: 1.0
-Export-Package: net.nan21.dnet.core.api;version="1.0.0";uses:="org.spr
+Export-Package: net.nan21.dnet.core.api;version="1.1.0";uses:="org.spr
  ingframework.beans.factory.annotation,org.springframework.context",ne
- t.nan21.dnet.core.api.action;version="1.0.0";uses:="net.nan21.dnet.co
+ t.nan21.dnet.core.api.action;version="1.1.0";uses:="net.nan21.dnet.co
  re.api,net.nan21.dnet.core.api.descriptor",net.nan21.dnet.core.api.an
- notation;version="1.0.0";uses:="javax.persistence",net.nan21.dnet.cor
- e.api.converter;version="1.0.0";uses:="javax.persistence",net.nan21.d
- net.core.api.descriptor;version="1.0.0",net.nan21.dnet.core.api.email
- ;version="1.0.0";uses:="net.nan21.dnet.core.api.exceptions",net.nan21
- .dnet.core.api.exceptions;version="1.0.0",net.nan21.dnet.core.api.job
- ;version="1.0.0",net.nan21.dnet.core.api.marshall;version="1.0.0";use
+ notation;version="1.1.0";uses:="javax.persistence",net.nan21.dnet.cor
+ e.api.converter;version="1.1.0";uses:="javax.persistence",net.nan21.d
+ net.core.api.descriptor;version="1.1.0",net.nan21.dnet.core.api.email
+ ;version="1.1.0";uses:="net.nan21.dnet.core.api.exceptions",net.nan21
+ .dnet.core.api.exceptions;version="1.1.0",net.nan21.dnet.core.api.job
+ ;version="1.1.0",net.nan21.dnet.core.api.marshall;version="1.1.0";use
  s:="net.nan21.dnet.core.api.action",net.nan21.dnet.core.api.model;ver
- sion="1.0.0",net.nan21.dnet.core.api.security;version="1.0.0",net.nan
- 21.dnet.core.api.service;version="1.0.0";uses:="javax.persistence,net
+ sion="1.1.0",net.nan21.dnet.core.api.security;version="1.1.0",net.nan
+ 21.dnet.core.api.service;version="1.1.0";uses:="javax.persistence,net
  .nan21.dnet.core.api,net.nan21.dnet.core.api.action,net.nan21.dnet.co
  re.api.marshall,org.springframework.web.multipart",net.nan21.dnet.cor
- e.api.session;version="1.0.0",net.nan21.dnet.core.api.setup;version="
- 1.0.0";uses:="net.nan21.dnet.core.api,org.springframework.beans.facto
+ e.api.session;version="1.1.0",net.nan21.dnet.core.api.setup;version="
+ 1.1.0";uses:="net.nan21.dnet.core.api,org.springframework.beans.facto
  ry.annotation,org.springframework.context",net.nan21.dnet.core.api.ui
- .extjs;version="1.0.0",net.nan21.dnet.core.api.util;version="1.0.0",n
- et.nan21.dnet.core.api.wf;version="1.0.0"
+ .extjs;version="1.1.0",net.nan21.dnet.core.api.util;version="1.1.0",n
+ et.nan21.dnet.core.api.wf;version="1.1.0"
 netnan21dnetcoreapisecurity: 
 Tool: Bundlor 1.0.0.RELEASE
 netnan21dnetcoreapimarshall: 
@@ -40,7 +40,7 @@ Bundle-Name: DNet Core - api
 netnan21dnetcoreapiwf: 
 Bundle-Vendor: Nan21 
 netnan21dnetcoreapiemail: 
-Bundle-Version: 1.0.0
+Bundle-Version: 1.1.0
 Bundle-ManifestVersion: 2
 Import-Package: javax.persistence;version="[2.0,2.1)",org.springframew
  ork.beans.factory.annotation,org.springframework.context,org.springfr

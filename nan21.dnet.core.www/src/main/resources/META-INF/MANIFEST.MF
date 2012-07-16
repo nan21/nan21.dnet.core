@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Import-Bundle: org.eclipse.virgo.snaps.api;version="[3.0,4.0)"
 Bundle-Vendor: Nan21 
-Bundle-Version: 1.0.0
+Bundle-Version: 1.1.0
 Tool: Bundlor 1.0.0.RELEASE
 Bundle-Name: DNet Core - www
 Bundle-ManifestVersion: 2

@@ -1,17 +1,17 @@
 Manifest-Version: 1.0
-Export-Package: net.nan21.dnet.core.workflow;version="1.0.0";uses:="ne
+Export-Package: net.nan21.dnet.core.workflow;version="1.1.0";uses:="ne
  t.nan21.dnet.core.api,net.nan21.dnet.core.api.service,net.nan21.dnet.
  core.api.wf,org.activiti.engine,org.activiti.engine.impl.cfg,org.acti
  viti.spring,org.springframework.beans.factory.annotation,org.springfr
  amework.context",net.nan21.dnet.core.workflow.activiti_ext;version="1
- .0.0";uses:="net.nan21.dnet.core.api.email,org.activiti.engine.delega
+ .1.0";uses:="net.nan21.dnet.core.api.email,org.activiti.engine.delega
  te,org.activiti.engine.impl.bpmn.behavior,org.activiti.engine.impl.bp
  mn.parser,org.activiti.engine.impl.pvm.delegate,org.activiti.engine.i
  mpl.pvm.process,org.activiti.engine.impl.util.xml,org.springframework
  .beans.factory.annotation,org.springframework.context"
 Import-Bundle: activiti-engine;version="[5.9,5.9]",activiti-spring
 Bundle-Vendor: Nan21 
-Bundle-Version: 1.0.0
+Bundle-Version: 1.1.0
 Tool: Bundlor 1.0.0.RELEASE
 Bundle-Name: DNet Core - workflow
 Bundle-ManifestVersion: 2
@@ -20,11 +20,11 @@ Bundle-SymbolicName: nan21.dnet.core.workflow
 Import-Package: com.sun.mail.handlers;version="[1.4.0,1.4.1]",com.sun.
  mail.smtp;version="[1.4.0,1.4.1]",javax.mail;version="[1.4.0,1.4.1]",
  javax.mail.internet;version="[1.4.0,1.4.1]",javax.script,javax.sql,ne
- t.nan21.dnet.core.api;version="[1.0.0,1.0.0]",net.nan21.dnet.core.api
- .email;version="[1.0.0,1.0.0]",net.nan21.dnet.core.api.exceptions,net
- .nan21.dnet.core.api.job;version="[1.0.0,1.0.0]",net.nan21.dnet.core.
- api.service;version="[1.0.0,1.0.0]",net.nan21.dnet.core.api.session;v
- ersion="[1.0.0,1.0.0]",net.nan21.dnet.core.api.wf;version="[1.0.0,1.0
+ t.nan21.dnet.core.api;version="[1.1.0,1.1.0]",net.nan21.dnet.core.api
+ .email;version="[1.1.0,1.1.0]",net.nan21.dnet.core.api.exceptions,net
+ .nan21.dnet.core.api.job;version="[1.1.0,1.1.0]",net.nan21.dnet.core.
+ api.service;version="[1.1.0,1.1.0]",net.nan21.dnet.core.api.session;v
+ ersion="[1.1.0,1.1.0]",net.nan21.dnet.core.api.wf;version="[1.1.0,1.1
  .0]",org.activiti.engine,org.activiti.engine.delegate,org.activiti.en
  gine.impl.bpmn.behavior,org.activiti.engine.impl.bpmn.parser,org.acti
  viti.engine.impl.cfg,org.activiti.engine.impl.pvm.delegate,org.activi
