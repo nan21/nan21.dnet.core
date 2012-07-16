@@ -70,6 +70,24 @@ Ext.define("dnet.core.dc.DcvFilterPropGridBuilder", {
 		return this;
 	},
 	
+	addCombo : function(config) {
+		if(!config.editor) {
+			config.editor = {};
+		}		 
+		var e = config.editor;
+		 
+		if (e.maxLength) {
+			e.enforceMaxLength = true;
+		}
+		if (e.caseRestriction ) {
+			e.fieldStyle += "text-transform:"+e.caseRestriction+";";
+		}	
+		config.editorInstance = Ext.create('Ext.form.field.ComboBox', e);
+	 
+		config._default_ = "";
+		this.applySharedConfig(config);		  
+		return this;
+	},
 	
 	addBooleanField : function(config) {
 		
