@@ -1,26 +1,26 @@
 Manifest-Version: 1.0
-Export-Package: net.nan21.dnet.core.presenter;version="1.1.0",net.nan2
- 1.dnet.core.presenter.action;version="1.1.0";uses:="javax.persistence
+Export-Package: net.nan21.dnet.core.presenter;version="1.0.1",net.nan2
+ 1.dnet.core.presenter.action;version="1.0.1";uses:="javax.persistence
  ,net.nan21.dnet.core.api,net.nan21.dnet.core.api.action,net.nan21.dne
  t.core.api.descriptor",net.nan21.dnet.core.presenter.converter;versio
- n="1.1.0";uses:="javax.persistence,net.nan21.dnet.core.api,net.nan21.
+ n="1.0.1";uses:="javax.persistence,net.nan21.dnet.core.api,net.nan21.
  dnet.core.api.converter,net.nan21.dnet.core.api.service,net.nan21.dne
  t.core.presenter.model,net.nan21.dnet.core.presenter.service,org.spri
  ngframework.beans.factory.annotation,org.springframework.context",net
- .nan21.dnet.core.presenter.exception;version="1.1.0",net.nan21.dnet.c
- ore.presenter.job;version="1.1.0";uses:="net.nan21.dnet.core.api.job,
+ .nan21.dnet.core.presenter.exception;version="1.0.1",net.nan21.dnet.c
+ ore.presenter.job;version="1.0.1";uses:="net.nan21.dnet.core.api.job,
  net.nan21.dnet.core.presenter.service,org.springframework.beans.facto
  ry.annotation,org.springframework.context",net.nan21.dnet.core.presen
- ter.libextensions;version="1.1.0";uses:="au.com.bytecode.opencsv.bean
- ",net.nan21.dnet.core.presenter.marshaller;version="1.1.0";uses:="net
+ ter.libextensions;version="1.0.1";uses:="au.com.bytecode.opencsv.bean
+ ",net.nan21.dnet.core.presenter.marshaller;version="1.0.1";uses:="net
  .nan21.dnet.core.api.action,net.nan21.dnet.core.api.marshall",net.nan
- 21.dnet.core.presenter.model;version="1.1.0";uses:="net.nan21.dnet.co
+ 21.dnet.core.presenter.model;version="1.0.1";uses:="net.nan21.dnet.co
  re.api.descriptor,org.springframework.beans.factory.annotation,org.sp
  ringframework.context",net.nan21.dnet.core.presenter.model.base;versi
- on="1.1.0";uses:="net.nan21.dnet.core.api.annotation,net.nan21.dnet.c
+ on="1.0.1";uses:="net.nan21.dnet.core.api.annotation,net.nan21.dnet.c
  ore.api.model,net.nan21.dnet.core.presenter.model",net.nan21.dnet.cor
- e.presenter.propertyeditors;version="1.1.0",net.nan21.dnet.core.prese
- nter.service;version="1.1.0";uses:="net.nan21.dnet.core.api,net.nan21
+ e.presenter.propertyeditors;version="1.0.1",net.nan21.dnet.core.prese
+ nter.service;version="1.0.1";uses:="net.nan21.dnet.core.api,net.nan21
  .dnet.core.api.action,net.nan21.dnet.core.api.converter,net.nan21.dne
  t.core.api.marshall,net.nan21.dnet.core.api.service,net.nan21.dnet.co
  re.api.setup,net.nan21.dnet.core.presenter.model,org.activiti.engine,
@@ -28,7 +28,7 @@ Export-Package: net.nan21.dnet.core.presenter;version="1.1.0",net.nan2
  ext"
 Import-Bundle: activiti-engine;version="[5.9,5.9]"
 Bundle-Vendor: Nan21 
-Bundle-Version: 1.1.0
+Bundle-Version: 1.0.1
 Tool: Bundlor 1.0.0.RELEASE
 Bundle-Name: DNet Core - presenter
 Bundle-ManifestVersion: 2
@@ -39,14 +39,14 @@ Import-Package: au.com.bytecode.opencsv;version="[2.0,3.0)",au.com.byt
  "[1.4.0,1.4.1]",com.sun.mail.smtp;version="[1.4.0,1.4.1]",javax.mail;
  version="[1.4.0,1.4.1]",javax.mail.internet;version="[1.4.0,1.4.1]",j
  avax.persistence;version="[2.0,2.1)",net.nan21.dnet.core.api,net.nan2
- 1.dnet.core.api.action;version="[1.1.0,1.1.0]",net.nan21.dnet.core.ap
- i.annotation;version="[1.1.0,1.1.0]",net.nan21.dnet.core.api.converte
- r;version="[1.1.0,1.1.0]",net.nan21.dnet.core.api.descriptor;version=
- "[1.1.0,1.1.0]",net.nan21.dnet.core.api.job,net.nan21.dnet.core.api.m
- arshall;version="[1.1.0,1.1.0]",net.nan21.dnet.core.api.model;version
- ="[1.1.0,1.1.0]",net.nan21.dnet.core.api.service;version="[1.1.0,1.1.
- 0]",net.nan21.dnet.core.api.session;version="[1.1.0,1.1.0]",net.nan21
- .dnet.core.api.setup,net.nan21.dnet.core.api.wf;version="[1.1.0,1.1.0
+ 1.dnet.core.api.action;version="[1.0.1,1.0.1]",net.nan21.dnet.core.ap
+ i.annotation;version="[1.0.1,1.0.1]",net.nan21.dnet.core.api.converte
+ r;version="[1.0.1,1.0.1]",net.nan21.dnet.core.api.descriptor;version=
+ "[1.0.1,1.0.1]",net.nan21.dnet.core.api.job,net.nan21.dnet.core.api.m
+ arshall;version="[1.0.1,1.0.1]",net.nan21.dnet.core.api.model;version
+ ="[1.0.1,1.0.1]",net.nan21.dnet.core.api.service;version="[1.0.1,1.0.
+ 1]",net.nan21.dnet.core.api.session;version="[1.0.1,1.0.1]",net.nan21
+ .dnet.core.api.setup,net.nan21.dnet.core.api.wf;version="[1.0.1,1.0.1
  ]",org.activiti.engine,org.apache.commons.lang;version="[2.0,3.0)",or
  g.codehaus.jackson;version="[1.4,2.0)",org.codehaus.jackson.map;versi
  on="[1.4,2.0)",org.codehaus.jackson.map.type;version="[1.4,2.0)",org.

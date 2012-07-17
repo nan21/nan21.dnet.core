@@ -3,10 +3,10 @@ Bundle-ManifestVersion: 2
 Bundle-Name: DNet Core - email
 Bundle-SymbolicName: nan21.dnet.core.email
 Bundle-Vendor: Nan21 
-Bundle-Version: 1.1.0
+Bundle-Version: 1.0.1
 Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.html
 Import-Package: 
- net.nan21.dnet.core.api.email;version="[1.1.0,1.1.0]",
+ net.nan21.dnet.core.api.email;version="[1.0.1,1.0.1]",
  org.springframework.context;version="[3.0,3.1)",
  org.springframework.context.config;version="[3.0,3.1)",
  org.springframework.beans;version="[3.0,3.1)",

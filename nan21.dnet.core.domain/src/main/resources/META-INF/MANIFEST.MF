@@ -1,22 +1,22 @@
 Manifest-Version: 1.0
-Export-Package: net.nan21.dnet.core.domain.eventhandler;version="1.1.0
+Export-Package: net.nan21.dnet.core.domain.eventhandler;version="1.0.1
  ";uses:="org.eclipse.persistence.config,org.eclipse.persistence.descr
- iptors",net.nan21.dnet.core.domain.model;version="1.1.0";uses:="javax
+ iptors",net.nan21.dnet.core.domain.model;version="1.0.1";uses:="javax
  .persistence,javax.validation.constraints,javax.xml.bind.annotation,n
  et.nan21.dnet.core.api.model,org.eclipse.persistence.descriptors,org.
  eclipse.persistence.descriptors.changetracking,org.eclipse.persistenc
  e.internal.descriptors,org.eclipse.persistence.internal.weaving,org.e
  clipse.persistence.queries,org.eclipse.persistence.sessions,org.hiber
  nate.validator.constraints",net.nan21.dnet.core.domain.model.impldumm
- y;version="1.1.0";uses:="javax.persistence,net.nan21.dnet.core.domain
+ y;version="1.0.1";uses:="javax.persistence,net.nan21.dnet.core.domain
  .model,org.eclipse.persistence.internal.descriptors,org.eclipse.persi
  stence.internal.weaving",net.nan21.dnet.core.domain.sequence;version=
- "1.1.0";uses:="org.eclipse.persistence.config,org.eclipse.persistence
+ "1.0.1";uses:="org.eclipse.persistence.config,org.eclipse.persistence
  .internal.databaseaccess,org.eclipse.persistence.internal.sessions,or
  g.eclipse.persistence.sequencing,org.eclipse.persistence.sessions",ne
- t.nan21.dnet.core.domain.validation;version="1.1.0"
+ t.nan21.dnet.core.domain.validation;version="1.0.1"
 Bundle-Vendor: Nan21 
-Bundle-Version: 1.1.0
+Bundle-Version: 1.0.1
 Tool: Bundlor 1.0.0.RELEASE
 Bundle-Name: DNet Core - domain
 Bundle-ManifestVersion: 2
@@ -24,8 +24,8 @@ Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.html
 Bundle-SymbolicName: nan21.dnet.core.domain
 Import-Package: javax.persistence;version="[2.0,2.1)",javax.validation
  .constraints,javax.xml.bind.annotation,net.nan21.dnet.core.api.model;
- version="[1.1.0,1.1.0]",net.nan21.dnet.core.api.session,net.nan21.dne
- t.core.api.util;version="[1.1.0,1.1.0]",org.eclipse.persistence.confi
+ version="[1.0.1,1.0.1]",net.nan21.dnet.core.api.session,net.nan21.dne
+ t.core.api.util;version="[1.0.1,1.0.1]",org.eclipse.persistence.confi
  g,org.eclipse.persistence.descriptors,org.eclipse.persistence.descrip
  tors.changetracking,org.eclipse.persistence.internal.databaseaccess,o
  rg.eclipse.persistence.internal.descriptors,org.eclipse.persistence.i

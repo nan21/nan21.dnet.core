@@ -3,6 +3,6 @@ Bundle-ManifestVersion: 2
 Bundle-Name: DNet Core - db
 Bundle-SymbolicName: nan21.dnet.core.db
 Bundle-Vendor: Nan21 
-Bundle-Version: 1.1.0
+Bundle-Version: 1.0.1
 Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.html
 
