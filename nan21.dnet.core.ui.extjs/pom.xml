@@ -6,7 +6,6 @@
 		<groupId>net.nan21.dnet</groupId>
 		<artifactId>nan21.dnet.core.parent</artifactId>
 		<version>1.0.1</version>
-		<relativePath>../nan21.dnet.core.parent</relativePath>
 	</parent>
 	<groupId>net.nan21.dnet</groupId>
 	<artifactId>nan21.dnet.core.ui.extjs</artifactId>
@@ -18,6 +17,14 @@
 	
 	<build>
 	<plugins>
+        <plugin>
+            <groupId>com.springsource.bundlor</groupId>
+            <artifactId>com.springsource.bundlor.maven</artifactId>
+            <version>1.0.0.RELEASE</version>
+            <configuration>
+                <enabled>false</enabled>
+            </configuration>
+        </plugin>
 		<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>

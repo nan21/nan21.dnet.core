@@ -6,7 +6,6 @@
 		<groupId>net.nan21.dnet</groupId>
 		<artifactId>nan21.dnet.core.parent</artifactId>
 		<version>1.0.1</version>
-		<relativePath>../nan21.dnet.core.parent</relativePath>
 	</parent>
 	<groupId>net.nan21.dnet</groupId>
 	<artifactId>nan21.dnet.core.business</artifactId>
@@ -37,21 +36,21 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>org.springframework.beans</artifactId>
-			<version>3.0.5.RELEASE</version>
+			<version>${spring.version}</version>
 			<type>jar</type>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>org.springframework.context</artifactId>
-			<version>3.0.5.RELEASE</version>
+			<version>${spring.version}</version>
 			<type>jar</type>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>org.springframework.orm</artifactId>
-			<version>3.0.5.RELEASE</version>
+			<version>${spring.version}</version>
 			<type>jar</type>
 			<scope>provided</scope>
 		</dependency>
@@ -120,49 +119,4 @@
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>
-	
-	<!-- ===================== Build ===================== -->	
-	
-	<build>
-	<plugins>
-		<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.1</version>
-				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
-				</configuration> 
-				 
-			</plugin>				
-		<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-source-plugin</artifactId>
-				<version>2.1.2</version>
-				 
-				<executions>
-					<execution>
-			    		<id>attach-sources</id>
-			    		<phase>verify</phase>
-			   			<goals>
-			      			<goal>jar-no-fork</goal>
-			    		</goals>
-			  		</execution>
-				</executions> 
-			</plugin>				
-		<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<version>2.3</version>
-				<configuration>
-			 	<archive>
-					<manifestFile>
-						src/main/resources/META-INF/MANIFEST.MF
-					</manifestFile>
-				</archive>
-			</configuration> 
-				 
-			</plugin>				
- 	</plugins>
- 	</build>
-</project>	 
+</project>
