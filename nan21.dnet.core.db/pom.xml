@@ -4,12 +4,14 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>net.nan21.dnet</groupId>
-		<artifactId>nan21.dnet.core.parent</artifactId>
+		<artifactId>nan21.dnet.core</artifactId>
 		<version>1.0.1</version>
 	</parent>
 	<groupId>net.nan21.dnet</groupId>
 	<artifactId>nan21.dnet.core.db</artifactId>
-	<name>DNet Core - db</name>	
+	<name>DNet Core - db</name>
 	<description>DNet Core - db</description>
-	<packaging>jar</packaging>	
-</project>	 
+	<packaging>jar</packaging>
+
+ 	 
+</project>

@@ -4,15 +4,15 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>net.nan21.dnet</groupId>
-		<artifactId>nan21.dnet.core.parent</artifactId>
+		<artifactId>nan21.dnet.core</artifactId>
 		<version>1.0.1</version>
 	</parent>
 	<groupId>net.nan21.dnet</groupId>
 	<artifactId>nan21.dnet.core.security</artifactId>
-	<name>DNet Core - security</name>	
+	<name>DNet Core - security</name>
 	<description>DNet Core - security. Implements the security checks.</description>
-	<packaging>jar</packaging>	
-	
+	<packaging>jar</packaging>
+
 	<!-- ===================== Dependencies ===================== -->
 
 	<dependencies>
@@ -22,45 +22,40 @@
 			<artifactId>nan21.dnet.core.api</artifactId>
 			<version>1.0.1</version>
 			<type>jar</type>
-			<scope>provided</scope>
 		</dependency>	
 		 
 		<!-- External libraries -->
-
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>org.springframework.security.core</artifactId>
 			<version>3.0.4.RELEASE</version>
 			<type>jar</type>
-			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>org.springframework.security.config</artifactId>
 			<version>3.0.4.RELEASE</version>
 			<type>jar</type>
-			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>org.springframework.security.web</artifactId>
 			<version>3.0.4.RELEASE</version>
 			<type>jar</type>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>org.springframework.jdbc</artifactId>
+			<version>${spring.version}</version>
+			<type>jar</type>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>com.springsource.javax.servlet</artifactId>
+			<version>2.5.0</version>
+			<type>jar</type>
 			<scope>provided</scope>
 		</dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>org.springframework.jdbc</artifactId>
-            <version>${spring.version}</version>
-            <type>jar</type>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>com.springsource.javax.servlet</artifactId>
-            <version>2.5.0</version>
-            <type>jar</type>
-            <scope>provided</scope>
-        </dependency>
-    </dependencies>
-</project>	 
+	</dependencies>
+ 	 
+</project>

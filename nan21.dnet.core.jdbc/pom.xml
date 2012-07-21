@@ -4,15 +4,15 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>net.nan21.dnet</groupId>
-		<artifactId>nan21.dnet.core.parent</artifactId>
+		<artifactId>nan21.dnet.core</artifactId>
 		<version>1.0.1</version>
 	</parent>
 	<groupId>net.nan21.dnet</groupId>
 	<artifactId>nan21.dnet.core.jdbc</artifactId>
-	<name>DNet Core - JDBC</name>	
+	<name>DNet Core - JDBC</name>
 	<description>DNet Core - JDBC</description>
-	<packaging>jar</packaging>	
-	
+	<packaging>jar</packaging>
+
 	<!-- ===================== Dependencies ===================== -->
 
 	<dependencies>
@@ -24,15 +24,13 @@
 			<artifactId>org.springframework.osgi.core</artifactId>
 			<version>1.2.1</version>
 			<type>jar</type>
-			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>com.springsource.org.apache.commons.dbcp</artifactId>
 			<version>1.2.2.osgi</version>
 			<type>jar</type>
-			<scope>provided</scope>
 		</dependency>
-		 
 	</dependencies>
-</project>	 
+ 	 
+</project>

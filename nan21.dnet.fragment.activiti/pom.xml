@@ -4,20 +4,22 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>net.nan21.dnet</groupId>
-		<artifactId>nan21.dnet.core.parent</artifactId>
+		<artifactId>nan21.dnet.core</artifactId>
 		<version>1.0.1</version>
 	</parent>
 	<groupId>net.nan21.dnet</groupId>
 	<artifactId>nan21.dnet.fragment.activiti</artifactId>
-	<name>DNet fragment - activiti</name>	
+	<name>DNet fragment - activiti</name>
 	<description>DNet fragment for activiti engine</description>
-	<packaging>jar</packaging>	
+	<packaging>jar</packaging>
+
 	
 	<!-- ===================== Build ===================== -->	
 	
 	<build>
-	<plugins>
-		<plugin>
+		
+		<plugins>
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
 				<version>2.3</version>
@@ -25,9 +27,8 @@
 			 	<archive>
 					<manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile>
 				</archive>
-			</configuration> 
-				 
-			</plugin>				
- 	</plugins>
+			</configuration>							</plugin>
+	 	</plugins>
  	</build>
-</project>	 
+ 	 
+</project>

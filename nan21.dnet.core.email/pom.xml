@@ -4,15 +4,15 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>net.nan21.dnet</groupId>
-		<artifactId>nan21.dnet.core.parent</artifactId>
+		<artifactId>nan21.dnet.core</artifactId>
 		<version>1.0.1</version>
 	</parent>
 	<groupId>net.nan21.dnet</groupId>
 	<artifactId>nan21.dnet.core.email</artifactId>
-	<name>DNet Core - email</name>	
+	<name>DNet Core - email</name>
 	<description>DNet Core - email.</description>
-	<packaging>jar</packaging>	
-	
+	<packaging>jar</packaging>
+
 	<!-- ===================== Dependencies ===================== -->
 
 	<dependencies>
@@ -22,59 +22,51 @@
 			<artifactId>nan21.dnet.core.api</artifactId>
 			<version>1.0.1</version>
 			<type>jar</type>
-			<scope>provided</scope>
 		</dependency>	
 		 
 		<!-- External libraries -->
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>org.springframework.beans</artifactId>
-			<version>${spring.version}</version>
-			<type>jar</type>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>org.springframework.context</artifactId>
-			<version>${spring.version}</version>
-			<type>jar</type>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>javax.mail</groupId>
-			<artifactId>com.springsource.javax.mail</artifactId>
-			<version>1.4.0</version>
-			<type>jar</type>
-			<scope>provided</scope>
-		</dependency>
-		 
 		<dependency>
 			<groupId>org.springframework.osgi</groupId>
 			<artifactId>org.springframework.osgi.core</artifactId>
 			<version>1.2.1</version>
 			<type>jar</type>
-			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.osgi</groupId>
 			<artifactId>org.springframework.osgi.extender</artifactId>
 			<version>1.2.1</version>
 			<type>jar</type>
-			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.osgi</groupId>
 			<artifactId>org.springframework.osgi.io</artifactId>
 			<version>1.2.1</version>
 			<type>jar</type>
-			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.osgi</groupId>
 			<artifactId>org.springframework.osgi.web</artifactId>
 			<version>1.2.1</version>
 			<type>jar</type>
-			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>org.springframework.beans</artifactId>
+			<version>${spring.version}</version>
+			<type>jar</type>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>org.springframework.context</artifactId>
+			<version>${spring.version}</version>
+			<type>jar</type>
+		</dependency>
+		<dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>com.springsource.javax.mail</artifactId>
+			<version>1.4.0</version>
+			<type>jar</type>
 		</dependency>
 	</dependencies>
+ 	 
 </project>

@@ -4,12 +4,14 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>net.nan21.dnet</groupId>
-		<artifactId>nan21.dnet.core.parent</artifactId>
+		<artifactId>nan21.dnet.core</artifactId>
 		<version>1.0.1</version>
 	</parent>
 	<groupId>net.nan21.dnet</groupId>
 	<artifactId>nan21.dnet.core.config</artifactId>
-	<name>DNet Core - config</name>	
+	<name>DNet Core - config</name>
 	<description>DNet Core - configuration files</description>
-	<packaging>pom</packaging>	
-</project>	 
+	<packaging>pom</packaging>
+
+ 	 
+</project>

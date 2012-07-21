@@ -4,15 +4,15 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>net.nan21.dnet</groupId>
-		<artifactId>nan21.dnet.core.parent</artifactId>
+		<artifactId>nan21.dnet.core</artifactId>
 		<version>1.0.1</version>
 	</parent>
 	<groupId>net.nan21.dnet</groupId>
 	<artifactId>nan21.dnet.core.api</artifactId>
-	<name>DNet Core - api</name>	
+	<name>DNet Core - api</name>
 	<description>DNet Core - api. Interfaces </description>
-	<packaging>jar</packaging>	
-	
+	<packaging>jar</packaging>
+
 	<!-- ===================== Dependencies ===================== -->
 
 	<dependencies>
@@ -22,17 +22,15 @@
 		<dependency>
 			<groupId>org.eclipse.persistence</groupId>
 			<artifactId>javax.persistence</artifactId>
-			<version>2.0.3</version>
+			<version>${jpa.version}</version>
 			<type>jar</type>
-			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>org.springframework.web</artifactId>
 			<version>${spring.version}</version>
 			<type>jar</type>
-			<scope>provided</scope>
 		</dependency>
-		 
 	</dependencies>
+ 	 
 </project>

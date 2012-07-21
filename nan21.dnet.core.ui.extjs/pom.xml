@@ -4,65 +4,66 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>net.nan21.dnet</groupId>
-		<artifactId>nan21.dnet.core.parent</artifactId>
+		<artifactId>nan21.dnet.core</artifactId>
 		<version>1.0.1</version>
 	</parent>
 	<groupId>net.nan21.dnet</groupId>
 	<artifactId>nan21.dnet.core.ui.extjs</artifactId>
-	<name>DNet Core - ui extjs</name>	
+	<name>DNet Core - ui extjs</name>
 	<description>DNet Core - extjs user interface.</description>
-	<packaging>war</packaging>	
+	<packaging>war</packaging>
+
 	
 	<!-- ===================== Build ===================== -->	
 	
 	<build>
-	<plugins>
-        <plugin>
-            <groupId>com.springsource.bundlor</groupId>
-            <artifactId>com.springsource.bundlor.maven</artifactId>
-            <version>1.0.0.RELEASE</version>
-            <configuration>
-                <enabled>false</enabled>
-            </configuration>
-        </plugin>
-		<plugin>
+		
+		<plugins>
+			<plugin>
+				<groupId>com.springsource.bundlor</groupId>
+				<artifactId>com.springsource.bundlor.maven</artifactId>
+				<version>1.0.0.RELEASE</version>
+				<configuration>
+				<enabled>false</enabled>
+			</configuration>
+			</plugin>
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
 				<version>2.1.1</version>
 				<configuration>
-				 	<archive>
-						<manifestFile>src/main/webapp/META-INF/MANIFEST.MF</manifestFile>
-					</archive>
-				</configuration> 
-				 
-			</plugin>				
-		<plugin>
+			 	<archive>
+					<manifestFile>src/main/webapp/META-INF/MANIFEST.MF</manifestFile>
+				</archive>
+			</configuration>
+			</plugin>
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-antrun-plugin</artifactId>
 				<version>1.6</version>
 				<!-- Compress and minify -->				
-					<executions>
-						<execution>
-							<phase>generate-sources</phase>
-							<configuration>
-							  <target>
-	                               <echo>Beginning generate-sources phase...</echo>
-	                               <property name="compile_classpath" refid="maven.compile.classpath"/>                          
-	                               <echo>Compile classpath : ${compile_classpath}</echo>                
-	                                <property name="my_repo"  value="${user.home}/.m2/repository"/>
-	                                
-	                                <ant antfile="${basedir}/pack.xml">
-	                                    <target name="pack"/>
-	                                </ant>
-	                            </target>                            
-							</configuration>
-							<goals>
-								<goal>run</goal>
-							</goals>
-						</execution>
-					</executions> 
-				 
-			</plugin>				
- 	</plugins>
+				<executions>
+					<execution>
+						<phase>generate-sources</phase>
+						<configuration>
+						  <target>
+                               <echo>Beginning generate-sources phase...</echo>
+                               <property name="compile_classpath" refid="maven.compile.classpath"/>                          
+                               <echo>Compile classpath : ${compile_classpath}</echo>                
+                                <property name="my_repo"  value="${user.home}/.m2/repository"/>
+                                
+                                <ant antfile="${basedir}/pack.xml">
+                                    <target name="pack"/>
+                                </ant>
+                            </target>                            
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+	 	</plugins>
  	</build>
-</project>	 
+ 	 
+</project>
