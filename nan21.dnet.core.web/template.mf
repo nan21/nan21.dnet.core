@@ -3,20 +3,20 @@ Bundle-ManifestVersion: 2
 Bundle-Name: DNet Core - web
 Bundle-SymbolicName: nan21.dnet.core.web
 Bundle-Vendor: Nan21 
-Bundle-Version: 1.0.1
+Bundle-Version: 1.0.2
 Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.html
 Bundle-ClassPath: WEB-INF/classes
 Import-Template: 
  org.eclipse.persistence.jpa.*;version="[2.1,2.5)"
 Import-Package: 
- net.nan21.dnet.core.api;version="[1.0.1,1.0.1]",
- net.nan21.dnet.core.api.action;version="[1.0.1,1.0.1]",
- net.nan21.dnet.core.api.ui.extjs;version="[1.0.1,1.0.1]",
- net.nan21.dnet.core.api.session;version="[1.0.1,1.0.1]",
- net.nan21.dnet.core.api.security;version="[1.0.1,1.0.1]",
- net.nan21.dnet.core.api.service;version="[1.0.1,1.0.1]",
- net.nan21.dnet.core.api.marshall;version="[1.0.1,1.0.1]",
- net.nan21.dnet.core.security;version="[1.0.1,1.0.1]",
+ net.nan21.dnet.core.api;version="[1.0.2,1.0.2]",
+ net.nan21.dnet.core.api.action;version="[1.0.2,1.0.2]",
+ net.nan21.dnet.core.api.ui.extjs;version="[1.0.2,1.0.2]",
+ net.nan21.dnet.core.api.session;version="[1.0.2,1.0.2]",
+ net.nan21.dnet.core.api.security;version="[1.0.2,1.0.2]",
+ net.nan21.dnet.core.api.service;version="[1.0.2,1.0.2]",
+ net.nan21.dnet.core.api.marshall;version="[1.0.2,1.0.2]",
+ net.nan21.dnet.core.security;version="[1.0.2,1.0.2]",
  org.springframework.security.config;version="[3.0,3.1)",
  org.springframework.security.core;version="[3.0,3.1)",
  org.springframework.security.web;version="[3.0,3.1)",

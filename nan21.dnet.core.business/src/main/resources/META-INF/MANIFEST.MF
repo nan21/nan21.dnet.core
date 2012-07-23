@@ -1,16 +1,16 @@
 Manifest-Version: 1.0
-Export-Package: net.nan21.dnet.core.business.job;version="1.0.1";uses:
+Export-Package: net.nan21.dnet.core.business.job;version="1.0.2";uses:
  ="net.nan21.dnet.core.api.job,net.nan21.dnet.core.business.service,or
  g.springframework.beans.factory.annotation,org.springframework.contex
- t",net.nan21.dnet.core.business.persistenceunit;version="1.0.1";uses:
+ t",net.nan21.dnet.core.business.persistenceunit;version="1.0.2";uses:
  ="javax.sql,org.springframework.orm.jpa.persistenceunit",net.nan21.dn
- et.core.business.service;version="1.0.1";uses:="javax.persistence,net
+ et.core.business.service;version="1.0.2";uses:="javax.persistence,net
  .nan21.dnet.core.api,net.nan21.dnet.core.api.service,net.nan21.dnet.c
  ore.api.setup,org.activiti.engine,org.springframework.beans.factory.a
  nnotation,org.springframework.context"
 Import-Bundle: activiti-engine;version="[5.9,5.9]"
 Bundle-Vendor: Nan21 
-Bundle-Version: 1.0.1
+Bundle-Version: 1.0.2
 Tool: Bundlor 1.0.0.RELEASE
 Bundle-Name: DNet Core - business
 Bundle-ManifestVersion: 2
@@ -18,11 +18,11 @@ Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.html
 Bundle-SymbolicName: nan21.dnet.core.business
 Import-Package: javax.persistence;version="[2.0,2.1)",javax.persistenc
  e.criteria;version="[2.0,2.1)",javax.sql,net.nan21.dnet.core.api,net.
- nan21.dnet.core.api.job,net.nan21.dnet.core.api.model;version="[1.0.1
- ,1.0.1]",net.nan21.dnet.core.api.service;version="[1.0.1,1.0.1]",net.
- nan21.dnet.core.api.session;version="[1.0.1,1.0.1]",net.nan21.dnet.co
- re.api.setup;version="[1.0.1,1.0.1]",net.nan21.dnet.core.api.wf;versi
- on="[1.0.1,1.0.1]",org.activiti.engine,org.activiti.engine.runtime,or
+ nan21.dnet.core.api.job,net.nan21.dnet.core.api.model;version="[1.0.2
+ ,1.0.2]",net.nan21.dnet.core.api.service;version="[1.0.2,1.0.2]",net.
+ nan21.dnet.core.api.session;version="[1.0.2,1.0.2]",net.nan21.dnet.co
+ re.api.setup;version="[1.0.2,1.0.2]",net.nan21.dnet.core.api.wf;versi
+ on="[1.0.2,1.0.2]",org.activiti.engine,org.activiti.engine.runtime,or
  g.slf4j;version="[1.0,2.0]",org.springframework.beans.factory,org.spr
  ingframework.beans.factory.annotation;version="[3.0,3.1)",org.springf
  ramework.context;version="[3.0,3.1)",org.springframework.context.conf
