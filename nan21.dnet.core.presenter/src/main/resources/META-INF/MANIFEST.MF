@@ -26,11 +26,14 @@ Export-Package: net.nan21.dnet.core.presenter;version="1.0.2",net.nan2
  re.api.setup,net.nan21.dnet.core.presenter.model,org.activiti.engine,
  org.springframework.beans.factory.annotation,org.springframework.cont
  ext"
+Built-By: amathe
+Tool: Bundlor 1.1.0.RELEASE
+Bundle-Name: DNet Core - presenter
+Created-By: Maven Integration for Eclipse
 Import-Bundle: activiti-engine;version="[5.9,5.9]"
 Bundle-Vendor: Nan21 
 Bundle-Version: 1.0.2
-Tool: Bundlor 1.0.0.RELEASE
-Bundle-Name: DNet Core - presenter
+Build-Jdk: 1.6.0_33
 Bundle-ManifestVersion: 2
 Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.html
 Bundle-SymbolicName: nan21.dnet.core.presenter
@@ -52,12 +55,12 @@ Import-Package: au.com.bytecode.opencsv;version="[2.0,3.0)",au.com.byt
  on="[1.4,2.0)",org.codehaus.jackson.map.type;version="[1.4,2.0)",org.
  codehaus.jackson.type;version="[1.4,2.0)",org.eclipse.persistence.jpa
  ;version="[2.1,2.5)",org.eclipse.persistence.queries,org.slf4j;versio
- n="[1.0,2.0]",org.springframework.beans;version="[3.0,3.1)",org.sprin
- gframework.beans.factory;version="[3.0,3.1)",org.springframework.bean
- s.factory.annotation;version="[3.0,3.1)",org.springframework.context;
- version="[3.0,3.1)",org.springframework.context.config;version="[3.0,
- 3.1)",org.springframework.expression,org.springframework.expression.s
+ n="[1.0,2.0]",org.springframework.beans;version="[3.1,3.2)",org.sprin
+ gframework.beans.factory;version="[3.1,3.2)",org.springframework.bean
+ s.factory.annotation;version="[3.1,3.2)",org.springframework.context;
+ version="[3.1,3.2)",org.springframework.context.config;version="[3.1,
+ 3.2)",org.springframework.expression,org.springframework.expression.s
  pel.standard,org.springframework.expression.spel.support,org.springfr
- amework.transaction.annotation;version="[3.0,3.1)",org.springframewor
+ amework.transaction.annotation;version="[3.1,3.2)",org.springframewor
  k.util
 

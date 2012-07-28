@@ -12,7 +12,7 @@ Export-Package: net.nan21.dnet.core.workflow;version="1.0.2";uses:="ne
 Import-Bundle: activiti-engine;version="[5.9,5.9]",activiti-spring
 Bundle-Vendor: Nan21 
 Bundle-Version: 1.0.2
-Tool: Bundlor 1.0.0.RELEASE
+Tool: Bundlor 1.1.0.RELEASE
 Bundle-Name: DNet Core - workflow
 Bundle-ManifestVersion: 2
 Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.html
@@ -30,9 +30,9 @@ Import-Package: com.sun.mail.handlers;version="[1.4.0,1.4.1]",com.sun.
  viti.engine.impl.cfg,org.activiti.engine.impl.pvm.delegate,org.activi
  ti.engine.impl.pvm.process,org.activiti.engine.impl.scripting,org.act
  iviti.engine.impl.util.xml,org.activiti.spring,org.springframework.be
- ans;version="[3.0,3.1)",org.springframework.beans.factory;version="[3
- .0,3.1)",org.springframework.beans.factory.annotation;version="[3.0,3
- .1)",org.springframework.context;version="[3.0,3.1)",org.springframew
- ork.context.config;version="[3.0,3.1)",org.springframework.jdbc.datas
- ource,org.springframework.transaction.annotation;version="[3.0,3.1)"
+ ans;version="[3.1,3.2)",org.springframework.beans.factory;version="[3
+ .1,3.2)",org.springframework.beans.factory.annotation;version="[3.1,3
+ .2)",org.springframework.context;version="[3.1,3.2)",org.springframew
+ ork.context.config;version="[3.1,3.2)",org.springframework.jdbc.datas
+ ource,org.springframework.transaction.annotation;version="[3.1,3.2)"
 

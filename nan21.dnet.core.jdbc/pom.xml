@@ -7,24 +7,18 @@
 		<artifactId>nan21.dnet.core</artifactId>
 		<version>1.0.2-SNAPSHOT</version>
 	</parent>
-	<groupId>net.nan21.dnet</groupId>
 	<artifactId>nan21.dnet.core.jdbc</artifactId>
 	<name>DNet Core - JDBC</name>
 	<description>DNet Core - JDBC</description>
 	<packaging>jar</packaging>
 
+	
 	<!-- ===================== Dependencies ===================== -->
 
 	<dependencies>
 		<!-- DNet dependencies -->
 		 
 		<!-- External libraries -->
-		<dependency>
-			<groupId>org.springframework.osgi</groupId>
-			<artifactId>org.springframework.osgi.core</artifactId>
-			<version>1.2.1</version>
-			<type>jar</type>
-		</dependency>
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>com.springsource.org.apache.commons.dbcp</artifactId>

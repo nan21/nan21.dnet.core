@@ -7,19 +7,29 @@
            http://www.springframework.org/schema/security/spring-security.xsd
            http://www.springframework.org/schema/osgi 
 		http://www.springframework.org/schema/osgi/spring-osgi.xsd">
+	
+	
+	<security:http  security="none" pattern="/security/*" >	 
+	</security:http>
+	
 	<security:http auto-config="true"
 		entry-point-ref="defaultAuthenticationEntryPoint">
+		
 		<security:session-management
 			session-fixation-protection="migrateSession">
 		</security:session-management>
+		
 		<security:access-denied-handler ref="accessDeniedHandler" />
+		
 		<security:intercept-url pattern="/tx/**"
 			access="ROLE_DNET_USER" />
+		
 		<security:intercept-url pattern="/upload/**"
 			access="ROLE_DNET_USER" />
-		<security:intercept-url pattern="/security/*"
-			filters="none" />
 	</security:http>
+	
+	
+	
 	<security:authentication-manager alias="authenticationManager">
 		<security:authentication-provider
 			user-service-ref="osgiAuthenticationForDbUser" />

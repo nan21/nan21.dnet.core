@@ -7,12 +7,12 @@
 		<artifactId>nan21.dnet.core</artifactId>
 		<version>1.0.2-SNAPSHOT</version>
 	</parent>
-	<groupId>net.nan21.dnet</groupId>
 	<artifactId>nan21.dnet.core.ui.extjs</artifactId>
 	<name>DNet Core - ui extjs</name>
 	<description>DNet Core - extjs user interface.</description>
 	<packaging>war</packaging>
 
+	
 	
 	<!-- ===================== Build ===================== -->	
 	
@@ -40,7 +40,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-antrun-plugin</artifactId>
-				<version>1.6</version>
+				<version>1.7</version>
 				<!-- Compress and minify -->				
 				<executions>
 					<execution>

@@ -7,12 +7,12 @@
 		<artifactId>nan21.dnet.core</artifactId>
 		<version>1.0.2-SNAPSHOT</version>
 	</parent>
-	<groupId>net.nan21.dnet</groupId>
 	<artifactId>nan21.dnet.core.www</artifactId>
 	<name>DNet Core - www</name>
 	<description>DNet Core -  www public portal.</description>
 	<packaging>jar</packaging>
 
+	
 	<!-- ===================== Dependencies ===================== -->
 
 	<dependencies>
@@ -42,20 +42,6 @@
 			<groupId>javax.servlet</groupId>
 			<artifactId>com.springsource.javax.servlet.jsp.jstl</artifactId>
 			<version>1.2.0</version>
-			<type>jar</type>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.virgo.snaps</groupId>
-			<artifactId>org.eclipse.virgo.snaps.api</artifactId>
-			<version>3.0.2.RELEASE</version>
-			<type>jar</type>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.virgo.snaps</groupId>
-			<artifactId>org.eclipse.virgo.snaps.core</artifactId>
-			<version>3.0.2.RELEASE</version>
 			<type>jar</type>
 			<scope>provided</scope>
 		</dependency>

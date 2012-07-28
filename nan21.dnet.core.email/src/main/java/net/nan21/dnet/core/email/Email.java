@@ -44,10 +44,10 @@ import javax.naming.NamingException;
 import net.nan21.dnet.core.api.email.IEmail;
 import net.nan21.dnet.core.api.exceptions.EmailException;
 
-/**
+/** 
  * AMATHE: Copied from apache.commons.mail
  * 
- * 
+ *    
  * The base class for all email messages. This class sets the sender's email &
  * name, receiver's email & name, subject, and the sent date. Subclasses are
  * responsible for setting the message body.

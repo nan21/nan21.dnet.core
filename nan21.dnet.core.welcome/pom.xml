@@ -7,12 +7,12 @@
 		<artifactId>nan21.dnet.core</artifactId>
 		<version>1.0.2-SNAPSHOT</version>
 	</parent>
-	<groupId>net.nan21.dnet</groupId>
 	<artifactId>nan21.dnet.core.welcome</artifactId>
 	<name>DNet Core - welcome</name>
 	<description>DNet Core - welcome.</description>
 	<packaging>war</packaging>
 
+	
 	<!-- ===================== Dependencies ===================== -->
 
 	<dependencies>

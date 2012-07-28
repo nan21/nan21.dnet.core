@@ -7,11 +7,11 @@
 		<artifactId>nan21.dnet.core</artifactId>
 		<version>1.0.2-SNAPSHOT</version>
 	</parent>
-	<groupId>net.nan21.dnet</groupId>
 	<artifactId>nan21.dnet.core.db</artifactId>
 	<name>DNet Core - db</name>
 	<description>DNet Core - db</description>
 	<packaging>jar</packaging>
 
+	
  	 
 </project>

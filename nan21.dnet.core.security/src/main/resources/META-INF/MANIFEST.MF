@@ -10,20 +10,19 @@ Export-Package: net.nan21.dnet.core.security;version="1.0.2";uses:="ja
  curity.web.access"
 Bundle-Vendor: Nan21 
 Bundle-Version: 1.0.2
-Tool: Bundlor 1.0.0.RELEASE
+Tool: Bundlor 1.1.0.RELEASE
 Bundle-Name: DNet Core - security
 Bundle-ManifestVersion: 2
 Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.html
 Bundle-SymbolicName: nan21.dnet.core.security
 Import-Package: javax.servlet,javax.servlet.http,javax.sql,net.nan21.d
- net.core.api.security,net.nan21.dnet.core.api.session,org.apache.comm
- ons.logging,org.springframework.beans.factory.annotation,org.springfr
- amework.context,org.springframework.context.support,org.springframewo
- rk.dao,org.springframework.jdbc.core,org.springframework.jdbc.core.su
- pport,org.springframework.security.access,org.springframework.securit
- y.core,org.springframework.security.core.authority,org.springframewor
- k.security.core.context,org.springframework.security.core.userdetails
- ,org.springframework.security.core.userdetails.jdbc,org.springframewo
- rk.security.web,org.springframework.security.web.access,org.springfra
- mework.util
+ net.core.api.security,net.nan21.dnet.core.api.session,org.springframe
+ work.beans.factory.annotation,org.springframework.context,org.springf
+ ramework.context.support,org.springframework.dao,org.springframework.
+ jdbc.core,org.springframework.jdbc.core.support,org.springframework.s
+ ecurity.access,org.springframework.security.core,org.springframework.
+ security.core.authority,org.springframework.security.core.context,org
+ .springframework.security.core.userdetails,org.springframework.securi
+ ty.core.userdetails.jdbc,org.springframework.security.web,org.springf
+ ramework.security.web.access,org.springframework.util
 

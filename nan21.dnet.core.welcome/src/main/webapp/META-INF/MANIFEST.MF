@@ -5,7 +5,7 @@ Export-Package: net.nan21.dnet.core.welcome;version="1.0.2";uses:="jav
 Bundle-Vendor: Nan21 
 Bundle-ClassPath: WEB-INF/classes
 Bundle-Version: 1.0.2
-Tool: Bundlor 1.0.0.RELEASE
+Tool: Bundlor 1.1.0.RELEASE
 Bundle-Name: DNet Core - welcome
 Bundle-ManifestVersion: 2
 Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.html
@@ -32,8 +32,8 @@ Import-Package: javax.servlet.http,javax.servlet.jsp.jstl.core;version
  sion="[1.1.2,2.0)",org.apache.taglibs.standard.tag.rt.xml;version="[1
  .1.2,2.0)",org.apache.taglibs.standard.tei;version="[1.1.2,2.0)",org.
  apache.taglibs.standard.tlv;version="[1.1.2,2.0)",org.springframework
- .beans.factory.config;version="[3.0,3.1)",org.springframework.web.ser
- vlet;version="[3.0,3.1)",org.springframework.web.servlet.handler;vers
- ion="[3.0,3.1)",org.springframework.web.servlet.mvc;version="[3.0,3.1
- )",org.springframework.web.servlet.view;version="[3.0,3.1)"
+ .beans.factory.config;version="[3.1,3.2)",org.springframework.web.ser
+ vlet;version="[3.1,3.2)",org.springframework.web.servlet.handler;vers
+ ion="[3.1,3.2)",org.springframework.web.servlet.mvc;version="[3.1,3.2
+ )",org.springframework.web.servlet.view;version="[3.1,3.2)"
 

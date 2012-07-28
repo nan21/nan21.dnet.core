@@ -31,8 +31,8 @@ public class AuthenticationForDbUser extends JdbcDaoImpl implements
 			List<UserDetails> users = loadUsersByUsername(username);
 
 			if (users.size() == 0) {
-				this.logger.debug("Query returned no results for user '"
-						+ username + "'");
+//				this.logger.debug("Query returned no results for user '"
+//						+ username + "'");
 				throw new UsernameNotFoundException(this.messages.getMessage(
 						"JdbcDaoImpl.notFound", new Object[] { username },
 						"Username {0} not found"), username);
@@ -56,10 +56,10 @@ public class AuthenticationForDbUser extends JdbcDaoImpl implements
 			addCustomAuthorities(user.getUsername(), dbAuths);
 
 			if (dbAuths.size() == 0) {
-				this.logger
-						.debug("User '"
-								+ username
-								+ "' has no authorities and will be treated as 'not found'");
+//				this.logger
+//						.debug("User '"
+//								+ username
+//								+ "' has no authorities and will be treated as 'not found'");
 
 				throw new UsernameNotFoundException(this.messages.getMessage(
 						"x", new Object[] { username },

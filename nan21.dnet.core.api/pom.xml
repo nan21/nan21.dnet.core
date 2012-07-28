@@ -7,13 +7,12 @@
 		<artifactId>nan21.dnet.core</artifactId>
 		<version>1.0.2-SNAPSHOT</version>
 	</parent>
-	<groupId>net.nan21.dnet</groupId>
 	<artifactId>nan21.dnet.core.api</artifactId>
 	<name>DNet Core - api</name>
 	<description>DNet Core - api. Interfaces </description>
-	<version>1.0.2-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
+	
 	<!-- ===================== Dependencies ===================== -->
 
 	<dependencies>
