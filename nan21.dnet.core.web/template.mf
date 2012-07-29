@@ -7,6 +7,7 @@ Bundle-Version: 1.0.2
 Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.html
 Bundle-ClassPath: WEB-INF/classes
 Import-Template: 
+ javax.persistence.*;version="[2.0,2.1)",
  org.eclipse.persistence.jpa.*;version="[2.1,2.5)"
 Import-Package: 
  net.nan21.dnet.core.api;version="[1.0.2,1.0.2]",
@@ -67,11 +68,13 @@ Import-Package:
  org.codehaus.jackson.map;version="[1.4,2.0)",
  org.slf4j;version="[1.0,2.0]",
  javax.servlet.jsp.jstl.core;version="[1.2,2.0)",
- javax.persistence;version="[2.0,2.1)",
- javax.persistence.criteria;version="[2.0,2.1)"
+ javax.persistence.criteria;version="[2.0,2.1)",
+ javax.persistence.metamodel;version="[2.0,2.1)",
+ javax.persistence.spi;version="[2.0,2.1)"
 Import-Bundle: 
  activiti-engine;version="[5.9,5.9]",
- activiti-spring
+ activiti-spring,
+ org.eclipse.persistence.core;version="[2.0,2.5)"
 Export-Package: 
  net.nan21.dnet.core.web,
  net.nan21.dnet.core.web.controller,

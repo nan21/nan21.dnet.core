@@ -15,19 +15,22 @@ Built-By: amathe
 Tool: Bundlor 1.1.0.RELEASE
 Bundle-Name: DNet Core - domain
 Created-By: Maven Integration for Eclipse
+Import-Bundle: org.eclipse.persistence.core;version="[2.0,2.5)"
 Bundle-Vendor: Nan21 
 Bundle-Version: 1.0.2
 Build-Jdk: 1.6.0_33
 Bundle-ManifestVersion: 2
 Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.html
-Import-Package: javax.persistence;version="[2.0,2.1)",javax.validation
- .constraints,net.nan21.dnet.core.api.model;version="[1.0.2,1.0.2]",ne
- t.nan21.dnet.core.api.session,net.nan21.dnet.core.api.util;version="[
- 1.0.2,1.0.2]",org.eclipse.persistence.config,org.eclipse.persistence.
- descriptors,org.eclipse.persistence.internal.databaseaccess,org.eclip
- se.persistence.internal.sessions,org.eclipse.persistence.sequencing,o
- rg.eclipse.persistence.sessions,org.hibernate.validator.constraints,o
- rg.springframework.context.config;version="[3.1,3.2)",org.springframe
- work.orm.jpa;version="[3.1,3.2)"
 Bundle-SymbolicName: nan21.dnet.core.domain
+Import-Package: javax.persistence;version="[2.0,2.1)",javax.persistenc
+ e.criteria;version="[2.0,2.1)",javax.persistence.metamodel;version="[
+ 2.0,2.1)",javax.persistence.spi;version="[2.0,2.1)",javax.validation.
+ constraints,net.nan21.dnet.core.api.model;version="[1.0.2,1.0.2]",net
+ .nan21.dnet.core.api.session,net.nan21.dnet.core.api.util;version="[1
+ .0.2,1.0.2]",org.eclipse.persistence.config,org.eclipse.persistence.d
+ escriptors,org.eclipse.persistence.internal.databaseaccess,org.eclips
+ e.persistence.internal.sessions,org.eclipse.persistence.sequencing,or
+ g.eclipse.persistence.sessions,org.hibernate.validator.constraints,or
+ g.springframework.context.config;version="[3.1,3.2)",org.springframew
+ ork.orm.jpa;version="[3.1,3.2)"
 
