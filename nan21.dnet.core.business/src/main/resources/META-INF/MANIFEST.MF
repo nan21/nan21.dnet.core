@@ -20,12 +20,14 @@ Bundle-ManifestVersion: 2
 Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.html
 Bundle-SymbolicName: nan21.dnet.core.business
 Import-Package: javax.persistence;version="[2.0,2.1)",javax.persistenc
- e.criteria;version="[2.0,2.1)",javax.sql,net.nan21.dnet.core.api,net.
- nan21.dnet.core.api.job,net.nan21.dnet.core.api.model;version="[1.0.2
- ,1.0.2]",net.nan21.dnet.core.api.service;version="[1.0.2,1.0.2]",net.
- nan21.dnet.core.api.session;version="[1.0.2,1.0.2]",net.nan21.dnet.co
- re.api.setup;version="[1.0.2,1.0.2]",net.nan21.dnet.core.api.wf;versi
- on="[1.0.2,1.0.2]",org.activiti.engine,org.activiti.engine.runtime,or
+ e.criteria;version="[2.0,2.1)",javax.persistence.metamodel;version="[
+ 2.0,2.1)",javax.persistence.spi;version="[2.0,2.1)",javax.sql,net.nan
+ 21.dnet.core.api,net.nan21.dnet.core.api.job,net.nan21.dnet.core.api.
+ model;version="[1.0.2,1.0.2]",net.nan21.dnet.core.api.service;version
+ ="[1.0.2,1.0.2]",net.nan21.dnet.core.api.session;version="[1.0.2,1.0.
+ 2]",net.nan21.dnet.core.api.setup;version="[1.0.2,1.0.2]",net.nan21.d
+ net.core.api.wf;version="[1.0.2,1.0.2]",org.activiti.engine,org.activ
+ iti.engine.runtime,org.eclipse.persistence.jpa;version="[2.1,2.5)",or
  g.slf4j;version="[1.0,2.0]",org.springframework.beans.factory,org.spr
  ingframework.beans.factory.annotation;version="[3.1,3.2)",org.springf
  ramework.context;version="[3.1,3.2)",org.springframework.context.conf
