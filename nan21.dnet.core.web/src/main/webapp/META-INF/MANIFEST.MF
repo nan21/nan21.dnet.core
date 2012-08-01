@@ -1,39 +1,39 @@
 Manifest-Version: 1.0
-Export-Package: net.nan21.dnet.core.web;version="1.0.2",net.nan21.dnet
- .core.web.controller;version="1.0.2",net.nan21.dnet.core.web.controll
- er.data;version="1.0.2";uses:="javax.servlet,javax.servlet.http,net.n
+Export-Package: net.nan21.dnet.core.web;version="1.0.3",net.nan21.dnet
+ .core.web.controller;version="1.0.3",net.nan21.dnet.core.web.controll
+ er.data;version="1.0.3";uses:="javax.servlet,javax.servlet.http,net.n
  an21.dnet.core.api,net.nan21.dnet.core.api.action,net.nan21.dnet.core
  .api.security,net.nan21.dnet.core.api.service,net.nan21.dnet.core.pre
  senter.service,net.nan21.dnet.core.security,org.springframework.beans
  .factory.annotation,org.springframework.context.annotation,org.spring
  framework.stereotype,org.springframework.web.bind.annotation,org.spri
  ngframework.web.context",net.nan21.dnet.core.web.controller.session;v
- ersion="1.0.2";uses:="javax.servlet.http,org.springframework.beans.fa
+ ersion="1.0.3";uses:="javax.servlet.http,org.springframework.beans.fa
  ctory.annotation,org.springframework.context.annotation,org.springfra
  mework.security.authentication,org.springframework.stereotype,org.spr
  ingframework.web.bind.annotation,org.springframework.web.context,org.
  springframework.web.servlet",net.nan21.dnet.core.web.controller.ui;ve
- rsion="1.0.2";uses:="javax.servlet.http,net.nan21.dnet.core.api,net.n
+ rsion="1.0.3";uses:="javax.servlet.http,net.nan21.dnet.core.api,net.n
  an21.dnet.core.security,net.nan21.dnet.core.web.settings,org.springfr
  amework.web.bind.annotation,org.springframework.web.servlet,org.sprin
  gframework.web.servlet.mvc",net.nan21.dnet.core.web.controller.upload
- ;version="1.0.2";uses:="javax.servlet.http,net.nan21.dnet.core.api.se
+ ;version="1.0.3";uses:="javax.servlet.http,net.nan21.dnet.core.api.se
  rvice,org.springframework.beans.factory.annotation,org.springframewor
  k.context.annotation,org.springframework.stereotype,org.springframewo
  rk.web.bind.annotation,org.springframework.web.context,org.springfram
  ework.web.multipart",net.nan21.dnet.core.web.controller.workflow;vers
- ion="1.0.2";uses:="javax.servlet,javax.servlet.http,net.nan21.dnet.co
+ ion="1.0.3";uses:="javax.servlet,javax.servlet.http,net.nan21.dnet.co
  re.api.wf,org.activiti.engine,org.codehaus.jackson.map,org.springfram
  ework.beans.factory.annotation,org.springframework.context.annotation
  ,org.springframework.stereotype,org.springframework.web.bind.annotati
  on,org.springframework.web.context",net.nan21.dnet.core.web.result;ve
- rsion="1.0.2";uses:="net.nan21.dnet.core.api.action",net.nan21.dnet.c
- ore.web.settings;version="1.0.2";uses:="net.nan21.dnet.core.api"
+ rsion="1.0.3";uses:="net.nan21.dnet.core.api.action",net.nan21.dnet.c
+ ore.web.settings;version="1.0.3";uses:="net.nan21.dnet.core.api"
 Import-Bundle: activiti-engine;version="[5.9,5.9]",activiti-spring,org
  .eclipse.persistence.core;version="[2.0,2.5)"
 Bundle-Vendor: Nan21 
 Bundle-ClassPath: WEB-INF/classes
-Bundle-Version: 1.0.2
+Bundle-Version: 1.0.3
 Tool: Bundlor 1.1.0.RELEASE
 Bundle-Name: DNet Core - web
 Bundle-ManifestVersion: 2
@@ -43,15 +43,15 @@ Import-Package: javax.persistence;version="[2.0,2.1)",javax.persistenc
  e.criteria;version="[2.0,2.1)",javax.persistence.metamodel;version="[
  2.0,2.1)",javax.persistence.spi;version="[2.0,2.1)",javax.servlet,jav
  ax.servlet.http,javax.servlet.jsp.jstl.core;version="[1.2,2.0)",javax
- .sql,net.nan21.dnet.core.api;version="[1.0.2,1.0.2]",net.nan21.dnet.c
- ore.api.action;version="[1.0.2,1.0.2]",net.nan21.dnet.core.api.marsha
- ll;version="[1.0.2,1.0.2]",net.nan21.dnet.core.api.model,net.nan21.dn
- et.core.api.security;version="[1.0.2,1.0.2]",net.nan21.dnet.core.api.
- service;version="[1.0.2,1.0.2]",net.nan21.dnet.core.api.session;versi
- on="[1.0.2,1.0.2]",net.nan21.dnet.core.api.setup,net.nan21.dnet.core.
- api.ui.extjs;version="[1.0.2,1.0.2]",net.nan21.dnet.core.api.wf,net.n
+ .sql,net.nan21.dnet.core.api;version="[1.0.3,1.0.3]",net.nan21.dnet.c
+ ore.api.action;version="[1.0.3,1.0.3]",net.nan21.dnet.core.api.marsha
+ ll;version="[1.0.3,1.0.3]",net.nan21.dnet.core.api.model,net.nan21.dn
+ et.core.api.security;version="[1.0.3,1.0.3]",net.nan21.dnet.core.api.
+ service;version="[1.0.3,1.0.3]",net.nan21.dnet.core.api.session;versi
+ on="[1.0.3,1.0.3]",net.nan21.dnet.core.api.setup,net.nan21.dnet.core.
+ api.ui.extjs;version="[1.0.3,1.0.3]",net.nan21.dnet.core.api.wf,net.n
  an21.dnet.core.presenter.action,net.nan21.dnet.core.presenter.service
- ,net.nan21.dnet.core.security;version="[1.0.2,1.0.2]",org.activiti.en
+ ,net.nan21.dnet.core.security;version="[1.0.3,1.0.3]",org.activiti.en
  gine,org.activiti.engine.form,org.activiti.engine.impl,org.activiti.e
  ngine.impl.bpmn.diagram,org.activiti.engine.impl.form,org.activiti.en
  gine.impl.persistence.entity,org.activiti.engine.impl.pvm,org.activit

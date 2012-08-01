@@ -3,13 +3,13 @@ Bundle-ManifestVersion: 2
 Bundle-Name: DNet Core - setup
 Bundle-SymbolicName: nan21.dnet.core.setup
 Bundle-Vendor: Nan21 
-Bundle-Version: 1.0.2
+Bundle-Version: 1.0.3
 Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.html
 Bundle-ClassPath: WEB-INF/classes
 Import-Package: 
- net.nan21.dnet.core.api.service;version="[1.0.2,1.0.2]",
- net.nan21.dnet.core.api.session;version="[1.0.2,1.0.2]",
- net.nan21.dnet.core.api.setup;version="[1.0.2,1.0.2]",
+ net.nan21.dnet.core.api.service;version="[1.0.3,1.0.3]",
+ net.nan21.dnet.core.api.session;version="[1.0.3,1.0.3]",
+ net.nan21.dnet.core.api.setup;version="[1.0.3,1.0.3]",
  javax.servlet.jsp.jstl.core;version="[1.2,2.0)",
  org.apache.taglibs.standard;version="[1.1.2,2.0)",
  org.apache.taglibs.standard.extra.spath;version="[1.1.2,2.0)",

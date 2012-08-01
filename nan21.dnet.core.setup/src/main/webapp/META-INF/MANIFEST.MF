@@ -1,12 +1,12 @@
 Manifest-Version: 1.0
-Export-Package: net.nan21.dnet.core.setup;version="1.0.2";uses:="javax
+Export-Package: net.nan21.dnet.core.setup;version="1.0.3";uses:="javax
  .servlet.http,org.springframework.beans.factory.annotation,org.spring
  framework.stereotype,org.springframework.web.bind.annotation,org.spri
  ngframework.web.context,org.springframework.web.servlet"
 Import-Bundle: org.eclipse.persistence.core;version="[2.0,2.5)"
 Bundle-Vendor: Nan21 
 Bundle-ClassPath: WEB-INF/classes
-Bundle-Version: 1.0.2
+Bundle-Version: 1.0.3
 Tool: Bundlor 1.1.0.RELEASE
 Bundle-Name: DNet Core - setup
 Bundle-ManifestVersion: 2
@@ -16,9 +16,9 @@ Import-Package: javax.persistence;version="[2.0,2.1)",javax.persistenc
  e.criteria;version="[2.0,2.1)",javax.persistence.metamodel;version="[
  2.0,2.1)",javax.persistence.spi;version="[2.0,2.1)",javax.servlet.htt
  p,javax.servlet.jsp.jstl.core;version="[1.2,2.0)",net.nan21.dnet.core
- .api.service;version="[1.0.2,1.0.2]",net.nan21.dnet.core.api.session;
- version="[1.0.2,1.0.2]",net.nan21.dnet.core.api.setup;version="[1.0.2
- ,1.0.2]",org.apache.taglibs.standard;version="[1.1.2,2.0)",org.apache
+ .api.service;version="[1.0.3,1.0.3]",net.nan21.dnet.core.api.session;
+ version="[1.0.3,1.0.3]",net.nan21.dnet.core.api.setup;version="[1.0.3
+ ,1.0.3]",org.apache.taglibs.standard;version="[1.1.2,2.0)",org.apache
  .taglibs.standard.extra.spath;version="[1.1.2,2.0)",org.apache.taglib
  s.standard.functions;version="[1.1.2,2.0)",org.apache.taglibs.standar
  d.lang.jstl;version="[1.1.2,2.0)",org.apache.taglibs.standard.lang.js

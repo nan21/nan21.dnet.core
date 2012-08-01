@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-Vendor: Nan21 
 Build-Jdk: 1.6.0_33
 Built-By: amathe
-Bundle-Version: 1.0.2
+Bundle-Version: 1.0.3
 Tool: Bundlor 1.1.0.RELEASE
 Bundle-Name: DNet Core - db
 Bundle-ManifestVersion: 2
