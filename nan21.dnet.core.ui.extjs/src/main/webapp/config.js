@@ -1,4 +1,3 @@
-  
 
     __COOKIE_AUTH_TOKEN__ = "dnet_at";
     __COOKIE_LOGIN_NAME__ = "dnet_lu";

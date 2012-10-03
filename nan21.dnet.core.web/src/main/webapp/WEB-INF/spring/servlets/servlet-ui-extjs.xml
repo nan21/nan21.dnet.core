@@ -16,7 +16,7 @@
     
      
     <bean name="uiExtjsMainController" scope="request"
-    		class="net.nan21.dnet.core.web.controller.ui.UiExtjsMainController" >
+    		class="net.nan21.dnet.core.web.controller.ui.extjs.UiExtjsMainController" >
     	<property name="productInfo" ref="productInfo"/>    	 
     	<property name="jspName" value="extjs/indexMain"/> 
     	<property name="uiExtjsSettings" ref="application_uiExtjsSettings"/> 
@@ -27,7 +27,7 @@
     	<property name="systemConfig" ref="systemConfig"/>    	   
     </bean>
     
-    <bean name="uiExtjsFrameController" class="net.nan21.dnet.core.web.controller.ui.UiExtjsFrameController" scope="request">  
+    <bean name="uiExtjsFrameController" class="net.nan21.dnet.core.web.controller.ui.extjs.UiExtjsFrameController" scope="request">  
     	<property name="productInfo" ref="productInfo"/>    	   	
     	<property name="jspName" value="extjs/indexFrame"/>  
     	<property name="uiExtjsSettings" ref="application_uiExtjsSettings"/>
@@ -37,7 +37,7 @@
     </bean>
    
    <bean name="uiExtjsDashboardController" scope="request"
-    		class="net.nan21.dnet.core.web.controller.ui.UiExtjsDashboardController" >
+    		class="net.nan21.dnet.core.web.controller.ui.extjs.UiExtjsDashboardController" >
     	<property name="productInfo" ref="productInfo"/>    	 
     	<property name="jspName" value="extjs/indexDashboard"/> 
     	<property name="uiExtjsSettings" ref="application_uiExtjsSettings"/> 

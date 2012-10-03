@@ -939,7 +939,7 @@ public abstract class AbstractDsService<M, F, P, E> extends AbstractPresenterPro
 			// this.converter
 			// .setEntityServiceFactories(this.getEntityServiceFactories());
 			AbstractDsConverter<M, E> cnv = (AbstractDsConverter<M, E>) this.converter;
-			cnv.setAppContext(this.getAppContext());
+			cnv.setAppContext(this.getApplicationContext());
 			cnv.setDescriptor(this.getDescriptor());
 			cnv.setEntityClass(this.getEntityClass());
 			cnv.setModelClass(this.getModelClass());

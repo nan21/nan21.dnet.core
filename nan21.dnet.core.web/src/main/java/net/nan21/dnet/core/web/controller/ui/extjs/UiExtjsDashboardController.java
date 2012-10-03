@@ -1,4 +1,4 @@
-package net.nan21.dnet.core.web.controller.ui;
+package net.nan21.dnet.core.web.controller.ui.extjs;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,6 +16,7 @@ public class UiExtjsDashboardController extends AbstractUiExtjsController {
 			HttpServletResponse response) throws Exception {
 
 		try {
+			@SuppressWarnings("unused")
 			SessionUser su = (SessionUser) SecurityContextHolder.getContext()
 					.getAuthentication().getPrincipal();
 		} catch (java.lang.ClassCastException e) {
@@ -24,8 +25,7 @@ public class UiExtjsDashboardController extends AbstractUiExtjsController {
 		}
 
 		this._prepare(request, response);
-		
-		 
+
 		return new ModelAndView(this.jspName, this.model);
 	}
 

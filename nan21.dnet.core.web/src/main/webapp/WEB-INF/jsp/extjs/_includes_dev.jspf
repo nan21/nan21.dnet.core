@@ -9,11 +9,9 @@
     <script type="text/javascript" src="${urlUiExtjsCore}/extjs-ux-extend.js"></script> 
    
     <!-- DNet locale -->            
-    <script type="text/javascript" src="${urlUiExtjsCore}/resources/locale/${shortLanguage}/Dnet.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCoreI18n}/${shortLanguage}/Dnet.js"></script>
   
-   <!-- DNet framework --> 
-   
-
+   <!-- DNet framework -->
     
     <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/base/NavigationTree.js"></script>
     <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/base/Logger.js"></script>
@@ -49,9 +47,7 @@
     <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/base/WorkflowFormFactory.js"></script>
      
  	<script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/ds/AbstractDs.js"></script>
- 	
- 	
- 	
+ 	 
     <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/dc/AbstractDc.js"></script>
     <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/dc/AbstractDNetDcView.js"></script>
     <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/dc/AbstractDNetDcGrid.js"></script>

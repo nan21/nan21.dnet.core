@@ -5,18 +5,16 @@ import java.util.List;
 
 import net.nan21.dnet.core.api.ISystemConfig;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 
-public abstract class AbstractSetupParticipant {
+public abstract class AbstractSetupParticipant implements
+		ApplicationContextAware {
 
-	@Autowired
-	protected ApplicationContext appContext;
- 
-	@Autowired
+	private ApplicationContext applicationContext;
+
 	private ISystemConfig systemConfig;
-	
-	
+
 	protected String targetName;
 	protected List<ISetupTask> tasks;
 	protected int ranking;
@@ -46,7 +44,7 @@ public abstract class AbstractSetupParticipant {
 	}
 
 	public String getBundleId() {
-		return this.appContext.getId();
+		return this.applicationContext.getId();
 	}
 
 	public ISetupTask getTask(String taskId) {
@@ -60,7 +58,6 @@ public abstract class AbstractSetupParticipant {
 		return null;
 	}
 
-	
 	protected void beforeExecute() throws Exception {
 
 	}
@@ -88,7 +85,6 @@ public abstract class AbstractSetupParticipant {
 		return sp.getRanking() - this.ranking;
 	}
 
-	
 	/**
 	 * Get system configuration object. If it is null attempts to retrieve it
 	 * from Spring context.
@@ -97,35 +93,27 @@ public abstract class AbstractSetupParticipant {
 	 */
 	public ISystemConfig getSystemConfig() {
 		if (this.systemConfig == null) {
-			this.systemConfig = this.appContext.getBean(ISystemConfig.class);
+			this.systemConfig = this.applicationContext
+					.getBean(ISystemConfig.class);
 		}
 		return systemConfig;
 	}
 
 	/**
 	 * Set system configuration object.
+	 * 
 	 * @param systemConfig
 	 */
 	public void setSystemConfig(ISystemConfig systemConfig) {
 		this.systemConfig = systemConfig;
 	}
 
-	/**
-	 * Get application context.
-	 * @return
-	 */
-	public ApplicationContext getAppContext() {
-		return appContext;
+	public ApplicationContext getApplicationContext() {
+		return applicationContext;
 	}
 
-	/**
-	 * Set application context.
-	 * @param appContext
-	 */
-	public void setAppContext(ApplicationContext appContext) {
-		this.appContext = appContext;
+	public void setApplicationContext(ApplicationContext applicationContext) {
+		this.applicationContext = applicationContext;
 	}
 
-	
-	
 }

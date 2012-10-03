@@ -1,0 +1,10 @@
+
+    <!-- Sencha Touch  --> 
+    <link rel="stylesheet" type="text/css" href="${urlUiStLibSenchaTouch}/resources/css/ext-all-${theme}.css"/>
+    <script type="text/javascript" src="${urlUiStLibSenchaTouch}/ext-all.js"></script>   
+    <script type="text/javascript" src="${urlUiStCore}/resources/locale/${shortLanguage}/Dnet.js"></script>
+ 
+   <script type="text/javascript" src="${urlUiStCore}/dnet-ui-extjs-core-all.js"></script>   
+	<link rel="stylesheet" type="text/css" href="${urlUiStCore}/resources/css/dnet-xtheme-${theme}.css"/>
+      
+        

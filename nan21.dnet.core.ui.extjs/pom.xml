@@ -9,33 +9,40 @@
 	</parent>
 	<artifactId>nan21.dnet.core.ui.extjs</artifactId>
 	<name>DNet Core - ui extjs</name>
-	<description>DNet Core - extjs user interface.</description>
+	<description>Extjs based user interface framework.</description>
 	<packaging>war</packaging>
-
 	
+	<!-- ===================== Dependencies ===================== -->
 	
-	<!-- ===================== Build ===================== -->	
+	<dependencies>
+	
+		<!-- DNet dependencies -->
+		
+	
+		<!-- External libraries -->
+		
+		<dependency>
+			<groupId>com.yahoo.platform.yui</groupId>
+			<artifactId>yuicompressor</artifactId>
+			<version>2.4.2</version>
+			<type>jar</type>
+			<scope>provided</scope>
+		</dependency>
+	</dependencies>
+	
+	<!-- ===================== Build ===================== -->
 	
 	<build>
-		
 		<plugins>
-			<plugin>
-				<groupId>com.springsource.bundlor</groupId>
-				<artifactId>com.springsource.bundlor.maven</artifactId>
-				<version>1.0.0.RELEASE</version>
-				<configuration>
-				<enabled>false</enabled>
-			</configuration>
-			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
 				<version>2.1.1</version>
 				<configuration>
-			 	<archive>
-					<manifestFile>src/main/webapp/META-INF/MANIFEST.MF</manifestFile>
-				</archive>
-			</configuration>
+				 	<archive>
+						<manifestFile>src/main/webapp/META-INF/MANIFEST.MF</manifestFile>
+					</archive>
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -47,15 +54,13 @@
 						<phase>generate-sources</phase>
 						<configuration>
 						  <target>
-                               <echo>Beginning generate-sources phase...</echo>
-                               <property name="compile_classpath" refid="maven.compile.classpath"/>                          
-                               <echo>Compile classpath : ${compile_classpath}</echo>                
-                                <property name="my_repo"  value="${user.home}/.m2/repository"/>
-                                
-                                <ant antfile="${basedir}/pack.xml">
-                                    <target name="pack"/>
-                                </ant>
-                            </target>                            
+				               <echo>Beginning generate-sources phase...</echo>
+				               <property name="compile_classpath" refid="maven.compile.classpath"/>                                                                 
+				                <property name="maven_repo_location"  value="${maven_repo_location}"/>
+				                <ant antfile="${basedir}/pack.xml">
+				                    <target name="pack"/>
+				                </ant>
+				            </target>                            
 						</configuration>
 						<goals>
 							<goal>run</goal>
@@ -63,7 +68,6 @@
 					</execution>
 				</executions>
 			</plugin>
-	 	</plugins>
- 	</build>
- 	 
+		</plugins>
+	</build>
 </project>

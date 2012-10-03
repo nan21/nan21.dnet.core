@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 
 import net.nan21.dnet.core.api.session.Session;
 import net.nan21.dnet.core.api.setup.IStartupParticipant;
@@ -16,10 +16,9 @@ import net.nan21.dnet.core.api.setup.IStartupParticipant;
  * @author amathe
  * 
  */
-public class SystemConfig implements ISystemConfig {
+public class SystemConfig implements ISystemConfig, ApplicationContextAware  {
 
-	@Autowired
-	private ApplicationContext appContext;
+	private ApplicationContext applicationContext;
 
 	/**
 	 * Disable the use of fetch groups. Temporary parameter as workaround for
@@ -38,8 +37,8 @@ public class SystemConfig implements ISystemConfig {
 
 	/**
 	 * Temporary parameter to link the portal content to the specified client
-	 * Altough the backend is a multi-tenant architecture, the front-end portal
-	 * currently is not multi-site
+	 * Although the back-end is a multi-tenant architecture, the front-end
+	 * portal currently is not multi-site
 	 */
 	private String portalClientCode;
 	private String portalClientId;
@@ -87,7 +86,6 @@ public class SystemConfig implements ISystemConfig {
 	 * @param paramValue
 	 */
 	public void setSysParamValue(String paramName, String paramValue) {
-		String client = Session.user.get().getClientCode();
 		addSysParam(Session.user.get().getClientCode(), paramName, paramValue);
 	}
 
@@ -125,7 +123,8 @@ public class SystemConfig implements ISystemConfig {
 	}
 
 	private void loadSysparams() throws Exception {
-		List<IStartupParticipant> participants = (List<IStartupParticipant>) this.appContext
+		@SuppressWarnings("unchecked")
+		List<IStartupParticipant> participants = (List<IStartupParticipant>) this.applicationContext
 				.getBean("osgiStartupParticipants");
 		for (IStartupParticipant startupParticipant : participants) {
 			startupParticipant.execute();
@@ -136,12 +135,12 @@ public class SystemConfig implements ISystemConfig {
 		this.loadSysparams();
 	}
 
-	public ApplicationContext getAppContext() {
-		return appContext;
+	public ApplicationContext getApplicationContext() {
+		return applicationContext;
 	}
 
-	public void setAppContext(ApplicationContext appContext) {
-		this.appContext = appContext;
+	public void setApplicationContext(ApplicationContext applicationContext) {
+		this.applicationContext = applicationContext;
 	}
 
 	public String getPortalClientCode() {
@@ -160,6 +159,4 @@ public class SystemConfig implements ISystemConfig {
 		this.portalClientId = portalClientId;
 	}
 
-	 
-	
 }

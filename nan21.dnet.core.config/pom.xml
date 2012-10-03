@@ -8,10 +8,7 @@
 		<version>1.0.3-SNAPSHOT</version>
 	</parent>
 	<artifactId>nan21.dnet.core.config</artifactId>
-	<name>DNet Core - config</name>
-	<description>DNet Core - configuration files</description>
+	<name>DNet Core - Config</name>
+	<description>Configuration files.</description>
 	<packaging>pom</packaging>
-
-	
- 	 
 </project>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:osgi-compendium="http://www.springframework.org/schema/osgi-compendium"
+	xmlns:osgi="http://www.springframework.org/schema/osgi"
+	xsi:schemaLocation="
+			http://www.springframework.org/schema/beans
+				http://www.springframework.org/schema/beans/spring-beans.xsd
+			http://www.springframework.org/schema/context 
+				http://www.springframework.org/schema/context/spring-context.xsd
+			http://www.springframework.org/schema/osgi 
+				http://www.springframework.org/schema/osgi/spring-osgi.xsd	
+			http://www.springframework.org/schema/osgi-compendium 
+    			http://www.springframework.org/schema/osgi-compendium/spring-osgi-compendium.xsd">
+
+
+	<bean name="uiSenchaTouchMainController" scope="request"
+		class="net.nan21.dnet.core.web.controller.ui.senchatouch.UiSenchaTouchMainController">
+		<property name="uiSenchaTouchSettings" ref="application_uiSenchaTouchSettings" />
+		<property name="jspName" value="senchatouch/indexMain" />
+		<property name="systemConfig" ref="systemConfig" />
+	</bean>
+
+	<bean name="uiSenchaTouchFrameController" scope="request"
+		class="net.nan21.dnet.core.web.controller.ui.senchatouch.UiSenchaTouchFrameController">
+		<property name="uiSenchaTouchSettings" ref="application_uiSenchaTouchSettings" />
+		<property name="jspName" value="senchatouch/indexFrame" />
+		<property name="systemConfig" ref="systemConfig" />
+	</bean>
+
+
+
+	<!-- When change the mapping keys below propagate the new values to the 
+		WEB-INF/jsp/senchatouch/index* pages also -->
+	<bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="mappings">
+			<props>
+				<prop key="/frame/*/*">uiSenchaTouchFrameController</prop>
+				<prop key="/">uiSenchaTouchMainController</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/jsp/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+
+</beans>

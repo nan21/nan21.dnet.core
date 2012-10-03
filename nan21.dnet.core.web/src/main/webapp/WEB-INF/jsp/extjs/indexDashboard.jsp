@@ -6,10 +6,6 @@
 	<title>${title}</title>	 
 	<script>
 		__TYPE__ = "dnet";
-		//__MODULE__ = "xxx";
-		//__ITEM__ = "";  	
-		__STATIC_RESOURCE_URL__  = "${urlUiExtjs}";
-		__STATIC_RESOURCE_URL_CORE__  = "${urlUiExtjsCore}";
 		__LANGUAGE__ = "${shortLanguage}";
 		__THEME__ = "${theme}"; 		
 	</script>
@@ -43,7 +39,7 @@
     <script type="text/javascript" src="${urlUiExtjsCore}/extjs-ux-extend.js"></script> 
    
     <!-- DNet locale -->            
-    <script type="text/javascript" src="${urlUiExtjsCore}/resources/locale/${shortLanguage}/Dnet.js"></script>  
+    <script type="text/javascript" src="${urlUiExtjsCoreI18n}/${shortLanguage}/Dnet.js"></script>  
 	
 	
 	<!-- DNet framework --> 
@@ -73,9 +69,7 @@
  	<script>
 
     Ext.onReady(function(){
-
-    	Ext.create('dnet.core.dashboard.Portal');    
-      
+    	Ext.create('dnet.core.dashboard.Portal');      
     });
 
     <%@ include file="_loading_mask_remove.jspf" %> 

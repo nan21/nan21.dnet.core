@@ -8,24 +8,41 @@
 			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
 			http://www.springframework.org/schema/osgi http://www.springframework.org/schema/osgi/spring-osgi.xsd
 			http://www.springframework.org/schema/osgi-compendium http://www.springframework.org/schema/osgi-compendium/spring-osgi-compendium.xsd">
+
+	<context:annotation-config />
+
 	<context:property-placeholder
 		properties-ref="dnetProperties" />
+
 	<osgi-compendium:cm-properties id="dnetProperties"
 		persistent-id="net.nan21.dnet">
+
 	</osgi-compendium:cm-properties>
 
-	<!--  Local  -->
+	<!-- Local -->
+
 	<bean id="productInfo" class="net.nan21.dnet.core.web.settings.ProductInfo"
 		scope="singleton">
 		<property name="name" value="DNet eBusiness Suite" />
 		<property name="version" value="1.0.3" />
 	</bean>
+
 	<bean id="application_uiExtjsSettings" class="net.nan21.dnet.core.web.settings.UiExtjsSettings"
 		scope="singleton">
-		<property name="urlUiExtjs" value="${url.ui.extjs}" />
-		<property name="urlUiExtjsCore" value="${url.ui.extjs.core}" />
-		<property name="urlUiExtjsLibExtjs" value="${url.ui.extjs.lib.extjs}" />
+		<property name="urlLib" value="${url.ui.extjs.lib.extjs}" />
+		<property name="urlCore" value="${url.ui.extjs.core}" />
+		<property name="urlModules" value="${url.ui.extjs.modules}" />
+		<property name="urlCoreI18n" value="${url.ui.extjs.core.i18n}" />
+		<property name="urlModulesI18n" value="${url.ui.extjs.modules.i18n}" />
 	</bean>
+
+	<bean id="application_uiSenchaTouchSettings" class="net.nan21.dnet.core.web.settings.UiSenchaTouchSettings"
+		scope="singleton">
+		<property name="urlLib" value="${url.ui.senchatouch.lib.senchatouch}" />
+		<property name="urlCore" value="${url.ui.senchatouch.core}" />
+		<property name="urlModules" value="${url.ui.senchatouch.modules}" />
+	</bean>
+
 	<bean id="systemConfig" class="net.nan21.dnet.core.api.SystemConfig"
 		scope="singleton">
 		<property name="disableFetchGroups" value="${sys.disableFetchGroups}" />
@@ -33,14 +50,14 @@
 		<property name="portalClientCode" value="${sys.portalClientCode}" />
 		<property name="portalClientId" value="${sys.portalClientId}" />
 	</bean>
+
 	<bean id="serviceLocator" class="net.nan21.dnet.core.presenter.service.ServiceLocator">
 	</bean>
-	<context:annotation-config />
+
+	<!-- Osgi -->
 	
-
-
-	<!--  Osgi  -->
 	<osgi:service ref="systemConfig" interface="net.nan21.dnet.core.api.ISystemConfig" />
+	
 	<osgi:reference id="osgiDataSource" cardinality="0..1"
 		interface="javax.sql.DataSource" />
 	<osgi:reference id="osgiAuthenticationForDbUser"
@@ -75,5 +92,7 @@
 		cardinality="0..1" interface="net.nan21.dnet.core.api.wf.IActivitiProcessEngineHolder" />
 
 	<!-- Configures global application security -->
+	
 	<import resource="security.xml" />
+	
 </beans>

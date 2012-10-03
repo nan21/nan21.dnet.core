@@ -1,0 +1,50 @@
+
+    <!-- Extjs  --> 
+     
+    <link rel="stylesheet" type="text/css" href="${urlUiStLibSenchaTouch}/resources/css/sencha-touch.css"/> 
+    <script type="text/javascript" src="${urlUiStLibSenchaTouch}/sencha-touch-all-debug.js"></script>
+    
+    <script type="text/javascript" src="${urlUiStCore}/src/Dnet.js" ></script>    
+         
+    <!-- DNet locale -->            
+    <script type="text/javascript" src="${urlUiStCore}/resources/locale/${shortLanguage}/Dnet.js"></script>
+  
+   <!-- DNet framework --> 
+     
+  
+   <script type="text/javascript" src="${urlUiStCore}/src/dnet/core/base/Session.js"></script>
+   <script type="text/javascript" src="${urlUiStCore}/src/dnet/core/base/TemplateRepository.js"></script>
+   <script type="text/javascript" src="${urlUiStCore}/src/dnet/core/base/HomePanel.js"></script>
+   <script type="text/javascript" src="${urlUiStCore}/src/dnet/core/base/UrlBuilder.js"></script>
+   <script type="text/javascript" src="${urlUiStCore}/src/dnet/core/base/AbstractDNetView.js"></script>
+   
+   <script type="text/javascript" src="${urlUiStCore}/src/dnet/core/dc/AbstractDc.js"></script>
+    <script type="text/javascript" src="${urlUiStCore}/src/dnet/core/dc/DcActionsFactory.js"></script>
+    <script type="text/javascript" src="${urlUiStCore}/src/dnet/core/dc/DcCommandFactory.js"></script>
+       
+    <script type="text/javascript" src="${urlUiStCore}/src/dnet/core/dc/command/AbstractDcCommand.js"></script>
+    <script type="text/javascript" src="${urlUiStCore}/src/dnet/core/dc/command/AbstractDcAsyncCommand.js"></script>
+    <script type="text/javascript" src="${urlUiStCore}/src/dnet/core/dc/command/AbstractDcSyncCommand.js"></script>
+     
+    <script type="text/javascript" src="${urlUiStCore}/src/dnet/core/dc/command/DcQueryCommand.js"></script>
+    <script type="text/javascript" src="${urlUiStCore}/src/dnet/core/dc/command/DcNewCommand.js"></script>
+    <script type="text/javascript" src="${urlUiStCore}/src/dnet/core/dc/command/DcCopyCommand.js"></script>
+    <script type="text/javascript" src="${urlUiStCore}/src/dnet/core/dc/command/DcSaveCommand.js"></script>
+    <script type="text/javascript" src="${urlUiStCore}/src/dnet/core/dc/command/DcCancelCommand.js"></script>
+    <script type="text/javascript" src="${urlUiStCore}/src/dnet/core/dc/command/DcEditInCommand.js"></script>
+    <script type="text/javascript" src="${urlUiStCore}/src/dnet/core/dc/command/DcEditOutCommand.js"></script>
+    
+    
+    <script type="text/javascript" src="${urlUiStCore}/src/dnet/core/dc/command/DcClearQueryCommand.js"></script>    
+    <script type="text/javascript" src="${urlUiStCore}/src/dnet/core/dc/command/DcDeleteCommand.js"></script>    
+    <script type="text/javascript" src="${urlUiStCore}/src/dnet/core/dc/command/DcReloadRecCommand.js"></script>
+    <script type="text/javascript" src="${urlUiStCore}/src/dnet/core/dc/command/DcPrevRecCommand.js"></script>
+    <script type="text/javascript" src="${urlUiStCore}/src/dnet/core/dc/command/DcNextRecCommand.js"></script>
+    <script type="text/javascript" src="${urlUiStCore}/src/dnet/core/dc/command/DcRpcDataCommand.js"></script>
+    <script type="text/javascript" src="${urlUiStCore}/src/dnet/core/dc/command/DcRpcFilterCommand.js"></script>
+    
+    
+    
+   <script type="text/javascript" src="${urlUiStCore}/src/dnet/core/frame/AbstractUi.js"></script>
+   <script type="text/javascript" src="${urlUiStCore}/src/dnet/core/frame/FrameBuilder.js"></script>
+        

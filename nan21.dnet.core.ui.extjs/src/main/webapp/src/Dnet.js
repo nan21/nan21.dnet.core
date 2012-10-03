@@ -9,17 +9,22 @@ Dnet = {
     }
 
 
-	// base urls
-	,hostUrl:null
-	,url:null
-	,dsUrl:null     //  tx/java/ds
+	// base urls 
+	,hostUrl: null
+	,url: null
+	,dsUrl: null     //  tx/java/ds
 	,rpcUrl: null   //  tx/java/rpc
-	,asgnUrl:null   //  tx/java/asgn
-	,wfUrl:null     //  workflow
-	,uiUrl:null
+	,asgnUrl: null   //  tx/java/asgn
+	,wfUrl: null     //  workflow
+	,uiUrl: null
 	,sessionUrl : null
-	,staticResourceUrl:null
-
+	
+	,staticResourceUrlCore: null
+	,staticResourceUrlModules: null
+	
+	,staticResourceUrlCoreI18n: null
+	,staticResourceUrlModulesI18n: null
+	
  
 	 // configuration variables
 	,config : {
@@ -107,34 +112,39 @@ Dnet = {
              ,unlock : this.sessionUrl +'?action=unlock'
              ,changePassword : this.sessionUrl +'?action=changePassword'
              ,userSettings : this.sessionUrl +'?action=userSettings'
-        }
+        };
 	}
+   	
    	,wfProcessDefinitionAPI: function(processDefinitionId) {
    		return {
    			 form : this.wfUrl + '/process-definition/'+processDefinitionId+'/form'
    			,diagram : this.wfUrl + '/process-definition/'+processDefinitionId+'/diagram'
    			,xml : this.wfUrl + '/process-definition/'+processDefinitionId+'/xml'
    			,properties : this.wfUrl + '/process-definition/'+processDefinitionId+'/properties'  
-   		}
+   		};
    	}
+   	
 	,wfProcessInstanceAPI: function(processInstanceId) {
    		return {
    			 start : this.wfUrl + '/process-instance/start'
    			,diagram : this.wfUrl + '/process-instance/'+processInstanceId+'/diagram'
-   		}
+   		};
    	}
+	
 	,wfTaskAPI: function(taskId) {
    		return {
    			form : this.wfUrl + '/task/'+taskId+'/form'   
    			,complete : this.wfUrl + '/task/'+taskId+'/complete'
    			,properties : this.wfUrl + '/task/'+taskId+'/properties'   
-   		}
+   		};
    	}
+	
 	,wfDeploymentAPI: function(deploymentId) {
    		return {
    			destroy : this.wfUrl + '/deployment/delete'   			 
-   		}
+   		};
    	}
+	
     ,dsAPI: function (resource, format) {
 	   return {
              read : this.dsUrl +'/'+resource+'.'+format+'?action=find'
@@ -146,9 +156,9 @@ Dnet = {
             ,save: this.dsUrl +'/'+resource+'.'+format+'?action=save'
             ,destroy: this.dsUrl +'/'+resource+'.'+format+'?action=delete'
             ,service: this.dsUrl +'/'+resource+'.'+format+'?action=rpc'
-
-        }
+        };
 	}
+    
     ,asgnLeftAPI: function (resource, format) {
 	   return {
 	             read : this.asgnUrl +'/'+resource+'.'+format+'?action=findLeft'
@@ -157,8 +167,9 @@ Dnet = {
 	            ,update: this.asgnUrl +'/'+resource+'.'+format+'?action='
 	            ,destroy: this.asgnUrl +'/'+resource+'.'+format+'?action='
 
-	        }
+	        };
 	}
+    
     ,asgnRightAPI: function (resource, format) {
 	   return {
 	            read : this.asgnUrl +'/'+resource+'.'+format+'?action=findRight'
@@ -167,8 +178,9 @@ Dnet = {
 	            ,update: this.asgnUrl +'/'+resource+'.'+format+'?action='
 	            ,destroy: this.asgnUrl +'/'+resource+'.'+format+'?action='
 
-	        }
+	        };
 	}
+    
     ,rpcAPI: function (resource, fnName, format) {
 	   return this.rpcUrl +'/'+resource+'.'+format+'?action='+fnName
 	}
@@ -186,6 +198,7 @@ Dnet = {
 	, setDialogTitle: function (dialogName, title ) { 
 		document.getElementById(dialogName+'_dialogName').innerHTML = title;
 	}
+	
 	, translate: function(t,k) {
 		return dnet.Translation[t][k] || k;
 	}
@@ -202,13 +215,17 @@ Dnet = {
 		for(var i=0; i<list.length;i++) {
 			if (!Ext.isEmpty(list[i])) {
 				var rd = this.describeResource(list[i]);
-				document.write('<'+'scr'+'ipt type="text/javascript" src="'+Dnet.staticResourceUrl+'/'+rd.bundle+'/src/'+rd.type+'/'+rd.name+'.js"></script>');
+				document.write('<'+'scr'+'ipt type="text/javascript" src="'+Dnet.staticResourceUrlModules+'/'+rd.bundle+'/src/'+rd.type+'/'+rd.name+'.js"></script>');
 				if(rd.type=="ds") {
-					document.write('<'+'scr'+'ipt type="text/javascript" src="'+Dnet.staticResourceUrl+'/'+rd.bundle+'/resources/locale/'+__LANGUAGE__+'/'+rd.type+'/'+rd.name+'.js"></script>');
+					// old one loading from bundle
+					//document.write('<'+'scr'+'ipt type="text/javascript" src="'+Dnet.i18nResourceUrl+'/'+rd.bundle+'/resources/locale/'+__LANGUAGE__+'/'+rd.type+'/'+rd.name+'.js"></script>');
+					// new one loading from the i18n project
+					document.write('<'+'scr'+'ipt type="text/javascript" src="'+Dnet.staticResourceUrlModulesI18n+'/'+__LANGUAGE__+'/'+rd.bundle+'/'+rd.type+'/'+rd.name+'.js"></script>');
 				}
 			}
 		}
 	}
+	
 	,describeResource: function(artifact) {
 		var rd = {};		 
 		var t = artifact.split('/');		 
@@ -237,6 +254,7 @@ Dnet = {
 		// try to translate from the shared resource-bundle
 		item.fieldLabel = Dnet.translate("ds",item.dataIndex || item.paramIndex); 
 	}
+	
 	,translateColumn: function(vrb, mrb, item) {
 		// check if the view has its own resource bundle 
 		if (vrb != undefined && vrb[item.name]) {				
@@ -262,7 +280,7 @@ Dnet = {
 				"bv" : false,
 				"tv" : Dnet.translate("msg", "bool_false")
 			}]
-		})
+		});
 	}
 	
 	

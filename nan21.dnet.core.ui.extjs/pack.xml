@@ -3,28 +3,46 @@
 		Pack the javascript files
     </description>
 
-	<property name="targetFileCore" value="dnet-ui-extjs-core-all-debug.js" />
-	<property name="targetFileCoreMinimized" value="dnet-ui-extjs-core-all.js" />
-	<property name="targetPathCore" value="src/main/webapp" />
+	<property name="concatFile" value="dnet-ui-extjs-core-all-debug.js" />
+	<property name="minFile" value="dnet-ui-extjs-core-all.js" />
+	<property name="targetPath" value="src/main/webapp" />
 	<property name="sourcePathRoot" value="src/main/webapp/src" />
 	<property name="sourcePathCore" value="src/main/webapp/src/dnet/core" />
+	<property name="maven_repo_location1" value="${user.home}/.m3/repository" />
+	<property name="yui" value="${maven_repo_location1}/com/yahoo/platform/yui/yuicompressor/2.4.7/yuicompressor-2.4.7.jar" />
 
-	<property name="yui" value="yuicompressor-2.4.2.jar" />
-
-	<target name="pack" depends="packCore">
+	<target name="pack" depends="packCore,minimizeCore">
 		<echo>Done.</echo>
 	</target>
 
 	<!-- ================================= Javascripts ================================== -->
 
+	
+	<target name="minimizeCore" description="Minimize file.">
+		<echo message="Minimizing file..." />
+		<apply executable="java" parallel="false">
+			<filelist dir="${targetPath}" files="${concatFile}" />
+
+			<arg line="-jar" />
+			<arg path="${yui}" /> 
+			<srcfile />
+			<arg line="-o" />
+			<mapper type="glob" from="*-debug.js" to="${targetPath}/*.js" />
+			<targetfile />
+
+		</apply>
+		<echo message="Done." />
+	</target>
+				
+				
 	<target name="packCore">
 		<echo>[CORE] Packing javascript files in dnet-ui-extjs-core... </echo>
-		<concat destfile="${targetPathCore}/${targetFileCore}">
+		<concat destfile="${targetPath}/${concatFile}">
 
 			<filelist dir="${sourcePathRoot}" files="Dnet.js" />
-			
+
 			<filelist dir="${sourcePathRoot}/.." files="extjs-extend.js,extjs-ux-extend.js" />
- 
+
 			<filelist dir="${sourcePathCore}/base" files="UserPreferences.js,Logger.js,NavigationTree.js,TemplateRepository.js,Session.js,Application.js,ApplicationMenu.js,LoginWindow.js,ChangePasswordWindow.js,FrameInspector.js" />
 
 			<filelist dir="${sourcePathCore}/base" files="AbstractDNetView.js,HomePanel.js,UrlBuilder.js,UiHeader.js,FrameNavigatorWithIframe.js,FrameNavigator.js,FileUploadWindow.js,WorkflowFormWithHtmlWindow.js,WfAbstractFormWindowExtjs.js,WfTaskFormWindowExtjs.js,WfStartFormWindowExtjs.js,WorkflowFormFactory.js" />
@@ -51,21 +69,6 @@
 	</target>
 
 
-	<target name="minDnetUiExtjsCore" description="Minimize file.">
-		<echo message="Minimizing file..." />
-		<apply executable="java" parallel="false" verbose="true" dest="${targetPath}/${targetFileCoreMinimized}">
-			<fileset dir="${targetPath}">
-				<include name="${targetFileCore}" />
-			</fileset>
-			<arg line="-jar" />
-			<arg path="${yui}" />
-			<arg value="--charset" />
-			<arg value="ANSI" />
-			<arg value="-o" />
-			<targetfile />
-			<mapper type="glob" from="${targetFileCore}" to="${targetFileCoreMinimized}" />
-		</apply>
-		<echo message="Done." />
-	</target>
+
 
 </project>

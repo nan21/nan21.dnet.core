@@ -8,10 +8,7 @@
 		<version>1.0.3-SNAPSHOT</version>
 	</parent>
 	<artifactId>nan21.dnet.core.db</artifactId>
-	<name>DNet Core - db</name>
-	<description>DNet Core - db</description>
+	<name>DNet Core - DB</name>
+	<description>Database objects definition.</description>
 	<packaging>jar</packaging>
-
-	
- 	 
 </project>

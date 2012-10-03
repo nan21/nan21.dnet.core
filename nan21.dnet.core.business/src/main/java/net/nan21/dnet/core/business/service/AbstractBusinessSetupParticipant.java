@@ -32,7 +32,7 @@ public abstract class AbstractBusinessSetupParticipant extends AbstractSetupPart
 	}
 	
 	protected List<IInitDataProviderFactory> getDataProviderFactories() {
-		return (List<IInitDataProviderFactory>)this.appContext.getBean("osgiInitDataProviderFactories");
+		return (List<IInitDataProviderFactory>)this.getApplicationContext().getBean("osgiInitDataProviderFactories");
 	}
 	 
 	public <T extends AbstractBusinessDelegate> T getBusinessDelegate(Class<T> clazz) throws Exception {

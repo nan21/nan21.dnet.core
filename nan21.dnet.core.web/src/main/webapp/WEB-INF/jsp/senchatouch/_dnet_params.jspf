@@ -1,0 +1,35 @@
+<script>
+		Dnet.name = '${product.name}';
+		Dnet.version = '${product.version}';
+		
+		//Dnet.url = "${deploymentUrl}"; /* deprecated */
+		Dnet.deploymentUrl = "${deploymentUrl}";
+		
+		//Dnet.hostUrl = "${deploymentDomainUrl}"; /* deprecated */
+		Dnet.deploymentDomainUrl = "${deploymentDomainUrl}";
+		
+		Dnet.dsUrl = "${deploymentUrl}/tx/java/ds";
+		Dnet.rpcUrl = "${deploymentUrl}/tx/java/rpc";
+		Dnet.asgnUrl = "${deploymentUrl}/tx/java/asgn";
+		Dnet.wfUrl = "${deploymentUrl}/workflow";
+		Dnet.uiUrl = "${uiUrl}";  
+		Dnet.sessionUrl = "${deploymentUrl}/security/session";
+		Dnet.staticResourceUrl = "${urlUiStModules}";
+		Dnet.staticResourceUrlCore = "${urlUiStCore}";
+
+		Dnet.DATE_FORMAT 		= "${extjsDateFormat}";
+		Dnet.TIME_FORMAT 		= "${extjsTimeFormat}";
+		Dnet.DATETIME_FORMAT 	= "${extjsDateTimeFormat}"; 
+		Dnet.DATE_ALTFORMATS 	= "${extjsAltFormats}";
+		
+		Dnet.DECIMAL_SEP 		= "${decimalSeparator}";
+		Dnet.THOUSAND_SEP 		= "${thousandSeparator}";
+		
+		dnet.core.base.Session.user.code = '${userUsername}';
+		dnet.core.base.Session.user.name = '${userDisplayName}';
+		dnet.core.base.Session.client.code = '${userClientCode}';
+		dnet.core.base.Session.client.id = '${userClientId}';
+		dnet.core.base.Session.client.systemClient = ${userSystemClient};
+		dnet.core.base.Session.locked = false;
+		
+</script>		

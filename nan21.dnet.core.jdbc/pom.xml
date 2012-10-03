@@ -9,16 +9,18 @@
 	</parent>
 	<artifactId>nan21.dnet.core.jdbc</artifactId>
 	<name>DNet Core - JDBC</name>
-	<description>DNet Core - JDBC</description>
+	<description>JDBC connections for several databases.</description>
 	<packaging>jar</packaging>
-
 	
 	<!-- ===================== Dependencies ===================== -->
-
+	
 	<dependencies>
+	
 		<!-- DNet dependencies -->
-		 
+		
+	
 		<!-- External libraries -->
+		
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>com.springsource.org.apache.commons.dbcp</artifactId>
@@ -26,5 +28,4 @@
 			<type>jar</type>
 		</dependency>
 	</dependencies>
- 	 
 </project>

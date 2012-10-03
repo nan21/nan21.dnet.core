@@ -7,7 +7,7 @@ dnet.core.base.ApplicationMenu$LogoItems = [{
 	xtype : "container",
 	
 	items : [Ext.create('Ext.Img', {
-				src : __STATIC_RESOURCE_URL_CORE__ + "/resources/images/"
+				src : Dnet.staticResourceUrlCore + "/resources/images/"
 						+ __THEME__ + "/logo/logo.png",
 				id : "net.nan21.dnet.core.menu.ApplicationMenu$Item$Logo",
 				style : "vertical-align:middle;"

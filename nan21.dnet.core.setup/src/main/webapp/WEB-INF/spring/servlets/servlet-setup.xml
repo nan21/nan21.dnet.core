@@ -9,7 +9,7 @@
         http://www.springframework.org/schema/osgi http://www.springframework.org/schema/osgi/spring-osgi.xsd
 			http://www.springframework.org/schema/osgi-compendium http://www.springframework.org/schema/osgi-compendium/spring-osgi-compendium.xsd">
     
-   
+   <context:annotation-config />
     <bean name="setupController" class="net.nan21.dnet.core.setup.SetupController" scope="request">    	 
        <property name="participants" ref="osgiSetupParticipants"></property>
     </bean>
@@ -19,7 +19,7 @@
     <bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
         <property name="mappings">
             <props>
-                <prop key="/*">setupController</prop>
+                <prop key="/**">setupController</prop>
             </props>
         </property>
     </bean>

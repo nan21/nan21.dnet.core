@@ -6,23 +6,20 @@ import org.activiti.engine.ProcessEngine;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 
 import net.nan21.dnet.core.api.ISystemConfig;
 import net.nan21.dnet.core.api.service.IDsService;
 import net.nan21.dnet.core.api.service.IEntityService;
 import net.nan21.dnet.core.api.wf.IActivitiProcessEngineHolder;
 
-public abstract class AbstractPresenterProcessor {
+public abstract class AbstractPresenterProcessor implements ApplicationContextAware {
 
-	@Autowired
-	private ApplicationContext appContext;
+	private ApplicationContext applicationContext;
 
-	@Autowired
 	private ISystemConfig systemConfig;
 
-	@Autowired
 	private ServiceLocator serviceLocator;
 
 	private ProcessEngine workflowEngine;
@@ -58,7 +55,7 @@ public abstract class AbstractPresenterProcessor {
 	 * on-demand from the spring-context.
 	 */
 	protected <M, F, P> void prepareDelegate(AbstractDsDelegate delegate) {
-		delegate.setAppContext(this.appContext);
+		delegate.setApplicationContext(this.applicationContext);
 		// delegate.setEntityServiceFactories(this.getEntityServiceFactories());
 		// delegate.setDsServiceFactories(this.getDsServiceFactories());
 		// delegate.setSystemConfig(this.getSystemConfig());
@@ -67,8 +64,9 @@ public abstract class AbstractPresenterProcessor {
 
 	public ProcessEngine getWorkflowEngine() throws Exception {
 		if (this.workflowEngine == null) {
-			this.workflowEngine = (ProcessEngine) this.getAppContext().getBean(
-					IActivitiProcessEngineHolder.class).getProcessEngine();
+			this.workflowEngine = (ProcessEngine) this.applicationContext
+					.getBean(IActivitiProcessEngineHolder.class)
+					.getProcessEngine();
 		}
 		return this.workflowEngine;
 	}
@@ -93,22 +91,12 @@ public abstract class AbstractPresenterProcessor {
 		return this.getWorkflowEngine().getFormService();
 	}
 
-	/**
-	 * Get application context.
-	 * 
-	 * @return
-	 */
-	public ApplicationContext getAppContext() {
-		return appContext;
+	public ApplicationContext getApplicationContext() {
+		return applicationContext;
 	}
 
-	/**
-	 * Set application context.
-	 * 
-	 * @param appContext
-	 */
-	public void setAppContext(ApplicationContext appContext) {
-		this.appContext = appContext;
+	public void setApplicationContext(ApplicationContext applicationContext) {
+		this.applicationContext = applicationContext;
 	}
 
 	/**
@@ -119,7 +107,8 @@ public abstract class AbstractPresenterProcessor {
 	 */
 	public ISystemConfig getSystemConfig() {
 		if (this.systemConfig == null) {
-			this.systemConfig = this.appContext.getBean(ISystemConfig.class);
+			this.systemConfig = this.applicationContext
+					.getBean(ISystemConfig.class);
 		}
 		return systemConfig;
 	}
@@ -141,7 +130,8 @@ public abstract class AbstractPresenterProcessor {
 	 */
 	public ServiceLocator getServiceLocator() {
 		if (this.serviceLocator == null) {
-			this.serviceLocator = this.appContext.getBean(ServiceLocator.class);
+			this.serviceLocator = this.applicationContext
+					.getBean(ServiceLocator.class);
 		}
 		return serviceLocator;
 	}

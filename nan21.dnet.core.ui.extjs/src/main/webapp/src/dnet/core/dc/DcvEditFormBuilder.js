@@ -22,6 +22,10 @@ Ext.define("dnet.core.dc.DcvEditFormBuilder", {
 		return this;
 	},
 
+	addBooleanField : function(config) {
+		return this.addCheckbox(config);
+	},
+	
 	addCheckbox : function(config) {
 		config.xtype = "checkbox";
 		this.applyModelUpdater(config);

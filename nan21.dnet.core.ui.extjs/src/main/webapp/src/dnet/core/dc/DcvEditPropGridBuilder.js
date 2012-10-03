@@ -46,8 +46,8 @@ Ext.define("dnet.core.dc.DcvEditPropGridBuilder", {
 	
 	addLov : function(config) {	  
 		if (config.editor && config.editor.xtype != "textfield") {
-			config.editorInstance = Ext.create(config.editor.xtype,  Ext.apply(config.editor , {
-				 
+			config.editorInstance = Ext.create(config.editor._fqn_,  Ext.apply(config.editor , {
+				selectOnFocus: true
 			}));
 		}
 		this.applySharedConfig(config);

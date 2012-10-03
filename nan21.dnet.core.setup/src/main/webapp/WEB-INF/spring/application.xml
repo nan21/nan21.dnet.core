@@ -14,7 +14,7 @@
 		<property name="locations">
 			<list>
 				<value>/WEB-INF/setup.properties</value>
-			</list>
+			</list> 
 		</property>
 	</bean>
 	

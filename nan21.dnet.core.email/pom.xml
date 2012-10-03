@@ -8,27 +8,29 @@
 		<version>1.0.3-SNAPSHOT</version>
 	</parent>
 	<artifactId>nan21.dnet.core.email</artifactId>
-	<name>DNet Core - email</name>
-	<description>DNet Core - email.</description>
+	<name>DNet Core - Email</name>
+	<description>Send email service provider and email builder utilities.</description>
 	<packaging>jar</packaging>
-
 	
 	<!-- ===================== Dependencies ===================== -->
-
+	
 	<dependencies>
+	
 		<!-- DNet dependencies -->
+		
 		<dependency>
 			<groupId>net.nan21.dnet</groupId>
 			<artifactId>nan21.dnet.core.api</artifactId>
 			<version>1.0.3-SNAPSHOT</version>
 			<type>jar</type>
-		</dependency>	
-		 
+		</dependency>
+	
 		<!-- External libraries -->
+		
 		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>org.springframework.beans</artifactId>
-			<version>${spring.version}</version>
+			<groupId>javax.mail</groupId>
+			<artifactId>com.springsource.javax.mail</artifactId>
+			<version>1.4.0</version>
 			<type>jar</type>
 		</dependency>
 		<dependency>
@@ -38,11 +40,10 @@
 			<type>jar</type>
 		</dependency>
 		<dependency>
-			<groupId>javax.mail</groupId>
-			<artifactId>com.springsource.javax.mail</artifactId>
-			<version>1.4.0</version>
+			<groupId>org.springframework</groupId>
+			<artifactId>org.springframework.beans</artifactId>
+			<version>${spring.version}</version>
 			<type>jar</type>
 		</dependency>
 	</dependencies>
- 	 
 </project>

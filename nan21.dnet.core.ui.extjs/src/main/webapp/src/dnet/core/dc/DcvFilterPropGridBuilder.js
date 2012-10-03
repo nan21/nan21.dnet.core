@@ -59,12 +59,12 @@ Ext.define("dnet.core.dc.DcvFilterPropGridBuilder", {
 	addLov : function(config) {  
 		 
 		try {
-			config.editorInstance = Ext.create(config.editor.xtype,  Ext.apply(config.editor , {
+			config.editorInstance = Ext.create(config.editor._fqn_,  Ext.apply(config.editor , {
 				 selectOnFocus: true
 			}));
 			config._default_ = "";
 		}catch(e) {
-			alert('Cannot create LOV editor from xtype `'+config.editor.xtype+'`');
+			alert('Cannot create LOV editor from xtype `'+config.editor._fqn_+'`');
 		}
 		this.applySharedConfig(config);
 		return this;

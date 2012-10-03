@@ -1,41 +1,40 @@
 package net.nan21.dnet.core.security;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 
 import net.nan21.dnet.core.api.security.IAuthorization;
 import net.nan21.dnet.core.api.security.IAuthorizationFactory;
 
-public class AuthorizationFactory implements
-		IAuthorizationFactory {
+public class AuthorizationFactory implements IAuthorizationFactory,
+		ApplicationContextAware {
 
-	@Autowired
-	private ApplicationContext appContext;
+	private ApplicationContext applicationContext;
 
 	@Override
 	public IAuthorization getAsgnAuthorizationProvider() {
-		return (IAuthorization) this.appContext
+		return (IAuthorization) this.applicationContext
 				.getBean(AuthorizationForAsgn.class);
 	}
 
 	@Override
 	public IAuthorization getDsAuthorizationProvider() {
-		return (IAuthorization) this.appContext
+		return (IAuthorization) this.applicationContext
 				.getBean(AuthorizationForDs.class);
 	}
 
 	@Override
 	public IAuthorization getJobAuthorizationProvider() {
-		return (IAuthorization) this.appContext
+		return (IAuthorization) this.applicationContext
 				.getBean(AuthorizationForJob.class);
 	}
 
-	public ApplicationContext getAppContext() {
-		return appContext;
+	public ApplicationContext getApplicationContext() {
+		return applicationContext;
 	}
 
-	public void setAppContext(ApplicationContext appContext) {
-		this.appContext = appContext;
+	public void setApplicationContext(ApplicationContext applicationContext) {
+		this.applicationContext = applicationContext;
 	}
 
 }

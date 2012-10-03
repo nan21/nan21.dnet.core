@@ -8,17 +8,19 @@
 		<version>1.0.3-SNAPSHOT</version>
 	</parent>
 	<artifactId>nan21.dnet.core.api</artifactId>
-	<name>DNet Core - api</name>
-	<description>DNet Core - api. Interfaces </description>
+	<name>DNet Core - API</name>
+	<description>Application interfaces and several abstract base classes.</description>
 	<packaging>jar</packaging>
-
 	
 	<!-- ===================== Dependencies ===================== -->
-
+	
 	<dependencies>
+	
 		<!-- DNet dependencies -->
-		 
+		
+	
 		<!-- External libraries -->
+		
 		<dependency>
 			<groupId>org.eclipse.persistence</groupId>
 			<artifactId>javax.persistence</artifactId>
@@ -32,5 +34,4 @@
 			<type>jar</type>
 		</dependency>
 	</dependencies>
- 	 
 </project>

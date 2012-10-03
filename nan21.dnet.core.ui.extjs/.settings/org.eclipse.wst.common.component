@@ -3,6 +3,7 @@
     <wb-module deploy-name="nan21.dnet.core.ui.extjs">
         <wb-resource deploy-path="/" source-path="/target/m2e-wtp/web-resources"/>
         <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
         <property name="context-root" value="nan21.dnet.core.ui.extjs"/>
         <property name="java-output-path"/>
     </wb-module>

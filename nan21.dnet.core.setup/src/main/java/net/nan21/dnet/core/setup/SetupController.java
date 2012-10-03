@@ -16,6 +16,7 @@ import net.nan21.dnet.core.api.setup.ISetupTask;
 import net.nan21.dnet.core.api.setup.ISetupTaskParam;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,10 +25,12 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
+@Scope(value = "request")
+@RequestMapping("/")
 public class SetupController {
 
 	protected HttpServletRequest request;
-	@Autowired
+
 	protected List<ISetupParticipant> participants;
 
 	@Autowired

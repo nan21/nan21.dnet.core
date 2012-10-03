@@ -1,4 +1,4 @@
-package net.nan21.dnet.core.web.controller.ui;
+package net.nan21.dnet.core.web.controller.ui.senchatouch;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -18,7 +18,7 @@ import net.nan21.dnet.core.api.session.UserPreferences;
 import net.nan21.dnet.core.api.session.UserProfile;
 import net.nan21.dnet.core.security.NotAuthorizedRequestException;
 import net.nan21.dnet.core.security.SessionUser;
-import net.nan21.dnet.core.web.settings.UiExtjsSettings;
+import net.nan21.dnet.core.web.settings.UiSenchaTouchSettings;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +28,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.AbstractController;
 
-public abstract class AbstractUiExtjsController extends AbstractController {
+public abstract class AbstractUiSenchaTouchController extends
+		AbstractController {
 
 	private final static String COOKIE_NAME_THEME = "dnet-theme";
 	private final static String DEFAULT_THEME = "gray";
@@ -36,14 +37,14 @@ public abstract class AbstractUiExtjsController extends AbstractController {
 	private final static String DEFAULT_LANG = "en";
 
 	final static Logger logger = LoggerFactory
-			.getLogger(AbstractUiExtjsController.class);
+			.getLogger(AbstractUiSenchaTouchController.class);
 
 	protected IProductInfo productInfo;
 	protected String jspName;
 	protected String deploymentUrl;
 	protected String uiUrl;
 	protected Map<String, Object> model;
-	protected UiExtjsSettings uiExtjsSettings;
+	protected UiSenchaTouchSettings uiSenchaTouchSettings;
 	protected ISystemConfig systemConfig;
 
 	protected void _prepare(HttpServletRequest request,
@@ -54,7 +55,7 @@ public abstract class AbstractUiExtjsController extends AbstractController {
 		String contextPath = request.getContextPath();
 		String path = request.getServletPath();
 
-		logger.info("Handling request for ui.extjs: {}", request.getPathInfo());
+		logger.info("Handling request for ui.sencha-touch: {}", request.getPathInfo());
 
 		String userUsername = "";
 		String userDisplayName = "";
@@ -65,7 +66,7 @@ public abstract class AbstractUiExtjsController extends AbstractController {
 		String extjsTimeFormat = UserPreferences.EXTJS_TIME_FORMAT;
 		String extjsDateTimeFormat = UserPreferences.EXTJS_DATETIME_FORMAT;
 		String extjsAltFormats = UserPreferences.EXTJS_ALT_FORMATS;
-		  
+
 		String decimalSeparator = UserPreferences.DECIMAL_SEPARATOR;
 		String thousandSeparator = UserPreferences.THOUSAND_SEPARATOR;
 		String userRolesStr = null;
@@ -76,13 +77,14 @@ public abstract class AbstractUiExtjsController extends AbstractController {
 					.getAuthentication().getPrincipal();
 			User user = (User) su.getUser();
 			Params params = (Params) su.getParams();
-			UserProfile profile  = new UserProfile(su.isAdministrator(), su.getRoles());
+			UserProfile profile = new UserProfile(su.isAdministrator(),
+					su.getRoles());
 			UserPreferences prefs = user.getPreferences();
-			
+
 			Session.user.set(user);
-	        Session.profile.set(profile);
-	        Session.params.set(params);   
-	        
+			Session.profile.set(profile);
+			Session.params.set(params);
+
 			userUsername = user.getUsername();
 			userDisplayName = user.getDisplayName();
 			userClientCode = user.getClientCode();
@@ -93,23 +95,22 @@ public abstract class AbstractUiExtjsController extends AbstractController {
 			extjsTimeFormat = prefs.getExtjsTimeFormat();
 			extjsDateTimeFormat = prefs.getExtjsDateTimeFormat();
 			extjsAltFormats = prefs.getExtjsAltFormats();
-			 
+
 			decimalSeparator = prefs.getDecimalSeparator();
 			thousandSeparator = prefs.getThousandSeparator();
 
 			Set<GrantedAuthority> roles = su.getAuthorities();
 			StringBuffer sb = new StringBuffer();
-			int i=0;
-			for(GrantedAuthority role : roles) {
-				if (i>0) {
+			int i = 0;
+			for (GrantedAuthority role : roles) {
+				if (i > 0) {
 					sb.append(",");
 				}
-				sb.append("\""+role.getAuthority()+"\"");		
+				sb.append("\"" + role.getAuthority() + "\"");
 				i++;
 			}
 			userRolesStr = sb.toString();
-			
-			
+
 		} catch (ClassCastException e) {
 			// not authenticated
 		}
@@ -129,17 +130,15 @@ public abstract class AbstractUiExtjsController extends AbstractController {
 		this.model.put("userClientId", userClientId);
 		this.model.put("userSystemClient", userSystemClient);
 
-		this.model.put("urlUiExtjs", uiExtjsSettings.getUrlUiExtjs());
-		this.model.put("urlUiExtjsCore", uiExtjsSettings.getUrlUiExtjsCore());
-		this.model.put("urlUiExtjsLibExtjs", uiExtjsSettings
-				.getUrlUiExtjsLibExtjs());
+		this.model.put("urlUiStModules", uiSenchaTouchSettings.getUrlModules());
+		this.model.put("urlUiStCore", uiSenchaTouchSettings.getUrlCore());
+		this.model.put("urlUiStLibSenchaTouch", uiSenchaTouchSettings.getUrlLib());
 
 		this.model.put("shortLanguage", this.resolveLang(request, response));
 		this.model.put("theme", this.resolveTheme(request, response));
 		this.model
 				.put("sysCfg_workingMode", this.systemConfig.getWorkingMode());
 
-		 
 		this.model.put("extjsDateFormat", extjsDateFormat);
 		this.model.put("extjsTimeFormat", extjsTimeFormat);
 		this.model.put("extjsDateTimeFormat", extjsDateTimeFormat);
@@ -147,7 +146,7 @@ public abstract class AbstractUiExtjsController extends AbstractController {
 		this.model.put("decimalSeparator", decimalSeparator);
 		this.model.put("thousandSeparator", thousandSeparator);
 		this.model.put("userRolesStr", userRolesStr);
-		
+
 	}
 
 	private String resolveTheme(HttpServletRequest request,
@@ -226,12 +225,13 @@ public abstract class AbstractUiExtjsController extends AbstractController {
 		this.jspName = jspName;
 	}
 
-	public UiExtjsSettings getUiExtjsSettings() {
-		return uiExtjsSettings;
+	public UiSenchaTouchSettings getUiSenchaTouchSettings() {
+		return uiSenchaTouchSettings;
 	}
 
-	public void setUiExtjsSettings(UiExtjsSettings uiExtjsSettings) {
-		this.uiExtjsSettings = uiExtjsSettings;
+	public void setUiSenchaTouchSettings(
+			UiSenchaTouchSettings uiSenchaTouchSettings) {
+		this.uiSenchaTouchSettings = uiSenchaTouchSettings;
 	}
 
 	public ISystemConfig getSystemConfig() {
@@ -242,32 +242,35 @@ public abstract class AbstractUiExtjsController extends AbstractController {
 		this.systemConfig = systemConfig;
 	}
 
-	
-	@ExceptionHandler(value=NotAuthorizedRequestException.class) 
-	protected ModelAndView handleException(NotAuthorizedRequestException e, HttpServletResponse response)  throws IOException {
+	@ExceptionHandler(value = NotAuthorizedRequestException.class)
+	protected ModelAndView handleException(NotAuthorizedRequestException e,
+			HttpServletResponse response) throws IOException {
 		String msg = null;
-		 if (e.getCause() != null ) {
-			 msg = e.getCause().getMessage();	
+		if (e.getCause() != null) {
+			msg = e.getCause().getMessage();
 		} else {
-			msg = e.getMessage();	
-		}			 
-		response.setStatus(403);		
-		return new ModelAndView("not-authorized").addObject("message", msg); //e.getLocalizedMessage();
-  
+			msg = e.getMessage();
+		}
+		response.setStatus(403);
+		return new ModelAndView("not-authorized").addObject("message", msg); // e.getLocalizedMessage();
+
 	}
-	
-	@ExceptionHandler(value=Exception.class) 
-	protected ModelAndView handleException(Exception e, HttpServletResponse response)  throws IOException {
-		 String msg = null;
-		 if (e.getCause() != null ) {
-			 msg = e.getCause().getMessage();	
+
+	@ExceptionHandler(value = Exception.class)
+	protected ModelAndView handleException(Exception e,
+			HttpServletResponse response) throws IOException {
+		String msg = null;
+		if (e.getCause() != null) {
+			msg = e.getCause().getMessage();
 		} else {
-			msg = e.getMessage();	
-		}	
-		logger.error("Exception occured during transactional request execution: ", msg );
-		response.setStatus(500);		
-		return new ModelAndView("error").addObject("message", msg); //e.getLocalizedMessage();
-		  
+			msg = e.getMessage();
+		}
+		logger.error(
+				"Exception occured during transactional request execution: ",
+				msg);
+		response.setStatus(500);
+		return new ModelAndView("error").addObject("message", msg); // e.getLocalizedMessage();
+
 	}
 
 }

@@ -7,32 +7,78 @@
  */
 package net.nan21.dnet.core.web.settings;
 
+/**
+ * Extjs based user-interface settings. These properties are populated from the
+ * system properties specified in the application configuration file.
+ * 
+ * @author amathe
+ * 
+ */
 public class UiExtjsSettings {
- 
-    private String urlUiExtjs;
-    private String urlUiExtjsCore;
-    private String urlUiExtjsLibExtjs; 
-    
-     
-	public String getUrlUiExtjs() {
-		return urlUiExtjs;
+
+	/**
+	 * Root URL of the modules components
+	 */
+	private String urlModules;
+
+	/**
+	 * Root URL of the core framework
+	 */
+	private String urlCore;
+
+	/**
+	 * Root URL of the Extjs library
+	 */
+	private String urlLib;
+
+	/**
+	 * Root URL of the modules translations
+	 */
+	private String urlModulesI18n;
+
+	/**
+	 * Root URL of the core translations
+	 */
+	private String urlCoreI18n;
+
+	public String getUrlModules() {
+		return urlModules;
 	}
-	public void setUrlUiExtjs(String urlUiExtjs) {
-		this.urlUiExtjs = urlUiExtjs;
+
+	public void setUrlModules(String urlModules) {
+		this.urlModules = urlModules;
 	}
-	public String getUrlUiExtjsCore() {
-		return urlUiExtjsCore;
+
+	public String getUrlCore() {
+		return urlCore;
 	}
-	public void setUrlUiExtjsCore(String urlUiExtjsCore) {
-		this.urlUiExtjsCore = urlUiExtjsCore;
+
+	public void setUrlCore(String urlCore) {
+		this.urlCore = urlCore;
 	}
-	 
-	public String getUrlUiExtjsLibExtjs() {
-		return urlUiExtjsLibExtjs;
+
+	public String getUrlLib() {
+		return urlLib;
 	}
-	public void setUrlUiExtjsLibExtjs(String urlUiExtjsLibExtjs) {
-		this.urlUiExtjsLibExtjs = urlUiExtjsLibExtjs;
+
+	public void setUrlLib(String urlLib) {
+		this.urlLib = urlLib;
 	}
-	 
-    
+
+	public String getUrlModulesI18n() {
+		return urlModulesI18n;
+	}
+
+	public void setUrlModulesI18n(String urlModulesI18n) {
+		this.urlModulesI18n = urlModulesI18n;
+	}
+
+	public String getUrlCoreI18n() {
+		return urlCoreI18n;
+	}
+
+	public void setUrlCoreI18n(String urlCoreI18n) {
+		this.urlCoreI18n = urlCoreI18n;
+	}
+
 }

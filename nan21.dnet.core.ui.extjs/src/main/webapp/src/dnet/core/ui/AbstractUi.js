@@ -423,11 +423,29 @@ Ext.define("dnet.core.ui.AbstractUi", {
 					id : 'ui-status-bar',
 					defaultText : 'Status bar. Watch for messages ... ',
 					defaultIconCls : 'default-icon',
-					text : 'Ready',
-					iconCls : 'ready-icon',
+					text: 'Ready',
+            		iconCls: 'x-status-valid',
 					items : ['-', this._name_]
 				});
-
+		
+				Ext.Ajax.on("beforerequest", function() {
+					this._statusBar_.setText("Working ... ");					
+				},this);
+				
+				Ext.Ajax.on("requestcomplete", function(conn, response, options, eOpts) {
+					if(!Ext.Ajax.isLoading()){
+						this._statusBar_.setText("Ready");
+					}
+				},this);
+				
+				Ext.Ajax.on("requestexception", function(conn, response, options, eOpts) {
+					if(!Ext.Ajax.isLoading()){						 
+						this._statusBar_.setText("Ready");
+					}
+					this.showAjaxErrors(response, options);
+				},this);
+				
+				
 		this._config_();
 		this._startDefine_();
 
@@ -476,6 +494,33 @@ Ext.define("dnet.core.ui.AbstractUi", {
  
 	},
 
+	showAjaxErrors : function(response, options) {
+		// Ext.MessageBox.hide();
+		var msg, withDetails = false;
+		if (response.responseText) {
+			if (response.responseText.length > 2000) {
+				msg = response.responseText.substr(0, 2000);
+				withDetails = true;
+			} else {
+				msg = response.responseText;
+			}
+		} else {
+			msg = "No response received from server.";
+		}
+		var alertCfg = {
+			title : "Server message",
+			msg : msg,
+			scope : this,
+			icon : Ext.MessageBox.ERROR,
+			buttons : Ext.MessageBox.OK
+		}
+		if (withDetails) {
+			alertCfg.buttons['cancel'] = 'Details';
+			alertCfg['detailedMessage'] = response.responseText;
+		}
+		Ext.Msg.show(alertCfg);
+	},
+	
 	beforeDestroy : function() { 
 		this._beforeDestroyDNetView_();
 		this._elems_.each(this.destroyElement, this);

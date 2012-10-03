@@ -1,4 +1,4 @@
-package net.nan21.dnet.core.web.controller.ui;
+package net.nan21.dnet.core.web.controller.ui.extjs;
 
 import java.util.List;
 
@@ -25,6 +25,7 @@ public class UiExtjsFrameController extends AbstractUiExtjsController {
 			HttpServletResponse response) throws Exception {
 
 		try {
+			@SuppressWarnings("unused")
 			SessionUser su = (SessionUser) SecurityContextHolder.getContext()
 					.getAuthentication().getPrincipal();
 		} catch (java.lang.ClassCastException e) {
@@ -49,23 +50,25 @@ public class UiExtjsFrameController extends AbstractUiExtjsController {
 
 		StringBuffer sb = new StringBuffer();
 		for (IExtensionProviderFrame provider : this.extensionProviders) {
-			
+
 			List<ExtensionScript> files = provider.getFiles(item);
-			for(ExtensionScript file: files) {
+			for (ExtensionScript file : files) {
 				if (!file.isRelativePath()) {
-					sb.append("<script type=\"text/javascript\" src=\""+file.getLocation()+"\"></script>\n" );
-				}else {
-					sb.append("<script type=\"text/javascript\" src=\""+uiExtjsSettings.getUrlUiExtjs()+"/"+
-							file.getLocation() +"\"></script>\n" );
+					sb.append("<script type=\"text/javascript\" src=\""
+							+ file.getLocation() + "\"></script>\n");
+				} else {
+					sb.append("<script type=\"text/javascript\" src=\""
+							+ uiExtjsSettings.getUrlModules() + "/"
+							+ file.getLocation() + "\"></script>\n");
 				}
-			}	
-			
-//			if (item.equals(provider.getTargetFrame())) {
-//				sb.append("<script type=\"text/javascript\" src=\""
-//						+ uiExtjsSettings.getUrlUiExtjs() + "/"
-//						+ provider.getBundleName() + "/"
-//						+ provider.getFileName() + "\"></script>\n");
-//			}
+			}
+
+			// if (item.equals(provider.getTargetFrame())) {
+			// sb.append("<script type=\"text/javascript\" src=\""
+			// + uiExtjsSettings.getUrlUiExtjs() + "/"
+			// + provider.getBundleName() + "/"
+			// + provider.getFileName() + "\"></script>\n");
+			// }
 		}
 		this.model.put("extensions", sb.toString());
 

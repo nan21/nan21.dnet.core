@@ -2,10 +2,7 @@
 		Dnet.name = '${product.name}';
 		Dnet.version = '${product.version}';
 		
-		//Dnet.url = "${deploymentUrl}"; /* deprecated */
 		Dnet.deploymentUrl = "${deploymentUrl}";
-		
-		//Dnet.hostUrl = "${deploymentDomainUrl}"; /* deprecated */
 		Dnet.deploymentDomainUrl = "${deploymentDomainUrl}";
 		
 		Dnet.dsUrl = "${deploymentUrl}/tx/java/ds";
@@ -14,9 +11,13 @@
 		Dnet.wfUrl = "${deploymentUrl}/workflow";
 		Dnet.uiUrl = "${uiUrl}";  
 		Dnet.sessionUrl = "${deploymentUrl}/security/session";
-		Dnet.staticResourceUrl = "${urlUiExtjs}";
+		
 		Dnet.staticResourceUrlCore = "${urlUiExtjsCore}";
-
+		Dnet.staticResourceUrlModules = "${urlUiExtjsModules}";
+		
+		Dnet.staticResourceUrlCoreI18n = "${urlUiExtjsCoreI18n}";
+		Dnet.staticResourceUrlModulesI18n = "${urlUiExtjsModulesI18n}";
+		
 		Dnet.DATE_FORMAT 		= "${extjsDateFormat}";
 		Dnet.TIME_FORMAT 		= "${extjsTimeFormat}";
 		Dnet.DATETIME_FORMAT 	= "${extjsDateTimeFormat}"; 

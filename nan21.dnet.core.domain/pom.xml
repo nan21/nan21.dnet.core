@@ -8,27 +8,53 @@
 		<version>1.0.3-SNAPSHOT</version>
 	</parent>
 	<artifactId>nan21.dnet.core.domain</artifactId>
-	<name>DNet Core - domain</name>
-	<description>DNet Core - domain. Contains base classes for the domain layer.</description>
+	<name>DNet Core - Domain</name>
+	<description>Contains base classes for domain entities and and associated customizers.</description>
 	<packaging>jar</packaging>
-
 	
 	<!-- ===================== Dependencies ===================== -->
-
+	
 	<dependencies>
+	
 		<!-- DNet dependencies -->
+		
 		<dependency>
 			<groupId>net.nan21.dnet</groupId>
 			<artifactId>nan21.dnet.core.api</artifactId>
 			<version>1.0.3-SNAPSHOT</version>
 			<type>jar</type>
-		</dependency>	
-		 
+		</dependency>
+	
 		<!-- External libraries -->
+		
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>4.1.0.Final</version>
+			<type>jar</type>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.persistence</groupId>
+			<artifactId>javax.persistence</artifactId>
+			<version>${jpa.version}</version>
+			<type>jar</type>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.persistence</groupId>
+			<artifactId>org.eclipse.persistence.jpa</artifactId>
+			<version>${eclipselink.version}</version>
+			<type>jar</type>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
-			<artifactId>org.springframework.beans</artifactId>
+			<artifactId>org.springframework.orm</artifactId>
 			<version>${spring.version}</version>
+			<type>jar</type>
+		</dependency>
+		<dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>com.springsource.javax.validation</artifactId>
+			<version>1.0.0.GA</version>
 			<type>jar</type>
 		</dependency>
 		<dependency>
@@ -39,40 +65,15 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
-			<artifactId>org.springframework.orm</artifactId>
+			<artifactId>org.springframework.beans</artifactId>
 			<version>${spring.version}</version>
-			<type>jar</type>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.persistence</groupId>
-			<artifactId>org.eclipse.persistence.jpa</artifactId>
-			<version>${eclipselink.version}</version>
-			<type>jar</type>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.persistence</groupId>
-			<artifactId>javax.persistence</artifactId>
-			<version>${jpa.version}</version>
-			<type>jar</type>
-		</dependency>
-		<dependency>
-			<groupId>javax.validation</groupId>
-			<artifactId>com.springsource.javax.validation</artifactId>
-			<version>1.0.0.GA</version>
-			<type>jar</type>
-		</dependency>
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-validator</artifactId>
-			<version>4.1.0.Final</version>
 			<type>jar</type>
 		</dependency>
 	</dependencies>
 	
-	<!-- ===================== Build ===================== -->	
+	<!-- ===================== Build ===================== -->
 	
 	<build>
-		
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -83,20 +84,18 @@
 					<execution>
 						<phase>process-classes</phase>
 						<configuration>
-						  
-						  <target>
-                               <echo>Beginning process-classes phase...</echo>
-                               <property name="compile_classpath" refid="maven.compile.classpath"/>                                
-                               <echo>Compile classpath : ${compile_classpath}</echo>                   
-                                <property name="path_source"  value="${basedir}/target/classes"/>
-                                <property name="path_target"  value="${basedir}/target/classes"/>
-                                <property name="path_persistenceinfo"  value="${basedir}/target/classes"/>                 
-                                <property name="my_repo"  value="${user.home}/.m2/repository"/>
-                                
-                                <ant antfile="${basedir}/eclipselink-static-weave.xml">
-                                    <target name="weaving"/>
-                                </ant>
-                            </target>                            
+							<target>
+								<echo>Beginning process-classes phase...</echo>
+								<property name="compile_classpath" refid="maven.compile.classpath"/>                                
+								<echo>Compile classpath : ${compile_classpath}</echo>                   
+								<property name="path_source"  value="${basedir}/target/classes"/>
+								<property name="path_target"  value="${basedir}/target/classes"/>
+								<property name="path_persistenceinfo"  value="${basedir}/target/classes"/>                 
+								<property name="my_repo"  value="${user.home}/.m2/repository"/>
+								<ant antfile="${basedir}/eclipselink-static-weave.xml">
+									<target name="weaving"/>
+								</ant>
+							</target>                            
 						</configuration>
 						<goals>
 							<goal>run</goal>
@@ -104,7 +103,6 @@
 					</execution>
 				</executions>
 			</plugin>
-	 	</plugins>
- 	</build>
- 	 
+		</plugins>
+	</build>
 </project>

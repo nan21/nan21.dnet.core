@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <faceted-project>
-  <runtime name="virgo 3.5"/>
+  <runtime name="Virgo 3.5 jetty"/>
+  <secondary-runtime name="virgo 3.5"/>
   <installed facet="jst.java" version="6.0"/>
   <installed facet="com.springsource.server.bundle" version="1.0"/>
   <installed facet="org.eclipse.virgo.server.bundle" version="1.0"/>

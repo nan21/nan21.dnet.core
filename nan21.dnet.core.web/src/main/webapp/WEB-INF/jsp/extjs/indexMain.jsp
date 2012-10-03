@@ -8,8 +8,7 @@
 		__TYPE__ = "dnet";
 		__MODULE__ = "xxx";
 		__ITEM__ = "${item}";  	
-		__STATIC_RESOURCE_URL__  = "${urlUiExtjs}";
-		__STATIC_RESOURCE_URL_CORE__  = "${urlUiExtjsCore}";
+				
 		__LANGUAGE__ = "${shortLanguage}";
 		__THEME__ = "${theme}"; 		
 	</script>

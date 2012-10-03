@@ -7,9 +7,7 @@
 	<script>
 		__TYPE__ = "dnet";
 		__MODULE__ = "xxx";
-		__ITEM__ = "${item}";  	
-		__STATIC_RESOURCE_URL__  = "${urlUiExtjs}";
-		__STATIC_RESOURCE_URL_CORE__  = "${urlUiExtjsCore}";
+		__ITEM__ = "${item}";  			 
 		__LANGUAGE__ = "${shortLanguage}"; 	
 		__THEME__ = "${theme}"; 
 	</script>
@@ -40,8 +38,8 @@
 	</c:if>
 	
 	<%@ include file="_dnet_params.jspf" %> 
-	<script type="text/javascript" src="${urlUiExtjs}/${bundle}/resources/locale/${shortLanguage}/frame/${itemSimpleName}.js"></script>
-	<script type="text/javascript" src="${urlUiExtjs}/${bundle}/src/frame/${itemSimpleName}.js"></script>
+	<script type="text/javascript" src="${urlUiExtjsModulesI18n}/${shortLanguage}/${bundle}/frame/${itemSimpleName}.js"></script>
+	<script type="text/javascript" src="${urlUiExtjsModules}/${bundle}/src/frame/${itemSimpleName}.js"></script>
 	
 	${extensions}
 	

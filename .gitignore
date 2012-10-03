@@ -2,3 +2,4 @@
 *.ipr
 .idea
 *.iml
+/nan21.dnet.core.ui.senchatouch

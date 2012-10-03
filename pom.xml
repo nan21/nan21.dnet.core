@@ -11,36 +11,23 @@
 	<artifactId>nan21.dnet.core</artifactId>
 	<version>1.0.3-SNAPSHOT</version>
 	<name>DNet Core</name>
-	<description>DNet Core</description>
+	<description>DNet core framework.</description>
 	<packaging>pom</packaging>
-
-	
 	<url>http://www.dnet-ebusiness-suite.com/www</url>
-
+	
 	<licenses>
-        <license>
-            <name>The Apache Software License, Version 2.0</name>
-            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-            <distribution>repo</distribution>
-        </license>
-    </licenses>
-
-    <developers>
-        <developer>
-            <id>team</id>
-            <name>nan21 Team</name>
-            <roles>
-                <role>Owner</role>
-            </roles>
-        </developer>
-    </developers>
-
+		<license>
+			<name>The Apache Software License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+	
 	<scm>
-        <url>https://github.com/nan21/nan21.dnet.core</url>
-        <connection>scm:git:https://github.com/nan21/nan21.dnet.core.git</connection>
-        <developerConnection>scm:git:https://github.com/nan21/nan21.dnet.core.git</developerConnection>
-    </scm>
-    
+		<url>https://github.com/nan21/nan21.dnet.core</url>
+		<connection>scm:git:https://github.com/nan21/nan21.dnet.core.git</connection>
+		<developerConnection>scm:git:https://github.com/nan21/nan21.dnet.core.git</developerConnection>
+	</scm>
 	
 	<properties>
 		<spring.version>3.1.2.RELEASE</spring.version>
@@ -48,8 +35,9 @@
 		<gemini_blueprint.version>1.0.0.RELEASE</gemini_blueprint.version>
 		<jpa.version>2.0.3</jpa.version>
 		<eclipselink.version>2.3.0</eclipselink.version>
-    </properties>
-
+		<maven_repo_location>~/.m3/repository</maven_repo_location>
+	</properties>
+	
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -59,7 +47,7 @@
 				<exclusions>
 					<exclusion>
 						<groupId>org.springframework</groupId>
-                        <artifactId>spring-beans</artifactId>
+						<artifactId>spring-beans</artifactId>
 					</exclusion>
 				</exclusions>
 			</dependency>
@@ -70,37 +58,37 @@
 				<exclusions>
 					<exclusion>
 						<groupId>org.springframework</groupId>
-                        <artifactId>spring-context</artifactId>
+						<artifactId>spring-context</artifactId>
 					</exclusion>
 					<exclusion>
 						<groupId>org.springframework</groupId>
-                        <artifactId>spring-jdbc</artifactId>
+						<artifactId>spring-jdbc</artifactId>
 					</exclusion>
 					<exclusion>
 						<groupId>org.springframework</groupId>
-                        <artifactId>spring-tx</artifactId>
+						<artifactId>spring-tx</artifactId>
 					</exclusion>
 					<exclusion>
 						<groupId>org.springframework</groupId>
-                        <artifactId>spring-test</artifactId>
+						<artifactId>spring-test</artifactId>
 					</exclusion>
 					<exclusion>
 						<groupId>org.springframework</groupId>
-                        <artifactId>spring-orm</artifactId>
+						<artifactId>spring-orm</artifactId>
 					</exclusion>
 					<exclusion>
 						<groupId>commons-dbcp</groupId>
-                        <artifactId>commons-dbcp</artifactId>
+						<artifactId>commons-dbcp</artifactId>
 					</exclusion>
 				</exclusions>
 			</dependency>
 		</dependencies>
-	</dependencyManagement>    
+	</dependencyManagement>
 	
 	<!-- ===================== Repositories ===================== -->
 	
-	<!-- Add to your maven's settings.xml the following repositories. 
-		 These should be sorted in the order they are used, from most often to least often -->	
+	<!-- Add to your maven's settings.xml the following repositories. -->
+	
 	<!-- 
 	<repositories>	
 		<repository>
@@ -185,67 +173,63 @@
 	</pluginRepositories>
 	-->
 	
-	<!-- ===================== Build ===================== -->	
+	<!-- ===================== Build ===================== -->
 	
 	<build>
-
 		<pluginManagement>
 			<plugins>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-jar-plugin</artifactId>
-					<version>2.3</version>
-					<configuration>
-					 	<archive>
-							<manifestFile>
-								src/main/resources/META-INF/MANIFEST.MF
-							</manifestFile>
-						</archive>
-					</configuration>
-				</plugin>				
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-war-plugin</artifactId>
-					<version>2.1.1</version>
-					<configuration>
-					 	<archive>
-							<manifestFile>src/main/webapp/META-INF/MANIFEST.MF</manifestFile>
-						</archive>
-					</configuration>
-				</plugin>				
-				<plugin>
-					<groupId>org.eclipse.m2e</groupId>
-					<artifactId>lifecycle-mapping</artifactId>
-					<version>1.0.0</version>
-					<configuration>
-						<lifecycleMappingMetadata>
-							<pluginExecutions>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>
-											org.apache.maven.plugins
-										</groupId>
-										<artifactId>
-											maven-antrun-plugin
-										</artifactId>
-										<versionRange>
-											[1.7,)
-										</versionRange>
-										<goals>
-											<goal>run</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<ignore></ignore>
-									</action>
-								</pluginExecution>
-							</pluginExecutions>
-						</lifecycleMappingMetadata>
-					</configuration>
-				</plugin>				
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.3</version>
+				<configuration>
+				 	<archive>
+						<manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile>
+					</archive>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.1.1</version>
+				<configuration>
+				 	<archive>
+						<manifestFile>src/main/webapp/META-INF/MANIFEST.MF</manifestFile>
+					</archive>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.eclipse.m2e</groupId>
+				<artifactId>lifecycle-mapping</artifactId>
+				<version>1.0.0</version>
+				<configuration>
+					<lifecycleMappingMetadata>
+						<pluginExecutions>
+							<pluginExecution>
+								<pluginExecutionFilter>
+									<groupId>
+										org.apache.maven.plugins
+									</groupId>
+									<artifactId>
+										maven-antrun-plugin
+									</artifactId>
+									<versionRange>
+										[1.7,)
+									</versionRange>
+									<goals>
+										<goal>run</goal>
+									</goals>
+								</pluginExecutionFilter>
+								<action>
+									<ignore></ignore>
+								</action>
+							</pluginExecution>
+						</pluginExecutions>
+					</lifecycleMappingMetadata>
+				</configuration>
+			</plugin>
 			</plugins>
 		</pluginManagement>
-		
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -261,40 +245,40 @@
 				<artifactId>com.springsource.bundlor.maven</artifactId>
 				<version>1.0.0.RELEASE</version>
 				<configuration>
-	                <failOnWarnings>false</failOnWarnings>
-	            </configuration>
+					<failOnWarnings>false</failOnWarnings>
+				</configuration>
 				<executions>
-	                <execution>
-	                    <id>bundlor</id>
-	                    <goals>
-	                        <goal>bundlor</goal>
-	                    </goals>
-	                    <phase>package</phase>
-	                </execution>
-	            </executions>
+				    <execution>
+				        <id>bundlor</id>
+				        <goals>
+				            <goal>bundlor</goal>
+				        </goals>
+				        <phase>package</phase>
+				    </execution>
+				</executions>
 			</plugin>
-	 	</plugins>
- 	</build>
- 	 
- 	
- 	<!-- ========================== Modules ========================== -->
+		</plugins>
+	</build>
+	
+	<!-- ========================== Modules ========================== -->
 	
 	<modules>
 		<module>nan21.dnet.core.api</module>
-		<module>nan21.dnet.core.db</module>
-		<module>nan21.dnet.core.jdbc</module>
-		<module>nan21.dnet.core.scheduler</module>
-		<module>nan21.dnet.core.domain</module>
 		<module>nan21.dnet.core.business</module>
-		<module>nan21.dnet.core.workflow</module>
+		<module>nan21.dnet.core.config</module>
+		<module>nan21.dnet.core.db</module>
+		<module>nan21.dnet.core.domain</module>
+		<module>nan21.dnet.core.email</module>
+		<module>nan21.dnet.core.jdbc</module>
 		<module>nan21.dnet.core.presenter</module>
-		<module>nan21.dnet.core.ui.extjs</module>
+		<module>nan21.dnet.core.scheduler</module>
+		<module>nan21.dnet.core.security</module>
 		<module>nan21.dnet.core.setup</module>
+		<module>nan21.dnet.core.ui.extjs</module>
 		<module>nan21.dnet.core.web</module>
 		<module>nan21.dnet.core.welcome</module>
-		<module>nan21.dnet.core.security</module>
+		<module>nan21.dnet.core.workflow</module>
 		<module>nan21.dnet.core.www</module>
-		<module>nan21.dnet.core.email</module>
 		<module>nan21.dnet.fragment.activiti</module>
-	</modules>	
+	</modules>
 </project>
