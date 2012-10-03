@@ -1,28 +1,22 @@
 Manifest-Version: 1.0
-Export-Package: net.nan21.dnet.core.security;version="1.0.3";uses:="ja
- vax.servlet,javax.servlet.http,net.nan21.dnet.core.api.security,net.n
- an21.dnet.core.api.session,org.springframework.beans.factory.annotati
- on,org.springframework.context,org.springframework.dao,org.springfram
- ework.jdbc.core,org.springframework.jdbc.core.support,org.springframe
- work.security.access,org.springframework.security.core,org.springfram
- ework.security.core.userdetails,org.springframework.security.core.use
- rdetails.jdbc,org.springframework.security.web,org.springframework.se
- curity.web.access"
+Bundle-ManifestVersion: 2
+Bundle-Name: DNet Core - Security
+Bundle-SymbolicName: nan21.dnet.core.security
 Bundle-Vendor: Nan21 
 Bundle-Version: 1.0.3
-Tool: Bundlor 1.1.0.RELEASE
-Bundle-Name: DNet Core - security
-Bundle-ManifestVersion: 2
-Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.html
-Bundle-SymbolicName: nan21.dnet.core.security
-Import-Package: javax.servlet,javax.servlet.http,javax.sql,net.nan21.d
- net.core.api.security,net.nan21.dnet.core.api.session,org.springframe
- work.beans.factory.annotation,org.springframework.context,org.springf
- ramework.context.support,org.springframework.dao,org.springframework.
- jdbc.core,org.springframework.jdbc.core.support,org.springframework.s
- ecurity.access,org.springframework.security.core,org.springframework.
- security.core.authority,org.springframework.security.core.context,org
- .springframework.security.core.userdetails,org.springframework.securi
- ty.core.userdetails.jdbc,org.springframework.security.web,org.springf
- ramework.security.web.access,org.springframework.util
-
+Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.txt
+Export-Package: 
+ net.nan21.dnet.core.security;version="1.0.3"
+Import-Package: 
+ javax.servlet,
+ javax.servlet.http,
+ javax.sql,
+ net.nan21.dnet.core.api.security;version="1.0.3",
+ net.nan21.dnet.core.api.session;version="1.0.3"
+Import-Bundle: 
+ org.springframework.context;version="[3.1,3.2)",
+ org.springframework.core;version="[3.1,3.2)",
+ org.springframework.jdbc;version="[3.1,3.2)",
+ org.springframework.security.core;version="[3.1,3.2)",
+ org.springframework.security.web;version="[3.1,3.2)",
+ org.springframework.transaction;version="[3.1,3.2)"

@@ -1,37 +1,41 @@
 Manifest-Version: 1.0
-Export-Package: net.nan21.dnet.core.business.job;version="1.0.3";uses:
- ="net.nan21.dnet.core.api.job,net.nan21.dnet.core.business.service,or
- g.springframework.beans.factory.annotation,org.springframework.contex
- t",net.nan21.dnet.core.business.persistenceunit;version="1.0.3";uses:
- ="javax.sql,org.springframework.orm.jpa.persistenceunit",net.nan21.dn
- et.core.business.service;version="1.0.3";uses:="javax.persistence,net
- .nan21.dnet.core.api,net.nan21.dnet.core.api.service,net.nan21.dnet.c
- ore.api.setup,org.activiti.engine,org.springframework.beans.factory.a
- nnotation,org.springframework.context"
-Built-By: amathe
-Tool: Bundlor 1.1.0.RELEASE
-Bundle-Name: DNet Core - business
-Created-By: Maven Integration for Eclipse
-Import-Bundle: activiti-engine;version="[5.9,5.9]"
+Bundle-ManifestVersion: 2
+Bundle-Name: DNet Core - Business
+Bundle-SymbolicName: nan21.dnet.core.business
 Bundle-Vendor: Nan21 
 Bundle-Version: 1.0.3
-Build-Jdk: 1.6.0_33
-Bundle-ManifestVersion: 2
-Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.html
-Bundle-SymbolicName: nan21.dnet.core.business
-Import-Package: javax.persistence;version="[2.0,2.1)",javax.persistenc
- e.criteria;version="[2.0,2.1)",javax.persistence.metamodel;version="[
- 2.0,2.1)",javax.persistence.spi;version="[2.0,2.1)",javax.sql,net.nan
- 21.dnet.core.api,net.nan21.dnet.core.api.job,net.nan21.dnet.core.api.
- model;version="[1.0.3,1.0.3]",net.nan21.dnet.core.api.service;version
- ="[1.0.3,1.0.3]",net.nan21.dnet.core.api.session;version="[1.0.3,1.0.
- 3]",net.nan21.dnet.core.api.setup;version="[1.0.3,1.0.3]",net.nan21.d
- net.core.api.wf;version="[1.0.3,1.0.3]",org.activiti.engine,org.activ
- iti.engine.runtime,org.eclipse.persistence.jpa;version="[2.1,2.5)",or
- g.slf4j;version="[1.0,2.0]",org.springframework.beans.factory,org.spr
- ingframework.beans.factory.annotation;version="[3.1,3.2)",org.springf
- ramework.context;version="[3.1,3.2)",org.springframework.context.conf
- ig;version="[3.1,3.2)",org.springframework.orm.jpa;version="[3.1,3.2)
- ",org.springframework.orm.jpa.persistenceunit;version="[3.1,3.2)",org
- .springframework.util
-
+Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.txt
+Export-Package: 
+ net.nan21.dnet.core.business.job;version="1.0.3",
+ net.nan21.dnet.core.business.persistenceunit;version="1.0.3",
+ net.nan21.dnet.core.business.service;version="1.0.3"
+Import-Package: 
+ javax.persistence;version="[2.0,2.1)",
+ javax.persistence.criteria;version="[2.0,2.1)",
+ javax.persistence.metamodel;version="[2.0,2.1)",
+ javax.persistence.spi;version="[2.0,2.1)",
+ javax.sql,
+ net.nan21.dnet.core.api;version="1.0.3",
+ net.nan21.dnet.core.api.action;version="1.0.3",
+ net.nan21.dnet.core.api.annotation;version="1.0.3",
+ net.nan21.dnet.core.api.converter;version="1.0.3",
+ net.nan21.dnet.core.api.descriptor;version="1.0.3",
+ net.nan21.dnet.core.api.email;version="1.0.3",
+ net.nan21.dnet.core.api.exceptions;version="1.0.3",
+ net.nan21.dnet.core.api.job;version="1.0.3",
+ net.nan21.dnet.core.api.marshall;version="1.0.3",
+ net.nan21.dnet.core.api.model;version="1.0.3",
+ net.nan21.dnet.core.api.security;version="1.0.3",
+ net.nan21.dnet.core.api.service;version="1.0.3",
+ net.nan21.dnet.core.api.session;version="1.0.3",
+ net.nan21.dnet.core.api.setup;version="1.0.3",
+ net.nan21.dnet.core.api.ui.extjs;version="1.0.3",
+ net.nan21.dnet.core.api.util;version="1.0.3",
+ net.nan21.dnet.core.api.wf;version="1.0.3",
+ org.eclipse.persistence.jpa;version="[2.1,2.5)",
+ org.slf4j;version="[1.0,2.0]"
+Import-Bundle: 
+ activiti-engine;version="[5.9,5.9]",
+ org.springframework.beans;version="[3.1,3.2)",
+ org.springframework.context;version="[3.1,3.2)",
+ org.springframework.orm;version="[3.1,3.2)"

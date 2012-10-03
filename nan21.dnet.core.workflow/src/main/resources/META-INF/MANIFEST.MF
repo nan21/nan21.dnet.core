@@ -1,38 +1,41 @@
 Manifest-Version: 1.0
-Export-Package: net.nan21.dnet.core.workflow;version="1.0.3";uses:="ne
- t.nan21.dnet.core.api,net.nan21.dnet.core.api.service,net.nan21.dnet.
- core.api.wf,org.activiti.engine,org.activiti.engine.impl.cfg,org.acti
- viti.spring,org.springframework.beans.factory.annotation,org.springfr
- amework.context",net.nan21.dnet.core.workflow.activiti_ext;version="1
- .0.3";uses:="net.nan21.dnet.core.api.email,org.activiti.engine.delega
- te,org.activiti.engine.impl.bpmn.behavior,org.activiti.engine.impl.bp
- mn.parser,org.activiti.engine.impl.pvm.delegate,org.activiti.engine.i
- mpl.pvm.process,org.activiti.engine.impl.util.xml,org.springframework
- .beans.factory.annotation,org.springframework.context"
-Import-Bundle: activiti-engine;version="[5.9,5.9]",activiti-spring
+Bundle-ManifestVersion: 2
+Bundle-Name: DNet Core - Workflow
+Bundle-SymbolicName: nan21.dnet.core.workflow
 Bundle-Vendor: Nan21 
 Bundle-Version: 1.0.3
-Tool: Bundlor 1.1.0.RELEASE
-Bundle-Name: DNet Core - workflow
-Bundle-ManifestVersion: 2
-Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.html
-Bundle-SymbolicName: nan21.dnet.core.workflow
-Import-Package: com.sun.mail.handlers;version="[1.4.0,1.4.1]",com.sun.
- mail.smtp;version="[1.4.0,1.4.1]",javax.mail;version="[1.4.0,1.4.1]",
- javax.mail.internet;version="[1.4.0,1.4.1]",javax.script,javax.sql,ne
- t.nan21.dnet.core.api;version="[1.0.3,1.0.3]",net.nan21.dnet.core.api
- .email;version="[1.0.3,1.0.3]",net.nan21.dnet.core.api.exceptions,net
- .nan21.dnet.core.api.job;version="[1.0.3,1.0.3]",net.nan21.dnet.core.
- api.service;version="[1.0.3,1.0.3]",net.nan21.dnet.core.api.session;v
- ersion="[1.0.3,1.0.3]",net.nan21.dnet.core.api.wf;version="[1.0.3,1.0
- .3]",org.activiti.engine,org.activiti.engine.delegate,org.activiti.en
- gine.impl.bpmn.behavior,org.activiti.engine.impl.bpmn.parser,org.acti
- viti.engine.impl.cfg,org.activiti.engine.impl.pvm.delegate,org.activi
- ti.engine.impl.pvm.process,org.activiti.engine.impl.scripting,org.act
- iviti.engine.impl.util.xml,org.activiti.spring,org.springframework.be
- ans;version="[3.1,3.2)",org.springframework.beans.factory;version="[3
- .1,3.2)",org.springframework.beans.factory.annotation;version="[3.1,3
- .2)",org.springframework.context;version="[3.1,3.2)",org.springframew
- ork.context.config;version="[3.1,3.2)",org.springframework.jdbc.datas
- ource,org.springframework.transaction.annotation;version="[3.1,3.2)"
-
+Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.txt
+Export-Package: 
+ net.nan21.dnet.core.workflow;version="1.0.3",
+ net.nan21.dnet.core.workflow.activiti_ext;version="1.0.3"
+Import-Package: 
+ com.sun.mail.handlers;version="[1.4.0,1.4.1]",
+ com.sun.mail.smtp;version="[1.4.0,1.4.1]",
+ javax.mail;version="[1.4.0,1.4.1]",
+ javax.mail.internet;version="[1.4.0,1.4.1]",
+ javax.script,
+ javax.sql,
+ net.nan21.dnet.core.api;version="1.0.3",
+ net.nan21.dnet.core.api.action;version="1.0.3",
+ net.nan21.dnet.core.api.annotation;version="1.0.3",
+ net.nan21.dnet.core.api.converter;version="1.0.3",
+ net.nan21.dnet.core.api.descriptor;version="1.0.3",
+ net.nan21.dnet.core.api.email;version="1.0.3",
+ net.nan21.dnet.core.api.exceptions;version="1.0.3",
+ net.nan21.dnet.core.api.job;version="1.0.3",
+ net.nan21.dnet.core.api.marshall;version="1.0.3",
+ net.nan21.dnet.core.api.model;version="1.0.3",
+ net.nan21.dnet.core.api.security;version="1.0.3",
+ net.nan21.dnet.core.api.service;version="1.0.3",
+ net.nan21.dnet.core.api.session;version="1.0.3",
+ net.nan21.dnet.core.api.setup;version="1.0.3",
+ net.nan21.dnet.core.api.ui.extjs;version="1.0.3",
+ net.nan21.dnet.core.api.util;version="1.0.3",
+ net.nan21.dnet.core.api.wf;version="1.0.3"
+Import-Bundle: 
+ activiti-engine;version="[5.9,5.9]",
+ activiti-spring,
+ org.springframework.beans;version="[3.1,3.2)",
+ org.springframework.context;version="[3.1,3.2)",
+ org.springframework.jdbc;version="[3.1,3.2)",
+ org.springframework.transaction;version="[3.1,3.2)"

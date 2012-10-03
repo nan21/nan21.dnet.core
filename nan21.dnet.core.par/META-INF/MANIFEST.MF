@@ -1,5 +1,0 @@
-Manifest-Version: 1.0
-Application-Name: DNet Core : PAR project
-Application-Version: 1.0.0
-Application-SymbolicName: nan21.dnet.core.par
-

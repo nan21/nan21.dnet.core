@@ -1,17 +1,13 @@
 Manifest-Version: 1.0
-Built-By: amathe
-Tool: Bundlor 1.1.0.RELEASE
-Bundle-Name: DNet fragment - activiti
-Created-By: Maven Integration for Eclipse
-Bundle-Vendor: Nan21 
-Fragment-Host: activiti-engine;bundle-version="[5.9,5.9]"
-Bundle-Version: 1.0.3
-Build-Jdk: 1.6.0_33
 Bundle-ManifestVersion: 2
-Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.html
-Import-Package: com.sun.mail.handlers;version="[1.4.0,1.4.1]",com.sun.
- mail.smtp;version="[1.4.0,1.4.1]",javax.mail;version="[1.4.0,1.4.1]",
- javax.mail.internet;version="[1.4.0,1.4.1]",net.nan21.dnet.core.workf
- low.activiti_ext;version="[1.0.3,1.0.3]"
+Bundle-Name: DNet fragment - Activiti
 Bundle-SymbolicName: nan21.dnet.fragment.activiti
-
+Bundle-Vendor: Nan21 
+Bundle-Version: 1.0.3
+Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.txt
+Import-Package: 
+ com.sun.mail.handlers;version="[1.4.0,1.4.1]",
+ com.sun.mail.smtp;version="[1.4.0,1.4.1]",
+ javax.mail;version="[1.4.0,1.4.1]",
+ javax.mail.internet;version="[1.4.0,1.4.1]",
+ net.nan21.dnet.core.workflow.activiti_ext;version="1.0.3"

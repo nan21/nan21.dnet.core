@@ -1,44 +1,40 @@
 Manifest-Version: 1.0
-Export-Package: net.nan21.dnet.core.domain.eventhandler;version="1.0.3
- ";uses:="org.eclipse.persistence.config,org.eclipse.persistence.descr
- iptors",net.nan21.dnet.core.domain.model;version="1.0.3";uses:="javax
- .persistence,javax.validation.constraints,javax.xml.bind.annotation,n
- et.nan21.dnet.core.api.model,org.eclipse.persistence.descriptors,org.
- eclipse.persistence.descriptors.changetracking,org.eclipse.persistenc
- e.internal.descriptors,org.eclipse.persistence.internal.weaving,org.e
- clipse.persistence.queries,org.eclipse.persistence.sessions,org.hiber
- nate.validator.constraints",net.nan21.dnet.core.domain.model.impldumm
- y;version="1.0.3";uses:="javax.persistence,net.nan21.dnet.core.domain
- .model,org.eclipse.persistence.internal.descriptors,org.eclipse.persi
- stence.internal.weaving",net.nan21.dnet.core.domain.sequence;version=
- "1.0.3";uses:="org.eclipse.persistence.config,org.eclipse.persistence
- .internal.databaseaccess,org.eclipse.persistence.internal.sessions,or
- g.eclipse.persistence.sequencing,org.eclipse.persistence.sessions",ne
- t.nan21.dnet.core.domain.validation;version="1.0.3"
-Built-By: amathe
-Tool: Bundlor 1.1.0.RELEASE
-Bundle-Name: DNet Core - domain
-Created-By: Maven Integration for Eclipse
-Import-Bundle: org.eclipse.persistence.core;version="[2.0,2.5)"
+Bundle-ManifestVersion: 2
+Bundle-Name: DNet Core - Domain
+Bundle-SymbolicName: nan21.dnet.core.domain
 Bundle-Vendor: Nan21 
 Bundle-Version: 1.0.3
-Build-Jdk: 1.6.0_33
-Bundle-ManifestVersion: 2
-Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.html
-Bundle-SymbolicName: nan21.dnet.core.domain
-Import-Package: javax.persistence;version="[2.0,2.1)",javax.persistenc
- e.criteria;version="[2.0,2.1)",javax.persistence.metamodel;version="[
- 2.0,2.1)",javax.persistence.spi;version="[2.0,2.1)",javax.validation.
- constraints,javax.xml.bind.annotation,net.nan21.dnet.core.api.model;v
- ersion="[1.0.3,1.0.3]",net.nan21.dnet.core.api.session,net.nan21.dnet
- .core.api.util;version="[1.0.3,1.0.3]",org.eclipse.persistence.config
- ,org.eclipse.persistence.descriptors,org.eclipse.persistence.descript
- ors.changetracking,org.eclipse.persistence.internal.databaseaccess,or
- g.eclipse.persistence.internal.descriptors,org.eclipse.persistence.in
- ternal.jpa,org.eclipse.persistence.internal.sessions,org.eclipse.pers
- istence.internal.weaving,org.eclipse.persistence.jpa;version="[2.1,2.
- 5)",org.eclipse.persistence.queries,org.eclipse.persistence.sequencin
- g,org.eclipse.persistence.sessions,org.hibernate.validator.constraint
- s,org.springframework.context.config;version="[3.1,3.2)",org.springfr
- amework.orm.jpa;version="[3.1,3.2)"
-
+Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.txt
+Export-Package: 
+ net.nan21.dnet.core.domain;version="1.0.3",
+ net.nan21.dnet.core.domain.eventhandler;version="1.0.3",
+ net.nan21.dnet.core.domain.model;version="1.0.3",
+ net.nan21.dnet.core.domain.sequence;version="1.0.3",
+ net.nan21.dnet.core.domain.validation;version="1.0.3"
+Import-Package: 
+ javax.persistence;version="[2.0,2.1)",
+ javax.persistence.criteria;version="[2.0,2.1)",
+ javax.persistence.metamodel;version="[2.0,2.1)",
+ javax.persistence.spi;version="[2.0,2.1)",
+ net.nan21.dnet.core.api;version="1.0.3",
+ net.nan21.dnet.core.api.action;version="1.0.3",
+ net.nan21.dnet.core.api.annotation;version="1.0.3",
+ net.nan21.dnet.core.api.converter;version="1.0.3",
+ net.nan21.dnet.core.api.descriptor;version="1.0.3",
+ net.nan21.dnet.core.api.email;version="1.0.3",
+ net.nan21.dnet.core.api.exceptions;version="1.0.3",
+ net.nan21.dnet.core.api.job;version="1.0.3",
+ net.nan21.dnet.core.api.marshall;version="1.0.3",
+ net.nan21.dnet.core.api.model;version="1.0.3",
+ net.nan21.dnet.core.api.security;version="1.0.3",
+ net.nan21.dnet.core.api.service;version="1.0.3",
+ net.nan21.dnet.core.api.session;version="1.0.3",
+ net.nan21.dnet.core.api.setup;version="1.0.3",
+ net.nan21.dnet.core.api.ui.extjs;version="1.0.3",
+ net.nan21.dnet.core.api.util;version="1.0.3",
+ net.nan21.dnet.core.api.wf;version="1.0.3",
+ org.eclipse.persistence.jpa;version="[2.1,2.5)",
+ org.springframework.context.config;version="[3.1,3.2)",
+ org.springframework.orm.jpa;version="[3.1,3.2)"
+Import-Bundle: 
+ org.eclipse.persistence.core;version="[2.0,2.5)"

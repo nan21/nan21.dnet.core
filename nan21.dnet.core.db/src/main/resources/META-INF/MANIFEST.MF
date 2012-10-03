@@ -1,12 +1,7 @@
 Manifest-Version: 1.0
-Bundle-Vendor: Nan21 
-Build-Jdk: 1.6.0_33
-Built-By: amathe
-Bundle-Version: 1.0.3
-Tool: Bundlor 1.1.0.RELEASE
-Bundle-Name: DNet Core - db
 Bundle-ManifestVersion: 2
-Created-By: Maven Integration for Eclipse
-Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.html
+Bundle-Name: DNet Core - DB
 Bundle-SymbolicName: nan21.dnet.core.db
-
+Bundle-Vendor: Nan21 
+Bundle-Version: 1.0.3
+Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.txt
