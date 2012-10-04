@@ -1,0 +1,19 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: DNet Core - JDBC
+Bundle-SymbolicName: nan21.dnet.core.jdbc
+Bundle-Vendor: Nan21 
+Bundle-Version: 1.0.3
+Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.txt
+Import-Package: 
+ com.mysql.jdbc;resolution:=optional,
+ com.sybase.jdbc;resolution:=optional,
+ javax.sql,
+ oracle.jdbc;resolution:=optional,
+ org.apache.commons.dbcp;version="[1.0,2.0)",
+ org.apache.derby;resolution:=optional,
+ org.apache.derby.jdbc;resolution:=optional,
+ org.h2;resolution:=optional,
+ org.hsqldb;resolution:=optional,
+ org.hsqldb.jdbc;resolution:=optional,
+ org.postgresql;resolution:=optional

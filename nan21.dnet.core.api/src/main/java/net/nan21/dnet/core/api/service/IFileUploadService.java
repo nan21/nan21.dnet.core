@@ -1,14 +1,17 @@
 package net.nan21.dnet.core.api.service;
 
+import java.io.InputStream;
+import java.util.Map;
+
 import net.nan21.dnet.core.api.ISystemConfig;
 import net.nan21.dnet.core.api.action.IFileUploadResult;
-import org.springframework.web.multipart.MultipartFile;
+import net.nan21.dnet.core.api.model.IUploadedFileDescriptor;
 
 public interface IFileUploadService {
-	
-	public IFileUploadResult execute(String name, MultipartFile file, String p1, String p2)
-		throws Exception;
-	
+
+	public IFileUploadResult execute(IUploadedFileDescriptor fileDescriptor,
+			InputStream inputStream, Map<String,String> uploadParams) throws Exception;
+
 	/**
 	 * Getter for system configuration.
 	 * 

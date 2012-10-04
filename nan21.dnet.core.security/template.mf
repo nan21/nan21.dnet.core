@@ -1,0 +1,22 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: DNet Core - Security
+Bundle-SymbolicName: nan21.dnet.core.security
+Bundle-Vendor: Nan21 
+Bundle-Version: 1.0.3
+Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.txt
+Export-Package: 
+ net.nan21.dnet.core.security;version="1.0.3"
+Import-Package: 
+ javax.servlet,
+ javax.servlet.http,
+ javax.sql,
+ net.nan21.dnet.core.api.security;version="1.0.3",
+ net.nan21.dnet.core.api.session;version="1.0.3"
+Import-Bundle: 
+ org.springframework.context;version="[3.1,3.2)",
+ org.springframework.core;version="[3.1,3.2)",
+ org.springframework.jdbc;version="[3.1,3.2)",
+ org.springframework.security.core;version="[3.1,3.2)",
+ org.springframework.security.web;version="[3.1,3.2)",
+ org.springframework.transaction;version="[3.1,3.2)"

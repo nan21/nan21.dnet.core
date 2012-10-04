@@ -1,21 +1,23 @@
 package net.nan21.dnet.core.web.controller.upload;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
 import net.nan21.dnet.core.api.ISystemConfig;
 import net.nan21.dnet.core.api.action.IFileUploadResult;
+import net.nan21.dnet.core.api.model.IUploadedFileDescriptor;
 import net.nan21.dnet.core.api.service.IFileUploadService;
 import net.nan21.dnet.core.api.service.IFileUploadServiceFactory;
 import net.nan21.dnet.core.api.session.Params;
 import net.nan21.dnet.core.api.session.Session;
 import net.nan21.dnet.core.api.session.User;
+import net.nan21.dnet.core.presenter.model.UploadedFileDescriptor;
 import net.nan21.dnet.core.security.SessionUser;
 
-import org.codehaus.jackson.JsonGenerationException;
-import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,11 +44,25 @@ public class FileUploadController {
 
 	@RequestMapping(value = "/{dsName}", method = RequestMethod.POST)
 	@ResponseBody
-	public String handleFormUpload(@PathVariable("dsName") String dsName,
-			@RequestParam("name") String name,
+	public String handleFormUpload(
+			@PathVariable("dsName") String dsName,
+			@RequestParam("newFileName") String newFileName,
 			@RequestParam("file") MultipartFile file,
-			@RequestParam("p1") String p1, @RequestParam("p2") String p2)
+			@RequestParam(value = "p0", required = false, defaultValue = "") String p0,
+			@RequestParam(value = "p1", required = false, defaultValue = "") String p1,
+			@RequestParam(value = "p2", required = false, defaultValue = "") String p2,
+			@RequestParam(value = "p3", required = false, defaultValue = "") String p3,
+			@RequestParam(value = "p4", required = false, defaultValue = "") String p4,
+			@RequestParam(value = "p5", required = false, defaultValue = "") String p5,
+			@RequestParam(value = "p6", required = false, defaultValue = "") String p6,
+			@RequestParam(value = "p7", required = false, defaultValue = "") String p7,
+			@RequestParam(value = "p8", required = false, defaultValue = "") String p8,
+			@RequestParam(value = "p9", required = false, defaultValue = "") String p9)
 			throws Exception {
+
+		if (file.isEmpty()) {
+			throw new Exception("Upload was not succesful. Try again please.");
+		}
 
 		SessionUser su;
 		User user;
@@ -65,8 +81,29 @@ public class FileUploadController {
 		Session.params.set(params);
 		this.serviceFactories = (List<IFileUploadServiceFactory>) this.webappContext
 				.getBean("osgiFileUploadServiceFactories");
-		IFileUploadResult result = this.getService(dsName).execute(name, file,
-				p1, p2);
+
+		Map<String, String> uploadParams = new HashMap<String, String>();
+
+		uploadParams.put("p0", p0);
+		uploadParams.put("p1", p1);
+		uploadParams.put("p2", p2);
+		uploadParams.put("p3", p3);
+		uploadParams.put("p4", p4);
+		uploadParams.put("p5", p5);
+		uploadParams.put("p6", p6);
+		uploadParams.put("p7", p7);
+		uploadParams.put("p8", p8);
+		uploadParams.put("p9", p9);
+
+		IUploadedFileDescriptor fd = new UploadedFileDescriptor();
+		fd.setNewName(newFileName);
+		fd.setContentType(file.getContentType());
+		fd.setOriginalName(file.getOriginalFilename());
+		fd.setSize(file.getSize());
+
+		IFileUploadResult result = this.getService(dsName).execute(fd,
+				file.getInputStream(), uploadParams);
+
 		return "{success:true}";
 	}
 

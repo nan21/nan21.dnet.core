@@ -1,0 +1,40 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: DNet Core - WWW
+Bundle-SymbolicName: nan21.dnet.core.www
+Bundle-Vendor: Nan21 
+Bundle-Version: 1.0.3
+Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.txt
+Import-Package: 
+ javax.servlet.jsp.jstl.core;version="[1.2,2.0)",
+ org.apache.taglibs.standard;version="[1.1.2,2.0)",
+ org.apache.taglibs.standard.extra.spath;version="[1.1.2,2.0)",
+ org.apache.taglibs.standard.functions;version="[1.1.2,2.0)",
+ org.apache.taglibs.standard.lang.jstl;version="[1.1.2,2.0)",
+ org.apache.taglibs.standard.lang.jstl.parser;version="[1.1.2,2.0)",
+ org.apache.taglibs.standard.lang.jstl.test;version="[1.1.2,2.0)",
+ org.apache.taglibs.standard.lang.jstl.test.beans;version="[1.1.2,2.0)",
+ org.apache.taglibs.standard.lang.support;version="[1.1.2,2.0)",
+ org.apache.taglibs.standard.resources;version="[1.1.2,2.0)",
+ org.apache.taglibs.standard.tag.common.core;version="[1.1.2,2.0)",
+ org.apache.taglibs.standard.tag.common.fmt;version="[1.1.2,2.0)",
+ org.apache.taglibs.standard.tag.common.sql;version="[1.1.2,2.0)",
+ org.apache.taglibs.standard.tag.common.xml;version="[1.1.2,2.0)",
+ org.apache.taglibs.standard.tag.el.core;version="[1.1.2,2.0)",
+ org.apache.taglibs.standard.tag.el.fmt;version="[1.1.2,2.0)",
+ org.apache.taglibs.standard.tag.el.sql;version="[1.1.2,2.0)",
+ org.apache.taglibs.standard.tag.el.xml;version="[1.1.2,2.0)",
+ org.apache.taglibs.standard.tag.rt.core;version="[1.1.2,2.0)",
+ org.apache.taglibs.standard.tag.rt.fmt;version="[1.1.2,2.0)",
+ org.apache.taglibs.standard.tag.rt.sql;version="[1.1.2,2.0)",
+ org.apache.taglibs.standard.tag.rt.xml;version="[1.1.2,2.0)",
+ org.apache.taglibs.standard.tei;version="[1.1.2,2.0)",
+ org.apache.taglibs.standard.tlv;version="[1.1.2,2.0)",
+ org.eclipse.virgo.snaps.core;version="[3.0,4.0)",
+ org.springframework.beans.factory.config;version="[3.1,3.2)",
+ org.springframework.web.servlet;version="[3.1,3.2)",
+ org.springframework.web.servlet.handler;version="[3.1,3.2)",
+ org.springframework.web.servlet.mvc;version="[3.1,3.2)",
+ org.springframework.web.servlet.view;version="[3.1,3.2)"
+Import-Bundle: 
+ org.eclipse.virgo.snaps.api;version="[3.0,4.0)"
