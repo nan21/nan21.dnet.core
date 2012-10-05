@@ -28,21 +28,15 @@
 		<!-- External libraries -->
 		
 		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>com.springsource.org.apache.commons.lang</artifactId>
-			<version>2.5.0</version>
+			<groupId>org.activiti</groupId>
+			<artifactId>activiti-engine</artifactId>
+			<version>5.9</version>
 			<type>jar</type>
 		</dependency>
 		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>org.springframework.context</artifactId>
-			<version>${spring.version}</version>
-			<type>jar</type>
-		</dependency>
-		<dependency>
-			<groupId>org.codehaus.jackson</groupId>
-			<artifactId>com.springsource.org.codehaus.jackson.mapper</artifactId>
-			<version>1.4.3</version>
+			<groupId>org.eclipse.persistence</groupId>
+			<artifactId>org.eclipse.persistence.jpa</artifactId>
+			<version>${eclipselink.version}</version>
 			<type>jar</type>
 		</dependency>
 		<dependency>
@@ -52,8 +46,14 @@
 			<type>jar</type>
 		</dependency>
 		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>com.springsource.org.apache.commons.io</artifactId>
+			<version>1.4.0</version>
+			<type>jar</type>
+		</dependency>
+		<dependency>
 			<groupId>org.springframework</groupId>
-			<artifactId>org.springframework.jdbc</artifactId>
+			<artifactId>org.springframework.context</artifactId>
 			<version>${spring.version}</version>
 			<type>jar</type>
 		</dependency>
@@ -64,9 +64,21 @@
 			<type>jar</type>
 		</dependency>
 		<dependency>
-			<groupId>org.activiti</groupId>
-			<artifactId>activiti-engine</artifactId>
-			<version>5.9</version>
+			<groupId>org.eclipse.persistence</groupId>
+			<artifactId>javax.persistence</artifactId>
+			<version>${jpa.version}</version>
+			<type>jar</type>
+		</dependency>
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>com.springsource.org.codehaus.jackson.mapper</artifactId>
+			<version>1.4.3</version>
+			<type>jar</type>
+		</dependency>
+		<dependency>
+			<groupId>net.nan21.osgi</groupId>
+			<artifactId>net.nan21.osgi.opencsv</artifactId>
+			<version>2.1</version>
 			<type>jar</type>
 		</dependency>
 		<dependency>
@@ -77,20 +89,14 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
-			<artifactId>org.springframework.orm</artifactId>
+			<artifactId>org.springframework.beans</artifactId>
 			<version>${spring.version}</version>
 			<type>jar</type>
 		</dependency>
 		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>com.springsource.org.apache.commons.io</artifactId>
-			<version>1.4.0</version>
-			<type>jar</type>
-		</dependency>
-		<dependency>
-			<groupId>net.nan21.osgi</groupId>
-			<artifactId>net.nan21.osgi.opencsv</artifactId>
-			<version>2.1</version>
+			<groupId>org.springframework</groupId>
+			<artifactId>org.springframework.jdbc</artifactId>
+			<version>${spring.version}</version>
 			<type>jar</type>
 		</dependency>
 		<dependency>
@@ -100,21 +106,15 @@
 			<type>jar</type>
 		</dependency>
 		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>com.springsource.org.apache.commons.lang</artifactId>
+			<version>2.5.0</version>
+			<type>jar</type>
+		</dependency>
+		<dependency>
 			<groupId>org.springframework</groupId>
-			<artifactId>org.springframework.beans</artifactId>
+			<artifactId>org.springframework.orm</artifactId>
 			<version>${spring.version}</version>
-			<type>jar</type>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.persistence</groupId>
-			<artifactId>javax.persistence</artifactId>
-			<version>${jpa.version}</version>
-			<type>jar</type>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.persistence</groupId>
-			<artifactId>org.eclipse.persistence.jpa</artifactId>
-			<version>${eclipselink.version}</version>
 			<type>jar</type>
 		</dependency>
 	</dependencies>

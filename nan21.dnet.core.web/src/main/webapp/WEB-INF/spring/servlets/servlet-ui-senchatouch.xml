@@ -13,7 +13,6 @@
 			http://www.springframework.org/schema/osgi-compendium 
     			http://www.springframework.org/schema/osgi-compendium/spring-osgi-compendium.xsd">
 
-
 	<bean name="uiSenchaTouchMainController" scope="request"
 		class="net.nan21.dnet.core.web.controller.ui.senchatouch.UiSenchaTouchMainController">
 		<property name="uiSenchaTouchSettings" ref="application_uiSenchaTouchSettings" />
@@ -27,8 +26,6 @@
 		<property name="jspName" value="senchatouch/indexFrame" />
 		<property name="systemConfig" ref="systemConfig" />
 	</bean>
-
-
 
 	<!-- When change the mapping keys below propagate the new values to the 
 		WEB-INF/jsp/senchatouch/index* pages also -->

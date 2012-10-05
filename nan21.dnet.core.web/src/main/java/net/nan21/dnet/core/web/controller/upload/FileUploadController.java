@@ -46,7 +46,7 @@ public class FileUploadController {
 	@ResponseBody
 	public String handleFormUpload(
 			@PathVariable("dsName") String dsName,
-			@RequestParam("newFileName") String newFileName,
+			@RequestParam("name") String newFileName,
 			@RequestParam("file") MultipartFile file,
 			@RequestParam(value = "p0", required = false, defaultValue = "") String p0,
 			@RequestParam(value = "p1", required = false, defaultValue = "") String p1,

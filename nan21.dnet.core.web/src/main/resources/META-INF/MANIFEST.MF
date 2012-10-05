@@ -5,6 +5,7 @@ Bundle-SymbolicName: nan21.dnet.core.web
 Bundle-Vendor: Nan21 
 Bundle-Version: 1.0.3
 Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.txt
+Bundle-ClassPath: WEB-INF/classes
 Export-Package: 
  net.nan21.dnet.core.web;version="1.0.3",
  net.nan21.dnet.core.web.controller;version="1.0.3",
@@ -42,6 +43,17 @@ Import-Package:
  net.nan21.dnet.core.api.ui.extjs;version="1.0.3",
  net.nan21.dnet.core.api.util;version="1.0.3",
  net.nan21.dnet.core.api.wf;version="1.0.3",
+ net.nan21.dnet.core.presenter;version="1.0.3",
+ net.nan21.dnet.core.presenter.action;version="1.0.3",
+ net.nan21.dnet.core.presenter.converter;version="1.0.3",
+ net.nan21.dnet.core.presenter.exception;version="1.0.3",
+ net.nan21.dnet.core.presenter.job;version="1.0.3",
+ net.nan21.dnet.core.presenter.libextensions;version="1.0.3",
+ net.nan21.dnet.core.presenter.marshaller;version="1.0.3",
+ net.nan21.dnet.core.presenter.model;version="1.0.3",
+ net.nan21.dnet.core.presenter.model.base;version="1.0.3",
+ net.nan21.dnet.core.presenter.propertyeditors;version="1.0.3",
+ net.nan21.dnet.core.presenter.service;version="1.0.3",
  net.nan21.dnet.core.security;version="1.0.3",
  org.apache.taglibs.standard;version="[1.1.2,2.0)",
  org.apache.taglibs.standard.extra.spath;version="[1.1.2,2.0)",

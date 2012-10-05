@@ -28,33 +28,15 @@
 		<!-- External libraries -->
 		
 		<dependency>
-			<groupId>javax.validation</groupId>
-			<artifactId>com.springsource.javax.validation</artifactId>
-			<version>1.0.0.GA</version>
-			<type>jar</type>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>org.springframework.context</artifactId>
-			<version>${spring.version}</version>
-			<type>jar</type>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>org.springframework.orm</artifactId>
-			<version>${spring.version}</version>
-			<type>jar</type>
-		</dependency>
-		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>org.springframework.beans</artifactId>
 			<version>${spring.version}</version>
 			<type>jar</type>
 		</dependency>
 		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-validator</artifactId>
-			<version>4.1.0.Final</version>
+			<groupId>org.eclipse.persistence</groupId>
+			<artifactId>org.eclipse.persistence.jpa</artifactId>
+			<version>${eclipselink.version}</version>
 			<type>jar</type>
 		</dependency>
 		<dependency>
@@ -64,9 +46,27 @@
 			<type>jar</type>
 		</dependency>
 		<dependency>
-			<groupId>org.eclipse.persistence</groupId>
-			<artifactId>org.eclipse.persistence.jpa</artifactId>
-			<version>${eclipselink.version}</version>
+			<groupId>org.springframework</groupId>
+			<artifactId>org.springframework.orm</artifactId>
+			<version>${spring.version}</version>
+			<type>jar</type>
+		</dependency>
+		<dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>com.springsource.javax.validation</artifactId>
+			<version>1.0.0.GA</version>
+			<type>jar</type>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>4.1.0.Final</version>
+			<type>jar</type>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>org.springframework.context</artifactId>
+			<version>${spring.version}</version>
 			<type>jar</type>
 		</dependency>
 	</dependencies>
@@ -91,7 +91,7 @@
 								<property name="path_source"  value="${basedir}/target/classes"/>
 								<property name="path_target"  value="${basedir}/target/classes"/>
 								<property name="path_persistenceinfo"  value="${basedir}/target/classes"/>                 
-								<property name="my_repo"  value="${user.home}/.m2/repository"/>
+								<property name="my_repo"  value="${maven_repo_location}"/>
 								<ant antfile="${basedir}/eclipselink-static-weave.xml">
 									<target name="weaving"/>
 								</ant>

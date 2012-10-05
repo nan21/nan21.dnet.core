@@ -5,6 +5,7 @@ Bundle-SymbolicName: nan21.dnet.core.setup
 Bundle-Vendor: Nan21 
 Bundle-Version: 1.0.3
 Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.txt
+Bundle-ClassPath: WEB-INF/classes
 Import-Package: 
  javax.persistence;version="[2.0,2.1)",
  javax.persistence.criteria;version="[2.0,2.1)",

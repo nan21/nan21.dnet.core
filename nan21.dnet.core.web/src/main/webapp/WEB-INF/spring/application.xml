@@ -20,13 +20,21 @@
 	</osgi-compendium:cm-properties>
 
 	<!-- Local -->
-
+	
+	<bean id="systemConfig" class="net.nan21.dnet.core.api.SystemConfig"
+		scope="singleton">
+		<property name="disableFetchGroups" value="${sys.disableFetchGroups}" />
+		<property name="workingMode" value="${sys.workingMode}" />
+		<property name="portalClientCode" value="${sys.portalClientCode}" />
+		<property name="portalClientId" value="${sys.portalClientId}" />
+	</bean>
+	
 	<bean id="productInfo" class="net.nan21.dnet.core.web.settings.ProductInfo"
 		scope="singleton">
 		<property name="name" value="DNet eBusiness Suite" />
 		<property name="version" value="1.0.3" />
 	</bean>
-
+	
 	<bean id="application_uiExtjsSettings" class="net.nan21.dnet.core.web.settings.UiExtjsSettings"
 		scope="singleton">
 		<property name="urlLib" value="${url.ui.extjs.lib.extjs}" />
@@ -42,15 +50,7 @@
 		<property name="urlCore" value="${url.ui.senchatouch.core}" />
 		<property name="urlModules" value="${url.ui.senchatouch.modules}" />
 	</bean>
-
-	<bean id="systemConfig" class="net.nan21.dnet.core.api.SystemConfig"
-		scope="singleton">
-		<property name="disableFetchGroups" value="${sys.disableFetchGroups}" />
-		<property name="workingMode" value="${sys.workingMode}" />
-		<property name="portalClientCode" value="${sys.portalClientCode}" />
-		<property name="portalClientId" value="${sys.portalClientId}" />
-	</bean>
-
+	
 	<bean id="serviceLocator" class="net.nan21.dnet.core.presenter.service.ServiceLocator">
 	</bean>
 

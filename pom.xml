@@ -35,7 +35,7 @@
 		<gemini_blueprint.version>1.0.0.RELEASE</gemini_blueprint.version>
 		<jpa.version>2.0.3</jpa.version>
 		<eclipselink.version>2.3.0</eclipselink.version>
-		<maven_repo_location>~/.m3/repository</maven_repo_location>
+		<maven_repo_location>${user.home}/.m3/repository</maven_repo_location>
 	</properties>
 	
 	<dependencyManagement>
@@ -194,7 +194,7 @@
 				<version>2.1.1</version>
 				<configuration>
 				 	<archive>
-						<manifestFile>src/main/webapp/META-INF/MANIFEST.MF</manifestFile>
+						<manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile>
 					</archive>
 				</configuration>
 			</plugin>
@@ -239,23 +239,6 @@
 					<source>1.6</source>
 					<target>1.6</target>
 				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>com.springsource.bundlor</groupId>
-				<artifactId>com.springsource.bundlor.maven</artifactId>
-				<version>1.0.0.RELEASE</version>
-				<configuration>
-					<failOnWarnings>false</failOnWarnings>
-				</configuration>
-				<executions>
-				    <execution>
-				        <id>bundlor</id>
-				        <goals>
-				            <goal>bundlor</goal>
-				        </goals>
-				        <phase>package</phase>
-				    </execution>
-				</executions>
 			</plugin>
 		</plugins>
 	</build>
