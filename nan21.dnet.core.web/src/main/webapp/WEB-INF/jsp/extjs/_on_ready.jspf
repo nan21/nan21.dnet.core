@@ -1,3 +1,3 @@
-		Ext.BLANK_IMAGE_URL = "${urlUiExtjsCore}/resources/images/s.gif";
+		Ext.BLANK_IMAGE_URL = "${urlUiExtjsThemes}/resources/images/s.gif";
 		Ext.QuickTips.init();
  		 

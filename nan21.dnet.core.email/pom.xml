@@ -28,15 +28,15 @@
 		<!-- External libraries -->
 		
 		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>org.springframework.beans</artifactId>
-			<version>${spring.version}</version>
-			<type>jar</type>
-		</dependency>
-		<dependency>
 			<groupId>javax.mail</groupId>
 			<artifactId>com.springsource.javax.mail</artifactId>
 			<version>1.4.0</version>
+			<type>jar</type>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>org.springframework.beans</artifactId>
+			<version>${spring.version}</version>
 			<type>jar</type>
 		</dependency>
 		<dependency>

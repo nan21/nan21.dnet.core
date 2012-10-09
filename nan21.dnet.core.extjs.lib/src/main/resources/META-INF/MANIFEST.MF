@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: DNet Core - Extjs Library
+Bundle-SymbolicName: nan21.dnet.core.extjs.lib
+Bundle-Vendor: Sencha
+Bundle-Version: 1.0.3
+Bundle-License: http://www.sencha.com/products/extjs/license
+Snap-Host: nan21.dnet.core.home;version="[1.0,2.0)"
+Snap-ContextPath: /extjs.lib

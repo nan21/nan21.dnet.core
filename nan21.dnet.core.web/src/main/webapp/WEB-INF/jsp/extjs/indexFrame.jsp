@@ -11,14 +11,13 @@
 		__LANGUAGE__ = "${shortLanguage}"; 	
 		__THEME__ = "${theme}"; 
 	</script>
-	<script type="text/javascript" src="${ urlUiExtjsCore }/src/globals.js" ></script>	
-	<script type="text/javascript" src="${ urlUiExtjsCore }/config.js"></script>
+	<script type="text/javascript" src="${ urlUiExtjsCore }/js/globals.js" ></script>	
 	<script type="text/javascript">
 	  checkAndStart(); 
 	  __checkAuthToken();	   
 	</script>
   
-	<link rel="stylesheet" type="text/css" href="${ urlUiExtjsCore }/resources/css/dnet.css"/>
+	<link rel="stylesheet" type="text/css" href="${ urlUiExtjsThemes }/resources/css/dnet.css"/>
 </head>
 <body>
 	
@@ -39,7 +38,7 @@
 	
 	<%@ include file="_dnet_params.jspf" %> 
 	<script type="text/javascript" src="${urlUiExtjsModulesI18n}/${shortLanguage}/${bundle}/frame/${itemSimpleName}.js"></script>
-	<script type="text/javascript" src="${urlUiExtjsModules}/${bundle}/src/frame/${itemSimpleName}.js"></script>
+	<script type="text/javascript" src="${urlUiExtjsModules}/${bundle}/webapp/js/frame/${itemSimpleName}.js"></script>
 	
 	${extensions}
 	

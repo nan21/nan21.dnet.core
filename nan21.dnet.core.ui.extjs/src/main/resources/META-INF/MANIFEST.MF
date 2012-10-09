@@ -1,8 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: DNet Core - ui extjs
+Bundle-Name: DNet Core - Ui Extjs
 Bundle-SymbolicName: nan21.dnet.core.ui.extjs
-Bundle-Vendor: Nan21 
+Bundle-Vendor: Nan21
 Bundle-Version: 1.0.3
 Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.txt
-Bundle-ClassPath: WEB-INF/classes
+Snap-Host: nan21.dnet.core.home;version="[1.0,2.0)"
+Snap-ContextPath: /nan21.dnet.core.ui.extjs

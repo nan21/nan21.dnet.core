@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:osgi="http://www.springframework.org/schema/osgi"
+	xmlns:osgi-compendium="http://www.springframework.org/schema/osgi-compendium"
+	xsi:schemaLocation="
+			http://www.springframework.org/schema/beans	http://www.springframework.org/schema/beans/spring-beans.xsd
+			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+			http://www.springframework.org/schema/osgi http://www.springframework.org/schema/osgi/spring-osgi.xsd
+			http://www.springframework.org/schema/osgi-compendium http://www.springframework.org/schema/osgi-compendium/spring-osgi-compendium.xsd">
+
+	<context:annotation-config />
+
+	<context:property-placeholder
+		properties-ref="dnetProperties" />
+
+	<osgi-compendium:cm-properties id="dnetProperties"
+		persistent-id="net.nan21.dnet">
+
+	</osgi-compendium:cm-properties>
+ 
+	<!-- Osgi -->
+
+	<osgi:reference id="systemConfig" cardinality="1..1"
+		interface="net.nan21.dnet.core.api.ISystemConfig" />
+	<osgi:reference id="productInfo" cardinality="1..1"
+		interface="net.nan21.dnet.core.api.IProductInfo" />
+
+	 
+	 
+	 
+
+	<!-- Configures global application security 
+
+	<import resource="security.xml" />-->
+
+</beans>

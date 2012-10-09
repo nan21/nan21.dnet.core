@@ -28,27 +28,9 @@
 		<!-- External libraries -->
 		
 		<dependency>
-			<groupId>org.eclipse.persistence</groupId>
-			<artifactId>javax.persistence</artifactId>
-			<version>${jpa.version}</version>
-			<type>jar</type>
-		</dependency>
-		<dependency>
-			<groupId>javax.mail</groupId>
-			<artifactId>com.springsource.javax.mail</artifactId>
-			<version>1.4.0</version>
-			<type>jar</type>
-		</dependency>
-		<dependency>
 			<groupId>org.activiti</groupId>
 			<artifactId>activiti-engine</artifactId>
 			<version>5.9</version>
-			<type>jar</type>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>org.springframework.context</artifactId>
-			<version>${spring.version}</version>
 			<type>jar</type>
 		</dependency>
 		<dependency>
@@ -58,9 +40,15 @@
 			<type>jar</type>
 		</dependency>
 		<dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>com.springsource.javax.mail</artifactId>
+			<version>1.4.0</version>
+			<type>jar</type>
+		</dependency>
+		<dependency>
 			<groupId>org.eclipse.persistence</groupId>
-			<artifactId>org.eclipse.persistence.jpa</artifactId>
-			<version>${eclipselink.version}</version>
+			<artifactId>javax.persistence</artifactId>
+			<version>${jpa.version}</version>
 			<type>jar</type>
 		</dependency>
 		<dependency>
@@ -70,8 +58,20 @@
 			<type>jar</type>
 		</dependency>
 		<dependency>
+			<groupId>org.eclipse.persistence</groupId>
+			<artifactId>org.eclipse.persistence.jpa</artifactId>
+			<version>${eclipselink.version}</version>
+			<type>jar</type>
+		</dependency>
+		<dependency>
 			<groupId>org.springframework</groupId>
-			<artifactId>org.springframework.orm</artifactId>
+			<artifactId>org.springframework.beans</artifactId>
+			<version>${spring.version}</version>
+			<type>jar</type>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>org.springframework.context</artifactId>
 			<version>${spring.version}</version>
 			<type>jar</type>
 		</dependency>
@@ -83,7 +83,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
-			<artifactId>org.springframework.beans</artifactId>
+			<artifactId>org.springframework.orm</artifactId>
 			<version>${spring.version}</version>
 			<type>jar</type>
 		</dependency>

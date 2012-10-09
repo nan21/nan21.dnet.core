@@ -121,7 +121,7 @@ public abstract class AbstractUiExtjsController extends AbstractController {
 
 		this.model.put("deploymentUrl", this.deploymentUrl);
 		this.model.put("uiUrl", this.uiUrl);
-		this.model.put("product", this.productInfo);
+		this.model.put("product", this.productInfo); 
 
 		this.model.put("userUsername", userUsername);
 		this.model.put("userDisplayName", userDisplayName);
@@ -129,10 +129,15 @@ public abstract class AbstractUiExtjsController extends AbstractController {
 		this.model.put("userClientId", userClientId);
 		this.model.put("userSystemClient", userSystemClient);
 
-		this.model.put("urlUiExtjsLibExtjs", uiExtjsSettings.getUrlLib());
+		// extjs library and themes
+		this.model.put("urlUiExtjsLib", uiExtjsSettings.getUrlLib());
+		this.model.put("urlUiExtjsThemes", uiExtjsSettings.getUrlThemes());
+		
+		// DNet extjs components in core and modules
 		this.model.put("urlUiExtjsCore", uiExtjsSettings.getUrlCore());
 		this.model.put("urlUiExtjsModules", uiExtjsSettings.getUrlModules());
 
+		// translations for core and modules
 		this.model.put("urlUiExtjsCoreI18n", uiExtjsSettings.getUrlCoreI18n());
 		this.model.put("urlUiExtjsModulesI18n",
 				uiExtjsSettings.getUrlModulesI18n());

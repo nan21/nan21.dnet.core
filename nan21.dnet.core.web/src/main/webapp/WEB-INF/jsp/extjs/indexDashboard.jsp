@@ -9,14 +9,13 @@
 		__LANGUAGE__ = "${shortLanguage}";
 		__THEME__ = "${theme}"; 		
 	</script>
-	<script type="text/javascript" src="${ urlUiExtjsCore }/src/globals.js" ></script>	
-	<script type="text/javascript" src="${ urlUiExtjsCore }/config.js"></script>
+	<script type="text/javascript" src="${ urlUiExtjsCore }/js/globals.js" ></script>	
 	<script type="text/javascript">
 	  checkAndStart(); 
 	  __checkAuthToken();
 	</script>
   
-	<link rel="stylesheet" type="text/css" href="${ urlUiExtjsCore }/resources/css/dnet.css"/>
+	<link rel="stylesheet" type="text/css" href="${ urlUiExtjsThemes }/resources/css/dnet.css"/>
 </head>
 <body>
 	
@@ -31,31 +30,30 @@
 	  
 	 <!-- Extjs  --> 
      
-    <link rel="stylesheet" type="text/css" href="${urlUiExtjsLibExtjs}/resources/css/ext-all-${theme}.css"/> 
-    <script type="text/javascript" src="${urlUiExtjsLibExtjs}/ext-all-debug.js"></script>
+    <link rel="stylesheet" type="text/css" href="${urlUiExtjsThemes}/resources/css/ext-all-${theme}.css"/> 
+    <script type="text/javascript" src="${urlUiExtjsLib}/js/ext-all-debug.js"></script>
      
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/Dnet.js" ></script>    
-    <script type="text/javascript" src="${urlUiExtjsCore}/extjs-extend.js"></script>     
-    <script type="text/javascript" src="${urlUiExtjsCore}/extjs-ux-extend.js"></script> 
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/Dnet.js" ></script>    
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/extjs-extend.js"></script>     
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/extjs-ux-extend.js"></script> 
    
     <!-- DNet locale -->            
     <script type="text/javascript" src="${urlUiExtjsCoreI18n}/${shortLanguage}/Dnet.js"></script>  
 	
 	
-	<!-- DNet framework --> 
+	<!-- DNet framework -->     
     
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/base/Application.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/base/Session.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/base/TemplateRepository.js"></script>
     
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/base/Application.js"></script>
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/base/Session.js"></script>
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/base/TemplateRepository.js"></script>
-    
-	<script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/dashboard/Portal.js"></script>
-	<script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/dashboard/Portlet.js"></script>    
-	<script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/dashboard/PortalPanel.js"></script>
-	<script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/dashboard/PortalDropZone.js"></script>   
-	<script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/dashboard/PortalColumn.js"></script>     
+	<script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/dashboard/Portal.js"></script>
+	<script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/dashboard/Portlet.js"></script>    
+	<script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/dashboard/PortalPanel.js"></script>
+	<script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/dashboard/PortalDropZone.js"></script>   
+	<script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/dashboard/PortalColumn.js"></script>     
 	   
-	<script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/dashboard/portlet/DNetFilesSF.js"></script>     
+	<script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/dashboard/portlet/DNetFilesSF.js"></script>     
 	   
 	<%@ include file="_dnet_params.jspf" %>   
 	   

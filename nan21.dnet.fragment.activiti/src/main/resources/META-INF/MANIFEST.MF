@@ -1,8 +1,8 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: DNet fragment - Activiti
+Bundle-Name: DNet Fragment - Activiti
 Bundle-SymbolicName: nan21.dnet.fragment.activiti
-Bundle-Vendor: Nan21 
+Bundle-Vendor: Nan21
 Bundle-Version: 1.0.3
 Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.txt
 Import-Package: 

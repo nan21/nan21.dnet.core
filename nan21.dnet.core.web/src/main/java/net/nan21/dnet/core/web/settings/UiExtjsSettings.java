@@ -32,6 +32,11 @@ public class UiExtjsSettings {
 	private String urlLib;
 
 	/**
+	 * Root URL of the themes for Extjs
+	 */
+	private String urlThemes;
+
+	/**
 	 * Root URL of the modules translations
 	 */
 	private String urlModulesI18n;
@@ -63,6 +68,14 @@ public class UiExtjsSettings {
 
 	public void setUrlLib(String urlLib) {
 		this.urlLib = urlLib;
+	}
+ 
+	public String getUrlThemes() {
+		return urlThemes;
+	}
+
+	public void setUrlThemes(String urlThemes) {
+		this.urlThemes = urlThemes;
 	}
 
 	public String getUrlModulesI18n() {

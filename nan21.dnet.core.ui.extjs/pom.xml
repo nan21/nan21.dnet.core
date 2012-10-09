@@ -8,9 +8,9 @@
 		<version>1.0.3-SNAPSHOT</version>
 	</parent>
 	<artifactId>nan21.dnet.core.ui.extjs</artifactId>
-	<name>DNet Core - ui extjs</name>
+	<name>DNet Core - Ui Extjs</name>
 	<description>Extjs based user interface framework.</description>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 	
 	<!-- ===================== Dependencies ===================== -->
 	
@@ -41,16 +41,16 @@
 				<!-- Compress and minify -->				
 				<executions>
 					<execution>
-						<phase>generate-sources</phase>
+						<phase>prepare-package</phase>
 						<configuration>
-						  <target>
-				               <echo>Beginning generate-sources phase...</echo>
-				               <property name="compile_classpath" refid="maven.compile.classpath"/>                                                                 
-				                <property name="maven_repo_location"  value="${maven_repo_location}"/>
-				                <ant antfile="${basedir}/pack.xml">
-				                    <target name="pack"/>
-				                </ant>
-				            </target>                            
+							<target>
+								<echo>Compress and minimize resources...</echo>
+								<property name="compile_classpath" refid="maven.compile.classpath"/>                                                                 
+								<property name="yui.path" value="${yui.path}"/>
+								<ant antfile="${basedir}/pack.xml">
+									<target name="run"/>
+								</ant>
+							</target>                            
 						</configuration>
 						<goals>
 							<goal>run</goal>

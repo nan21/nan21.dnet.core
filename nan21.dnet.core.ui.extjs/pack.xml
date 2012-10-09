@@ -1,74 +1,46 @@
-<project name="dnet-ui-extjs-core" default="pack" basedir=".">
+<project name="dnet-ui-extjs-core" default="run" basedir=".">
 	<description>
 		Pack the javascript files
     </description>
 
 	<property name="concatFile" value="dnet-ui-extjs-core-all-debug.js" />
 	<property name="minFile" value="dnet-ui-extjs-core-all.js" />
-	<property name="targetPath" value="src/main/webapp" />
-	<property name="sourcePathRoot" value="src/main/webapp/src" />
-	<property name="sourcePathCore" value="src/main/webapp/src/dnet/core" />
-	<property name="maven_repo_location1" value="${user.home}/.m3/repository" />
-	<property name="yui" value="${maven_repo_location1}/com/yahoo/platform/yui/yuicompressor/2.4.7/yuicompressor-2.4.7.jar" />
 
-	<target name="pack" depends="packCore,minimizeCore">
+	<property name="sourcePathJs" value="src/main/resources/webapp/js" />
+	<property name="targetPathJs" value="target/classes/webapp/js" />
+	<property name="sourcePathResources" value="src/main/resources/webapp/resources" />
+    <property name="targetPathResources" value="target/classes/webapp/resources" />
+
+	<property name="yui.path" value="yui.path" />
+
+	<target name="run" depends="pack, minimize">
 		<echo>Done.</echo>
 	</target>
 
-	<!-- ================================= Javascripts ================================== -->
+	<!-- ================================= Implementation ================================== -->
 
-	
-	<target name="minimizeCore" description="Minimize file.">
+
+	<target name="minimize" description="Minimize file.">
 		<echo message="Minimizing file..." />
 		<apply executable="java" parallel="false">
-			<filelist dir="${targetPath}" files="${concatFile}" />
-
+			<filelist dir="${targetPathJs}" files="${concatFile}" />
 			<arg line="-jar" />
-			<arg path="${yui}" /> 
+			<arg path="${yui.path}" />
 			<srcfile />
 			<arg line="-o" />
-			<mapper type="glob" from="*-debug.js" to="${targetPath}/*.js" />
+			<mapper type="glob" from="*-debug.js" to="${targetPathJs}/*.js" />
 			<targetfile />
-
 		</apply>
 		<echo message="Done." />
 	</target>
-				
-				
-	<target name="packCore">
+
+	<target name="pack">
 		<echo>[CORE] Packing javascript files in dnet-ui-extjs-core... </echo>
-		<concat destfile="${targetPath}/${concatFile}">
-
-			<filelist dir="${sourcePathRoot}" files="Dnet.js" />
-
-			<filelist dir="${sourcePathRoot}/.." files="extjs-extend.js,extjs-ux-extend.js" />
-
-			<filelist dir="${sourcePathCore}/base" files="UserPreferences.js,Logger.js,NavigationTree.js,TemplateRepository.js,Session.js,Application.js,ApplicationMenu.js,LoginWindow.js,ChangePasswordWindow.js,FrameInspector.js" />
-
-			<filelist dir="${sourcePathCore}/base" files="AbstractDNetView.js,HomePanel.js,UrlBuilder.js,UiHeader.js,FrameNavigatorWithIframe.js,FrameNavigator.js,FileUploadWindow.js,WorkflowFormWithHtmlWindow.js,WfAbstractFormWindowExtjs.js,WfTaskFormWindowExtjs.js,WfStartFormWindowExtjs.js,WorkflowFormFactory.js" />
-
-			<filelist dir="${sourcePathCore}/asgn" files="AbstractAsgn.js,AbstractAsgnGrid.js,AbstractAsgnUi.js,AsgnGridBuilder.js,AsgnUiBuilder.js" />
-
-			<filelist dir="${sourcePathCore}/dc" files="AbstractDc.js,AbstractDNetDcView.js,AbstractDNetDcGrid.js,AbstractDNetDcForm.js,AbstractDNetDcPropGrid.js,BulkEditWindow.js,AbstractDcvGrid.js,AbstractDcvEditableGrid.js,AbstractDcvEditForm.js,AbstractDcvForm.js,AbstractDcvEditPropGrid.js,AbstractDcvTree.js,AbstractDcvFilterForm.js,AbstractDcvFilterPropGrid.js,DcvFilterFormBuilder.js,DcvFilterPropGridBuilder.js,DcvEditFormBuilder.js,DcvEditPropGridBuilder.js,DcvGridBuilder.js,DcvEditableGridBuilder.js,DcActionsFactory.js,DcCommandFactory.js" />
-
-			<filelist dir="${sourcePathCore}/dc/command" files="AbstractDcCommand.js,AbstractDcAsyncCommand.js,AbstractDcSyncCommand.js" />
-
-			<filelist dir="${sourcePathCore}/dc/command" files="DcQueryCommand.js,DcNewCommand.js,DcCopyCommand.js,DcSaveCommand.js,DcCancelCommand.js,DcEditInCommand.js,DcEditOutCommand.js" />
-
-			<filelist dir="${sourcePathCore}/dc/command" files="DcClearQueryCommand.js,DcDeleteCommand.js,DcReloadRecCommand.js,DcPrevRecCommand.js,DcNextRecCommand.js,DcRpcDataCommand.js,DcRpcFilterCommand.js" />
-
-
-			<filelist dir="${sourcePathCore}/ui" files="FrameBuilder.js,ActionBuilder.js,FrameButtonStateManager.js,AbstractUi.js" />
-
-			<filelist dir="${sourcePathCore}/dc" files="DcActionsStateManager.js,DcContext.js,DcExceptions.js,DataExportWindow.js,DataImportWindow.js,DataSortWindow.js,GridLayoutManager.js" />
-
-			<filelist dir="${sourcePathCore}/lov" files="AbstractRemoteCombo.js,AbstractCombo.js,AbstractLov.js" />
-
-
+		<concat destfile="${targetPathJs}/${concatFile}">
+			<filelist dir="${sourcePathJs}" files="Dnet.js" />
+			<filelist dir="${sourcePathJs}" files="extjs-extend.js,extjs-ux-extend.js" />
+			<fileset dir="${sourcePathJs}/dnet" includes="**/*.js" />
 		</concat>
+		<echo message="Done." />
 	</target>
-
-
-
-
 </project>

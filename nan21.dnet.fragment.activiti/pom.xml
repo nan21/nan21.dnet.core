@@ -8,7 +8,7 @@
 		<version>1.0.3-SNAPSHOT</version>
 	</parent>
 	<artifactId>nan21.dnet.fragment.activiti</artifactId>
-	<name>DNet fragment - Activiti</name>
+	<name>DNet Fragment - Activiti</name>
 	<description>Fragment to extend Activiti BPMN engine dependencies</description>
 	<packaging>jar</packaging>
 </project>

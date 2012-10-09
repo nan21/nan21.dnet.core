@@ -20,24 +20,11 @@
 	</osgi-compendium:cm-properties>
 
 	<!-- Local -->
-	
-	<bean id="systemConfig" class="net.nan21.dnet.core.api.SystemConfig"
-		scope="singleton">
-		<property name="disableFetchGroups" value="${sys.disableFetchGroups}" />
-		<property name="workingMode" value="${sys.workingMode}" />
-		<property name="portalClientCode" value="${sys.portalClientCode}" />
-		<property name="portalClientId" value="${sys.portalClientId}" />
-	</bean>
-	
-	<bean id="productInfo" class="net.nan21.dnet.core.web.settings.ProductInfo"
-		scope="singleton">
-		<property name="name" value="DNet eBusiness Suite" />
-		<property name="version" value="1.0.3" />
-	</bean>
-	
+
 	<bean id="application_uiExtjsSettings" class="net.nan21.dnet.core.web.settings.UiExtjsSettings"
 		scope="singleton">
-		<property name="urlLib" value="${url.ui.extjs.lib.extjs}" />
+		<property name="urlLib" value="${url.ui.extjs.lib}" />
+		<property name="urlThemes" value="${url.ui.extjs.themes}" />
 		<property name="urlCore" value="${url.ui.extjs.core}" />
 		<property name="urlModules" value="${url.ui.extjs.modules}" />
 		<property name="urlCoreI18n" value="${url.ui.extjs.core.i18n}" />
@@ -50,14 +37,17 @@
 		<property name="urlCore" value="${url.ui.senchatouch.core}" />
 		<property name="urlModules" value="${url.ui.senchatouch.modules}" />
 	</bean>
-	
+
 	<bean id="serviceLocator" class="net.nan21.dnet.core.presenter.service.ServiceLocator">
 	</bean>
 
 	<!-- Osgi -->
-	
-	<osgi:service ref="systemConfig" interface="net.nan21.dnet.core.api.ISystemConfig" />
-	
+
+	<osgi:reference id="systemConfig" cardinality="1..1"
+		interface="net.nan21.dnet.core.api.ISystemConfig" />
+	<osgi:reference id="productInfo" cardinality="1..1"
+		interface="net.nan21.dnet.core.api.IProductInfo" />
+
 	<osgi:reference id="osgiDataSource" cardinality="0..1"
 		interface="javax.sql.DataSource" />
 	<osgi:reference id="osgiAuthenticationForDbUser"
@@ -69,6 +59,7 @@
 		interface="net.nan21.dnet.core.api.session.IChangePasswordService" />
 	<osgi:list id="osgiEntityManagerFactory" cardinality="0..N"
 		interface="javax.persistence.EntityManagerFactory"></osgi:list>
+		
 	<osgi:list id="osgiExtensionProviders" cardinality="0..N"
 		interface="net.nan21.dnet.core.api.ui.extjs.IExtensionProvider" />
 	<osgi:list id="osgiExtensionProvidersFrame" cardinality="0..N"
@@ -78,6 +69,7 @@
 	<osgi:list id="osgiExtensionContentProvidersFrame"
 		cardinality="0..N"
 		interface="net.nan21.dnet.core.api.ui.extjs.IExtensionContentProviderFrame" />
+		
 	<osgi:list id="osgiDsServiceFactories" cardinality="0..N"
 		interface="net.nan21.dnet.core.api.service.IDsServiceFactory" />
 	<osgi:list id="osgiFileUploadServiceFactories" cardinality="0..N"
@@ -92,7 +84,7 @@
 		cardinality="0..1" interface="net.nan21.dnet.core.api.wf.IActivitiProcessEngineHolder" />
 
 	<!-- Configures global application security -->
-	
+
 	<import resource="security.xml" />
-	
+
 </beans>

@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
-	xmlns:c="http://java.sun.com/jsp/jstl/core"
-	version="2.5">
+	xmlns:c="http://java.sun.com/jsp/jstl/core" version="2.5">
 	<display-name>DNet Core - web</display-name>
 	<description>DNet Core - web</description>
 	<context-param>
@@ -15,13 +14,11 @@
 		</param-value>
 	</context-param>
 	<listener>
-		<listener-class>org.springframework.web.context.ContextLoaderListener
-		</listener-class>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
 	<filter>
 		<filter-name>springSecurityFilterChain</filter-name>
-		<filter-class>org.springframework.web.filter.DelegatingFilterProxy
-		</filter-class>
+		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
 	</filter>
 	<filter-mapping>
 		<filter-name>springSecurityFilterChain</filter-name>
@@ -29,41 +26,38 @@
 	</filter-mapping>
 
 	<!-- ============== SERVLET ================ -->
-	
+
 	<servlet>
 		<servlet-name>uiExtjs</servlet-name>
-		<servlet-class>org.springframework.web.servlet.DispatcherServlet
-		</servlet-class>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 		<init-param>
 			<param-name>contextConfigLocation</param-name>
 			<param-value>/WEB-INF/spring/servlets/servlet-ui-extjs.xml
 			</param-value>
 		</init-param>
-	</servlet>		
+	</servlet>
 	<servlet-mapping>
 		<servlet-name>uiExtjs</servlet-name>
 		<url-pattern>/ui/extjs/*</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>uiSenchaTouch</servlet-name>
-		<servlet-class>org.springframework.web.servlet.DispatcherServlet
-		</servlet-class>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 		<init-param>
 			<param-name>contextConfigLocation</param-name>
 			<param-value>/WEB-INF/spring/servlets/servlet-ui-senchatouch.xml
 			</param-value>
 		</init-param>
-	</servlet>		
+	</servlet>
 	<servlet-mapping>
 		<servlet-name>uiSenchaTouch</servlet-name>
 		<url-pattern>/ui/stouch/*</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>data</servlet-name>
-		<servlet-class>org.springframework.web.servlet.DispatcherServlet
-		</servlet-class>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 		<init-param>
 			<param-name>contextConfigLocation</param-name>
 			<param-value>/WEB-INF/spring/servlets/servlet-data.xml</param-value>
@@ -74,12 +68,11 @@
 		<servlet-name>data</servlet-name>
 		<url-pattern>/tx/*</url-pattern>
 	</servlet-mapping>
-	
+
 
 	<servlet>
 		<servlet-name>security</servlet-name>
-		<servlet-class>org.springframework.web.servlet.DispatcherServlet
-		</servlet-class>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 		<init-param>
 			<param-name>contextConfigLocation</param-name>
 			<param-value>/WEB-INF/spring/servlets/servlet-security.xml
@@ -91,43 +84,41 @@
 		<servlet-name>security</servlet-name>
 		<url-pattern>/security/*</url-pattern>
 	</servlet-mapping>
-	
-	
+
+
 	<servlet>
 		<servlet-name>upload</servlet-name>
-		<servlet-class>org.springframework.web.servlet.DispatcherServlet
-		</servlet-class>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 		<init-param>
 			<param-name>contextConfigLocation</param-name>
 			<param-value>/WEB-INF/spring/servlets/servlet-upload.xml
 			</param-value>
 		</init-param>
-	</servlet>		
+	</servlet>
 	<servlet-mapping>
 		<servlet-name>upload</servlet-name>
 		<url-pattern>/upload/*</url-pattern>
 	</servlet-mapping>
-	
-	
+
+
 	<servlet>
 		<servlet-name>workflow</servlet-name>
-		<servlet-class>org.springframework.web.servlet.DispatcherServlet
-		</servlet-class>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 		<init-param>
 			<param-name>contextConfigLocation</param-name>
 			<param-value>/WEB-INF/spring/servlets/servlet-workflow.xml
 			</param-value>
 		</init-param>
-	</servlet>		
+	</servlet>
 	<servlet-mapping>
 		<servlet-name>workflow</servlet-name>
 		<url-pattern>/workflow/*</url-pattern>
 	</servlet-mapping>
- 
+
 	<!-- ============== Others ================ -->
 	<welcome-file-list>
 		<welcome-file>index.jsp</welcome-file>
 		<welcome-file>index.html</welcome-file>
 	</welcome-file-list>
-	 
+
 </web-app>

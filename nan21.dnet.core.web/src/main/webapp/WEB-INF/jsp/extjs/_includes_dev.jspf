@@ -1,121 +1,119 @@
 
     <!-- Extjs  --> 
      
-    <link rel="stylesheet" type="text/css" href="${urlUiExtjsLibExtjs}/resources/css/ext-all-${theme}.css"/> 
-    <script type="text/javascript" src="${urlUiExtjsLibExtjs}/ext-all.js"></script>
+    <link rel="stylesheet" type="text/css" href="${urlUiExtjsThemes}/resources/css/ext-all-${theme}.css"/> 
+    <script type="text/javascript" src="${urlUiExtjsLib}/js/ext-all.js"></script>
      
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/Dnet.js" ></script>    
-    <script type="text/javascript" src="${urlUiExtjsCore}/extjs-extend.js"></script>     
-    <script type="text/javascript" src="${urlUiExtjsCore}/extjs-ux-extend.js"></script> 
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/Dnet.js" ></script>    
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/extjs-extend.js"></script>     
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/extjs-ux-extend.js"></script> 
    
     <!-- DNet locale -->            
     <script type="text/javascript" src="${urlUiExtjsCoreI18n}/${shortLanguage}/Dnet.js"></script>
   
    <!-- DNet framework -->
     
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/base/NavigationTree.js"></script>
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/base/Logger.js"></script>
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/base/TemplateRepository.js"></script>
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/base/Session.js"></script>
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/base/Application.js"></script>
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/base/ApplicationMenu.js"></script>
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/base/LoginWindow.js"></script>
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/base/ChangePasswordWindow.js"></script>
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/base/FrameInspector.js"></script>
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/base/UserPreferences.js"></script>
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/base/AbstractDNetView.js"></script>   
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/base/NavigationTree.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/base/Logger.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/base/TemplateRepository.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/base/Session.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/base/Application.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/base/ApplicationMenu.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/base/LoginWindow.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/base/ChangePasswordWindow.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/base/FrameInspector.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/base/UserPreferences.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/base/AbstractDNetView.js"></script>   
     
     
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/asgn/AbstractAsgn.js"></script>
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/asgn/AbstractAsgnGrid.js"></script>
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/asgn/AbstractAsgnUi.js"></script>
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/asgn/AsgnGridBuilder.js"></script>
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/asgn/AsgnUiBuilder.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/asgn/AbstractAsgn.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/asgn/AbstractAsgnGrid.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/asgn/AbstractAsgnUi.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/asgn/AsgnGridBuilder.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/asgn/AsgnUiBuilder.js"></script>
     
     
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/base/HomePanel.js"></script>
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/base/UrlBuilder.js"></script>
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/base/UiHeader.js"></script>
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/base/FrameNavigatorWithIframe.js"></script>
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/base/FrameNavigator.js"></script>
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/base/FileUploadWindow.js"></script>
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/base/WorkflowFormWithHtmlWindow.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/base/HomePanel.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/base/UrlBuilder.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/base/UiHeader.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/base/FrameNavigatorWithIframe.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/base/FrameNavigator.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/base/FileUploadWindow.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/base/WorkflowFormWithHtmlWindow.js"></script>
     
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/base/WfAbstractFormWindowExtjs.js"></script>
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/base/WfStartFormWindowExtjs.js"></script>
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/base/WfTaskFormWindowExtjs.js"></script>      
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/base/WorkflowFormFactory.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/base/WfAbstractFormWindowExtjs.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/base/WfStartFormWindowExtjs.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/base/WfTaskFormWindowExtjs.js"></script>      
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/base/WorkflowFormFactory.js"></script>
      
- 	<script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/ds/AbstractDs.js"></script>
+ 	<script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/ds/AbstractDs.js"></script>
  	 
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/dc/AbstractDc.js"></script>
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/dc/AbstractDNetDcView.js"></script>
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/dc/AbstractDNetDcGrid.js"></script>
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/dc/AbstractDNetDcForm.js"></script>
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/dc/AbstractDNetDcPropGrid.js"></script>
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/dc/AbstractDcvGrid.js"></script>    
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/dc/AbstractDcvEditableGrid.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/dc/AbstractDc.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/dc/AbstractDNetDcView.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/dc/AbstractDNetDcGrid.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/dc/AbstractDNetDcForm.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/dc/AbstractDNetDcPropGrid.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/dc/AbstractDcvGrid.js"></script>    
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/dc/AbstractDcvEditableGrid.js"></script>
      
  
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/dc/AbstractDcvEditForm.js"></script>
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/dc/AbstractDcvForm.js"></script>
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/dc/AbstractDcvEditPropGrid.js"></script>          
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/dc/AbstractDcvTree.js"></script>
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/dc/AbstractDcvFilterForm.js"></script>
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/dc/AbstractDcvFilterPropGrid.js"></script>
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/dc/DcvFilterFormBuilder.js"></script>
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/dc/DcvEditFormBuilder.js"></script>
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/dc/DcvFilterPropGridBuilder.js"></script>
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/dc/DcvEditPropGridBuilder.js"></script>
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/dc/DcvGridBuilder.js"></script>
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/dc/DcvEditableGridBuilder.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/dc/AbstractDcvEditForm.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/dc/AbstractDcvForm.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/dc/AbstractDcvEditPropGrid.js"></script>          
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/dc/AbstractDcvTree.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/dc/AbstractDcvFilterForm.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/dc/AbstractDcvFilterPropGrid.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/dc/DcvFilterFormBuilder.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/dc/DcvEditFormBuilder.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/dc/DcvFilterPropGridBuilder.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/dc/DcvEditPropGridBuilder.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/dc/DcvGridBuilder.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/dc/DcvEditableGridBuilder.js"></script>
     
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/dc/DcActionsFactory.js"></script>
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/dc/DcCommandFactory.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/dc/DcActionsFactory.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/dc/DcCommandFactory.js"></script>
        
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/dc/command/AbstractDcCommand.js"></script>
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/dc/command/AbstractDcAsyncCommand.js"></script>
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/dc/command/AbstractDcSyncCommand.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/dc/command/AbstractDcCommand.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/dc/command/AbstractDcAsyncCommand.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/dc/command/AbstractDcSyncCommand.js"></script>
      
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/dc/command/DcQueryCommand.js"></script>
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/dc/command/DcNewCommand.js"></script>
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/dc/command/DcCopyCommand.js"></script>
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/dc/command/DcSaveCommand.js"></script>
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/dc/command/DcCancelCommand.js"></script>
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/dc/command/DcEditInCommand.js"></script>
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/dc/command/DcEditOutCommand.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/dc/command/DcQueryCommand.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/dc/command/DcNewCommand.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/dc/command/DcCopyCommand.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/dc/command/DcSaveCommand.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/dc/command/DcCancelCommand.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/dc/command/DcEditInCommand.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/dc/command/DcEditOutCommand.js"></script>
     
     
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/dc/command/DcClearQueryCommand.js"></script>    
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/dc/command/DcDeleteCommand.js"></script>    
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/dc/command/DcReloadRecCommand.js"></script>
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/dc/command/DcPrevRecCommand.js"></script>
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/dc/command/DcNextRecCommand.js"></script>
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/dc/command/DcRpcDataCommand.js"></script>
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/dc/command/DcRpcFilterCommand.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/dc/command/DcClearQueryCommand.js"></script>    
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/dc/command/DcDeleteCommand.js"></script>    
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/dc/command/DcReloadRecCommand.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/dc/command/DcPrevRecCommand.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/dc/command/DcNextRecCommand.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/dc/command/DcRpcDataCommand.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/dc/command/DcRpcFilterCommand.js"></script>
     
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/ui/FrameBuilder.js"></script>
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/ui/ActionBuilder.js"></script>
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/ui/FrameButtonStateManager.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/ui/FrameBuilder.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/ui/ActionBuilder.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/ui/FrameButtonStateManager.js"></script>
     
     
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/dc/BulkEditWindow.js"></script>  
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/dc/DcActionsStateManager.js"></script>     
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/dc/DcContext.js"></script>
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/dc/DcExceptions.js"></script>
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/dc/DataExportWindow.js"></script>  
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/dc/DataImportWindow.js"></script>
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/dc/DataSortWindow.js"></script>    
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/dc/GridLayoutManager.js"></script>     
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/dc/BulkEditWindow.js"></script>  
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/dc/DcActionsStateManager.js"></script>     
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/dc/DcContext.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/dc/DcExceptions.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/dc/DataExportWindow.js"></script>  
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/dc/DataImportWindow.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/dc/DataSortWindow.js"></script>    
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/dc/GridLayoutManager.js"></script>     
        
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/ui/AbstractUi.js"></script>
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/lov/AbstractRemoteCombo.js"></script> 
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/lov/AbstractCombo.js"></script>  
-    <script type="text/javascript" src="${urlUiExtjsCore}/src/dnet/core/lov/AbstractLov.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/ui/AbstractUi.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/lov/AbstractRemoteCombo.js"></script> 
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/lov/AbstractCombo.js"></script>  
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/lov/AbstractLov.js"></script>
      
-    <!-- Css   
-    <link rel="stylesheet" type="text/css" href="${urlUiExtjsLibExtjs}/js/extjs/resources/examples/ux/calendar/resources/css/calendar-${theme}.css"/>
-    -->     
- 	<link rel="stylesheet" type="text/css" href="${urlUiExtjsCore}/resources/css/dnet-xtheme-${theme}.css"/>
+    <!-- Css -->     
+ 	<link rel="stylesheet" type="text/css" href="${urlUiExtjsThemes}/resources/css/dnet-xtheme-${theme}.css"/>
       
         

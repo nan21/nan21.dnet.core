@@ -1,0 +1,27 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>net.nan21.dnet</groupId>
+		<artifactId>nan21.dnet.core</artifactId>
+		<version>1.0.3-SNAPSHOT</version>
+	</parent>
+	<artifactId>nan21.dnet.core.extjs.themes</artifactId>
+	<name>DNet Core - Extjs themes</name>
+	<description>Themes for the Extjs based user interfaces.</description>
+	<packaging>jar</packaging>
+	
+	<licenses>
+		<license>
+			<name>Extjs library Sencha license</name>
+			<url>http://www.sencha.com/products/extjs/license</url>
+			<distribution>repo</distribution>
+		</license>
+		<license>
+			<name>The Apache Software License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+</project>

@@ -35,7 +35,9 @@
 		<gemini_blueprint.version>1.0.0.RELEASE</gemini_blueprint.version>
 		<jpa.version>2.0.3</jpa.version>
 		<eclipselink.version>2.3.0</eclipselink.version>
+		<yui.version>2.4.7</yui.version>
 		<maven_repo_location>${user.home}/.m3/repository</maven_repo_location>
+		<yui.path>${maven_repo_location}/com/yahoo/platform/yui/yuicompressor/${yui.version}/yuicompressor-${yui.version}.jar</yui.path>
 	</properties>
 	
 	<dependencyManagement>
@@ -247,21 +249,23 @@
 	
 	<modules>
 		<module>nan21.dnet.core.api</module>
-		<module>nan21.dnet.core.business</module>
-		<module>nan21.dnet.core.config</module>
 		<module>nan21.dnet.core.db</module>
-		<module>nan21.dnet.core.domain</module>
-		<module>nan21.dnet.core.email</module>
+		<module>nan21.dnet.core.config</module>
 		<module>nan21.dnet.core.jdbc</module>
-		<module>nan21.dnet.core.presenter</module>
 		<module>nan21.dnet.core.scheduler</module>
-		<module>nan21.dnet.core.security</module>
-		<module>nan21.dnet.core.setup</module>
-		<module>nan21.dnet.core.ui.extjs</module>
-		<module>nan21.dnet.core.web</module>
-		<module>nan21.dnet.core.welcome</module>
+		<module>nan21.dnet.core.domain</module>
+		<module>nan21.dnet.core.business</module>
 		<module>nan21.dnet.core.workflow</module>
+		<module>nan21.dnet.core.presenter</module>
+		<module>nan21.dnet.core.home</module>
+		<module>nan21.dnet.core.extjs.lib</module>
+		<module>nan21.dnet.core.extjs.themes</module>
+		<module>nan21.dnet.core.ui.extjs</module>
+		<module>nan21.dnet.core.setup</module>
+		<module>nan21.dnet.core.web</module>
+		<module>nan21.dnet.core.security</module>
 		<module>nan21.dnet.core.www</module>
+		<module>nan21.dnet.core.email</module>
 		<module>nan21.dnet.fragment.activiti</module>
 	</modules>
 </project>
