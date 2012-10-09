@@ -1,26 +1,18 @@
 package net.nan21.dnet.core.api.setup;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 
-public class InitDataProviderFactory implements IInitDataProviderFactory {
+public class InitDataProviderFactory implements IInitDataProviderFactory,
+		ApplicationContextAware {
 
-	@Autowired
-	private ApplicationContext appContext;
+	private ApplicationContext applicationContext;
 
 	private String name;
 
 	public IInitDataProvider createProvider() {
-		return (IInitDataProvider) appContext
+		return (IInitDataProvider) applicationContext
 				.getBean(InitDataProvider.class);
-	}
-
-	public ApplicationContext getAppContext() {
-		return appContext;
-	}
-
-	public void setAppContext(ApplicationContext appContext) {
-		this.appContext = appContext;
 	}
 
 	public String getName() {
@@ -29,6 +21,14 @@ public class InitDataProviderFactory implements IInitDataProviderFactory {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public ApplicationContext getApplicationContext() {
+		return applicationContext;
+	}
+
+	public void setApplicationContext(ApplicationContext applicationContext) {
+		this.applicationContext = applicationContext;
 	}
 
 }

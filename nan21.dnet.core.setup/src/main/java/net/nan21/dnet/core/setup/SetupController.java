@@ -81,10 +81,32 @@ public class SetupController {
 			HttpServletResponse response) throws Exception {
 		try {
 			request.getSession().removeAttribute("setupUser");
-			response.sendRedirect("/nan21.dnet.core.welcome");
+			response.sendRedirect("/dnet-ebs");
 			return null;
 		} finally {
 
+		}
+	}
+
+	@RequestMapping(value = "/doPrepare")
+	protected ModelAndView doPrepare(HttpServletRequest request)
+			throws Exception {
+		try {
+			this.request = request;
+			if (this.isAuthenticated()) {
+				Map<String, Object> model = new HashMap<String, Object>();
+				prepareListModel(model);
+				if (model.containsKey("currentTask")) {
+					return new ModelAndView("main", model);
+				} else {
+					return new ModelAndView("notasks", model);
+				}
+			} else {
+				return new ModelAndView("login");
+			}
+
+		} finally {
+			Session.user.set(null);
 		}
 	}
 
@@ -97,13 +119,7 @@ public class SetupController {
 			this.request = request;
 			boolean success = this.authenticate(user, password);
 			if (success) {
-				Map<String, Object> model = new HashMap<String, Object>();
-				prepareListModel(model);
-				if (model.containsKey("currentTask")) {
-					return new ModelAndView("main", model);
-				} else {
-					return new ModelAndView("notasks", model);
-				}
+				return new ModelAndView("prepare");
 			} else {
 				Map<String, String> model = new HashMap<String, String>();
 				model.put("error",
