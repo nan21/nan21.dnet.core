@@ -7,6 +7,7 @@
 	<property name="minFile" value="dnet-ui-extjs-core-all.js" />
 
 	<property name="sourcePathJs" value="${basedir}/src/main/resources/webapp/js" />
+	<property name="sourcePathJsCore" value="${basedir}/src/main/resources/webapp/js/dnet/core" />
 	<property name="targetPathJs" value="${basedir}/target/classes/webapp/js" />
 	<property name="sourcePathResources" value="${basedir}/src/main/resources/webapp/resources" />
     <property name="targetPathResources" value="${basedir}/target/classes/webapp/resources" />
@@ -40,20 +41,20 @@
 			<filelist dir="${sourcePathJs}" files="Dnet.js" />
 			<filelist dir="${sourcePathJs}" files="extjs-extend.js,extjs-ux-extend.js" />
 			
-			<filelist dir="${sourcePathJs}/dnet/base" files="UserPreferences.js,Logger.js,NavigationTree.js,TemplateRepository.js,Session.js,Application.js,ApplicationMenu.js,LoginWindow.js,ChangePasswordWindow.js,FrameInspector.js" />
-			<filelist dir="${sourcePathJs}/dnet/base" files="AbstractDNetView.js,HomePanel.js,UrlBuilder.js,UiHeader.js,FrameNavigatorWithIframe.js,FrameNavigator.js,FileUploadWindow.js,WorkflowFormWithHtmlWindow.js,WfAbstractFormWindowExtjs.js,WfTaskFormWindowExtjs.js,WfStartFormWindowExtjs.js,WorkflowFormFactory.js" />
+			<filelist dir="${sourcePathJsCore}/base" files="UserPreferences.js,Logger.js,NavigationTree.js,TemplateRepository.js,Session.js,Application.js,ApplicationMenu.js,LoginWindow.js,ChangePasswordWindow.js,FrameInspector.js" />
+			<filelist dir="${sourcePathJsCore}/base" files="AbstractDNetView.js,HomePanel.js,UrlBuilder.js,UiHeader.js,FrameNavigatorWithIframe.js,FrameNavigator.js,FileUploadWindow.js,WorkflowFormWithHtmlWindow.js,WfAbstractFormWindowExtjs.js,WfTaskFormWindowExtjs.js,WfStartFormWindowExtjs.js,WorkflowFormFactory.js" />
 			
-			<filelist dir="${sourcePathJs}/dnet/asgn" files="AbstractAsgn.js,AbstractAsgnGrid.js,AbstractAsgnUi.js,AsgnGridBuilder.js,AsgnUiBuilder.js" />
+			<filelist dir="${sourcePathJsCore}/asgn" files="AbstractAsgn.js,AbstractAsgnGrid.js,AbstractAsgnUi.js,AsgnGridBuilder.js,AsgnUiBuilder.js" />
 			
-			<filelist dir="${sourcePathJs}/dnet/dc" files="AbstractDc.js,AbstractDNetDcView.js,AbstractDNetDcGrid.js,AbstractDNetDcForm.js,AbstractDNetDcPropGrid.js,BulkEditWindow.js,AbstractDcvGrid.js,AbstractDcvEditableGrid.js,AbstractDcvEditForm.js,AbstractDcvForm.js,AbstractDcvEditPropGrid.js,AbstractDcvTree.js,AbstractDcvFilterForm.js,AbstractDcvFilterPropGrid.js,DcvFilterFormBuilder.js,DcvFilterPropGridBuilder.js,DcvEditFormBuilder.js,DcvEditPropGridBuilder.js,DcvGridBuilder.js,DcvEditableGridBuilder.js,DcActionsFactory.js,DcCommandFactory.js" />
-			<filelist dir="${sourcePathJs}/dnet/dc/command" files="AbstractDcCommand.js,AbstractDcAsyncCommand.js,AbstractDcSyncCommand.js" />
-			<filelist dir="${sourcePathJs}/dnet/dc/command" files="DcQueryCommand.js,DcNewCommand.js,DcCopyCommand.js,DcSaveCommand.js,DcCancelCommand.js,DcEditInCommand.js,DcEditOutCommand.js" />
-			<filelist dir="${sourcePathJs}/dnet/dc/command" files="DcClearQueryCommand.js,DcDeleteCommand.js,DcReloadRecCommand.js,DcPrevRecCommand.js,DcNextRecCommand.js,DcRpcDataCommand.js,DcRpcFilterCommand.js" />
+			<filelist dir="${sourcePathJsCore}/dc" files="AbstractDc.js,AbstractDNetDcView.js,AbstractDNetDcGrid.js,AbstractDNetDcForm.js,AbstractDNetDcPropGrid.js,BulkEditWindow.js,AbstractDcvGrid.js,AbstractDcvEditableGrid.js,AbstractDcvEditForm.js,AbstractDcvForm.js,AbstractDcvEditPropGrid.js,AbstractDcvTree.js,AbstractDcvFilterForm.js,AbstractDcvFilterPropGrid.js,DcvFilterFormBuilder.js,DcvFilterPropGridBuilder.js,DcvEditFormBuilder.js,DcvEditPropGridBuilder.js,DcvGridBuilder.js,DcvEditableGridBuilder.js,DcActionsFactory.js,DcCommandFactory.js" />
+			<filelist dir="${sourcePathJsCore}/dc/command" files="AbstractDcCommand.js,AbstractDcAsyncCommand.js,AbstractDcSyncCommand.js" />
+			<filelist dir="${sourcePathJsCore}/dc/command" files="DcQueryCommand.js,DcNewCommand.js,DcCopyCommand.js,DcSaveCommand.js,DcCancelCommand.js,DcEditInCommand.js,DcEditOutCommand.js" />
+			<filelist dir="${sourcePathJsCore}/dc/command" files="DcClearQueryCommand.js,DcDeleteCommand.js,DcReloadRecCommand.js,DcPrevRecCommand.js,DcNextRecCommand.js,DcRpcDataCommand.js,DcRpcFilterCommand.js" />
 
 
-			<filelist dir="${sourcePathJs}/dnet/ui" files="FrameBuilder.js,ActionBuilder.js,FrameButtonStateManager.js,AbstractUi.js" />
-			<filelist dir="${sourcePathJs}/dnet/dc" files="DcActionsStateManager.js,DcContext.js,DcExceptions.js,DataExportWindow.js,DataImportWindow.js,DataSortWindow.js,GridLayoutManager.js" />
-			<filelist dir="${sourcePathJs}/dnet/lov" files="AbstractRemoteCombo.js,AbstractCombo.js,AbstractLov.js" />
+			<filelist dir="${sourcePathJsCore}/ui" files="FrameBuilder.js,ActionBuilder.js,FrameButtonStateManager.js,AbstractUi.js" />
+			<filelist dir="${sourcePathJsCore}/dc" files="DcActionsStateManager.js,DcContext.js,DcExceptions.js,DataExportWindow.js,DataImportWindow.js,DataSortWindow.js,GridLayoutManager.js" />
+			<filelist dir="${sourcePathJsCore}/lov" files="AbstractRemoteCombo.js,AbstractCombo.js,AbstractLov.js" />
 		</concat>
 		<echo message="Done." />
 	</target>
