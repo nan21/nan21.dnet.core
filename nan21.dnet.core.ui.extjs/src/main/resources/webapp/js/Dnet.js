@@ -1,3 +1,4 @@
+Ext.ns('dnet.core.base');
 Dnet = {
 
 	 name : "DNet"
@@ -7,7 +8,6 @@ Dnet = {
     	,minor : 0
         ,patch : 0
     }
-
 
 	// base urls 
 	,hostUrl: null
