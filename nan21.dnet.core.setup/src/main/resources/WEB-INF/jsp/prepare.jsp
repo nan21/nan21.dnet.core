@@ -2,7 +2,7 @@
 <title>DNet eBusiness Suite</title>
 <meta http-equiv="REFRESH" content="0;url=doPrepare">
 <head>
-	<link rel="stylesheet" type="text/css" href="../resources/css/style.css" />
+	<link rel="stylesheet" type="text/css" href="../webapp/resources/css/style.css" />
 </head>
 <body>
 

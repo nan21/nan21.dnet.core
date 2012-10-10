@@ -1,7 +1,7 @@
 <html>
 <title>DNet eBusiness Suite</title>
 <head>
-  <link rel="stylesheet" type="text/css" href="../../resources/css/style.css"/>
+  <link rel="stylesheet" type="text/css" href="../../webapp/resources/css/style.css"/>
  
 </head>
 <body>
@@ -18,7 +18,7 @@
 		<table width='100%'  >
             <tr>
 			<td align=center class="text">
-					<IMG style="border:0px solid #ccc;"  src="../../resources/images/logo.png" > 	 
+					<IMG style="border:0px solid #ccc;"  src="../../webapp/resources/images/logo.png" > 	 
 			</td> 
 			<td style='padding-left:20px;font-family:arial,verdana;font-size:11px;'>
 				 <form name="login" action="doLogin" method="post">

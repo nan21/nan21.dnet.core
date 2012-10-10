@@ -7,7 +7,7 @@
 	<title>DNet eBusiness Suite</title>
 	
 <head>
-	<link rel="stylesheet" type="text/css" href="../resources/css/style.css"/>
+	<link rel="stylesheet" type="text/css" href="../webapp/resources/css/style.css"/>
 </head>
 <body> 
 

@@ -1,7 +1,7 @@
 <html>
 <title>DNet eBusiness Suite</title>
 <head>
-  <link rel="stylesheet" type="text/css" href="../resources/css/style.css"/>
+  <link rel="stylesheet" type="text/css" href="../webapp/resources/css/style.css"/>
  
 </head>
 <body>
@@ -11,7 +11,7 @@
 <table align=center style='vertical-align:middle;align:center'>
 <tr>
 	<td>
-        <a href="ui/extjs"><IMG style="border:0px solid #ccc;"  src="../resources/images/logo.png" ></a>
+        <a href="ui/extjs"><IMG style="border:0px solid #ccc;"  src="../webapp/resources/images/logo.png" ></a>
 	</td>
 	<td style='font-family:arial,verdana;font-size:14px;'>
         	Open source ERP / CRM / HRM
@@ -28,7 +28,7 @@
 		<table width='100%'  >
             <tr>
 			<td align=center class="text">
-					<img alt="" src="../resources/images/key.gif">	 
+					<img alt="" src="../webapp/resources/images/key.gif">	 
 			</td> 
 			<td style='padding-left:20px;font-family:arial,verdana;font-size:11px;'>
 				 <form name="login" action="doLogin" method="post">

@@ -6,10 +6,10 @@
 	<property name="concatFile" value="dnet-ui-extjs-core-all-debug.js" />
 	<property name="minFile" value="dnet-ui-extjs-core-all.js" />
 
-	<property name="sourcePathJs" value="src/main/resources/webapp/js" />
-	<property name="targetPathJs" value="target/classes/webapp/js" />
-	<property name="sourcePathResources" value="src/main/resources/webapp/resources" />
-    <property name="targetPathResources" value="target/classes/webapp/resources" />
+	<property name="sourcePathJs" value="${basedir}/src/main/resources/webapp/js" />
+	<property name="targetPathJs" value="${basedir}/target/classes/webapp/js" />
+	<property name="sourcePathResources" value="${basedir}/src/main/resources/webapp/resources" />
+    <property name="targetPathResources" value="${basedir}/target/classes/webapp/resources" />
 
 	<property name="yui.path" value="yui.path" />
 
