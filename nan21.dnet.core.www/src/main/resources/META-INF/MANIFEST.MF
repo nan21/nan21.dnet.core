@@ -5,6 +5,7 @@ Bundle-SymbolicName: nan21.dnet.core.www
 Bundle-Vendor: Nan21
 Bundle-Version: 1.0.3
 Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.txt
+Web-ContextPath: nan21.dnet.core.www
 Import-Package: 
  javax.servlet.jsp.jstl.core;version="[1.2,2.0)",
  org.apache.taglibs.standard;version="[1.1.2,2.0)",

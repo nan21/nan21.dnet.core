@@ -10,7 +10,7 @@
 	<artifactId>nan21.dnet.core.web</artifactId>
 	<name>DNet Core - Web</name>
 	<description>Contains base classes for the web layer.</description>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 	
 	<!-- ===================== Dependencies ===================== -->
 	
