@@ -39,7 +39,21 @@
 		<concat destfile="${targetPathJs}/${concatFile}">
 			<filelist dir="${sourcePathJs}" files="Dnet.js" />
 			<filelist dir="${sourcePathJs}" files="extjs-extend.js,extjs-ux-extend.js" />
-			<fileset dir="${sourcePathJs}/dnet" includes="**/*.js" />
+			
+			<filelist dir="${sourcePathJs}/dnet/base" files="UserPreferences.js,Logger.js,NavigationTree.js,TemplateRepository.js,Session.js,Application.js,ApplicationMenu.js,LoginWindow.js,ChangePasswordWindow.js,FrameInspector.js" />
+			<filelist dir="${sourcePathJs}/dnet/base" files="AbstractDNetView.js,HomePanel.js,UrlBuilder.js,UiHeader.js,FrameNavigatorWithIframe.js,FrameNavigator.js,FileUploadWindow.js,WorkflowFormWithHtmlWindow.js,WfAbstractFormWindowExtjs.js,WfTaskFormWindowExtjs.js,WfStartFormWindowExtjs.js,WorkflowFormFactory.js" />
+			
+			<filelist dir="${sourcePathJs}/dnet/asgn" files="AbstractAsgn.js,AbstractAsgnGrid.js,AbstractAsgnUi.js,AsgnGridBuilder.js,AsgnUiBuilder.js" />
+			
+			<filelist dir="${sourcePathJs}/dnet/dc" files="AbstractDc.js,AbstractDNetDcView.js,AbstractDNetDcGrid.js,AbstractDNetDcForm.js,AbstractDNetDcPropGrid.js,BulkEditWindow.js,AbstractDcvGrid.js,AbstractDcvEditableGrid.js,AbstractDcvEditForm.js,AbstractDcvForm.js,AbstractDcvEditPropGrid.js,AbstractDcvTree.js,AbstractDcvFilterForm.js,AbstractDcvFilterPropGrid.js,DcvFilterFormBuilder.js,DcvFilterPropGridBuilder.js,DcvEditFormBuilder.js,DcvEditPropGridBuilder.js,DcvGridBuilder.js,DcvEditableGridBuilder.js,DcActionsFactory.js,DcCommandFactory.js" />
+			<filelist dir="${sourcePathJs}/dnet/dc/command" files="AbstractDcCommand.js,AbstractDcAsyncCommand.js,AbstractDcSyncCommand.js" />
+			<filelist dir="${sourcePathJs}/dnet/dc/command" files="DcQueryCommand.js,DcNewCommand.js,DcCopyCommand.js,DcSaveCommand.js,DcCancelCommand.js,DcEditInCommand.js,DcEditOutCommand.js" />
+			<filelist dir="${sourcePathJs}/dnet/dc/command" files="DcClearQueryCommand.js,DcDeleteCommand.js,DcReloadRecCommand.js,DcPrevRecCommand.js,DcNextRecCommand.js,DcRpcDataCommand.js,DcRpcFilterCommand.js" />
+
+
+			<filelist dir="${sourcePathJs}/dnet/ui" files="FrameBuilder.js,ActionBuilder.js,FrameButtonStateManager.js,AbstractUi.js" />
+			<filelist dir="${sourcePathJs}/dnet/dc" files="DcActionsStateManager.js,DcContext.js,DcExceptions.js,DataExportWindow.js,DataImportWindow.js,DataSortWindow.js,GridLayoutManager.js" />
+			<filelist dir="${sourcePathJs}/dnet/lov" files="AbstractRemoteCombo.js,AbstractCombo.js,AbstractLov.js" />
 		</concat>
 		<echo message="Done." />
 	</target>
