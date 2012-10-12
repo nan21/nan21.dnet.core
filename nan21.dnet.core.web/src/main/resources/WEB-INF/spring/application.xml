@@ -15,9 +15,7 @@
 		properties-ref="dnetProperties" />
 
 	<osgi-compendium:cm-properties id="dnetProperties"
-		persistent-id="net.nan21.dnet">
-
-	</osgi-compendium:cm-properties>
+		persistent-id="net.nan21.dnet" />
 
 	<!-- Local -->
 
@@ -29,6 +27,7 @@
 		<property name="urlModules" value="${url.ui.extjs.modules}" />
 		<property name="urlCoreI18n" value="${url.ui.extjs.core.i18n}" />
 		<property name="urlModulesI18n" value="${url.ui.extjs.modules.i18n}" />
+		<property name="moduleSupath" value="${url.ui.extjs.module.subpath}" />
 	</bean>
 
 	<bean id="application_uiSenchaTouchSettings" class="net.nan21.dnet.core.web.settings.UiSenchaTouchSettings"
@@ -38,8 +37,7 @@
 		<property name="urlModules" value="${url.ui.senchatouch.modules}" />
 	</bean>
 
-	<bean id="serviceLocator" class="net.nan21.dnet.core.presenter.service.ServiceLocator">
-	</bean>
+	<bean id="serviceLocator" class="net.nan21.dnet.core.presenter.service.ServiceLocator" />
 
 	<!-- Osgi -->
 
@@ -59,7 +57,7 @@
 		interface="net.nan21.dnet.core.api.session.IChangePasswordService" />
 	<osgi:list id="osgiEntityManagerFactory" cardinality="0..N"
 		interface="javax.persistence.EntityManagerFactory"></osgi:list>
-		
+
 	<osgi:list id="osgiExtensionProviders" cardinality="0..N"
 		interface="net.nan21.dnet.core.api.ui.extjs.IExtensionProvider" />
 	<osgi:list id="osgiExtensionProvidersFrame" cardinality="0..N"
@@ -69,7 +67,7 @@
 	<osgi:list id="osgiExtensionContentProvidersFrame"
 		cardinality="0..N"
 		interface="net.nan21.dnet.core.api.ui.extjs.IExtensionContentProviderFrame" />
-		
+
 	<osgi:list id="osgiDsServiceFactories" cardinality="0..N"
 		interface="net.nan21.dnet.core.api.service.IDsServiceFactory" />
 	<osgi:list id="osgiFileUploadServiceFactories" cardinality="0..N"

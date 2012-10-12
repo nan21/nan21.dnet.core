@@ -46,6 +46,11 @@ public class UiExtjsSettings {
 	 */
 	private String urlCoreI18n;
 
+	/**
+	 * Token for the module components within the bundle.
+	 */
+	private String moduleSupath;
+
 	public String getUrlModules() {
 		return urlModules;
 	}
@@ -69,7 +74,7 @@ public class UiExtjsSettings {
 	public void setUrlLib(String urlLib) {
 		this.urlLib = urlLib;
 	}
- 
+
 	public String getUrlThemes() {
 		return urlThemes;
 	}
@@ -92,6 +97,14 @@ public class UiExtjsSettings {
 
 	public void setUrlCoreI18n(String urlCoreI18n) {
 		this.urlCoreI18n = urlCoreI18n;
+	}
+
+	public String getModuleSupath() {
+		return moduleSupath;
+	}
+
+	public void setModuleSupath(String moduleSupath) {
+		this.moduleSupath = moduleSupath;
 	}
 
 }

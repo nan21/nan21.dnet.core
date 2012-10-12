@@ -136,7 +136,8 @@ public abstract class AbstractUiExtjsController extends AbstractController {
 		// DNet extjs components in core and modules
 		this.model.put("urlUiExtjsCore", uiExtjsSettings.getUrlCore());
 		this.model.put("urlUiExtjsModules", uiExtjsSettings.getUrlModules());
-
+		this.model.put("urlUiExtjsModuleSubpath", uiExtjsSettings.getModuleSupath());
+		
 		// translations for core and modules
 		this.model.put("urlUiExtjsCoreI18n", uiExtjsSettings.getUrlCoreI18n());
 		this.model.put("urlUiExtjsModulesI18n",

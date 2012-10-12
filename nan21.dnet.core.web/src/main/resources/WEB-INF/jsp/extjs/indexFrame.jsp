@@ -38,7 +38,7 @@
 	
 	<%@ include file="_dnet_params.jspf" %> 
 	<script type="text/javascript" src="${urlUiExtjsModulesI18n}/${shortLanguage}/${bundle}/frame/${itemSimpleName}.js"></script>
-	<script type="text/javascript" src="${urlUiExtjsModules}/${bundle}/webapp/js/frame/${itemSimpleName}.js"></script>
+	<script type="text/javascript" src="${urlUiExtjsModules}/${bundle}${urlUiExtjsModuleSubpath}/frame/${itemSimpleName}.js"></script>
 	
 	${extensions}
 	

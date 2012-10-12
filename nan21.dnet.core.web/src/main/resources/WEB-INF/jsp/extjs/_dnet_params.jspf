@@ -14,6 +14,7 @@
 		
 		Dnet.staticResourceUrlCore = "${urlUiExtjsCore}";
 		Dnet.staticResourceUrlModules = "${urlUiExtjsModules}";
+		Dnet.moduleSubpath = "${urlUiExtjsModuleSubpath}";	 		
 		
 		Dnet.staticResourceUrlCoreI18n = "${urlUiExtjsCoreI18n}";
 		Dnet.staticResourceUrlModulesI18n = "${urlUiExtjsModulesI18n}";
