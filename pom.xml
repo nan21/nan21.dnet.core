@@ -9,7 +9,7 @@
 	</parent>
 	<groupId>net.nan21.dnet</groupId>
 	<artifactId>nan21.dnet.core</artifactId>
-	<version>1.0.3-SNAPSHOT</version>
+	<version>1.0.3</version>
 	<name>DNet Core</name>
 	<description>DNet core framework.</description>
 	<packaging>pom</packaging>
