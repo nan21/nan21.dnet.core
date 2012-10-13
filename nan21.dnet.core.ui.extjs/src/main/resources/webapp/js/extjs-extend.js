@@ -134,7 +134,15 @@ Ext.override(Ext.data.Store, {
 			getModifiedRecords : function() {
 				return [].concat(this.getAllNewRecords(), this
 								.getUpdatedRecords());
-			}
+			},
+			
+			//
+			
+			rejectChanges : function() {
+		        this.callParent();
+		        this.fireEvent('changes_rejected', this);
+		    }
+			
 		});
 
 Ext.override(Ext.grid.plugin.CellEditing, {

@@ -249,7 +249,8 @@ Ext.define("dnet.core.dc.AbstractDc", {
 		this.mon(this.store, "beforeload", this.onStore_beforeload, this);
 		this.mon(this.store, "update", this.onStore_update, this);
 		this.mon(this.store, "datachanged", this.onStore_datachanged, this);
-
+		this.mon(this.store, "changes_rejected", this.onStore_datachanged, this);
+		
 		// after the store is loaded apply an initial selection
 		if (this.afterStoreLoadDoDefaultSelection) {
 			this.mon(this.store, "load", this.onStore_load , this);
