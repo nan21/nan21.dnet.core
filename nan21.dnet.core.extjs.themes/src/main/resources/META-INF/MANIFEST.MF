@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: DNet Core - Extjs themes
 Bundle-SymbolicName: nan21.dnet.core.extjs.themes
 Bundle-Vendor: Nan21
-Bundle-Version: 1.0.3
+Bundle-Version: 1.0.4
 Bundle-License: http://www.sencha.com/products/extjs/license,
  http://www.apache.org/licenses/LICENSE-2.0.txt
 Snap-Host: nan21.dnet.core.home;version="[1.0,2.0)"
