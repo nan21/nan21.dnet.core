@@ -21,6 +21,7 @@ import net.nan21.dnet.core.presenter.action.DsJsonExport;
 import net.nan21.dnet.core.presenter.action.DsXmlExport;
 import net.nan21.dnet.core.web.result.ActionResultFind;
 
+import org.apache.commons.lang.time.StopWatch;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -60,12 +61,15 @@ public class AbstractDsReadController<M, F, P> extends
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		try {
+			StopWatch stopWatch = new StopWatch();
+			stopWatch.start();
 			this.prepareRequest(request, response);
 			this.resourceName = resourceName;
 			this.dataFormat = dataFormat;
 
-			this.authorizeAction(resourceName.substring(0, resourceName
-					.length() - 2), "find");
+			this.authorizeAction(
+					resourceName.substring(0, resourceName.length() - 2),
+					"find");
 
 			IDsService<M, F, P> service = this.findDsService(this.resourceName);
 			IDsMarshaller<M, F, P> marshaller = service
@@ -86,12 +90,13 @@ public class AbstractDsReadController<M, F, P> extends
 			P params = marshaller.readParamsFromString(paramString);
 
 			List<M> list = service.find(filter, params, builder);
-			long totalCount = service.count(filter, params, builder); // service.count(filter,
-			// params,
-			// builder);
+			long totalCount = service.count(filter, params, builder);
 
 			IActionResultFind result = this.packfindResult(list, params,
 					totalCount);
+			stopWatch.stop();
+			result.setExecutionTime(stopWatch.getTime());
+
 			String out = marshaller.writeResultToString(result);
 			return out;
 		} catch (Exception e) {
@@ -138,8 +143,9 @@ public class AbstractDsReadController<M, F, P> extends
 			this.resourceName = resourceName;
 			this.dataFormat = dataFormat;
 
-			this.authorizeAction(resourceName.substring(0, resourceName
-					.length() - 2), "export");
+			this.authorizeAction(
+					resourceName.substring(0, resourceName.length() - 2),
+					"export");
 
 			IDsService<M, F, P> service = this.findDsService(this.resourceName);
 			IQueryBuilder<M, F, P> builder = service.createQueryBuilder()
@@ -199,7 +205,8 @@ public class AbstractDsReadController<M, F, P> extends
 				response.setContentType("text/xml");
 			}
 			response.setHeader("Content-Description", "File Transfer");
-			response.setHeader("Content-Disposition",
+			response.setHeader(
+					"Content-Disposition",
 					"inline; filename=\"export_file."
 							+ this.dataFormat.toLowerCase() + "\";");
 

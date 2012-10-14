@@ -3,6 +3,7 @@ package net.nan21.dnet.core.api.marshall;
 import java.io.OutputStream;
 import java.util.List;
 
+import net.nan21.dnet.core.api.action.IActionResultDelete;
 import net.nan21.dnet.core.api.action.IActionResultFind;
 import net.nan21.dnet.core.api.action.IActionResultRpcData;
 import net.nan21.dnet.core.api.action.IActionResultRpcFilter;
@@ -27,6 +28,7 @@ public interface IDsMarshaller<M,F,P> {
 	public String writeParamsToString(P p) throws Exception;
 	public String writeResultToString(IActionResultFind result) throws Exception;
 	public String writeResultToString(IActionResultSave result) throws Exception;
+	public String writeResultToString(IActionResultDelete result) throws Exception;
 	public String writeResultToString(IActionResultRpcData result) throws Exception;
 	public String writeResultToString(IActionResultRpcFilter result) throws Exception;
 

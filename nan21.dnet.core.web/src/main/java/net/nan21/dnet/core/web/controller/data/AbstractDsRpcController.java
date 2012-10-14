@@ -12,6 +12,7 @@ import net.nan21.dnet.core.api.service.IDsService;
 import net.nan21.dnet.core.web.result.ActionResultRpcData;
 import net.nan21.dnet.core.web.result.ActionResultRpcFilter;
 
+import org.apache.commons.lang.time.StopWatch;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -43,12 +44,16 @@ public class AbstractDsRpcController<M, F, P> extends
 			throws Exception {
 
 		try {
+			StopWatch stopWatch = new StopWatch();
+			stopWatch.start();
+
 			this.prepareRequest(request, response);
 			this.resourceName = resourceName;
 			this.dataFormat = dataFormat;
 
-			this.authorizeAction(resourceName.substring(0, resourceName
-					.length() - 2), rpcName);
+			this.authorizeAction(
+					resourceName.substring(0, resourceName.length() - 2),
+					rpcName);
 
 			if (this.dataFormat.equals("stream")) {
 				IDsService<M, F, P> service = this
@@ -74,6 +79,8 @@ public class AbstractDsRpcController<M, F, P> extends
 				service.rpcData(rpcName, data, params);
 				IActionResultRpcData result = this.packRpcDataResult(data,
 						params);
+				stopWatch.stop();
+				result.setExecutionTime(stopWatch.getTime());
 				return marshaller.writeResultToString(result);
 			}
 
@@ -107,12 +114,16 @@ public class AbstractDsRpcController<M, F, P> extends
 			throws Exception {
 
 		try {
+			StopWatch stopWatch = new StopWatch();
+			stopWatch.start();
+
 			this.prepareRequest(request, response);
 			this.resourceName = resourceName;
 			this.dataFormat = dataFormat;
 
-			this.authorizeAction(resourceName.substring(0, resourceName
-					.length() - 2), rpcName);
+			this.authorizeAction(
+					resourceName.substring(0, resourceName.length() - 2),
+					rpcName);
 
 			IDsService<M, F, P> service = this.findDsService(this.resourceName);
 			IDsMarshaller<M, F, P> marshaller = service
@@ -124,6 +135,8 @@ public class AbstractDsRpcController<M, F, P> extends
 			service.rpcFilter(rpcName, filter, params);
 			IActionResultRpcFilter result = this.packRpcFilterResult(filter,
 					params);
+			stopWatch.stop();
+			result.setExecutionTime(stopWatch.getTime());
 			return marshaller.writeResultToString(result);
 		} finally {
 			this.finishRequest();

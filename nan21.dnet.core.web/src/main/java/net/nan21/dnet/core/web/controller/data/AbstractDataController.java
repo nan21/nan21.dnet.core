@@ -45,10 +45,11 @@ public class AbstractDataController {
 			.getLogger(AbstractDataController.class);
 	protected final static int FILE_TRANSFER_BUFFER_SIZE = 4 * 1024;
 
-	protected void prepareRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	protected void prepareRequest(HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
 		request.setCharacterEncoding("UTF-8");
-		response.setCharacterEncoding("UTF-8");		
-		
+		response.setCharacterEncoding("UTF-8");
+
 		SessionUser su;
 		User user;
 		Params params;
@@ -74,17 +75,20 @@ public class AbstractDataController {
 		if (checkIp != null && checkIp.equals("true")) {
 			String ip = request.getRemoteAddr();
 			if (!su.getClientIp().equals(ip)) {
-				logger.debug("Request comes from different IP as expected. Expected: " + su.getClientIp() + ", real "+ip );
+				logger.debug("Request comes from different IP as expected. Expected: "
+						+ su.getClientIp() + ", real " + ip);
 				throw new Exception(
 						"Security settings do not allow to process request. Check log file for details.");
 			}
 		}
-		
-		String checkAgent = this.systemConfig.getSysParamValue("SESSION_CHECK_USER_AGENT");
+
+		String checkAgent = this.systemConfig
+				.getSysParamValue("SESSION_CHECK_USER_AGENT");
 		if (checkAgent != null && checkAgent.equals("true")) {
 			String agent = request.getHeader("User-Agent");
 			if (!su.getUserAgent().equals(agent)) {
-				logger.debug("Request comes from different user-agent as expected. Expected: " + su.getUserAgent() + ", real "+agent );
+				logger.debug("Request comes from different user-agent as expected. Expected: "
+						+ su.getUserAgent() + ", real " + agent);
 				throw new Exception(
 						"Security settings do not allow to process request. Check log file for details.");
 			}

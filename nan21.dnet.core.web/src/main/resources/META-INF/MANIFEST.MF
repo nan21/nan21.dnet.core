@@ -55,6 +55,7 @@ Import-Package:
  net.nan21.dnet.core.presenter.propertyeditors;version="1.0.4",
  net.nan21.dnet.core.presenter.service;version="1.0.4",
  net.nan21.dnet.core.security;version="1.0.4",
+ org.apache.commons.lang.time;version="[2.0,3.0)",
  org.apache.taglibs.standard;version="[1.1.2,2.0)",
  org.apache.taglibs.standard.extra.spath;version="[1.1.2,2.0)",
  org.apache.taglibs.standard.functions;version="[1.1.2,2.0)",

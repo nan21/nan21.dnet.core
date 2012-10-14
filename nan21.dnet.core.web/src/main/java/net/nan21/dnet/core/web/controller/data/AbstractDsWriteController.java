@@ -5,16 +5,20 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.lang.time.StopWatch;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import net.nan21.dnet.core.api.action.IActionResultDelete;
 import net.nan21.dnet.core.api.action.IActionResultSave;
 import net.nan21.dnet.core.api.marshall.IDsMarshaller;
 import net.nan21.dnet.core.api.model.IModelWithId;
 import net.nan21.dnet.core.api.service.IDsService;
+import net.nan21.dnet.core.web.result.ActionResultDelete;
 import net.nan21.dnet.core.web.result.ActionResultSave;
 
 public class AbstractDsWriteController<M, F, P> extends
@@ -40,13 +44,18 @@ public class AbstractDsWriteController<M, F, P> extends
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		try {
+
+			StopWatch stopWatch = new StopWatch();
+			stopWatch.start();
+
 			this.prepareRequest(request, response);
 
 			this.resourceName = resourceName;
 			this.dataFormat = dataFormat;
 
-			this.authorizeAction(resourceName.substring(0, resourceName
-					.length() - 2), "insert");
+			this.authorizeAction(
+					resourceName.substring(0, resourceName.length() - 2),
+					"insert");
 
 			if (!dataString.startsWith("[")) {
 				dataString = "[" + dataString + "]";
@@ -61,7 +70,10 @@ public class AbstractDsWriteController<M, F, P> extends
 
 			service.insert(list, params);
 
-			IActionResultSave result = this.packResult(list, params);
+			IActionResultSave result = this.packResultSave(list, params);
+			stopWatch.stop();
+			result.setExecutionTime(stopWatch.getTime());
+
 			return marshaller.writeResultToString(result);
 		} catch (Exception e) {
 			return this.handleException(e, response);
@@ -91,12 +103,17 @@ public class AbstractDsWriteController<M, F, P> extends
 			throws Exception {
 
 		try {
+
+			StopWatch stopWatch = new StopWatch();
+			stopWatch.start();
+
 			this.prepareRequest(request, response);
 			this.resourceName = resourceName;
 			this.dataFormat = dataFormat;
 
-			this.authorizeAction(resourceName.substring(0, resourceName
-					.length() - 2), "update");
+			this.authorizeAction(
+					resourceName.substring(0, resourceName.length() - 2),
+					"update");
 
 			if (!dataString.startsWith("[")) {
 				dataString = "[" + dataString + "]";
@@ -110,7 +127,10 @@ public class AbstractDsWriteController<M, F, P> extends
 
 			service.update(list, params);
 
-			IActionResultSave result = this.packResult(list, params);
+			IActionResultSave result = this.packResultSave(list, params);
+			stopWatch.stop();
+			result.setExecutionTime(stopWatch.getTime());
+
 			return marshaller.writeResultToString(result);
 		} catch (Exception e) {
 			this.handleException(e, response);
@@ -141,12 +161,17 @@ public class AbstractDsWriteController<M, F, P> extends
 			throws Exception {
 
 		try {
+
+			StopWatch stopWatch = new StopWatch();
+			stopWatch.start();
+
 			this.prepareRequest(request, response);
 			this.resourceName = resourceName;
 			this.dataFormat = dataFormat;
 
-			this.authorizeAction(resourceName.substring(0, resourceName
-					.length() - 2), "delete");
+			this.authorizeAction(
+					resourceName.substring(0, resourceName.length() - 2),
+					"delete");
 
 			if (!dataString.startsWith("[")) {
 				dataString = "[" + dataString + "]";
@@ -164,8 +189,12 @@ public class AbstractDsWriteController<M, F, P> extends
 			}
 			service.deleteByIds(ids);
 
-			// IActionResultSave result = this.packResult(list, params);
-			return "{'success':true}"; // marshaller.writeResultToString(result);
+			IActionResultDelete result = this.packResultDelete();
+			stopWatch.stop();
+			result.setExecutionTime(stopWatch.getTime());
+
+			return marshaller.writeResultToString(result);
+
 		} catch (Exception e) {
 			this.handleException(e, response);
 			return null;
@@ -195,12 +224,17 @@ public class AbstractDsWriteController<M, F, P> extends
 			throws Exception {
 
 		try {
+
+			StopWatch stopWatch = new StopWatch();
+			stopWatch.start();
+
 			this.prepareRequest(request, response);
 			this.resourceName = resourceName;
 			this.dataFormat = dataFormat;
 
-			this.authorizeAction(resourceName.substring(0, resourceName
-					.length() - 2), "delete");
+			this.authorizeAction(
+					resourceName.substring(0, resourceName.length() - 2),
+					"delete");
 
 			if (!idsString.startsWith("[")) {
 				idsString = "[" + idsString + "]";
@@ -214,7 +248,11 @@ public class AbstractDsWriteController<M, F, P> extends
 
 			service.deleteByIds(list);
 
-			return "{'success':true}";
+			IActionResultDelete result = this.packResultDelete();
+			stopWatch.stop();
+			result.setExecutionTime(stopWatch.getTime());
+
+			return marshaller.writeResultToString(result);
 		} catch (Exception e) {
 			this.handleException(e, response);
 			return null;
@@ -223,10 +261,15 @@ public class AbstractDsWriteController<M, F, P> extends
 		}
 	}
 
-	public IActionResultSave packResult(List<M> data, P params) {
+	public IActionResultSave packResultSave(List<M> data, P params) {
 		IActionResultSave pack = new ActionResultSave();
 		pack.setData(data);
 		// pack.setParams(params);
+		return pack;
+	}
+
+	public IActionResultDelete packResultDelete() {
+		IActionResultDelete pack = new ActionResultDelete();
 		return pack;
 	}
 
