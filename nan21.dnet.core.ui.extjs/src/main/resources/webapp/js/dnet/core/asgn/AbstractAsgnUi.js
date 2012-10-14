@@ -293,7 +293,7 @@ Ext.define("dnet.core.asgn.AbstractAsgnUi", {
 
 				this._endDefine_();
 
-				Ext.apply(this, {
+				Ext.apply(this, {				
 							items : [{
 								xtype : "container",
 								layout : {

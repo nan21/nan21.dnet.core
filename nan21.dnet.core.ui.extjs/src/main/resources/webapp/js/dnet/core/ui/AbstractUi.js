@@ -268,10 +268,20 @@ Ext.define("dnet.core.ui.AbstractUi", {
 	 * @param {Object} cfg Extra configuration to apply
 	 */
 	_showAsgnWindow_: function(asgnWdwClass, cfg) {
-		var objectId = this._dcs_.get(cfg.dc).record.data[cfg.objectIdField];
+		var _recData = this._dcs_.get(cfg.dc).record.data;
+		var objectId = _recData[cfg.objectIdField];
+		var objectDesc = "";
+		if (!Ext.isEmpty(cfg.objectDescField)) {
+			objectDesc = _recData[cfg.objectDescField];
+		} else {
+			if (_recData.hasOwnProperty("name")) {
+				objectDesc = _recData["name"];
+			}
+		}
 		var aw = Ext.create(asgnWdwClass, cfg);
 		aw.show();
 		aw._controller_.params.objectId = objectId;
+		aw.setTitle(aw.title + " | " + objectDesc);
 		aw._controller_.initAssignement();
 	}, 
 	
