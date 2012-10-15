@@ -62,23 +62,24 @@ Ext.define("dnet.core.dc.DcvGridBuilder", {
 	
 	addDefaults: function() {
 		var r =  Ext.create(this.dcv._controller_.recordModel, {});
+		var cols = this.dcv._columns_;
 		r.fields.each(function(f,idx,len) {
-			if(f.name=="id") {
+			if(f.name=="id" && !cols.containsKey("id")) {
 				this.addNumberColumn({ name:"id", dataIndex:"id", hidden:true,format:"0",width:70 }) ;
 			}
-			if(f.name=="uuid") {
+			if(f.name=="uuid" && !cols.containsKey("uuid") ) {
 				this.addTextColumn({ name:"uuid", dataIndex:"uuid", hidden:true,width:100 })   	
 			}
-			if(f.name=="createdAt") {
+			if(f.name=="createdAt" && !cols.containsKey("createdAt") ) {
 				this.addDateColumn({ name:"createdAt", dataIndex:"createdAt", hidden:true,format:Dnet.DATETIMESEC_FORMAT})   
 			}
-			if(f.name=="modifiedAt") {
+			if(f.name=="modifiedAt" && !cols.containsKey("modifiedAt") ) {
 				this.addDateColumn({ name:"modifiedAt", dataIndex:"modifiedAt", hidden:true,format:Dnet.DATETIMESEC_FORMAT}) 
 			}
-			if(f.name=="createdBy") {
+			if(f.name=="createdBy" && !cols.containsKey("createdBy") ) {
 				this.addTextColumn({ name:"createdBy", dataIndex:"createdBy", hidden:true,width:100 })   	
 			}
-			if(f.name=="modifiedBy") {
+			if(f.name=="modifiedBy" && !cols.containsKey("modifiedBy") ) {
 				this.addTextColumn({ name:"modifiedBy", dataIndex:"modifiedBy", hidden:true,width:100 })  
 			}
 			
