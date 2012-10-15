@@ -40,10 +40,6 @@ public class UiExtjsFrameController extends AbstractUiExtjsController {
 		String bundle = tmp[tmp.length - 2];
 		String[] t = item.split("\\.");
 
-		// TODO: create a generic bundle-name lookup from item-name
-		// Sync with Dnet.describeResource in Dnet.js
-		// String bundle = t[1]+"."+t[2]+"."+t[3]+"."+t[4]+"."+t[5]+".ui.extjs";
-
 		model.put("item", item);
 		model.put("itemSimpleName", t[t.length - 1]);
 		model.put("bundle", bundle);
@@ -52,23 +48,48 @@ public class UiExtjsFrameController extends AbstractUiExtjsController {
 		for (IExtensionProviderFrame provider : this.extensionProviders) {
 
 			List<ExtensionScript> files = provider.getFiles(item);
+			boolean isCss = false;
 			for (ExtensionScript file : files) {
-				if (!file.isRelativePath()) {
-					sb.append("<script type=\"text/javascript\" src=\""
-							+ file.getLocation() + "\"></script>\n");
-				} else {
-					sb.append("<script type=\"text/javascript\" src=\""
-							+ uiExtjsSettings.getUrlModules() + "/"
-							+ file.getLocation() + "\"></script>\n");
+				String _loc = file.getLocation();
+				int idx = _loc.lastIndexOf('.');
+				if (idx == -1 || idx >= _loc.length()) {
+					throw new Exception("Extension provider file `" + _loc
+							+ "` should be of type .js or .css");
 				}
+				String _extension = _loc.substring(idx);
+
+				if (_extension.equalsIgnoreCase(".css")) {
+					isCss = true;
+				} else if (_extension.equalsIgnoreCase(".js")) {
+					isCss = false;
+				} else {
+					throw new Exception("Extension provider file `" + _loc
+							+ "` should be of type .js or .css");
+				}
+
+				if (isCss) {
+					if (!file.isRelativePath()) {
+						sb.append("<link rel=\"stylesheet\" type=\"text/css\" href=\""
+								+ file.getLocation() + "\"></link>\n");
+					} else {
+						sb.append("<link rel=\"stylesheet\" type=\"text/css\" href=\""
+								+ uiExtjsSettings.getUrlModules()
+								+ "/"
+								+ file.getLocation() + "\"></link>\n");
+					}
+				} else {
+					if (!file.isRelativePath()) {
+						sb.append("<script type=\"text/javascript\" src=\""
+								+ file.getLocation() + "\"></script>\n");
+					} else {
+						sb.append("<script type=\"text/javascript\" src=\""
+								+ uiExtjsSettings.getUrlModules() + "/"
+								+ file.getLocation() + "\"></script>\n");
+					}
+				}
+
 			}
 
-			// if (item.equals(provider.getTargetFrame())) {
-			// sb.append("<script type=\"text/javascript\" src=\""
-			// + uiExtjsSettings.getUrlUiExtjs() + "/"
-			// + provider.getBundleName() + "/"
-			// + provider.getFileName() + "\"></script>\n");
-			// }
 		}
 		this.model.put("extensions", sb.toString());
 
