@@ -406,5 +406,5 @@ Dnet = {
 			},
 			scope : scope
 		});
-	},
+	}
 };
