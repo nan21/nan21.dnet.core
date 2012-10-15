@@ -32,17 +32,19 @@
 } 
  
 .displayfield {	 
-	border:1px solid #d3d3d3;	
-	height:22px; 
-	background-color: #e9e9e9!important;
-	color:#333 !important;
+	border:1px solid #c3c3c3;
+	background-color: #e3e3e3!important;
+	min-height:20px;
+	height: 100%; 
+	padding: 2 5 0 5;	
 }
-.displayfieldnumber {	 
-	border:1px solid #d3d3d3;	
-	height:22px; 
+
+.displayfieldnumber {
+	border:1px solid #c3c3c3;
+	background-color: #e3e3e3!important;
+	height:20px; 
+	padding: 2 5 0 5;
 	text-align:right;
-	background-color: #e9e9e9!important;
-	color:#333 !important;
 }  
  
 .dnet-toolbar-title { font-weight:bold; font-size:14px;padding-left:9px; padding-right:9px;   }

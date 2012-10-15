@@ -2,7 +2,6 @@
  * Builder for edit-form views.
  */
 
- 
 Ext.define("dnet.core.dc.DcvEditFormBuilder", {
 	extend : "Ext.util.Observable",
 
@@ -11,7 +10,7 @@ Ext.define("dnet.core.dc.DcvEditFormBuilder", {
 	addTextField : function(config) {
 		config.xtype = "textfield";
 		this.applyModelUpdater(config);
-		this.applySharedConfig(config);		  
+		this.applySharedConfig(config);
 		return this;
 	},
 
@@ -25,7 +24,7 @@ Ext.define("dnet.core.dc.DcvEditFormBuilder", {
 	addBooleanField : function(config) {
 		return this.addCheckbox(config);
 	},
-	
+
 	addCheckbox : function(config) {
 		config.xtype = "checkbox";
 		this.applyModelUpdater(config);
@@ -56,94 +55,97 @@ Ext.define("dnet.core.dc.DcvEditFormBuilder", {
 
 	addNumberField : function(config) {
 		config.xtype = "numberfield";
-		config.fieldStyle = (config.fieldStyle)? config.fieldStyle + ";text-align:right;": "text-align:right;";
-			
+		config.fieldStyle = (config.fieldStyle) ? config.fieldStyle
+				+ ";text-align:right;" : "text-align:right;";
+
 		this.applyModelUpdater(config);
 		this.applySharedConfig(config);
 		return this;
 	},
 
-	
-	addLov : function(config) {		
-		Ext.applyIf(config, {			
+	addLov : function(config) {
+		Ext.applyIf(config, {
 			_validateListValue_ : true
-		});		 		
+		});
 		this.applySharedConfig(config);
 		return this;
 	},
 
 	addCombo : function(config) {
-		Ext.applyIf(config, {			
-			xtype:"localcombo"
-		});			 
+		Ext.applyIf(config, {
+			xtype : "localcombo"
+		});
 		this.applyModelUpdater(config);
 		this.applySharedConfig(config);
 		return this;
 	},
-	
-	
+
 	addHiddenField : function(config) {
 		config.xtype = "hiddenfield";
 		Ext.applyIf(config, {
-			maxLength:20		 
+			maxLength : 20
 		});
 		this.applySharedConfig(config);
 		return this;
 	},
-	
-	
+
 	addDisplayFieldText : function(config) {
 		config.xtype = "displayfieldtext";
 		Ext.applyIf(config, {
-			anchor:"-20" ,
-			fieldCls: "displayfield"
-			 
+			anchor : "-20",
+			fieldCls : "displayfield"
+
+		});
+		this.applySharedConfig(config);
+		return this;
+	},
+
+	addDisplayFieldNumber : function(config) {
+		config.xtype = "displayfieldnumber";
+		Ext.applyIf(config, {
+			anchor : "-20",
+			format : Dnet.getNumberFormat(config.decimals || 0),
+			fieldCls : "displayfieldnumber"
 		});
 		this.applySharedConfig(config);
 		return this;
 	},
 	
-	addDisplayFieldNumber : function(config) {
-		config.xtype = "displayfieldnumber";		
-		Ext.applyIf(config, {
-			anchor:"-20" ,
-			format: Dnet.getNumberFormat(config.decimals || 0 ),
-			fieldCls: "displayfieldnumber"
-		});
-		this.applySharedConfig(config);
-		return this;
-	},
+	
 	addDisplayFieldDate : function(config) {
 		config.xtype = "displayfielddate";
 		Ext.applyIf(config, {
-			anchor:"-20" ,
-			fieldCls: "displayfield"
+			anchor : "-20",
+			fieldCls : "displayfield"
 		});
 		this.applySharedConfig(config);
 		return this;
 	},
+
 	
 	addDisplayFieldBoolean : function(config) {
 		config.xtype = "displayfieldboolean";
 		Ext.applyIf(config, {
-			//anchor:"-20" ,
-			fieldCls: "displayfield"
+			// anchor:"-20" ,
+			fieldCls : "displayfield"
 		});
 		this.applySharedConfig(config);
 		return this;
 	},
+
 	
 	addPanel : function(config) {
 		Ext.applyIf(config, this.dcv.defaults);
 		Ext.applyIf(config, {
 			defaults : this.dcv.defaults,
-			xtype:"container",
-			id: Ext.id()			
+			xtype : "container",
+			id : Ext.id()
 		});
 		this.dcv._elems_.add(config.name, config);
 		return this;
 	},
 
+	
 	addChildrenTo : function(c, list) {
 		var items = this.dcv._elems_.get(c)["items"] || [];
 		for ( var i = 0, len = list.length; i < len; i++) {
@@ -177,15 +179,15 @@ Ext.define("dnet.core.dc.DcvEditFormBuilder", {
 
 	applyModelUpdater : function(config) {
 
-		var en = "change";		
+		var en = "change";
 		var fn = null;
-		
-		if(config.xtype == "checkbox") {			 
+
+		if (config.xtype == "checkbox") {
 			fn = this.createModelUpdaterCheckbox(config);
 		} else {
-			fn = this.createModelUpdaterField(config);		
+			fn = this.createModelUpdaterField(config);
 		}
-		
+
 		if (!config.listeners) {
 			config.listeners = {};
 		}
@@ -193,47 +195,47 @@ Ext.define("dnet.core.dc.DcvEditFormBuilder", {
 			config.listeners[en] = {};
 		}
 		config.listeners[en]['buffer'] = 500;
-		if(fn!=null) {
+		if (fn != null) {
 			if (config.listeners[en].fn) {
-				config.listeners[en].fn = Ext.Function.createInterceptor(config.listeners[en].fn, fn);
+				config.listeners[en].fn = Ext.Function.createInterceptor(
+						config.listeners[en].fn, fn);
 			} else {
 				config.listeners[en]["fn"] = fn;
 			}
 		}
 	},
 
-	createModelUpdaterCheckbox: function(config) {
+	createModelUpdaterCheckbox : function(config) {
 		var fn = null;
 		if (config.paramIndex) {
-			fn = function(f, nv, ov, eopts) {				 
+			fn = function(f, nv, ov, eopts) {
 				var r = f._dcView_._controller_.getParams();
 				if (!r)
 					return;
-				var rv = !! r.get(f.paramIndex);				 
-				if ( rv!==nv ) {
+				var rv = !!r.get(f.paramIndex);
+				if (rv !== nv) {
 					r.set(f.paramIndex, nv);
-				}				
+				}
 			};
 		} else if (config.dataIndex) {
-			fn = function(f, nv, ov, eopts) {				 
+			fn = function(f, nv, ov, eopts) {
 				var r = f._dcView_._controller_.getRecord();
 				if (!r)
 					return;
-				var rv = !!r.get(f.dataIndex);				 
-				if ( rv!==nv ) {
+				var rv = !!r.get(f.dataIndex);
+				if (rv !== nv) {
 					r.set(f.dataIndex, nv);
-				}				 
+				}
 			}
 		}
 		return fn;
 	},
-	
-	
-	// move these functions out, onChange call them buffered , 
-	// on blur call immediatly and cancel the buffered event 
+
+	// move these functions out, onChange call them buffered ,
+	// on blur call immediatly and cancel the buffered event
 	// -> fix for very fast typing
-	  
-	createModelUpdaterField: function(config) {
+
+	createModelUpdaterField : function(config) {
 		var fn = null;
 		if (config.paramIndex) {
 			fn = function(f, nv, ov, eopts) {
@@ -273,31 +275,30 @@ Ext.define("dnet.core.dc.DcvEditFormBuilder", {
 					}
 				} else {
 					if (!r.isEqual(rv, nv)) {
-						//r.beginEdit();
+						// r.beginEdit();
 						r.set(f.dataIndex, nv);
-						//r.endEdit();
+						// r.endEdit();
 					}
 				}
 			}
 		}
 		return fn;
 	},
-	
-	
-	
+
 	applySharedConfig : function(config) {
 		Ext.applyIf(config, {
 			id : Ext.id(),
 			itemId : config.name,
 			selectOnFocus : true,
-			//checkChangeBuffer : 700,
+			// checkChangeBuffer : 700,
 			_dcView_ : this.dcv
 		});
 		if (config.maxLength) {
 			config.enforceMaxLength = true;
 		}
-		if (config.caseRestriction ) {
-			config.fieldStyle = "text-transform:"+config.caseRestriction+";";
+		if (config.caseRestriction) {
+			config.fieldStyle = "text-transform:" + config.caseRestriction
+					+ ";";
 		}
 		if (config.allowBlank === false) {
 			config.labelSeparator = "*";
