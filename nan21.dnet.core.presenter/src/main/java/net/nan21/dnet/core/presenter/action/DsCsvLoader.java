@@ -2,7 +2,9 @@ package net.nan21.dnet.core.presenter.action;
 
 import java.beans.PropertyEditorManager;
 import java.io.File;
-import java.io.FileReader;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.List;
 
 import net.nan21.dnet.core.presenter.libextensions.HeaderColumnNameMappingStrategy_Dnet;
@@ -22,6 +24,9 @@ public class DsCsvLoader {
 	private char quoteChar = '"';
 
 	public DsCsvLoader() {
+
+		// TODO: move this from here
+
 		PropertyEditorManager.registerEditor(java.lang.Boolean.class,
 				BooleanEditor.class);
 		PropertyEditorManager.registerEditor(java.lang.Long.class,
@@ -44,40 +49,58 @@ public class DsCsvLoader {
 		return this.run_(file, dsClass, columns);
 	}
 
+	public <M> List<M> run(InputStream inputStream, Class<M> dsClass,
+			String[] columns, String sourceName) throws Exception {
+		return this.run_(inputStream, dsClass, columns, sourceName).getResult();
+	}
+
+	public <M> DsCsvLoaderResult<M> run2(InputStream inputStream,
+			Class<M> dsClass, String[] columns, String sourceName)
+			throws Exception {
+		return this.run_(inputStream, dsClass, columns, sourceName);
+	}
+
 	protected <M> DsCsvLoaderResult<M> run_(File file, Class<M> dsClass,
 			String[] columns) throws Exception {
+		InputStream inputStream = new FileInputStream(file);
+		return this.run_(inputStream, dsClass, columns, file.getAbsolutePath());
+	}
 
-		FileReader fileReader = null;
-		CSVReader reader = null;
+	protected <M> DsCsvLoaderResult<M> run_(InputStream inputStream,
+			Class<M> dsClass, String[] columns, String sourceName)
+			throws Exception {
+
+		InputStreamReader inputStreamReader = null;
+		CSVReader csvReader = null;
 		try {
 			List<M> list = null;
 			DsCsvLoaderResult<M> result = new DsCsvLoaderResult<M>();
 			// file = new File(this.path + "/"+ this.fileName);
-			fileReader = new FileReader(file);
+			inputStreamReader = new InputStreamReader(inputStream);
 			if (columns != null) {
-				reader = new CSVReader(fileReader, this.separator,
+				csvReader = new CSVReader(inputStreamReader, this.separator,
 						this.quoteChar, 1);
 				CsvToBean<M> csv = new CsvToBean<M>();
 				ColumnPositionMappingStrategy<M> strategy = new ColumnPositionMappingStrategy<M>();
 				strategy.setType(dsClass);
 				strategy.setColumnMapping(columns);
-				list = csv.parse(strategy, reader);
+				list = csv.parse(strategy, csvReader);
 				result.setHeader(columns);
 				result.setResult(list);
 			} else {
-				reader = new CSVReader(new FileReader(file), this.separator,
+				csvReader = new CSVReader(inputStreamReader, this.separator,
 						this.quoteChar);
 				CsvToBean<M> csv = new CsvToBean<M>();
 				HeaderColumnNameMappingStrategy_Dnet<M> strategy = new HeaderColumnNameMappingStrategy_Dnet<M>();
 				strategy.setType(dsClass);
-				list = csv.parse(strategy, reader);
+				list = csv.parse(strategy, csvReader);
 				result.setHeader(strategy.getHeader());
 				result.setResult(list);
 			}
 			return result;
 		} catch (Exception e) {
-			String msg = "Error loading data from file: " + file.getPath()
-					+ "/" + file.getName() + ". \n Reason is: ";
+			String msg = "Error loading data from source: " + sourceName
+					+ ". \n Reason is: ";
 			String details = null;
 			if (e.getCause() != null) {
 				details = e.getCause().getLocalizedMessage();
@@ -91,11 +114,11 @@ public class DsCsvLoader {
 			}
 			throw new Exception(msg, e);
 		} finally {
-			if (reader != null) {
-				reader.close();
+			if (csvReader != null) {
+				csvReader.close();
 			}
-			if (fileReader != null) {
-				fileReader.close();
+			if (inputStreamReader != null) {
+				inputStreamReader.close();
 			}
 		}
 	}

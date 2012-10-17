@@ -20,7 +20,8 @@ import net.nan21.dnet.core.security.SessionUser;
 
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -30,15 +31,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.multipart.MultipartFile;
 
+/**
+ * Use the new {@link FileUploadController2}
+ * @author amathe
+ *
+ */
+@Deprecated
 @Controller
 @Scope(value = "request")
-public class FileUploadController {
+public class FileUploadController implements ApplicationContextAware {
 
-	@Autowired
-	protected WebApplicationContext webappContext;
+	protected ApplicationContext applicationContext;
 
 	protected List<IFileUploadServiceFactory> serviceFactories;
 
@@ -79,8 +84,9 @@ public class FileUploadController {
 		}
 		Session.user.set(user);
 		Session.params.set(params);
-		this.serviceFactories = (List<IFileUploadServiceFactory>) this.webappContext
-				.getBean("osgiFileUploadServiceFactories");
+		this.serviceFactories = (List<IFileUploadServiceFactory>) this
+				.getApplicationContext().getBean(
+						"osgiFileUploadServiceFactories");
 
 		Map<String, String> uploadParams = new HashMap<String, String>();
 
@@ -129,12 +135,12 @@ public class FileUploadController {
 
 	}
 
-	public WebApplicationContext getWebappContext() {
-		return webappContext;
+	public ApplicationContext getApplicationContext() {
+		return applicationContext;
 	}
 
-	public void setWebappContext(WebApplicationContext webappContext) {
-		this.webappContext = webappContext;
+	public void setApplicationContext(ApplicationContext applicationContext) {
+		this.applicationContext = applicationContext;
 	}
 
 	public List<IFileUploadServiceFactory> getServiceFactories() {
@@ -152,8 +158,8 @@ public class FileUploadController {
 			try {
 				srv = f.create(dsName + "Service");
 				if (srv != null) {
-					srv.setSystemConfig(this.webappContext
-							.getBean(ISystemConfig.class));
+					srv.setSystemConfig(this.getApplicationContext().getBean(
+							ISystemConfig.class));
 					return srv;
 				}
 			} catch (NoSuchBeanDefinitionException e) {

@@ -50,10 +50,7 @@ public class AbstractDsWriteController<M, F, P> extends
 
 			this.prepareRequest(request, response);
 
-			this.resourceName = resourceName;
-			this.dataFormat = dataFormat;
-
-			this.authorizeAction(
+			this.authorizeDsAction(
 					resourceName.substring(0, resourceName.length() - 2),
 					"insert");
 
@@ -61,7 +58,7 @@ public class AbstractDsWriteController<M, F, P> extends
 				dataString = "[" + dataString + "]";
 			}
 
-			IDsService<M, F, P> service = this.findDsService(this.resourceName);
+			IDsService<M, F, P> service = this.findDsService(resourceName);
 			IDsMarshaller<M, F, P> marshaller = service
 					.createMarshaller(dataFormat);
 
@@ -108,17 +105,15 @@ public class AbstractDsWriteController<M, F, P> extends
 			stopWatch.start();
 
 			this.prepareRequest(request, response);
-			this.resourceName = resourceName;
-			this.dataFormat = dataFormat;
 
-			this.authorizeAction(
+			this.authorizeDsAction(
 					resourceName.substring(0, resourceName.length() - 2),
 					"update");
 
 			if (!dataString.startsWith("[")) {
 				dataString = "[" + dataString + "]";
 			}
-			IDsService<M, F, P> service = this.findDsService(this.resourceName);
+			IDsService<M, F, P> service = this.findDsService(resourceName);
 			IDsMarshaller<M, F, P> marshaller = service
 					.createMarshaller(dataFormat);
 
@@ -166,17 +161,15 @@ public class AbstractDsWriteController<M, F, P> extends
 			stopWatch.start();
 
 			this.prepareRequest(request, response);
-			this.resourceName = resourceName;
-			this.dataFormat = dataFormat;
 
-			this.authorizeAction(
+			this.authorizeDsAction(
 					resourceName.substring(0, resourceName.length() - 2),
 					"delete");
 
 			if (!dataString.startsWith("[")) {
 				dataString = "[" + dataString + "]";
 			}
-			IDsService<M, F, P> service = this.findDsService(this.resourceName);
+			IDsService<M, F, P> service = this.findDsService(resourceName);
 			IDsMarshaller<M, F, P> marshaller = service
 					.createMarshaller(dataFormat);
 
@@ -229,17 +222,15 @@ public class AbstractDsWriteController<M, F, P> extends
 			stopWatch.start();
 
 			this.prepareRequest(request, response);
-			this.resourceName = resourceName;
-			this.dataFormat = dataFormat;
 
-			this.authorizeAction(
+			this.authorizeDsAction(
 					resourceName.substring(0, resourceName.length() - 2),
 					"delete");
 
 			if (!idsString.startsWith("[")) {
 				idsString = "[" + idsString + "]";
 			}
-			IDsService<M, F, P> service = this.findDsService(this.resourceName);
+			IDsService<M, F, P> service = this.findDsService(resourceName);
 			IDsMarshaller<M, F, P> marshaller = service
 					.createMarshaller(dataFormat);
 

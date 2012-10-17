@@ -14,7 +14,7 @@
     			http://www.springframework.org/schema/osgi-compendium/spring-osgi-compendium.xsd">
 
 
-	<bean name="uiExtjsMainController" scope="request"
+	<bean name="uiExtjsMainController"
 		class="net.nan21.dnet.core.web.controller.ui.extjs.UiExtjsMainController">
 		<property name="productInfo" ref="productInfo" />
 		<property name="jspName" value="extjs/indexMain" />
@@ -27,8 +27,7 @@
 	</bean>
 
 	<bean name="uiExtjsFrameController"
-		class="net.nan21.dnet.core.web.controller.ui.extjs.UiExtjsFrameController"
-		scope="request">
+		class="net.nan21.dnet.core.web.controller.ui.extjs.UiExtjsFrameController">
 		<property name="productInfo" ref="productInfo" />
 		<property name="jspName" value="extjs/indexFrame" />
 		<property name="uiExtjsSettings" ref="application_uiExtjsSettings" />
@@ -37,7 +36,7 @@
 		<property name="systemConfig" ref="systemConfig" />
 	</bean>
 
-	<bean name="uiExtjsDashboardController" scope="request"
+	<bean name="uiExtjsDashboardController"
 		class="net.nan21.dnet.core.web.controller.ui.extjs.UiExtjsDashboardController">
 		<property name="productInfo" ref="productInfo" />
 		<property name="jspName" value="extjs/indexDashboard" />

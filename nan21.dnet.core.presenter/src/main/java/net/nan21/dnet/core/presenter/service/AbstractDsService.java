@@ -41,7 +41,8 @@ import net.nan21.dnet.core.presenter.model.EmptyParam;
 import net.nan21.dnet.core.presenter.model.RpcDefinition;
 import net.nan21.dnet.core.presenter.model.ViewModelDescriptorManager;
 
-public abstract class AbstractDsService<M, F, P, E> extends AbstractPresenterProcessor {
+public abstract class AbstractDsService<M, F, P, E> extends
+		AbstractPresenterProcessor {
 
 	protected boolean noInsert = false;
 	protected boolean noUpdate = false;
@@ -464,8 +465,8 @@ public abstract class AbstractDsService<M, F, P, E> extends AbstractPresenterPro
 		}
 		this.getEntityService().update(entities);
 		for (M ds : list) {
-			E e = this.getEntityService().getEntityManager().find(
-					this.getEntityClass(), ((IModelWithId) ds).getId());
+			E e = this.getEntityService().getEntityManager()
+					.find(this.getEntityClass(), ((IModelWithId) ds).getId());
 			postUpdateBeforeModel(ds, e, params);
 			this.getConverter().entityToModel(e, ds);
 			postUpdateAfterModel(ds, e, params);
@@ -578,6 +579,21 @@ public abstract class AbstractDsService<M, F, P, E> extends AbstractPresenterPro
 				ukFieldName, batchSize);
 	}
 
+	public void doImport(InputStream inputStream, String sourceName)
+			throws Exception {
+		this.doImportAsInsert_(inputStream, sourceName);
+	}
+
+	protected void doImportAsInsert_(InputStream inputStream, String sourceName)
+			throws Exception {
+		if (this.readOnly) {
+			throw new ActionNotSupportedException("Import not allowed.");
+		}
+		DsCsvLoader l = new DsCsvLoader();
+		List<M> list = l.run(inputStream, this.modelClass, null, sourceName);
+		this.insert(list, null);
+	}
+
 	protected void doImportAsInsert_(File file) throws Exception {
 		if (this.readOnly) {
 			throw new ActionNotSupportedException("Import not allowed.");
@@ -604,8 +620,7 @@ public abstract class AbstractDsService<M, F, P, E> extends AbstractPresenterPro
 
 		F filter = this.filterClass.newInstance();
 
-		// TODO: ****************** optimize me to do the work in batches !!
-		// ***************
+		// TODO: optimize me to do the work in batches !!
 
 		Method filterUkFieldSetter = this.filterClass.getMethod("set"
 				+ StringUtils.capitalize(ukFieldName), String.class);
@@ -687,11 +702,11 @@ public abstract class AbstractDsService<M, F, P, E> extends AbstractPresenterPro
 			List<M> result = new ArrayList<M>();
 
 			Query q = bld.createQuery().setHint(QueryHints.CURSOR, true)
-					.setHint(QueryHints.CURSOR_INITIAL_SIZE, 30).setHint(
-							QueryHints.CURSOR_PAGE_SIZE, 30).setHint(
-							QueryHints.READ_ONLY, HintValues.TRUE)
-					.setFirstResult(bld.getResultStart()).setMaxResults(
-							bld.getResultSize());
+					.setHint(QueryHints.CURSOR_INITIAL_SIZE, 30)
+					.setHint(QueryHints.CURSOR_PAGE_SIZE, 30)
+					.setHint(QueryHints.READ_ONLY, HintValues.TRUE)
+					.setFirstResult(bld.getResultStart())
+					.setMaxResults(bld.getResultSize());
 
 			Cursor c = q.unwrap(JpaQuery.class).getResultCursor();
 
@@ -742,8 +757,11 @@ public abstract class AbstractDsService<M, F, P, E> extends AbstractPresenterPro
 		if (def.getReloadFromEntity()) {
 			if (ds instanceof IModelWithId) {
 				if (((IModelWithId) ds).getId() != null) {
-					E e = (E) this.getEntityService().getEntityManager().find(
-							this.getEntityClass(), ((IModelWithId) ds).getId());
+					E e = (E) this
+							.getEntityService()
+							.getEntityManager()
+							.find(this.getEntityClass(),
+									((IModelWithId) ds).getId());
 					this.getConverter().entityToModel(e, ds);
 				}
 			}
@@ -1034,8 +1052,8 @@ public abstract class AbstractDsService<M, F, P, E> extends AbstractPresenterPro
 			throws Exception {
 		IDsMarshaller<M, F, P> marshaller = null;
 		if (dataFormat.equals(IDsMarshaller.JSON)) {
-			marshaller = new JsonMarshaller<M, F, P>(this.getModelClass(), this
-					.getFilterClass(), this.getParamClass());
+			marshaller = new JsonMarshaller<M, F, P>(this.getModelClass(),
+					this.getFilterClass(), this.getParamClass());
 		}
 		return marshaller;
 	}

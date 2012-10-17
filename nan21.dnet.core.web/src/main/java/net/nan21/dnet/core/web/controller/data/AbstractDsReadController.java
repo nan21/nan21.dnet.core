@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 public class AbstractDsReadController<M, F, P> extends
-		AbstractDsBaseController<M, F, P> {
+		AbstractDsController<M, F, P> {
 
 	/**
 	 * Default handler for find action.
@@ -64,14 +64,14 @@ public class AbstractDsReadController<M, F, P> extends
 			StopWatch stopWatch = new StopWatch();
 			stopWatch.start();
 			this.prepareRequest(request, response);
-			this.resourceName = resourceName;
-			this.dataFormat = dataFormat;
+			// this.resourceName = resourceName;
+			// this.dataFormat = dataFormat;
 
-			this.authorizeAction(
+			this.authorizeDsAction(
 					resourceName.substring(0, resourceName.length() - 2),
 					"find");
 
-			IDsService<M, F, P> service = this.findDsService(this.resourceName);
+			IDsService<M, F, P> service = this.findDsService(resourceName);
 			IDsMarshaller<M, F, P> marshaller = service
 					.createMarshaller(dataFormat);
 
@@ -140,14 +140,14 @@ public class AbstractDsReadController<M, F, P> extends
 			throws Exception {
 		try {
 			this.prepareRequest(request, response);
-			this.resourceName = resourceName;
-			this.dataFormat = dataFormat;
+			// this.resourceName = resourceName;
+			// this.dataFormat = dataFormat;
 
-			this.authorizeAction(
+			this.authorizeDsAction(
 					resourceName.substring(0, resourceName.length() - 2),
 					"export");
 
-			IDsService<M, F, P> service = this.findDsService(this.resourceName);
+			IDsService<M, F, P> service = this.findDsService(resourceName);
 			IQueryBuilder<M, F, P> builder = service.createQueryBuilder()
 					.addFetchLimit(resultStart, resultSize);
 			IDsMarshaller<M, F, P> marshaller = service
@@ -195,20 +195,20 @@ public class AbstractDsReadController<M, F, P> extends
 			writer.setOutFilePath(Session.params.get().getTempPath());
 			service.doExport(filter, params, builder, writer);
 
-			if (this.dataFormat.equalsIgnoreCase("csv")) {
+			if (dataFormat.equalsIgnoreCase("csv")) {
 				response.setContentType("application/vnd.ms-excel");
 			}
-			if (this.dataFormat.equalsIgnoreCase("json")) {
+			if (dataFormat.equalsIgnoreCase("json")) {
 				response.setContentType("text/plain");
 			}
-			if (this.dataFormat.equalsIgnoreCase("xml")) {
+			if (dataFormat.equalsIgnoreCase("xml")) {
 				response.setContentType("text/xml");
 			}
 			response.setHeader("Content-Description", "File Transfer");
 			response.setHeader(
 					"Content-Disposition",
 					"inline; filename=\"export_file."
-							+ this.dataFormat.toLowerCase() + "\";");
+							+ dataFormat.toLowerCase() + "\";");
 
 			this.sendFile(writer.getOutFile(), response.getOutputStream());
 			return null;

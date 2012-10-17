@@ -6,7 +6,6 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,18 +16,11 @@ import net.nan21.dnet.core.api.action.IActionResultFind;
 import net.nan21.dnet.core.api.action.IQueryBuilder;
 import net.nan21.dnet.core.api.marshall.IDsMarshaller;
 import net.nan21.dnet.core.api.service.IAsgnService;
-import net.nan21.dnet.core.presenter.service.ServiceLocator;
+import net.nan21.dnet.core.web.controller.AbstractDnetController;
 import net.nan21.dnet.core.web.result.ActionResultFind;
 
 public abstract class AbstractAsgnController<M, F, P> extends
-		AbstractDataController {
-
-	protected Class<M> modelClass;
-	protected Class<F> filterClass;
-	protected Class<P> paramClass;
-
-	@Autowired
-	private ServiceLocator serviceLocator;
+		AbstractDnetController {
 
 	/**
 	 * Default handler for find action.
@@ -61,20 +53,18 @@ public abstract class AbstractAsgnController<M, F, P> extends
 			throws Exception {
 		try {
 			this.prepareRequest(request, response);
-			this.resourceName = resourceName;
-			this.dataFormat = dataFormat;
 
-			this.authorizeAction(resourceName, "find");
+			this.authorizeAsgnAction(resourceName, "find");
 
 			IAsgnService<M, F, P> service = this.findAsgnService(this
-					.serviceNameFromResourceName(this.resourceName));
+					.serviceNameFromResourceName(resourceName));
 
 			service.setObjectId(objectId);
 			service.setSelectionId(selectionId);
 
 			IQueryBuilder<M, F, P> builder = service.createQueryBuilder()
-					.addFetchLimit(resultStart, resultSize).addSortInfo(
-							orderByCol, orderBySense);
+					.addFetchLimit(resultStart, resultSize)
+					.addSortInfo(orderByCol, orderBySense);
 
 			IDsMarshaller<M, F, P> marshaller = service
 					.createMarshaller(dataFormat);
@@ -129,20 +119,18 @@ public abstract class AbstractAsgnController<M, F, P> extends
 			throws Exception {
 		try {
 			this.prepareRequest(request, response);
-			this.resourceName = resourceName;
-			this.dataFormat = dataFormat;
 
-			this.authorizeAction(resourceName, "find");
+			this.authorizeAsgnAction(resourceName, "find");
 
 			IAsgnService<M, F, P> service = this.findAsgnService(this
-					.serviceNameFromResourceName(this.resourceName));
+					.serviceNameFromResourceName(resourceName));
 
 			service.setObjectId(objectId);
 			service.setSelectionId(selectionId);
 
 			IQueryBuilder<M, F, P> builder = service.createQueryBuilder()
-					.addFetchLimit(resultStart, resultSize).addSortInfo(
-							orderByCol, orderBySense);
+					.addFetchLimit(resultStart, resultSize)
+					.addSortInfo(orderByCol, orderBySense);
 
 			IDsMarshaller<M, F, P> marshaller = service
 					.createMarshaller(dataFormat);
@@ -186,16 +174,14 @@ public abstract class AbstractAsgnController<M, F, P> extends
 			throws Exception {
 		try {
 			this.prepareRequest(request, response);
-			this.resourceName = resourceName;
-			this.dataFormat = dataFormat;
 
-			this.authorizeAction(resourceName, "find");
+			this.authorizeAsgnAction(resourceName, "find");
 
 			IAsgnService<M, F, P> service = this.findAsgnService(this
-					.serviceNameFromResourceName(this.resourceName));
+					.serviceNameFromResourceName(resourceName));
 			service.setObjectId(objectId);
 
-			return service.setup(this.resourceName);
+			return service.setup(resourceName);
 		} catch (Exception e) {
 			return this.handleException(e, response);
 		} finally {
@@ -226,13 +212,11 @@ public abstract class AbstractAsgnController<M, F, P> extends
 			throws Exception {
 		try {
 			this.prepareRequest(request, response);
-			this.resourceName = resourceName;
-			this.dataFormat = dataFormat;
 
-			this.authorizeAction(resourceName, "update");
+			this.authorizeAsgnAction(resourceName, "update");
 
 			IAsgnService<M, F, P> service = this.findAsgnService(this
-					.serviceNameFromResourceName(this.resourceName));
+					.serviceNameFromResourceName(resourceName));
 
 			service.setObjectId(objectId);
 			service.setSelectionId(selectionId);
@@ -274,13 +258,11 @@ public abstract class AbstractAsgnController<M, F, P> extends
 			throws Exception {
 		try {
 			this.prepareRequest(request, response);
-			this.resourceName = resourceName;
-			this.dataFormat = dataFormat;
 
-			this.authorizeAction(resourceName, "update");
+			this.authorizeAsgnAction(resourceName, "update");
 
 			IAsgnService<M, F, P> service = this.findAsgnService(this
-					.serviceNameFromResourceName(this.resourceName));
+					.serviceNameFromResourceName(resourceName));
 
 			service.setObjectId(objectId);
 			service.setSelectionId(selectionId);
@@ -312,13 +294,11 @@ public abstract class AbstractAsgnController<M, F, P> extends
 			throws Exception {
 		try {
 			this.prepareRequest(request, response);
-			this.resourceName = resourceName;
-			this.dataFormat = dataFormat;
 
-			this.authorizeAction(resourceName, "update");
+			this.authorizeAsgnAction(resourceName, "update");
 
 			IAsgnService<M, F, P> service = this.findAsgnService(this
-					.serviceNameFromResourceName(this.resourceName));
+					.serviceNameFromResourceName(resourceName));
 
 			IDsMarshaller<M, F, P> marshaller = service
 					.createMarshaller(dataFormat);
@@ -352,13 +332,11 @@ public abstract class AbstractAsgnController<M, F, P> extends
 			throws Exception {
 		try {
 			this.prepareRequest(request, response);
-			this.resourceName = resourceName;
-			this.dataFormat = dataFormat;
 
-			this.authorizeAction(resourceName, "update");
+			this.authorizeAsgnAction(resourceName, "update");
 
 			IAsgnService<M, F, P> service = this.findAsgnService(this
-					.serviceNameFromResourceName(this.resourceName));
+					.serviceNameFromResourceName(resourceName));
 
 			service.setObjectId(objectId);
 			service.setSelectionId(selectionId);
@@ -391,10 +369,9 @@ public abstract class AbstractAsgnController<M, F, P> extends
 			throws Exception {
 		try {
 			this.prepareRequest(request, response);
-			this.resourceName = resourceName;
-			this.dataFormat = dataFormat;
+
 			IAsgnService<M, F, P> service = this.findAsgnService(this
-					.serviceNameFromResourceName(this.resourceName));
+					.serviceNameFromResourceName(resourceName));
 
 			service.setObjectId(objectId);
 			service.setSelectionId(selectionId);
@@ -418,13 +395,11 @@ public abstract class AbstractAsgnController<M, F, P> extends
 			throws Exception {
 		try {
 			this.prepareRequest(request, response);
-			this.resourceName = resourceName;
-			this.dataFormat = dataFormat;
 
-			this.authorizeAction(resourceName, "update");
+			this.authorizeAsgnAction(resourceName, "update");
 
 			IAsgnService<M, F, P> service = this.findAsgnService(this
-					.serviceNameFromResourceName(this.resourceName));
+					.serviceNameFromResourceName(resourceName));
 
 			service.setObjectId(objectId);
 			service.setSelectionId(selectionId);
@@ -453,45 +428,6 @@ public abstract class AbstractAsgnController<M, F, P> extends
 	public IAsgnService<M, F, P> findAsgnService(String asgnName)
 			throws Exception {
 		return this.getServiceLocator().findAsgnService(asgnName);
-	}
-
-	// ===================== getters-setters ============================
-
-	protected Class<P> getParamClass() {
-		return this.paramClass;
-	}
-
-	protected Class<M> getModelClass() {
-		return this.modelClass;
-	}
-
-	/**
-	 * Get presenter service locator. If it is null attempts to retrieve it from
-	 * Spring context.
-	 * 
-	 * @return
-	 */
-	public ServiceLocator getServiceLocator() {
-		if (this.serviceLocator == null) {
-			this.serviceLocator = this.getWebappContext().getBean(
-					ServiceLocator.class);
-		}
-		return serviceLocator;
-	}
-
-	/**
-	 * Set presenter service locator.
-	 * 
-	 * @param serviceLocator
-	 */
-	public void setServiceLocator(ServiceLocator serviceLocator) {
-		this.serviceLocator = serviceLocator;
-	}
-
-	protected void authorizeAction(String resourceName, String action)
-			throws Exception {
-		this.getAuthorizationFactory().getAsgnAuthorizationProvider()
-				.authorize(resourceName, action);
 	}
 
 }

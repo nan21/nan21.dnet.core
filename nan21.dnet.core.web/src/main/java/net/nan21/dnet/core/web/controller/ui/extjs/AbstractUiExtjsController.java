@@ -30,6 +30,7 @@ import org.springframework.web.servlet.mvc.AbstractController;
 
 public abstract class AbstractUiExtjsController extends AbstractController {
 
+	// TODO: externalize these configs and propagate them to the client as well
 	private final static String COOKIE_NAME_THEME = "dnet-theme";
 	private final static String DEFAULT_THEME = "gray";
 	private final static String COOKIE_NAME_LANG = "dnet-lang";
@@ -38,16 +39,26 @@ public abstract class AbstractUiExtjsController extends AbstractController {
 	final static Logger logger = LoggerFactory
 			.getLogger(AbstractUiExtjsController.class);
 
+	/**
+	 * Product information to be displayed on client.
+	 */
 	protected IProductInfo productInfo;
+
+	/**
+	 * JSP page name which renders the html
+	 */
 	protected String jspName;
-	protected String deploymentUrl;
-	protected String uiUrl;
-	protected Map<String, Object> model;
+
+	/**
+	 * Various settings to be propagated to client.
+	 */
 	protected UiExtjsSettings uiExtjsSettings;
+
 	protected ISystemConfig systemConfig;
 
-	protected void _prepare(HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
+	protected void _prepare(Map<String, Object> model,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
 
 		String server = request.getServerName();
 		int port = request.getServerPort();
@@ -113,48 +124,45 @@ public abstract class AbstractUiExtjsController extends AbstractController {
 		} catch (ClassCastException e) {
 			// not authenticated
 		}
-		this.deploymentUrl = ((request.isSecure()) ? "https" : "http") + "://"
-				+ server + ((port != 80) ? (":" + port) : "") + contextPath;
-		this.uiUrl = deploymentUrl + path;
+		String deploymentUrl = ((request.isSecure()) ? "https" : "http")
+				+ "://" + server + ((port != 80) ? (":" + port) : "")
+				+ contextPath;
+		String uiUrl = deploymentUrl + path;
 
-		this.model = new HashMap<String, Object>();
+		model.put("deploymentUrl", deploymentUrl);
+		model.put("uiUrl", uiUrl);
+		model.put("product", this.productInfo);
 
-		this.model.put("deploymentUrl", this.deploymentUrl);
-		this.model.put("uiUrl", this.uiUrl);
-		this.model.put("product", this.productInfo); 
-
-		this.model.put("userUsername", userUsername);
-		this.model.put("userDisplayName", userDisplayName);
-		this.model.put("userClientCode", userClientCode);
-		this.model.put("userClientId", userClientId);
-		this.model.put("userSystemClient", userSystemClient);
+		model.put("userUsername", userUsername);
+		model.put("userDisplayName", userDisplayName);
+		model.put("userClientCode", userClientCode);
+		model.put("userClientId", userClientId);
+		model.put("userSystemClient", userSystemClient);
 
 		// extjs library and themes
-		this.model.put("urlUiExtjsLib", uiExtjsSettings.getUrlLib());
-		this.model.put("urlUiExtjsThemes", uiExtjsSettings.getUrlThemes());
-		
+		model.put("urlUiExtjsLib", uiExtjsSettings.getUrlLib());
+		model.put("urlUiExtjsThemes", uiExtjsSettings.getUrlThemes());
+
 		// DNet extjs components in core and modules
-		this.model.put("urlUiExtjsCore", uiExtjsSettings.getUrlCore());
-		this.model.put("urlUiExtjsModules", uiExtjsSettings.getUrlModules());
-		this.model.put("urlUiExtjsModuleSubpath", uiExtjsSettings.getModuleSupath());
-		
+		model.put("urlUiExtjsCore", uiExtjsSettings.getUrlCore());
+		model.put("urlUiExtjsModules", uiExtjsSettings.getUrlModules());
+		model.put("urlUiExtjsModuleSubpath", uiExtjsSettings.getModuleSupath());
+
 		// translations for core and modules
-		this.model.put("urlUiExtjsCoreI18n", uiExtjsSettings.getUrlCoreI18n());
-		this.model.put("urlUiExtjsModulesI18n",
-				uiExtjsSettings.getUrlModulesI18n());
+		model.put("urlUiExtjsCoreI18n", uiExtjsSettings.getUrlCoreI18n());
+		model.put("urlUiExtjsModulesI18n", uiExtjsSettings.getUrlModulesI18n());
 
-		this.model.put("shortLanguage", this.resolveLang(request, response));
-		this.model.put("theme", this.resolveTheme(request, response));
-		this.model
-				.put("sysCfg_workingMode", this.systemConfig.getWorkingMode());
+		model.put("shortLanguage", this.resolveLang(request, response));
+		model.put("theme", this.resolveTheme(request, response));
+		model.put("sysCfg_workingMode", this.systemConfig.getWorkingMode());
 
-		this.model.put("extjsDateFormat", extjsDateFormat);
-		this.model.put("extjsTimeFormat", extjsTimeFormat);
-		this.model.put("extjsDateTimeFormat", extjsDateTimeFormat);
-		this.model.put("extjsAltFormats", extjsAltFormats);
-		this.model.put("decimalSeparator", decimalSeparator);
-		this.model.put("thousandSeparator", thousandSeparator);
-		this.model.put("userRolesStr", userRolesStr);
+		model.put("extjsDateFormat", extjsDateFormat);
+		model.put("extjsTimeFormat", extjsTimeFormat);
+		model.put("extjsDateTimeFormat", extjsDateTimeFormat);
+		model.put("extjsAltFormats", extjsAltFormats);
+		model.put("decimalSeparator", decimalSeparator);
+		model.put("thousandSeparator", thousandSeparator);
+		model.put("userRolesStr", userRolesStr);
 
 	}
 

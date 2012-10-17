@@ -1,9 +1,7 @@
 
 Ext.define("dnet.core.dc.DataImportWindow", {
 	extend:  "Ext.Window" ,
-  
- 
-
+   
     _elems_ : new Ext.util.MixedCollection()
    ,_formats_: ["csv", "json" ]
 

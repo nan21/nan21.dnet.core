@@ -1,6 +1,8 @@
 package net.nan21.dnet.core.web.controller.ui.extjs;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -44,7 +46,8 @@ public class UiExtjsMainController extends AbstractUiExtjsController {
 			return null;
 		}
 
-		this._prepare(request, response);
+		Map<String, Object> model = new HashMap<String, Object>();
+		this._prepare(model, request, response);
 
 		// get extensions scripts
 		StringBuffer sb = new StringBuffer();
@@ -61,16 +64,18 @@ public class UiExtjsMainController extends AbstractUiExtjsController {
 				}
 			}
 		}
-		this.model.put("extensions", sb.toString());
+		
+
+		model.put("extensions", sb.toString());
 
 		// get extensions content
 		StringBuffer sbc = new StringBuffer();
 		for (IExtensionContentProvider provider : this.extensionContentProviders) {
 			sbc.append(provider.getContent());
 		}
-		this.model.put("extensionsContent", sbc.toString());
+		model.put("extensionsContent", sbc.toString());
 
-		return new ModelAndView(this.jspName, this.model);
+		return new ModelAndView(this.jspName, model);
 	}
 
 	public List<IExtensionProvider> getExtensionProviders() {

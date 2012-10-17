@@ -43,41 +43,54 @@
 
 	<osgi:reference id="systemConfig" cardinality="1..1"
 		interface="net.nan21.dnet.core.api.ISystemConfig" />
+
 	<osgi:reference id="productInfo" cardinality="1..1"
 		interface="net.nan21.dnet.core.api.IProductInfo" />
 
 	<osgi:reference id="osgiDataSource" cardinality="0..1"
 		interface="javax.sql.DataSource" />
+
 	<osgi:reference id="osgiAuthenticationForDbUser"
 		cardinality="0..1"
 		interface="org.springframework.security.core.userdetails.UserDetailsService" />
+
 	<osgi:reference id="osgiAuthorizationFactory"
 		cardinality="0..1" interface="net.nan21.dnet.core.api.security.IAuthorizationFactory" />
+
 	<osgi:reference id="osgiChangePassword" cardinality="0..1"
 		interface="net.nan21.dnet.core.api.session.IChangePasswordService" />
+
 	<osgi:list id="osgiEntityManagerFactory" cardinality="0..N"
 		interface="javax.persistence.EntityManagerFactory"></osgi:list>
 
 	<osgi:list id="osgiExtensionProviders" cardinality="0..N"
 		interface="net.nan21.dnet.core.api.ui.extjs.IExtensionProvider" />
+
 	<osgi:list id="osgiExtensionProvidersFrame" cardinality="0..N"
 		interface="net.nan21.dnet.core.api.ui.extjs.IExtensionProviderFrame" />
+
 	<osgi:list id="osgiExtensionContentProviders" cardinality="0..N"
 		interface="net.nan21.dnet.core.api.ui.extjs.IExtensionContentProvider" />
+
 	<osgi:list id="osgiExtensionContentProvidersFrame"
 		cardinality="0..N"
 		interface="net.nan21.dnet.core.api.ui.extjs.IExtensionContentProviderFrame" />
 
 	<osgi:list id="osgiDsServiceFactories" cardinality="0..N"
 		interface="net.nan21.dnet.core.api.service.IDsServiceFactory" />
+
 	<osgi:list id="osgiFileUploadServiceFactories" cardinality="0..N"
 		interface="net.nan21.dnet.core.api.service.IFileUploadServiceFactory" />
+
 	<osgi:list id="osgiAsgnServiceFactories" cardinality="0..N"
 		interface="net.nan21.dnet.core.api.service.IAsgnServiceFactory" />
+
 	<osgi:list id="osgiSetupParticipants" cardinality="0..N"
 		interface="net.nan21.dnet.core.api.setup.ISetupParticipant" />
+
 	<osgi:list id="osgiStartupParticipants" cardinality="0..N"
 		interface="net.nan21.dnet.core.api.setup.IStartupParticipant" />
+
 	<osgi:reference id="osgiActivitiProcessEngineHolder"
 		cardinality="0..1" interface="net.nan21.dnet.core.api.wf.IActivitiProcessEngineHolder" />
 

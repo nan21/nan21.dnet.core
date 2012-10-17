@@ -91,6 +91,16 @@ public interface IDsService<M, F, P> {
 			throws Exception;
 
 	/**
+	 * Handler for basic data import given an input stream. Performs an insert.
+	 * 
+	 * @param inputStream
+	 * @param sourceName 
+	 * @throws Exception
+	 */
+	public void doImport(InputStream inputStream, String sourceName)
+			throws Exception;
+
+	/**
 	 * Handler for basic data import given a file-name as absolute location.
 	 * Performs an insert.
 	 * 

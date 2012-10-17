@@ -37,7 +37,7 @@ Ext.define("dnet.core.dc.AbstractDNetDcGrid", {
 	 * 
 	 * @type Boolean
 	 */
-	_noImport_ : true,
+	_noImport_ : false,
 
 	/**
 	 * Flag to switch on/off custom layout management.
@@ -91,8 +91,25 @@ Ext.define("dnet.core.dc.AbstractDNetDcGrid", {
 	 */
 	_doImport_ : function() {
 		if (this._importWindow_ == null) {
-			this._importWindow_ = new dnet.core.dc.DataImportWindow({});
-			this._importWindow_._grid_ = this;
+			this._importWindow_ = new dnet.core.base.FileUploadWindow2({
+				//_description_ : "Select a CSV file to import its content.",
+				_uploadUrl_: "/nan21.dnet.core.web/upload/ds-csv-import/"+this._controller_.dsName,
+				_fields_: {
+					separator: {
+						xtype:"combo", store:[";"], value:";", fieldLabel:"Field separator", allowBlank:false, labelSeparator:"*"
+					},
+					quoteChar: {
+						xtype:"combo", store:['"'], value:'"', fieldLabel:"Optionally enclosed by", allowBlank:false, labelSeparator:"*"
+					},
+					encoding: {
+						xtype:"combo", store:["AUTO","UTF-8"], value:"UTF-8", fieldLabel:"Character encoding", allowBlank:false, labelSeparator:"*"
+					}
+				},
+				_succesCallbackScope_: this,
+				_succesCallbackFn_: function() {
+					this._controller_.doQuery();
+				}
+			}) ; 
 		}
 		this._importWindow_.show();
 	},
@@ -188,7 +205,7 @@ Ext.define("dnet.core.dc.AbstractDNetDcGrid", {
 	_initDcGrid_ : function() {
 
 		// currently disabled until is finalized
-		this._noImport_ = true;
+		//this._noImport_ = true;
 
 		this._elems_ = new Ext.util.MixedCollection();
 		this._columns_ = new Ext.util.MixedCollection();

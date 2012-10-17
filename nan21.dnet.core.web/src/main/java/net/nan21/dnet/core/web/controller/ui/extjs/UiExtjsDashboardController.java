@@ -1,5 +1,8 @@
 package net.nan21.dnet.core.web.controller.ui.extjs;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -23,10 +26,10 @@ public class UiExtjsDashboardController extends AbstractUiExtjsController {
 			// anonymous user
 			throw new NotAuthorizedRequestException("Not authenticated");
 		}
+		Map<String, Object> model = new HashMap<String, Object>();
+		this._prepare(model, request, response);
 
-		this._prepare(request, response);
-
-		return new ModelAndView(this.jspName, this.model);
+		return new ModelAndView(this.jspName, model);
 	}
 
 }
