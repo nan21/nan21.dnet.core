@@ -3,14 +3,12 @@ package net.nan21.dnet.core.web.controller.workflow;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-@Scope(value = "request")
 @RequestMapping(value = "/deployment")
 public class WorkflowDeploymentController extends AbstractWorkflowController {
 
@@ -21,12 +19,12 @@ public class WorkflowDeploymentController extends AbstractWorkflowController {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		try {
-			this.prepareRequest();
+			this.prepareRequest(request, response);
 
 			String[] idArray = ids.split(",");
 			for (String deploymentId : idArray) {
-				this.getWorkflowRepositoryService().deleteDeployment(deploymentId,
-						cascade);
+				this.getWorkflowRepositoryService().deleteDeployment(
+						deploymentId, cascade);
 			}
 			return "{'success':true}";
 		} catch (Exception e) {

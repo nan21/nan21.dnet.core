@@ -55,7 +55,7 @@ public class FileUploadController2 extends AbstractFileUploadController {
 		}
 
 		this.prepareRequest(request, response);
-		//Map<String, String> contextParams = this.collectParams(request);
+		// Map<String, String> contextParams = this.collectParams(request);
 		Map<String, Object> result = new HashMap<String, Object>();
 
 		// try to find a delegate to hand over processing
@@ -92,7 +92,8 @@ public class FileUploadController2 extends AbstractFileUploadController {
 		this.authorizeDsAction(dsName.substring(0, dsName.length() - 2),
 				"import");
 
-		// Map<String, String> contextParams = this.collectParams(request);
+		//Map<String, String> contextParams = this.collectParams(request, "_p_",
+		//		null);
 		Map<String, Object> result = new HashMap<String, Object>();
 
 		IDsService<?, ?, ?> dsService = this.getServiceLocator().findDsService(

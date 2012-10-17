@@ -10,21 +10,21 @@
         	http://www.springframework.org/schema/context/spring-context.xsd
         http://www.springframework.org/schema/osgi 
 		http://www.springframework.org/schema/osgi/spring-osgi.xsd">
-	
-	<context:annotation-config />
-  	<bean id="workflowProcessDefinitionController" scope="request"
+
+
+	<bean id="workflowProcessDefinitionController"
 		class="net.nan21.dnet.core.web.controller.workflow.WorkflowProcessDefinitionController">
 	</bean>
-	
-	<bean id="workflowProcessInstanceController" scope="request"
+
+	<bean id="workflowProcessInstanceController"
 		class="net.nan21.dnet.core.web.controller.workflow.WorkflowProcessInstanceController">
 	</bean>
-	
-	<bean id="workflowTaskController" scope="request"
+
+	<bean id="workflowTaskController"
 		class="net.nan21.dnet.core.web.controller.workflow.WorkflowTaskController">
 	</bean>
-	
-	<bean id="workflowDeploymentController" scope="request"
+
+	<bean id="workflowDeploymentController"
 		class="net.nan21.dnet.core.web.controller.workflow.WorkflowDeploymentController">
 	</bean>
 </beans>

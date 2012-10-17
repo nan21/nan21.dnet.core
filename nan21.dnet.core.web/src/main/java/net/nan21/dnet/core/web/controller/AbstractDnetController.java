@@ -6,6 +6,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -21,7 +23,9 @@ import net.nan21.dnet.core.presenter.service.ServiceLocator;
 import net.nan21.dnet.core.security.NotAuthorizedRequestException;
 import net.nan21.dnet.core.security.SessionUser;
 
+import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.map.SerializationConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
@@ -124,58 +128,56 @@ public abstract class AbstractDnetController implements ApplicationContextAware 
 		Session.params.set(null);
 	}
 
-	@ExceptionHandler(value = NotAuthorizedRequestException.class)
-	protected String handleException(NotAuthorizedRequestException e,
-			HttpServletResponse response) throws IOException {
-		response.setStatus(403);
-		if (e.getCause() != null) {
-			response.getOutputStream().print(e.getCause().getMessage());
-		} else {
-			response.getOutputStream().print(e.getMessage());
-		}
-		return null;
-	}
-
-	@ExceptionHandler(value = Exception.class)
-	@ResponseBody
-	protected String handleException(Exception e, HttpServletResponse response)
-			throws IOException {
-
-		if (e instanceof NotAuthorizedRequestException) {
-			return this.handleException((NotAuthorizedRequestException) e,
-					response);
-		} else if (e instanceof InvocationTargetException) {
-			Exception exc = (Exception) ((InvocationTargetException) e)
-					.getTargetException();
-
-			if (exc.getCause() != null) {
-				exc = (Exception) exc.getCause();
+	/**
+	 * Collect parameters from request.
+	 * 
+	 * ATTENTION!: Only the first value is considered.
+	 * 
+	 * @param request
+	 * @param prefix
+	 *            Collect only parameters which start with this prefix
+	 * @param suffix
+	 *            Collect only parameters which ends with this suffix
+	 * @return
+	 */
+	protected Map<String, String> collectParams(HttpServletRequest request,
+			String prefix, String suffix) {
+		@SuppressWarnings("unchecked")
+		Map<String, String[]> paramMap = (Map<String, String[]>) request
+				.getParameterMap();
+		Map<String, String> result = new HashMap<String, String>();
+		for (Map.Entry<String, String[]> e : paramMap.entrySet()) {
+			String k = e.getKey();
+			if (prefix != null && k.startsWith(prefix)) {
+				if (suffix != null && k.endsWith(suffix)) {
+					result.put(k, e.getValue()[0]);
+				}
 			}
-
-			exc.printStackTrace();
-			response.setStatus(500);
-			response.getOutputStream().print(exc.getMessage());
-			return null;
 		}
-
-		response.setStatus(HttpStatus.EXPECTATION_FAILED.value());
-		return this.buildErrorMessage(e.getMessage());
+		return result;
 	}
 
 	protected ObjectMapper getJsonMapper() {
-		return new ObjectMapper();
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.configure(SerializationConfig.Feature.WRITE_DATES_AS_TIMESTAMPS,
+				false);
+		mapper.configure(SerializationConfig.Feature.FAIL_ON_EMPTY_BEANS, false);
+		mapper.configure(
+				DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+		return mapper;
+
 	}
 
-	private String buildErrorMessage(String msg) {
-		ObjectMapper mapper = getJsonMapper();
-		try {
-			return "{ \"success\":false, \"msg\":"
-					+ mapper.writeValueAsString(msg) + "}";
-		} catch (Exception e) {
-			e.printStackTrace();
-			return "{ \"success\": false, \"msg\": \"There was an error while trying to serialize the business logic exception. Check the application logs for more details. \"}";
-		}
-	}
+//	private String buildErrorMessage(String msg) {
+//		ObjectMapper mapper = getJsonMapper();
+//		try {
+//			return "{ \"success\":false, \"msg\":"
+//					+ mapper.writeValueAsString(msg) + "}";
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			return "{ \"success\": false, \"msg\": \"There was an error while trying to serialize the business logic exception. Check the application logs for more details. \"}";
+//		}
+//	}
 
 	protected void sendFile(File file, ServletOutputStream outputStream)
 			throws IOException {
@@ -218,6 +220,74 @@ public abstract class AbstractDnetController implements ApplicationContextAware 
 				inputStream.close();
 		}
 		outputStream.flush();
+	}
+
+	/* ================ EXCEPTIONS ======================== */
+
+	/**
+	 * Not authenticated
+	 * 
+	 * @param e
+	 * @param response
+	 * @return
+	 * @throws IOException
+	 */
+	@ExceptionHandler(value = NotAuthorizedRequestException.class)
+	protected String handleException(NotAuthorizedRequestException e,
+			HttpServletResponse response) throws IOException {
+		response.setStatus(403);
+		if (e.getCause() != null) {
+			response.getOutputStream().print(e.getCause().getMessage());
+		} else {
+			response.getOutputStream().print(e.getMessage());
+		}
+		return null;
+	}
+
+	/**
+	 * Generic exception handler
+	 * 
+	 * @param e
+	 * @param response
+	 * @return
+	 * @throws IOException
+	 */
+	@ExceptionHandler(value = Exception.class)
+	@ResponseBody
+	protected String handleException(Exception e, HttpServletResponse response)
+			throws IOException {
+
+		if (e instanceof NotAuthorizedRequestException) {
+			return this.handleException((NotAuthorizedRequestException) e,
+					response);
+		} else if (e instanceof InvocationTargetException) {
+			Exception exc = (Exception) ((InvocationTargetException) e)
+					.getTargetException();
+
+			if (exc.getCause() != null) {
+				exc = (Exception) exc.getCause();
+			}
+
+			exc.printStackTrace();
+			response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+			response.getOutputStream().print(exc.getMessage());
+			return null;
+		}
+		StringBuffer sb = new StringBuffer();
+		if (e.getMessage() != null) {
+			sb.append(e.getMessage());
+		}
+		if (e.getCause() != null) {
+			if (sb.length() > 0) {
+				sb.append(" Reason: ");
+			}
+			sb.append(e.getCause().getMessage());
+		}
+		response.setStatus(HttpStatus.EXPECTATION_FAILED.value());
+		response.getOutputStream().print(sb.toString());
+		return null;
+		// response.setStatus(HttpStatus.EXPECTATION_FAILED.value());
+		// return this.buildErrorMessage(e.getMessage());
 	}
 
 	/* ================= GETTERS - SETTERS ================== */

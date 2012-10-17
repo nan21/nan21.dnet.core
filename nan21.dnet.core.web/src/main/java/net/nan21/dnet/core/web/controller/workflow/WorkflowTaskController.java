@@ -17,14 +17,12 @@ import org.activiti.engine.impl.form.DateFormType;
 import org.activiti.engine.impl.form.EnumFormType;
 import org.activiti.engine.impl.util.IoUtil;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-@Scope(value = "request")
 @RequestMapping(value = "/task")
 public class WorkflowTaskController extends AbstractWorkflowController {
 
@@ -34,7 +32,7 @@ public class WorkflowTaskController extends AbstractWorkflowController {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		try {
-			this.prepareRequest();
+			this.prepareRequest(request, response);
 			ProcessEngine processEngine = getWorkflowEngine();
 			FormService formService = processEngine.getFormService();
 
@@ -67,23 +65,23 @@ public class WorkflowTaskController extends AbstractWorkflowController {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		try {
-			this.prepareRequest();
+			this.prepareRequest(request, response);
 
-			ObjectMapper mapper = new ObjectMapper();
-			
+			ObjectMapper mapper = getJsonMapper();
+
 			TaskFormData fd = getWorkflowEngine().getFormService()
 					.getTaskFormData(taskId);
 			List<FormProperty> props = fd.getFormProperties();
-			 
+
 			StringBuffer sb = new StringBuffer();
 			sb.append("{\"success\":true,\"formKey\": \""
-					+ ((fd.getFormKey() != null) ? fd.getFormKey() : "")
-					+ "\"");
+					+ ((fd.getFormKey() != null) ? fd.getFormKey() : "") + "\"");
 			sb.append(",\"deploymentId\": \"" + fd.getDeploymentId() + "\"");
-			sb.append(",\"taskId\": \"" + taskId
-					+ "\"");
-			sb.append(",\"taskName\": " + mapper.writeValueAsString( fd.getTask().getName()) );
-			sb.append(",\"taskDescription\": " + mapper.writeValueAsString( fd.getTask().getDescription()) );
+			sb.append(",\"taskId\": \"" + taskId + "\"");
+			sb.append(",\"taskName\": "
+					+ mapper.writeValueAsString(fd.getTask().getName()));
+			sb.append(",\"taskDescription\": "
+					+ mapper.writeValueAsString(fd.getTask().getDescription()));
 			sb.append(",\"properties\":[");
 			int i = 0;
 			for (FormProperty prop : props) {
@@ -104,20 +102,21 @@ public class WorkflowTaskController extends AbstractWorkflowController {
 				}
 				if (ft instanceof EnumFormType) {
 					sb.append(" ,\"values\": [");
-					Map<String,Object> values = (Map<String,Object>) ft.getInformation("values");
-					int xx=0;
-					for(Map.Entry<String, Object> v: values.entrySet()) {
+					Map<String, Object> values = (Map<String, Object>) ft
+							.getInformation("values");
+					int xx = 0;
+					for (Map.Entry<String, Object> v : values.entrySet()) {
 						if (xx > 0) {
 							sb.append(",");
 						}
-						sb.append("[\""+v.getKey()+ "\",\""+ v.getValue()+ "\"]");	
+						sb.append("[\"" + v.getKey() + "\",\"" + v.getValue()
+								+ "\"]");
 						xx++;
 					}
 					sb.append("]");
-							//+ ft.getInformation("datePattern") + "\"");
+					// + ft.getInformation("datePattern") + "\"");
 				}
-				
-				
+
 				sb.append("}");
 				sb.append(" ,\"isRequired\":" + prop.isRequired());
 				sb.append(" ,\"isReadable\":" + prop.isReadable());
@@ -132,8 +131,6 @@ public class WorkflowTaskController extends AbstractWorkflowController {
 
 			return sb.toString();
 
-			 
- 
 		} catch (Exception e) {
 			return this.handleException(e, response);
 		} finally {
@@ -147,8 +144,10 @@ public class WorkflowTaskController extends AbstractWorkflowController {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		try {
-			this.prepareRequest();
-			getWorkflowTaskService().complete(taskId, getFormVariables(request));
+			this.prepareRequest(request, response);
+
+			getWorkflowTaskService()
+					.complete(taskId, getFormVariables(request));
 			return "{'success':true}";
 		} catch (Exception e) {
 			return this.handleException(e, response);

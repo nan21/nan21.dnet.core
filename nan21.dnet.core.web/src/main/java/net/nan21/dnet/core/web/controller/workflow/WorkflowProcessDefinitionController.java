@@ -18,14 +18,12 @@ import org.activiti.engine.impl.form.DateFormType;
 import org.activiti.engine.impl.form.EnumFormType;
 import org.activiti.engine.impl.util.IoUtil;
 import org.activiti.engine.repository.ProcessDefinition;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-@Scope(value = "request")
 @RequestMapping(value = "/process-definition/{processDefinitionId}")
 public class WorkflowProcessDefinitionController extends
 		AbstractWorkflowController {
@@ -38,15 +36,14 @@ public class WorkflowProcessDefinitionController extends
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		try {
-			this.prepareRequest();
+			this.prepareRequest(request, response);
 
 			StartFormData fd = getWorkflowEngine().getFormService()
 					.getStartFormData(processDefinitionId);
 			List<FormProperty> props = fd.getFormProperties();
 			StringBuffer sb = new StringBuffer();
 			sb.append("{\"success\":true,\"formKey\": \""
-					+ ((fd.getFormKey() != null) ? fd.getFormKey() : "")
-					+ "\"");
+					+ ((fd.getFormKey() != null) ? fd.getFormKey() : "") + "\"");
 			sb.append(",\"deploymentId\": \"" + fd.getDeploymentId() + "\"");
 			sb.append(",\"processDefinitionId\": \"" + processDefinitionId
 					+ "\"");
@@ -70,17 +67,19 @@ public class WorkflowProcessDefinitionController extends
 				}
 				if (ft instanceof EnumFormType) {
 					sb.append(" ,\"values\": [");
-					Map<String,Object> values = (Map<String,Object>) ft.getInformation("values");
-					int xx=0;
-					for(Map.Entry<String, Object> v: values.entrySet()) {
+					Map<String, Object> values = (Map<String, Object>) ft
+							.getInformation("values");
+					int xx = 0;
+					for (Map.Entry<String, Object> v : values.entrySet()) {
 						if (xx > 0) {
 							sb.append(",");
 						}
-						sb.append("[\""+v.getKey()+ "\",\""+ v.getValue()+ "\"]");	
+						sb.append("[\"" + v.getKey() + "\",\"" + v.getValue()
+								+ "\"]");
 						xx++;
 					}
 					sb.append("]");
-							//+ ft.getInformation("datePattern") + "\"");
+					// + ft.getInformation("datePattern") + "\"");
 				}
 				sb.append("}");
 				sb.append(" ,\"isRequired\":" + prop.isRequired());
@@ -109,7 +108,7 @@ public class WorkflowProcessDefinitionController extends
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		try {
-			this.prepareRequest();
+			this.prepareRequest(request, response);
 
 			ProcessEngine processEngine = getWorkflowEngine();
 			FormService formService = processEngine.getFormService();
@@ -152,12 +151,12 @@ public class WorkflowProcessDefinitionController extends
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		try {
-			this.prepareRequest();
+			this.prepareRequest(request, response);
 
 			RepositoryService repositoryService = getWorkflowRepositoryService();
 			ProcessDefinition processDefinition = repositoryService
-					.createProcessDefinitionQuery().processDefinitionId(
-							processDefinitionId).singleResult();
+					.createProcessDefinitionQuery()
+					.processDefinitionId(processDefinitionId).singleResult();
 
 			if (processDefinition.getDiagramResourceName() == null) {
 				throw new Exception(
@@ -167,8 +166,8 @@ public class WorkflowProcessDefinitionController extends
 
 			try {
 				stream = repositoryService.getResourceAsStream(
-						processDefinition.getDeploymentId(), processDefinition
-								.getDiagramResourceName());
+						processDefinition.getDeploymentId(),
+						processDefinition.getDiagramResourceName());
 				this.sendFile(stream, response.getOutputStream());
 			} finally {
 				IoUtil.closeSilently(stream);
@@ -197,17 +196,17 @@ public class WorkflowProcessDefinitionController extends
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		try {
-			this.prepareRequest();
+			this.prepareRequest(request, response);
 			RepositoryService repositoryService = getWorkflowRepositoryService();
 			ProcessDefinition processDefinition = repositoryService
-					.createProcessDefinitionQuery().processDefinitionId(
-							processDefinitionId).singleResult();
+					.createProcessDefinitionQuery()
+					.processDefinitionId(processDefinitionId).singleResult();
 			InputStream stream = null;
 
 			try {
 				stream = repositoryService.getResourceAsStream(
-						processDefinition.getDeploymentId(), processDefinition
-								.getResourceName());
+						processDefinition.getDeploymentId(),
+						processDefinition.getResourceName());
 				this.sendFile(stream, response.getOutputStream());
 			} finally {
 				IoUtil.closeSilently(stream);

@@ -18,7 +18,6 @@ import org.activiti.engine.impl.persistence.entity.ExecutionEntity;
 import org.activiti.engine.impl.persistence.entity.ProcessDefinitionEntity;
 import org.activiti.engine.impl.util.IoUtil;
 import org.activiti.engine.runtime.ProcessInstance;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,7 +25,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-@Scope(value = "request")
 @RequestMapping(value = "/process-instance")
 public class WorkflowProcessInstanceController extends
 		AbstractWorkflowController {
@@ -53,7 +51,7 @@ public class WorkflowProcessInstanceController extends
 			throws Exception {
 
 		try {
-			this.prepareRequest();
+			this.prepareRequest(request, response);
 
 			ProcessInstance processInstance = null;
 			Map<String, Object> variables = new HashMap<String, Object>();
@@ -76,8 +74,9 @@ public class WorkflowProcessInstanceController extends
 						.startProcessInstanceByKey(processDefinitionKey,
 								businessKey, variables);
 			} else {
-				processInstance = getWorkflowRuntimeService().startProcessInstanceById(
-						processDefinitionId, businessKey, variables);
+				processInstance = getWorkflowRuntimeService()
+						.startProcessInstanceById(processDefinitionId,
+								businessKey, variables);
 			}
 
 			return "{\"success\":true, \"id\": \"" + processInstance.getId()
@@ -109,7 +108,7 @@ public class WorkflowProcessInstanceController extends
 			throws Exception {
 
 		try {
-			this.prepareRequest();
+			this.prepareRequest(request, response);
 
 			ProcessEngine processEngine = getWorkflowEngine();
 			RepositoryService repositoryService = processEngine
@@ -117,8 +116,8 @@ public class WorkflowProcessInstanceController extends
 			RuntimeService runtimeService = processEngine.getRuntimeService();
 
 			ExecutionEntity pi = (ExecutionEntity) runtimeService
-					.createProcessInstanceQuery().processInstanceId(
-							processInstanceId).singleResult();
+					.createProcessInstanceQuery()
+					.processInstanceId(processInstanceId).singleResult();
 
 			if (pi == null) {
 				throw new Exception("Process instance with id"
