@@ -1,7 +1,6 @@
 package net.nan21.dnet.core.web.controller.ui.extjs;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 

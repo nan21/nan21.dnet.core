@@ -16,6 +16,9 @@ Ext.define("dnet.core.dc.DcvEditFormBuilder", {
 
 	addTextArea : function(config) {
 		config.xtype = "textarea";
+		Ext.applyIf(config, {
+			selectOnFocus : false
+		});
 		this.applyModelUpdater(config);
 		this.applySharedConfig(config);
 		return this;
