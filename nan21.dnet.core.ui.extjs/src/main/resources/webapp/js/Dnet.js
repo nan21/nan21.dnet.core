@@ -9,6 +9,8 @@ Dnet = {
 		patch : 0
 	},
 
+	logoUrl : "http://nan21.net/logo.png",
+
 	/*
 	 * Base URLs amd fragments:
 	 * 
@@ -16,7 +18,6 @@ Dnet = {
 	 * html file.
 	 * 
 	 */
-
 	hostUrl : null,
 	url : null,
 
@@ -407,4 +408,5 @@ Dnet = {
 			scope : scope
 		});
 	}
+
 };

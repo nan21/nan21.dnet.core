@@ -64,17 +64,24 @@ public class UiExtjsMainController extends AbstractUiExtjsController {
 				}
 			}
 		}
-		
 
 		model.put("extensions", sb.toString());
 
 		// get extensions content
-		StringBuffer sbc = new StringBuffer();
+		StringBuffer sbc = new StringBuffer(
+				"/* BEGIN EXTENSION CONTENT PROVIDER */");
 		for (IExtensionContentProvider provider : this.extensionContentProviders) {
 			sbc.append(provider.getContent());
-		}
+		}		
+		sbc.append("/* END EXTENSION CONTENT PROVIDER */");
 		model.put("extensionsContent", sbc.toString());
-
+		
+		
+		String logoUrl = this.getSystemConfig()
+				.getSysParamValue("APP_LOGO_URL");
+		if (logoUrl != null && !logoUrl.equals("")) {
+			model.put("logoUrl", logoUrl);
+		}
 		return new ModelAndView(this.jspName, model);
 	}
 

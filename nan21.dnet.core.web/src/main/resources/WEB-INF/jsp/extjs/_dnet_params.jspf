@@ -1,6 +1,7 @@
 <script>
 		Dnet.name = '${product.name}';
 		Dnet.version = '${product.version}';
+		Dnet.logoUrl = '${logoUrl}';
 		
 		Dnet.deploymentUrl = "${deploymentUrl}";
 		Dnet.deploymentDomainUrl = "${deploymentDomainUrl}";
