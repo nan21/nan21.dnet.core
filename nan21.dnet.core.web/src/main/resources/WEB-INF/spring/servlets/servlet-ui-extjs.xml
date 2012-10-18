@@ -16,47 +16,25 @@
 
 	<bean name="uiExtjsMainController"
 		class="net.nan21.dnet.core.web.controller.ui.extjs.UiExtjsMainController">
-		<property name="productInfo" ref="productInfo" />
 		<property name="jspName" value="extjs/indexMain" />
-		<property name="uiExtjsSettings" ref="application_uiExtjsSettings" />
 		<property name="extensionProviders" ref="osgiExtensionProviders" />
 		<property name="extensionContentProviders" ref="osgiExtensionContentProviders" />
 		<property name="setupParticipants" ref="osgiSetupParticipants" />
 		<property name="startupParticipants" ref="osgiStartupParticipants" />
-		<property name="systemConfig" ref="systemConfig" />
 	</bean>
 
 	<bean name="uiExtjsFrameController"
 		class="net.nan21.dnet.core.web.controller.ui.extjs.UiExtjsFrameController">
-		<property name="productInfo" ref="productInfo" />
 		<property name="jspName" value="extjs/indexFrame" />
-		<property name="uiExtjsSettings" ref="application_uiExtjsSettings" />
-		<property name="extensionProviders" ref="osgiExtensionProvidersFrame" />
-		<property name="extensionContentProviders" ref="osgiExtensionContentProvidersFrame" />
-		<property name="systemConfig" ref="systemConfig" />
+		<property name="extensionProviders" ref="osgiExtensionProviders" />
+		<property name="extensionContentProviders" ref="osgiExtensionContentProviders" />
 	</bean>
 
 	<bean name="uiExtjsDashboardController"
 		class="net.nan21.dnet.core.web.controller.ui.extjs.UiExtjsDashboardController">
-		<property name="productInfo" ref="productInfo" />
 		<property name="jspName" value="extjs/indexDashboard" />
-		<property name="uiExtjsSettings" ref="application_uiExtjsSettings" />
-		<!-- <property name="extensionProviders" ref="osgiExtensionProviders" /> 
-			<property name="extensionContentProviders" ref="osgiExtensionContentProviders" 
-			/> -->
-		<property name="systemConfig" ref="systemConfig" />
-	</bean>
-
-	<!-- When change the mapping keys below propagate the new values to the 
-		WEB-INF/jsp/extjs/index* pages also -->
-	<bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
-		<property name="mappings">
-			<props>
-				<prop key="/dashboard">uiExtjsDashboardController</prop>
-				<prop key="/frame/*/*">uiExtjsFrameController</prop>
-				<prop key="/">uiExtjsMainController</prop>
-			</props>
-		</property>
+		<property name="extensionProviders" ref="osgiExtensionProviders" />
+		<property name="extensionContentProviders" ref="osgiExtensionContentProviders" />
 	</bean>
 
 	<bean

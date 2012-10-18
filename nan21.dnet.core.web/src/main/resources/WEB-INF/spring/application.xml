@@ -66,15 +66,8 @@
 	<osgi:list id="osgiExtensionProviders" cardinality="0..N"
 		interface="net.nan21.dnet.core.api.ui.extjs.IExtensionProvider" />
 
-	<osgi:list id="osgiExtensionProvidersFrame" cardinality="0..N"
-		interface="net.nan21.dnet.core.api.ui.extjs.IExtensionProviderFrame" />
-
 	<osgi:list id="osgiExtensionContentProviders" cardinality="0..N"
 		interface="net.nan21.dnet.core.api.ui.extjs.IExtensionContentProvider" />
-
-	<osgi:list id="osgiExtensionContentProvidersFrame"
-		cardinality="0..N"
-		interface="net.nan21.dnet.core.api.ui.extjs.IExtensionContentProviderFrame" />
 
 	<osgi:list id="osgiDsServiceFactories" cardinality="0..N"
 		interface="net.nan21.dnet.core.api.service.IDsServiceFactory" />

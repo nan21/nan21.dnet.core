@@ -13,6 +13,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.nan21.dnet.core.api.IProductInfo;
 import net.nan21.dnet.core.api.ISystemConfig;
 import net.nan21.dnet.core.api.security.IAuthorizationFactory;
 import net.nan21.dnet.core.api.session.Params;
@@ -43,6 +44,11 @@ public abstract class AbstractDnetController implements ApplicationContextAware 
 	 * System configuration. May be null, use the getter.
 	 */
 	private ISystemConfig systemConfig;
+
+	/**
+	 * Product information to be displayed on client.
+	 */
+	protected IProductInfo productInfo;
 
 	/**
 	 * Presenter service locator. May be null, use the getter.
@@ -168,16 +174,17 @@ public abstract class AbstractDnetController implements ApplicationContextAware 
 
 	}
 
-//	private String buildErrorMessage(String msg) {
-//		ObjectMapper mapper = getJsonMapper();
-//		try {
-//			return "{ \"success\":false, \"msg\":"
-//					+ mapper.writeValueAsString(msg) + "}";
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			return "{ \"success\": false, \"msg\": \"There was an error while trying to serialize the business logic exception. Check the application logs for more details. \"}";
-//		}
-//	}
+	// private String buildErrorMessage(String msg) {
+	// ObjectMapper mapper = getJsonMapper();
+	// try {
+	// return "{ \"success\":false, \"msg\":"
+	// + mapper.writeValueAsString(msg) + "}";
+	// } catch (Exception e) {
+	// e.printStackTrace();
+	// return
+	// "{ \"success\": false, \"msg\": \"There was an error while trying to serialize the business logic exception. Check the application logs for more details. \"}";
+	// }
+	// }
 
 	protected void sendFile(File file, ServletOutputStream outputStream)
 			throws IOException {
@@ -233,6 +240,7 @@ public abstract class AbstractDnetController implements ApplicationContextAware 
 	 * @throws IOException
 	 */
 	@ExceptionHandler(value = NotAuthorizedRequestException.class)
+	@ResponseBody
 	protected String handleException(NotAuthorizedRequestException e,
 			HttpServletResponse response) throws IOException {
 		response.setStatus(403);
@@ -321,6 +329,24 @@ public abstract class AbstractDnetController implements ApplicationContextAware 
 	 */
 	public void setSystemConfig(ISystemConfig systemConfig) {
 		this.systemConfig = systemConfig;
+	}
+
+	/**
+	 * Get product info object. If it is null attempts to retrieve it from
+	 * Spring context.
+	 * 
+	 * @return
+	 */
+	public IProductInfo getProductInfo() {
+		if (this.productInfo == null) {
+			this.productInfo = this.getApplicationContext().getBean(
+					IProductInfo.class);
+		}
+		return productInfo;
+	}
+
+	public void setProductInfo(IProductInfo productInfo) {
+		this.productInfo = productInfo;
 	}
 
 	/**

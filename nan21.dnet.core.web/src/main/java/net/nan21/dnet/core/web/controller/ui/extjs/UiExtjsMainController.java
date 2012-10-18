@@ -9,24 +9,25 @@ import javax.servlet.http.HttpServletResponse;
 
 import net.nan21.dnet.core.api.setup.ISetupParticipant;
 import net.nan21.dnet.core.api.setup.IStartupParticipant;
-import net.nan21.dnet.core.api.ui.extjs.ExtensionScript;
 import net.nan21.dnet.core.api.ui.extjs.IExtensionContentProvider;
 import net.nan21.dnet.core.api.ui.extjs.IExtensionProvider;
+import net.nan21.dnet.core.api.ui.extjs.IExtensions;
 import net.nan21.dnet.core.security.SessionUser;
 
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+@Controller
 public class UiExtjsMainController extends AbstractUiExtjsController {
-
-	List<IExtensionProvider> extensionProviders;
-	List<IExtensionContentProvider> extensionContentProviders;
 
 	protected List<ISetupParticipant> setupParticipants;
 	protected List<IStartupParticipant> startupParticipants;
 
-	@Override
-	protected ModelAndView handleRequestInternal(HttpServletRequest request,
+	@RequestMapping(value = "/", method = RequestMethod.GET)
+	protected ModelAndView home(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 
 		for (ISetupParticipant sp : setupParticipants) {
@@ -49,36 +50,18 @@ public class UiExtjsMainController extends AbstractUiExtjsController {
 		Map<String, Object> model = new HashMap<String, Object>();
 		this._prepare(model, request, response);
 
-		// get extensions scripts
-		StringBuffer sb = new StringBuffer();
-		for (IExtensionProvider provider : this.extensionProviders) {
-			List<ExtensionScript> files = provider.getFiles();
-			for (ExtensionScript file : files) {
-				if (!file.isRelativePath()) {
-					sb.append("<script type=\"text/javascript\" src=\""
-							+ file.getLocation() + "\"></script>\n");
-				} else {
-					sb.append("<script type=\"text/javascript\" src=\""
-							+ uiExtjsSettings.getUrlModules() + "/"
-							+ file.getLocation() + "\"></script>\n");
-				}
-			}
-		}
+		/* ========== extensions =========== */
 
-		model.put("extensions", sb.toString());
+		model.put(
+				"extensions",
+				getExtensionFiles(IExtensions.MAIN,
+						uiExtjsSettings.getUrlCore()));
 
-		// get extensions content
-		StringBuffer sbc = new StringBuffer(
-				"/* BEGIN EXTENSION CONTENT PROVIDER */");
-		for (IExtensionContentProvider provider : this.extensionContentProviders) {
-			sbc.append(provider.getContent());
-		}		
-		sbc.append("/* END EXTENSION CONTENT PROVIDER */");
-		model.put("extensionsContent", sbc.toString());
-		
-		
+		model.put("extensionsContent", getExtensionContent(IExtensions.MAIN));
+
 		String logoUrl = this.getSystemConfig()
 				.getSysParamValue("APP_LOGO_URL");
+
 		if (logoUrl != null && !logoUrl.equals("")) {
 			model.put("logoUrl", logoUrl);
 		}

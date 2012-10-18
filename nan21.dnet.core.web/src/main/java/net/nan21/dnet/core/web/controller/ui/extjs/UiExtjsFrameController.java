@@ -1,125 +1,58 @@
 package net.nan21.dnet.core.web.controller.ui.extjs;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.nan21.dnet.core.api.ui.extjs.ExtensionScript;
-import net.nan21.dnet.core.api.ui.extjs.IExtensionContentProviderFrame;
-import net.nan21.dnet.core.api.ui.extjs.IExtensionProviderFrame;
 import net.nan21.dnet.core.security.NotAuthorizedRequestException;
 import net.nan21.dnet.core.security.SessionUser;
 
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+@Controller
+@RequestMapping(value = "/frame", method = RequestMethod.GET)
 public class UiExtjsFrameController extends AbstractUiExtjsController {
 
-	List<IExtensionProviderFrame> extensionProviders;
-
-	List<IExtensionContentProviderFrame> extensionContentProviders;
-
-	@Override
-	protected ModelAndView handleRequestInternal(HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
+	@RequestMapping(value = "/{bundle}/{frameFQN}", method = RequestMethod.GET)
+	protected ModelAndView home(@PathVariable("frameFQN") String frame,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
 
 		try {
 			@SuppressWarnings("unused")
 			SessionUser su = (SessionUser) SecurityContextHolder.getContext()
 					.getAuthentication().getPrincipal();
 		} catch (java.lang.ClassCastException e) {
-			// anonymous user
 			throw new NotAuthorizedRequestException("Not authenticated");
 		}
+
 		Map<String, Object> model = new HashMap<String, Object>();
 		this._prepare(model, request, response);
 
+		// configuring a path as/{bundle}/{frameFQN} doesn't work with current
+		// spring
 		String[] tmp = request.getPathInfo().split("/");
-		String item = tmp[tmp.length - 1];
+		String frameFQN = tmp[tmp.length - 1];
 		String bundle = tmp[tmp.length - 2];
-		String[] t = item.split("\\.");
+		String[] t = frameFQN.split("\\.");
 
-		model.put("item", item);
+		model.put("item", frameFQN);
 		model.put("itemSimpleName", t[t.length - 1]);
 		model.put("bundle", bundle);
 
-		StringBuffer sb = new StringBuffer();
-		for (IExtensionProviderFrame provider : this.extensionProviders) {
+		model.put("extensions",
+				getExtensionFiles(frameFQN, uiExtjsSettings.getUrlModules()));
 
-			List<ExtensionScript> files = provider.getFiles(item);
-			boolean isCss = false;
-			for (ExtensionScript file : files) {
-				String _loc = file.getLocation();
-				int idx = _loc.lastIndexOf('.');
-				if (idx == -1 || idx >= _loc.length()) {
-					throw new Exception("Extension provider file `" + _loc
-							+ "` should be of type .js or .css");
-				}
-				String _extension = _loc.substring(idx);
-
-				if (_extension.equalsIgnoreCase(".css")) {
-					isCss = true;
-				} else if (_extension.equalsIgnoreCase(".js")) {
-					isCss = false;
-				} else {
-					throw new Exception("Extension provider file `" + _loc
-							+ "` should be of type .js or .css");
-				}
-
-				if (isCss) {
-					if (!file.isRelativePath()) {
-						sb.append("<link rel=\"stylesheet\" type=\"text/css\" href=\""
-								+ file.getLocation() + "\"></link>\n");
-					} else {
-						sb.append("<link rel=\"stylesheet\" type=\"text/css\" href=\""
-								+ uiExtjsSettings.getUrlModules()
-								+ "/"
-								+ file.getLocation() + "\"></link>\n");
-					}
-				} else {
-					if (!file.isRelativePath()) {
-						sb.append("<script type=\"text/javascript\" src=\""
-								+ file.getLocation() + "\"></script>\n");
-					} else {
-						sb.append("<script type=\"text/javascript\" src=\""
-								+ uiExtjsSettings.getUrlModules() + "/"
-								+ file.getLocation() + "\"></script>\n");
-					}
-				}
-
-			}
-
-		}
-		model.put("extensions", sb.toString());
-
-		StringBuffer sbc = new StringBuffer();
-		for (IExtensionContentProviderFrame provider : this.extensionContentProviders) {
-			sbc.append(provider.getContent(item));
-		}
-		model.put("extensionsContent", sbc.toString());
+		model.put("extensionsContent", getExtensionContent(frameFQN));
 
 		return new ModelAndView(this.jspName, model);
-	}
-
-	public List<IExtensionProviderFrame> getExtensionProviders() {
-		return extensionProviders;
-	}
-
-	public void setExtensionProviders(
-			List<IExtensionProviderFrame> extensionProviders) {
-		this.extensionProviders = extensionProviders;
-	}
-
-	public List<IExtensionContentProviderFrame> getExtensionContentProviders() {
-		return extensionContentProviders;
-	}
-
-	public void setExtensionContentProviders(
-			List<IExtensionContentProviderFrame> extensionContentProviders) {
-		this.extensionContentProviders = extensionContentProviders;
 	}
 
 }

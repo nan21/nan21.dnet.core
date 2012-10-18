@@ -1,22 +1,16 @@
 package net.nan21.dnet.core.web.controller.ui.senchatouch;
 
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.nan21.dnet.core.api.ui.extjs.ExtensionScript;
-import net.nan21.dnet.core.api.ui.extjs.IExtensionContentProviderFrame;
-import net.nan21.dnet.core.api.ui.extjs.IExtensionProviderFrame;
 import net.nan21.dnet.core.security.NotAuthorizedRequestException;
 import net.nan21.dnet.core.security.SessionUser;
 
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.servlet.ModelAndView;
 
-public class UiSenchaTouchFrameController extends AbstractUiSenchaTouchController {
-
-	 
+public class UiSenchaTouchFrameController extends
+		AbstractUiSenchaTouchController {
 
 	@Override
 	protected ModelAndView handleRequestInternal(HttpServletRequest request,
@@ -45,37 +39,37 @@ public class UiSenchaTouchFrameController extends AbstractUiSenchaTouchControlle
 		model.put("itemSimpleName", t[t.length - 1]);
 		model.put("bundle", bundle);
 
-//		StringBuffer sb = new StringBuffer();
-//		for (IExtensionProviderFrame provider : this.extensionProviders) {
-//			
-//			List<ExtensionScript> files = provider.getFiles(item);
-//			for(ExtensionScript file: files) {
-//				if (!file.isRelativePath()) {
-//					sb.append("<script type=\"text/javascript\" src=\""+file.getLocation()+"\"></script>\n" );
-//				}else {
-//					sb.append("<script type=\"text/javascript\" src=\""+uiExtjsSettings.getUrlUiExtjs()+"/"+
-//							file.getLocation() +"\"></script>\n" );
-//				}
-//			}	
-			
-//			if (item.equals(provider.getTargetFrame())) {
-//				sb.append("<script type=\"text/javascript\" src=\""
-//						+ uiExtjsSettings.getUrlUiExtjs() + "/"
-//						+ provider.getBundleName() + "/"
-//						+ provider.getFileName() + "\"></script>\n");
-//			}
-//		}
-//		this.model.put("extensions", sb.toString());
-//
-//		StringBuffer sbc = new StringBuffer();
-//		for (IExtensionContentProviderFrame provider : this.extensionContentProviders) {
-//			sbc.append(provider.getContent(item));
-//		}
-		//this.model.put("extensionsContent", sbc.toString());
+		// StringBuffer sb = new StringBuffer();
+		// for (IExtensionProviderFrame provider : this.extensionProviders) {
+		//
+		// List<ExtensionScript> files = provider.getFiles(item);
+		// for(ExtensionScript file: files) {
+		// if (!file.isRelativePath()) {
+		// sb.append("<script type=\"text/javascript\" src=\""+file.getLocation()+"\"></script>\n"
+		// );
+		// }else {
+		// sb.append("<script type=\"text/javascript\" src=\""+uiExtjsSettings.getUrlUiExtjs()+"/"+
+		// file.getLocation() +"\"></script>\n" );
+		// }
+		// }
+
+		// if (item.equals(provider.getTargetFrame())) {
+		// sb.append("<script type=\"text/javascript\" src=\""
+		// + uiExtjsSettings.getUrlUiExtjs() + "/"
+		// + provider.getBundleName() + "/"
+		// + provider.getFileName() + "\"></script>\n");
+		// }
+		// }
+		// this.model.put("extensions", sb.toString());
+		//
+		// StringBuffer sbc = new StringBuffer();
+		// for (IExtensionContentProviderFrame provider :
+		// this.extensionContentProviders) {
+		// sbc.append(provider.getContent(item));
+		// }
+		// this.model.put("extensionsContent", sbc.toString());
 
 		return new ModelAndView(this.jspName, this.model);
 	}
-
- 
 
 }
