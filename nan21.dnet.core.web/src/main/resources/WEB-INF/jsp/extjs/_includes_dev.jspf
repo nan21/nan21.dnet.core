@@ -24,7 +24,7 @@
     <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/base/FrameInspector.js"></script>
     <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/base/UserPreferences.js"></script>
     <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/base/AbstractDNetView.js"></script>   
-    
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/base/DisplayField.js"></script>   
     
     <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/asgn/AbstractAsgn.js"></script>
     <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/asgn/AbstractAsgnGrid.js"></script>
@@ -103,9 +103,11 @@
     <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/dc/DcActionsStateManager.js"></script>     
     <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/dc/DcContext.js"></script>
     <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/dc/DcExceptions.js"></script>
-    <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/dc/DataExportWindow.js"></script>  
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/dc/DataExportWindow.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/dc/DataPrintWindow.js"></script>    
     <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/dc/DataImportWindow.js"></script>
-    <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/dc/DataSortWindow.js"></script>    
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/dc/DataSortWindow.js"></script> 
+    <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/dc/DataFilterWindow.js"></script>   
     <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/dc/GridLayoutManager.js"></script>     
        
     <script type="text/javascript" src="${urlUiExtjsCore}/js/dnet/core/ui/AbstractUi.js"></script>

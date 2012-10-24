@@ -6,8 +6,9 @@ import java.util.List;
 import net.nan21.dnet.core.api.ISystemConfig;
 import net.nan21.dnet.core.api.action.IDsExport;
 import net.nan21.dnet.core.api.action.IQueryBuilder;
-import net.nan21.dnet.core.api.action.SortToken;
+import net.nan21.dnet.core.api.action.ISortToken;
 import net.nan21.dnet.core.api.marshall.IDsMarshaller;
+import net.nan21.dnet.core.api.model.IFilterRule;
 
 /**
  * Interface to be implemented by any data-source service.
@@ -74,18 +75,36 @@ public interface IDsService<M, F, P> {
 
 	public List<M> findByIds(List<Object> ids) throws Exception;
 
-	public List<M> find(F filter, P params) throws Exception;
-
 	public List<M> find(F filter) throws Exception;
 
-	public List<M> find(F filter, P params, IQueryBuilder<M, F, P> builder)
+	public List<M> find(F filter, int resultStart, int resultSize)
 			throws Exception;
 
-	public List<M> find(F filter, P params, List<SortToken> sortTokens,
-			int resultStart, int resultSize) throws Exception;
+	public List<M> find(F filter, P params) throws Exception;
 
 	public List<M> find(F filter, P params, int resultStart, int resultSize)
 			throws Exception;
+
+	public List<M> find(F filter, List<IFilterRule> filterRules)
+			throws Exception;
+
+	public List<M> find(F filter, List<IFilterRule> filterRules,
+			int resultStart, int resultSize) throws Exception;
+
+	public List<M> find(F filter, P params, List<IFilterRule> filterRules)
+			throws Exception;
+
+	public List<M> find(F filter, P params, List<IFilterRule> filterRules,
+			int resultStart, int resultSize) throws Exception;
+
+	public List<M> find(F filter, P params, List<IFilterRule> filterRules,
+			List<ISortToken> sortTokens) throws Exception;
+
+	public List<M> find(F filter, P params, List<IFilterRule> filterRules,
+			int resultStart, int resultSize, List<ISortToken> sortTokens)
+			throws Exception;
+
+	public List<M> find(IQueryBuilder<M, F, P> builder) throws Exception;
 
 	public Long count(F filter, P params, IQueryBuilder<M, F, P> builder)
 			throws Exception;
@@ -94,7 +113,7 @@ public interface IDsService<M, F, P> {
 	 * Handler for basic data import given an input stream. Performs an insert.
 	 * 
 	 * @param inputStream
-	 * @param sourceName 
+	 * @param sourceName
 	 * @throws Exception
 	 */
 	public void doImport(InputStream inputStream, String sourceName)

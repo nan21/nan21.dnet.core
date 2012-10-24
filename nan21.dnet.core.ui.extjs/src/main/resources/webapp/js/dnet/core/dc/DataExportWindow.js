@@ -3,8 +3,8 @@ Ext.define("dnet.core.dc.DataExportForm", {
 
 	actionButton : null,
 	_elems_ : null,
-	_formats_ : [ "csv", "html", "xml", "json", "pdf" ],
-	_layouts_ : [ "portrait", "landscape" ],
+	_formats_ : [ "csv", "html", "xml", "json" ],
+
 	_grid_ : null,
 
 	initComponent : function(config) {
@@ -17,18 +17,19 @@ Ext.define("dnet.core.dc.DataExportForm", {
 
 		var cfg = {
 			frame : true,
-			
+
 			fieldDefaults : {
 				labelAlign : 'right',
-				labelWidth : 100,  
+				labelWidth : 100,
 				msgTarget : 'side'
 			},
 			defaults : {
 				anchor : '-20'
-				//anchor : '80%'
+			// anchor : '80%'
 			},
-			items :[ this._elems_.get("fld_format"), this._elems_.get("fld_layout"), 
-				this._elems_.get("fld_columns"),this._elems_.get("fld_records")  ] 
+			items : [ this._elems_.get("fld_format"),
+					this._elems_.get("fld_columns"),
+					this._elems_.get("fld_records") ]
 		};
 		Ext.apply(this, cfg);
 		this.callParent(arguments);
@@ -43,20 +44,18 @@ Ext.define("dnet.core.dc.DataExportForm", {
 		return this._elems_.get(name);
 	},
 
-	_on_format_changed_ : function(nv) { //return ;
+	_on_format_changed_ : function(nv) { // return ;
 		if (nv == "pdf") {
 			this._getElement_("fld_columns_listvisible").setValue(true);
 			this._getElement_("fld_columns_listall").disable();
 			// this._getElement_("fld_columns_all").disable();
-			this._getElement_("fld_layout").enable();
+
 		} else {
 			this._getElement_("fld_columns_listall").enable();
 			// this._getElement_("fld_columns_all").enable();
-			this._getElement_("fld_layout").disable();
+
 		}
 	},
-
-	
 
 	_buildItems_ : function() {
 
@@ -65,7 +64,7 @@ Ext.define("dnet.core.dc.DataExportForm", {
 			xtype : "combo",
 			allowBlank : false,
 			selectOnFocus : true,
-			//width : 100,
+			// width : 100,
 			id : Ext.id(),
 			triggerAction : "all",
 			store : this._formats_,
@@ -78,17 +77,6 @@ Ext.define("dnet.core.dc.DataExportForm", {
 					}
 				}
 			}
-		});
-		this._elems_.add("fld_layout", {
-			fieldLabel : Dnet.translate("dcvgrid", "exp_layout"),
-			xtype : "combo",
-			allowBlank : false,
-			selectOnFocus : true,
-			//width : 100,
-			id : Ext.id(),
-			triggerAction : "all",
-			store : this._layouts_,
-			value : this._layouts_[0]
 		});
 
 		this._elems_.add("fld_columns_listvisible", {
@@ -108,8 +96,8 @@ Ext.define("dnet.core.dc.DataExportForm", {
 		this._elems_.add("fld_columns", {
 			fieldLabel : Dnet.translate("dcvgrid", "exp_columns"),
 			xtype : "radiogroup",
-			//itemCls : "x-check-group-alt",
-			style:"border-top:1px outset",
+			// itemCls : "x-check-group-alt",
+			style : "border-top:1px outset",
 			columns : 1,
 			id : Ext.id(),
 			items : [ this._elems_.get("fld_columns_listvisible"),
@@ -123,13 +111,7 @@ Ext.define("dnet.core.dc.DataExportForm", {
 			id : Ext.id(),
 			disabled : true
 		});
-		this._elems_.add("fld_records_currentpage", {
-			boxLabel : Dnet.translate("dcvgrid", "exp_rec_pag"),
-			inputValue : 'c',
-			name : "fld_records",
-			id : Ext.id(),
-			disabled : true
-		});
+
 		this._elems_.add("fld_records_allpage", {
 			boxLabel : Dnet.translate("dcvgrid", "exp_rec_all"),
 			inputValue : 'a',
@@ -137,15 +119,15 @@ Ext.define("dnet.core.dc.DataExportForm", {
 			id : Ext.id(),
 			checked : true
 		});
-		this._elems_.add("fld_records", new Ext.form.RadioGroup( {
+		this._elems_.add("fld_records", new Ext.form.RadioGroup({
 			fieldLabel : Dnet.translate("dcvgrid", "exp_records"),
 			xtype : "radiogroup",
-			//itemCls : "x-check-group-alt",
-			style:"border-top:1px outset",
+			style : "border-top:1px outset",
 			columns : 1,
 			id : Ext.id(),
-			items : [ this._elems_.get("fld_records_selected"),
-					this._elems_.get("fld_records_currentpage"),
+			items : [
+
+			this._elems_.get("fld_records_selected"),
 					this._elems_.get("fld_records_allpage") ]
 		}));
 
@@ -158,7 +140,8 @@ Ext.define("dnet.core.dc.DataExportForm", {
 				.getValue());
 
 		var filterData = ctrl.filter.data;
-		var request = dnet.core.base.RequestParamFactory.findRequest(filterData);
+		var request = dnet.core.base.RequestParamFactory
+				.findRequest(filterData);
 		for ( var p in request.data) {
 			if (request.data[p] == "") {
 				request.data[p] = null;
@@ -174,23 +157,23 @@ Ext.define("dnet.core.dc.DataExportForm", {
 			params["resultSize"] = 30;
 			params["resultStart"] = 0;
 		}
-		
+
 		var sortCols = "";
 		var sortDirs = "";
 		var first = true;
-		ctrl.store.sorters.each(function(item, idx,len) {
-			if(!first) {
+		ctrl.store.sorters.each(function(item, idx, len) {
+			if (!first) {
 				sortCols += ",";
 				sortDirs += ",";
 			}
 			sortCols += item.property;
 			sortDirs += item.direction || "ASC";
 			first = false;
-		},this); 
-		  
-		 params[Dnet.requestParam.SORT] = sortCols;
-		 params[Dnet.requestParam.SENSE] = sortDirs;
-		 
+		}, this);
+
+		params[Dnet.requestParam.SORT] = sortCols;
+		params[Dnet.requestParam.SENSE] = sortDirs;
+
 		if (fcv != "a") {
 			var gridCm = this._grid_.columns;
 			var cs = '';
@@ -216,8 +199,9 @@ Ext.define("dnet.core.dc.DataExportForm", {
 		}
 		var opts = "adress=yes, width=710, height=450,"
 				+ "scrollbars=yes, resizable=yes,menubar=yes";
-		var v = window.open(url["exportdata"] + "&data=" + request.data + "&"
-				+ Ext.urlEncode(params), 'Export', opts);
+		var v = window.open(url["exportdata"] + "&" + Dnet.requestParam.FILTER
+				+ "=" + request.data + "&" + Ext.urlEncode(params), 'Export',
+				opts);
 		v.focus();
 	}
 });
@@ -239,12 +223,12 @@ Ext.define("dnet.core.dc.DataExportWindow", {
 			border : true,
 			width : 350,
 			resizable : false,
-			closeAction : "hide",			 
+			closeAction : "hide",
 			closable : true,
 			constrain : true,
 			buttonAlign : "center",
 			modal : true,
-			items : new dnet.core.dc.DataExportForm( {
+			items : new dnet.core.dc.DataExportForm({
 				actionButton : btn,
 				_grid_ : this._grid_
 			}),

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import net.nan21.dnet.core.api.Constants;
 import net.nan21.dnet.core.api.action.IActionResultDelete;
 import net.nan21.dnet.core.api.action.IActionResultSave;
 import net.nan21.dnet.core.api.marshall.IDsMarshaller;
@@ -34,13 +35,14 @@ public class AbstractDsWriteController<M, F, P> extends
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(method = RequestMethod.POST, params = "action=insert")
+	@RequestMapping(method = RequestMethod.POST, params = Constants.REQUEST_PARAM_ACTION
+			+ "=" + Constants.DS_INSERT)
 	@ResponseBody
 	public String insert(
 			@PathVariable String resourceName,
 			@PathVariable String dataFormat,
-			@RequestParam(value = "data", required = false, defaultValue = "[]") String dataString,
-			@RequestParam(value = "params", required = false, defaultValue = "{}") String paramString,
+			@RequestParam(value = Constants.REQUEST_PARAM_DATA, required = false, defaultValue = "{}") String dataString,
+			@RequestParam(value = Constants.REQUEST_PARAM_PARAMS, required = false, defaultValue = "{}") String paramString,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		try {
@@ -52,7 +54,7 @@ public class AbstractDsWriteController<M, F, P> extends
 
 			this.authorizeDsAction(
 					resourceName.substring(0, resourceName.length() - 2),
-					"insert");
+					Constants.DS_INSERT);
 
 			if (!dataString.startsWith("[")) {
 				dataString = "[" + dataString + "]";
@@ -89,13 +91,14 @@ public class AbstractDsWriteController<M, F, P> extends
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(method = RequestMethod.POST, params = "action=update")
+	@RequestMapping(method = RequestMethod.POST, params = Constants.REQUEST_PARAM_ACTION
+			+ "=" + Constants.DS_UPDATE)
 	@ResponseBody
 	public String update(
 			@PathVariable String resourceName,
 			@PathVariable String dataFormat,
-			@RequestParam(value = "data", required = false, defaultValue = "[]") String dataString,
-			@RequestParam(value = "params", required = false, defaultValue = "{}") String paramString,
+			@RequestParam(value = Constants.REQUEST_PARAM_DATA, required = false, defaultValue = "{}") String dataString,
+			@RequestParam(value = Constants.REQUEST_PARAM_PARAMS, required = false, defaultValue = "{}") String paramString,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 
@@ -108,7 +111,7 @@ public class AbstractDsWriteController<M, F, P> extends
 
 			this.authorizeDsAction(
 					resourceName.substring(0, resourceName.length() - 2),
-					"update");
+					Constants.DS_UPDATE);
 
 			if (!dataString.startsWith("[")) {
 				dataString = "[" + dataString + "]";
@@ -145,13 +148,14 @@ public class AbstractDsWriteController<M, F, P> extends
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(method = RequestMethod.POST, params = "action=delete")
+	@RequestMapping(method = RequestMethod.POST, params = Constants.REQUEST_PARAM_ACTION
+			+ "=" + Constants.DS_DELETE)
 	@ResponseBody
 	public String delete(
 			@PathVariable String resourceName,
 			@PathVariable String dataFormat,
-			@RequestParam(value = "data", required = false, defaultValue = "[]") String dataString,
-			@RequestParam(value = "params", required = false, defaultValue = "{}") String paramString,
+			@RequestParam(value = Constants.REQUEST_PARAM_DATA, required = false, defaultValue = "{}") String dataString,
+			@RequestParam(value = Constants.REQUEST_PARAM_PARAMS, required = false, defaultValue = "{}") String paramString,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 
@@ -164,7 +168,7 @@ public class AbstractDsWriteController<M, F, P> extends
 
 			this.authorizeDsAction(
 					resourceName.substring(0, resourceName.length() - 2),
-					"delete");
+					Constants.DS_DELETE);
 
 			if (!dataString.startsWith("[")) {
 				dataString = "[" + dataString + "]";
@@ -206,13 +210,14 @@ public class AbstractDsWriteController<M, F, P> extends
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(method = RequestMethod.POST, params = "action=deleteById")
+	@RequestMapping(method = RequestMethod.POST, params = Constants.REQUEST_PARAM_ACTION
+			+ "=" + Constants.DS_DELETE + "ById")
 	@ResponseBody
 	public String deleteById(
 			@PathVariable String resourceName,
 			@PathVariable String dataFormat,
-			@RequestParam(value = "data", required = false, defaultValue = "[]") String idsString,
-			@RequestParam(value = "params", required = false, defaultValue = "{}") String paramString,
+			@RequestParam(value = Constants.REQUEST_PARAM_DATA, required = false, defaultValue = "{}") String idsString,
+			@RequestParam(value = Constants.REQUEST_PARAM_PARAMS, required = false, defaultValue = "{}") String paramString,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 
@@ -225,7 +230,7 @@ public class AbstractDsWriteController<M, F, P> extends
 
 			this.authorizeDsAction(
 					resourceName.substring(0, resourceName.length() - 2),
-					"delete");
+					Constants.DS_DELETE);
 
 			if (!idsString.startsWith("[")) {
 				idsString = "[" + idsString + "]";

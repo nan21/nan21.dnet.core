@@ -1,18 +1,14 @@
-package net.nan21.dnet.core.presenter.service;
+package net.nan21.dnet.core.presenter.service.ds;
 
 import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 
 import net.nan21.dnet.core.api.service.IDsService;
 import net.nan21.dnet.core.api.service.IDsServiceFactory;
 import net.nan21.dnet.core.api.service.IEntityServiceFactory;
+import net.nan21.dnet.core.presenter.service.AbstractPresenterServiceFactory;
 
-public class DsServiceFactory implements IDsServiceFactory {
-
-	@Autowired
-	private ApplicationContext appContext;
+public class DsServiceFactory extends AbstractPresenterServiceFactory implements
+		IDsServiceFactory {
 
 	private List<IEntityServiceFactory> entityServiceFactories;
 
@@ -20,18 +16,10 @@ public class DsServiceFactory implements IDsServiceFactory {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <M,F,P> IDsService<M,F,P> create(String key) {
-		IDsService<M,F,P> s = (IDsService<M,F,P>) this.appContext.getBean(key);
-		//s.setEntityServiceFactories(entityServiceFactories);
+	public <M, F, P> IDsService<M, F, P> create(String key) {
+		IDsService<M, F, P> s = (IDsService<M, F, P>) this
+				.getApplicationContext().getBean(key);
 		return s;
-	}
-
-	public ApplicationContext getAppContext() {
-		return appContext;
-	}
-
-	public void setAppContext(ApplicationContext appContext) {
-		this.appContext = appContext;
 	}
 
 	public List<IEntityServiceFactory> getEntityServiceFactories() {

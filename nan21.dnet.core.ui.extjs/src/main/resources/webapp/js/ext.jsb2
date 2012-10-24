@@ -84,6 +84,9 @@
 	"text": "WorkflowFormFactory.js",
 	"path": "src/dnet/core/base/"
 },{
+	"text": "DisplayField.js",
+	"path": "src/dnet/core/base/"
+},{
 	"text": "AbstractDc.js",
 	"path": "src/dnet/core/dc/"
 },{
@@ -229,6 +232,12 @@
 	"path": "src/dnet/core/dc/"
 },{
 	"text": "DataImportWindow.js",
+	"path": "src/dnet/core/dc/"
+},{
+	"text": "DataFilterWindow.js",
+	"path": "src/dnet/core/dc/"
+},{
+	"text": "DataPrintWindow.js",
 	"path": "src/dnet/core/dc/"
 },{
 	"text": "GridLayoutManager.js",

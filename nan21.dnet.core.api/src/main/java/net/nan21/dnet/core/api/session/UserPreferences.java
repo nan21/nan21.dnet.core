@@ -9,37 +9,28 @@ package net.nan21.dnet.core.api.session;
 
 import java.text.SimpleDateFormat;
 
+import net.nan21.dnet.core.api.Constants;
+
 public class UserPreferences {
-
-	public static final String EXTJS_DATE_FORMAT = "Y-m-d";
-	public static final String EXTJS_TIME_FORMAT = "H:i";
-	public static final String EXTJS_DATETIME_FORMAT = "Y-m-d H:i";
-	public static final String EXTJS_ALT_FORMATS = "j|j.n|d|d.m";
-	public static final String JAVA_DATE_FORMAT = "yyyy-MM-dd";
-	public static final String JAVA_TIME_FORMAT = "kk:mm";
-	public static final String JAVA_DATETIME_FORMAT = "yyyy-MM-dd kk:mm";
-
-	public static final String DECIMAL_SEPARATOR = ".";
-	public static final String THOUSAND_SEPARATOR = ",";
-
-	private String dateFormatMask = JAVA_DATE_FORMAT;
-	private String dateTimeFormatMask = JAVA_DATETIME_FORMAT;
-	private String timeFormatMask = JAVA_TIME_FORMAT;
 
 	private SimpleDateFormat dateFormat;
 	private SimpleDateFormat dateTimeFormat;
 	private SimpleDateFormat timeFormat;
 
-	private String extjsDateFormat = EXTJS_DATE_FORMAT;
-	private String extjsTimeFormat = EXTJS_TIME_FORMAT;
-	private String extjsDateTimeFormat = EXTJS_DATETIME_FORMAT;
-	private String extjsAltFormats = EXTJS_ALT_FORMATS;
-	private String javaDateFormat = JAVA_DATE_FORMAT;
-	private String javaTimeFormat = JAVA_TIME_FORMAT;
-	private String javaDateTimeFormat = JAVA_DATETIME_FORMAT;
+	private String dateFormatMask = Constants.JAVA_DATE_FORMAT;
+	private String dateTimeFormatMask = Constants.JAVA_DATETIME_FORMAT;
+	private String timeFormatMask = Constants.JAVA_TIME_FORMAT;
 
-	private String decimalSeparator = DECIMAL_SEPARATOR;
-	private String thousandSeparator = THOUSAND_SEPARATOR;
+	private String extjsDateFormat = Constants.EXTJS_DATE_FORMAT;
+	private String extjsTimeFormat = Constants.EXTJS_TIME_FORMAT;
+	private String extjsDateTimeFormat = Constants.EXTJS_DATETIME_FORMAT;
+	private String extjsAltFormats = Constants.EXTJS_ALT_FORMATS;
+	private String javaDateFormat = Constants.JAVA_DATE_FORMAT;
+	private String javaTimeFormat = Constants.JAVA_TIME_FORMAT;
+	private String javaDateTimeFormat = Constants.JAVA_DATETIME_FORMAT;
+
+	private String decimalSeparator = Constants.DECIMAL_SEPARATOR;
+	private String thousandSeparator = Constants.THOUSAND_SEPARATOR;
 
 	private String language;
 

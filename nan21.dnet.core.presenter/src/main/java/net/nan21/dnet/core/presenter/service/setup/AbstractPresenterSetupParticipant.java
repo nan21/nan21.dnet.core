@@ -1,22 +1,31 @@
-package net.nan21.dnet.core.api.setup;
+package net.nan21.dnet.core.presenter.service.setup;
 
 import java.util.Iterator;
 import java.util.List;
 
-import net.nan21.dnet.core.api.ISystemConfig;
+import net.nan21.dnet.core.api.setup.ISetupParticipant;
+import net.nan21.dnet.core.api.setup.ISetupTask;
+import net.nan21.dnet.core.presenter.service.AbstractPresenterBaseService;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
-
-public abstract class AbstractSetupParticipant implements
-		ApplicationContextAware {
-
-	private ApplicationContext applicationContext;
-
-	private ISystemConfig systemConfig;
+/**
+ * Abstract base class for services which publish setup related tasks.
+ * 
+ * @author amathe
+ * 
+ */
+public abstract class AbstractPresenterSetupParticipant extends
+		AbstractPresenterBaseService {
 
 	protected String targetName;
+
+	/**
+	 * List of contributed tasks.
+	 */
 	protected List<ISetupTask> tasks;
+
+	/**
+	 * Priority in execution.
+	 */
 	protected int ranking;
 
 	public boolean hasWorkToDo() {
@@ -44,7 +53,7 @@ public abstract class AbstractSetupParticipant implements
 	}
 
 	public String getBundleId() {
-		return this.applicationContext.getId();
+		return this.getApplicationContext().getId();
 	}
 
 	public ISetupTask getTask(String taskId) {
@@ -83,37 +92,6 @@ public abstract class AbstractSetupParticipant implements
 
 	public int compareTo(ISetupParticipant sp) {
 		return sp.getRanking() - this.ranking;
-	}
-
-	/**
-	 * Get system configuration object. If it is null attempts to retrieve it
-	 * from Spring context.
-	 * 
-	 * @return
-	 */
-	public ISystemConfig getSystemConfig() {
-		if (this.systemConfig == null) {
-			this.systemConfig = this.applicationContext
-					.getBean(ISystemConfig.class);
-		}
-		return systemConfig;
-	}
-
-	/**
-	 * Set system configuration object.
-	 * 
-	 * @param systemConfig
-	 */
-	public void setSystemConfig(ISystemConfig systemConfig) {
-		this.systemConfig = systemConfig;
-	}
-
-	public ApplicationContext getApplicationContext() {
-		return applicationContext;
-	}
-
-	public void setApplicationContext(ApplicationContext applicationContext) {
-		this.applicationContext = applicationContext;
 	}
 
 }

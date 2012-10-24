@@ -5,32 +5,21 @@ import java.util.List;
 import net.nan21.dnet.core.api.job.IDsJob;
 import net.nan21.dnet.core.api.job.IDsJobFactory;
 import net.nan21.dnet.core.api.service.IEntityServiceFactory;
+import net.nan21.dnet.core.presenter.service.AbstractPresenterServiceFactory;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-
-public class DsJobFactory implements IDsJobFactory {
-
-	@Autowired
-	private ApplicationContext appContext;
+public class DsJobFactory extends AbstractPresenterServiceFactory implements
+		IDsJobFactory {
 
 	private List<IEntityServiceFactory> entityServiceFactories;
 
 	private String name;
-	
+
 	@Override
 	public IDsJob create(String key) {
-		IDsJob s = (IDsJob) this.appContext.getBean(key);
+		IDsJob s = (IDsJob) this.getApplicationContext().getBean(key);
 		return s;
 	}
 
-	public ApplicationContext getAppContext() {
-		return appContext;
-	}
-
-	public void setAppContext(ApplicationContext appContext) {
-		this.appContext = appContext;
-	}
 	public List<IEntityServiceFactory> getEntityServiceFactories() {
 		return entityServiceFactories;
 	}

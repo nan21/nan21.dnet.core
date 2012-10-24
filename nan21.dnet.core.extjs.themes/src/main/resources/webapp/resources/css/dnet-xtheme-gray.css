@@ -178,7 +178,7 @@
     background-image: url(../images/gray/icon/action_refresh.gif) !important;
 }
 .icon-action-filter {
-    background-image: url(../images/gray/icon/action_filter.gif) !important;
+    background-image: url(../images/gray/icon/action_filter.png) !important;
 }
 .icon-action-fetch {
     background-image: url(../images/gray/icon/action_fetch.gif) !important;
@@ -191,6 +191,9 @@
 }
 .icon-action-sort {
     background-image: url(../images/gray/icon/sort.gif)  ;
+}
+.icon-action-filter {
+    background-image: url(../images/gray/icon/action_adv_filter.png)  ;
 }
 .icon-action-customlayout{
     background-image: url(../images/gray/icon/customlayout.gif) !important;

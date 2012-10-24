@@ -1,8 +1,8 @@
-Ext.ns('dnet.core.base');
+Ext.ns("dnet.core.base");
 Dnet = {
 
 	name : "DNet",
-	version : '0.0.01',
+	version : "0.0.01",
 	versionInfo : {
 		major : 0,
 		minor : 0,
@@ -40,6 +40,10 @@ Dnet = {
 	 * Url to workflow rest api.
 	 */
 	wfUrl : null,
+
+	/**
+	 * Url to user interface.
+	 */
 	uiUrl : null,
 
 	/**
@@ -53,9 +57,11 @@ Dnet = {
 	staticResourceUrlCoreI18n : null,
 	staticResourceUrlModulesI18n : null,
 
-	moduleSubpath : '/webapp/js',
+	moduleSubpath : "/webapp/js",
 
-	// configuration variables
+	/**
+	 * configuration variables
+	 */
 	config : {
 
 	},
@@ -64,16 +70,16 @@ Dnet = {
 	 * Default date and time formats. They are overwritten according to the user
 	 * locale settings.
 	 */
-	DATE_FORMAT : 'Y-m-d',
-	TIME_FORMAT : 'H:i',
-	DATETIME_FORMAT : 'Y-m-d H:i',
-	DATETIMESEC_FORMAT : 'Y-m-d H:i:s',
-	MONTH_FORMAT : 'Y-m',
-	MODEL_DATE_FORMAT : "Y-m-d\\TH:i:s",
-	DATE_ALTFORMATS : "j|j.n|d|d.m",
+	DATE_FORMAT : Constants.EXTJS_DATE_FORMAT,
+	TIME_FORMAT : Constants.EXTJS_TIME_FORMAT,
+	DATETIME_FORMAT : Constants.EXTJS_DATETIME_FORMAT,
+	DATETIMESEC_FORMAT : Constants.EXTJS_DATETIMESEC_FORMAT,
+	MONTH_FORMAT : Constants.EXTJS_MONTH_FORMAT,
+	MODEL_DATE_FORMAT : Constants.EXTJS_MODEL_DATE_FORMAT,
+	DATE_ALTFORMATS : Constants.EXTJS_ALT_FORMATS,
 
-	THOUSAND_SEP : ',',
-	DECIMAL_SEP : '.',
+	THOUSAND_SEP : Constants.THOUSAND_SEPARATOR,
+	DECIMAL_SEP : Constants.DECIMAL_SEPARATOR,
 
 	numberFormats : null,
 
@@ -107,11 +113,11 @@ Dnet = {
 	},
 
 	dataFormat : {
-		HTML : "html",
-		CSV : "csv",
-		PDF : "pdf",
-		XML : "xml",
-		JSON : "json"
+		HTML : Constants.DATA_FORMAT_HTML,
+		CSV : Constants.DATA_FORMAT_CSV,
+		PDF : Constants.DATA_FORMAT_XML,
+		XML : Constants.DATA_FORMAT_XML,
+		JSON : Constants.DATA_FORMAT_JSON
 	},
 
 	/**
@@ -122,17 +128,32 @@ Dnet = {
 	 * them in only one place.
 	 */
 	requestParam : {
-		SORT : "orderByCol",
-		SENSE : "orderBySense",
-		START : "resultStart",
-		SIZE : "resultSize",
-		ORDERBY : "orderBy",
+		ACTION : Constants.REQUEST_PARAM_ACTION,
+		DATA : Constants.REQUEST_PARAM_DATA,
+		FILTER : Constants.REQUEST_PARAM_FILTER,
+		PARAMS : Constants.REQUEST_PARAM_PARAMS,
+		ADVANCED_FILTER : Constants.REQUEST_PARAM_ADVANCED_FILTER,
+		SORT : Constants.REQUEST_PARAM_SORT,
+		SENSE : Constants.REQUEST_PARAM_SENSE,
+		START : Constants.REQUEST_PARAM_START,
+		SIZE : Constants.REQUEST_PARAM_SIZE,
+		ORDERBY : Constants.REQUEST_PARAM_ORDERBY,
+		SERVICE_NAME_PARAM : Constants.REQUEST_PARAM_SERVICE_NAME_PARAM,
+		EXPORT_COL_NAMES : Constants.REQUEST_PARAM_EXPORT_COL_NAMES,
+		EXPORT_COL_TITLES : Constants.REQUEST_PARAM_EXPORT_COL_TITLES,
+		EXPORT_COL_WIDTHS : Constants.REQUEST_PARAM_EXPORT_COL_WIDTHS
+	},
 
-		SERVICE_NAME_PARAM : "rpcName",
-
-		EXPORT_COL_NAMES : "c[export_col_names]",
-		EXPORT_COL_TITLES : "c[export_col_titles]",
-		EXPORT_COL_WIDTHS : "c[export_col_widths]"
+	dsAction : {
+		QUERY : Constants.DS_QUERY,
+		INSERT : Constants.DS_INSERT,
+		UPDATE : Constants.DS_UPDATE,
+		DELETE : Constants.DS_DELETE,
+		SAVE : Constants.DS_SAVE,
+		IMPORT : Constants.DS_IMPORT,
+		EXPORT : Constants.DS_EXPORT,
+		PRINT : Constants.DS_PRINT,
+		RPC : Constants.DS_RPC
 	},
 
 	asgnAction : {
@@ -159,12 +180,12 @@ Dnet = {
 	 */
 	sessionAPI : function(format) {
 		return {
-			login : this.sessionUrl + '?action=login',
-			logout : this.sessionUrl + '/doLogout',
-			lock : this.sessionUrl + '?action=lock',
-			unlock : this.sessionUrl + '?action=unlock',
-			changePassword : this.sessionUrl + '?action=changePassword',
-			userSettings : this.sessionUrl + '?action=userSettings'
+			login : this.sessionUrl + "?action=login",
+			logout : this.sessionUrl + "/doLogout",
+			lock : this.sessionUrl + "?action=lock",
+			unlock : this.sessionUrl + "?action=unlock",
+			changePassword : this.sessionUrl + "?action=changePassword",
+			userSettings : this.sessionUrl + "?action=userSettings"
 		};
 	},
 
@@ -173,21 +194,26 @@ Dnet = {
 	 */
 	dsAPI : function(resource, format) {
 		return {
-			read : this.dsUrl + '/' + resource + '.' + format + '?action=find',
-			load : this.dsUrl + '/' + resource + '.' + format + '?action=find',
-			exportdata : this.dsUrl + '/' + resource + '.' + format
-					+ '?action=export',
-			importdata : this.dsUrl + '/' + resource + '.' + format
-					+ '?action=import',
-			create : this.dsUrl + '/' + resource + '.' + format
-					+ '?action=insert',
-			update : this.dsUrl + '/' + resource + '.' + format
-					+ '?action=update',
-			save : this.dsUrl + '/' + resource + '.' + format + '?action=save',
-			destroy : this.dsUrl + '/' + resource + '.' + format
-					+ '?action=delete',
-			service : this.dsUrl + '/' + resource + '.' + format
-					+ '?action=rpc'
+			read : this.dsUrl + "/" + resource + "." + format + "?"+this.requestParam.ACTION+"="
+					+ this.dsAction.QUERY,
+			load : this.dsUrl + "/" + resource + "." + format + "?"+this.requestParam.ACTION+"="
+					+ this.dsAction.QUERY,
+			print : this.dsUrl + "/" + resource + "." + format + "?"+this.requestParam.ACTION+"="
+					+ this.dsAction.PRINT,
+			exportdata : this.dsUrl + "/" + resource + "." + format
+					+ "?action=" + this.dsAction.EXPORT,
+			importdata : this.dsUrl + "/" + resource + "." + format
+					+ "?action=" + this.dsAction.IMPORT,
+			create : this.dsUrl + "/" + resource + "." + format + "?"+this.requestParam.ACTION+"="
+					+ this.dsAction.INSERT,
+			update : this.dsUrl + "/" + resource + "." + format + "?"+this.requestParam.ACTION+"="
+					+ this.dsAction.UPDATE,
+			save : this.dsUrl + "/" + resource + "." + format + "?"+this.requestParam.ACTION+"="
+					+ this.dsAction.SAVE,
+			destroy : this.dsUrl + "/" + resource + "." + format + "?"+this.requestParam.ACTION+"="
+					+ this.dsAction.DELETE,
+			service : this.dsUrl + "/" + resource + "." + format + "?"+this.requestParam.ACTION+"="
+					+ this.dsAction.RPC
 		};
 	},
 
@@ -196,13 +222,13 @@ Dnet = {
 	 */
 	asgnLeftAPI : function(resource, format) {
 		return {
-			read : this.asgnUrl + '/' + resource + '.' + format
-					+ '?action=findLeft',
-			exportdata : this.asgnUrl + '/' + resource + '.' + format
-					+ '?action=',
-			create : this.asgnUrl + '/' + resource + '.' + format + '?action=',
-			update : this.asgnUrl + '/' + resource + '.' + format + '?action=',
-			destroy : this.asgnUrl + '/' + resource + '.' + format + '?action='
+			read : this.asgnUrl + "/" + resource + "." + format
+					+ "?action=findLeft",
+			exportdata : this.asgnUrl + "/" + resource + "." + format
+					+ "?action=",
+			create : this.asgnUrl + "/" + resource + "." + format + "?"+this.requestParam.ACTION+"=",
+			update : this.asgnUrl + "/" + resource + "." + format + "?"+this.requestParam.ACTION+"=",
+			destroy : this.asgnUrl + "/" + resource + "." + format + "?"+this.requestParam.ACTION+"="
 
 		};
 	},
@@ -212,13 +238,13 @@ Dnet = {
 	 */
 	asgnRightAPI : function(resource, format) {
 		return {
-			read : this.asgnUrl + '/' + resource + '.' + format
-					+ '?action=findRight',
-			exportdata : this.asgnUrl + '/' + resource + '.' + format
-					+ '?action=',
-			create : this.asgnUrl + '/' + resource + '.' + format + '?action=',
-			update : this.asgnUrl + '/' + resource + '.' + format + '?action=',
-			destroy : this.asgnUrl + '/' + resource + '.' + format + '?action='
+			read : this.asgnUrl + "/" + resource + "." + format
+					+ "?"+this.requestParam.ACTION+"=findRight",
+			exportdata : this.asgnUrl + "/" + resource + "." + format
+					+ "?"+this.requestParam.ACTION+"=",
+			create : this.asgnUrl + "/" + resource + "." + format + "?"+this.requestParam.ACTION+"=",
+			update : this.asgnUrl + "/" + resource + "." + format + "?"+this.requestParam.ACTION+"=",
+			destroy : this.asgnUrl + "/" + resource + "." + format + "?"+this.requestParam.ACTION+"="
 
 		};
 	},
@@ -227,7 +253,7 @@ Dnet = {
 	 * URLs for RPC type requests.
 	 */
 	rpcAPI : function(resource, fnName, format) {
-		return this.rpcUrl + '/' + resource + '.' + format + '?action='
+		return this.rpcUrl + "/" + resource + "." + format + "?"+this.requestParam.ACTION+"="
 				+ fnName
 	},
 
@@ -236,14 +262,14 @@ Dnet = {
 	 */
 	wfProcessDefinitionAPI : function(processDefinitionId) {
 		return {
-			form : this.wfUrl + '/process-definition/' + processDefinitionId
-					+ '/form',
-			diagram : this.wfUrl + '/process-definition/' + processDefinitionId
-					+ '/diagram',
-			xml : this.wfUrl + '/process-definition/' + processDefinitionId
-					+ '/xml',
-			properties : this.wfUrl + '/process-definition/'
-					+ processDefinitionId + '/properties'
+			form : this.wfUrl + "/process-definition/" + processDefinitionId
+					+ "/form",
+			diagram : this.wfUrl + "/process-definition/" + processDefinitionId
+					+ "/diagram",
+			xml : this.wfUrl + "/process-definition/" + processDefinitionId
+					+ "/xml",
+			properties : this.wfUrl + "/process-definition/"
+					+ processDefinitionId + "/properties"
 		};
 	},
 
@@ -252,9 +278,9 @@ Dnet = {
 	 */
 	wfProcessInstanceAPI : function(processInstanceId) {
 		return {
-			start : this.wfUrl + '/process-instance/start',
-			diagram : this.wfUrl + '/process-instance/' + processInstanceId
-					+ '/diagram'
+			start : this.wfUrl + "/process-instance/start",
+			diagram : this.wfUrl + "/process-instance/" + processInstanceId
+					+ "/diagram"
 		};
 	},
 
@@ -263,9 +289,9 @@ Dnet = {
 	 */
 	wfTaskAPI : function(taskId) {
 		return {
-			form : this.wfUrl + '/task/' + taskId + '/form',
-			complete : this.wfUrl + '/task/' + taskId + '/complete',
-			properties : this.wfUrl + '/task/' + taskId + '/properties'
+			form : this.wfUrl + "/task/" + taskId + "/form",
+			complete : this.wfUrl + "/task/" + taskId + "/complete",
+			properties : this.wfUrl + "/task/" + taskId + "/properties"
 		};
 	},
 
@@ -274,26 +300,36 @@ Dnet = {
 	 */
 	wfDeploymentAPI : function(deploymentId) {
 		return {
-			destroy : this.wfUrl + '/deployment/delete'
+			destroy : this.wfUrl + "/deployment/delete"
 		};
 	},
 
 	setDialogPath : function(dialogName, pathname) {
 		if (pathname) {
-			document.getElementById(dialogName + '_dialogPath').innerHTML = pathname;
-			document.getElementById(dialogName + '_dialogNamePathSeparator').innerHTML = "/";
+			document.getElementById(dialogName + "_dialogPath").innerHTML = pathname;
+			document.getElementById(dialogName + "_dialogNamePathSeparator").innerHTML = "/";
 		} else {
-			document.getElementById(dialogName + '_dialogPath').innerHTML = "";
-			document.getElementById(dialogName + '_dialogNamePathSeparator').innerHTML = "";
+			document.getElementById(dialogName + "_dialogPath").innerHTML = "";
+			document.getElementById(dialogName + "_dialogNamePathSeparator").innerHTML = "";
 		}
 	},
 
 	setDialogTitle : function(dialogName, title) {
-		document.getElementById(dialogName + '_dialogName').innerHTML = title;
+		document.getElementById(dialogName + "_dialogName").innerHTML = title;
 	},
 
-	translate : function(t, k) {
-		return dnet.Translation[t][k] || k;
+	/**
+	 * Translate a group/key pair from the translations pack. Optionally replace
+	 * place holders with given values.
+	 */
+	translate : function(group, key, params) {
+		var v = dnet.Translation[group][key] || key;
+		if (Ext.isArray(params)) {
+			for ( var i = 0, len = params.length; i < len; i++) {
+				v = v.replace("{" + i + "}", params[i]);
+			}
+		}
+		return v;
 	},
 
 	navigationTreeMenus : {
@@ -307,16 +343,16 @@ Dnet = {
 		for ( var i = 0; i < list.length; i++) {
 			if (!Ext.isEmpty(list[i])) {
 				var rd = this.describeResource(list[i]);
-				document.write('<' + 'scr' + 'ipt type="text/javascript" src="'
-						+ Dnet.staticResourceUrlModules + '/' + rd.bundle
-						+ this.moduleSubpath + '/' + rd.type + '/' + rd.name
-						+ '.js"></script>');
+				document.write("<" + "scr" + "ipt type=\"text/javascript\" src=\""
+						+ Dnet.staticResourceUrlModules + "/" + rd.bundle
+						+ this.moduleSubpath + "/" + rd.type + "/" + rd.name
+						+ ".js\"></script>");
 				if (rd.type == "ds") {
-					document.write('<' + 'scr'
-							+ 'ipt type="text/javascript" src="'
-							+ Dnet.staticResourceUrlModulesI18n + '/'
-							+ __LANGUAGE__ + '/' + rd.bundle + '/' + rd.type
-							+ '/' + rd.name + '.js"></script>');
+					document.write("<" + "scr"
+							+ "ipt type=\"text/javascript\" src=\""
+							+ Dnet.staticResourceUrlModulesI18n + "/"
+							+ __LANGUAGE__ + "/" + rd.bundle + "/" + rd.type
+							+ "/" + rd.name + ".js\"></script>");
 				}
 			}
 		}
@@ -324,10 +360,10 @@ Dnet = {
 
 	describeResource : function(artifact) {
 		var rd = {};
-		var t = artifact.split('/');
-		rd['bundle'] = t[0];
-		rd['type'] = t[1];
-		rd['name'] = t[2];
+		var t = artifact.split("/");
+		rd["bundle"] = t[0];
+		rd["type"] = t[1];
+		rd["name"] = t[2];
 		return rd;
 	},
 
@@ -340,15 +376,15 @@ Dnet = {
 			item.fieldLabel = vrb[item.name];
 			return true;
 		}
-		// try to translate it from the model's resource bundle
+		// try to translate it from the model"s resource bundle
 		if (item.dataIndex != undefined && mrb != null
-				&& mrb[item.dataIndex + '__lbl']) {
-			item.fieldLabel = mrb[item.dataIndex + '__lbl'];
+				&& mrb[item.dataIndex + "__lbl"]) {
+			item.fieldLabel = mrb[item.dataIndex + "__lbl"];
 			return true;
 		}
 		if (item.paramIndex != undefined && mrb != null
-				&& mrb[item.paramIndex + '__lbl']) {
-			item.fieldLabel = mrb[item.paramIndex + '__lbl'];
+				&& mrb[item.paramIndex + "__lbl"]) {
+			item.fieldLabel = mrb[item.paramIndex + "__lbl"];
 			return true;
 		}
 		// try to translate from the shared resource-bundle
@@ -365,10 +401,10 @@ Dnet = {
 			item.header = vrb[item.name];
 			return true;
 		}
-		// try to translate it from the model's resource bundle
+		// try to translate it from the model"s resource bundle
 		if (item.dataIndex != undefined && mrb != null
-				&& mrb[item.dataIndex + '__lbl']) {
-			item.header = mrb[item.dataIndex + '__lbl'];
+				&& mrb[item.dataIndex + "__lbl"]) {
+			item.header = mrb[item.dataIndex + "__lbl"];
 			return true;
 		}
 		// try to translate from the shared resource-bundle
@@ -376,7 +412,7 @@ Dnet = {
 	},
 
 	createBooleanStore : function() {
-		return Ext.create('Ext.data.Store', {
+		return Ext.create("Ext.data.Store", {
 			fields : [ "bv", "tv" ],
 			data : [ {
 				"bv" : true,

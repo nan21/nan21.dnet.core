@@ -1,34 +1,23 @@
-package net.nan21.dnet.core.presenter.service;
+package net.nan21.dnet.core.presenter.service.asgn;
 
 import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-
 import net.nan21.dnet.core.api.service.IAsgnService;
 import net.nan21.dnet.core.api.service.IAsgnServiceFactory;
 import net.nan21.dnet.core.api.service.IAsgnTxServiceFactory;
+import net.nan21.dnet.core.presenter.service.AbstractPresenterServiceFactory;
 
-public class AsgnServiceFactory implements IAsgnServiceFactory {
+public class AsgnServiceFactory extends AbstractPresenterServiceFactory
+		implements IAsgnServiceFactory {
 
-	@Autowired
-	private ApplicationContext appContext;
-	 
 	private List<IAsgnTxServiceFactory> asgnTxServiceFactories;
-	 
+
 	@SuppressWarnings("unchecked")
 	@Override
-	public <M,F,P> IAsgnService<M,F,P> create(String key) {
-		IAsgnService<M,F,P> s = (IAsgnService<M,F,P>)this.appContext.getBean(key);
+	public <M, F, P> IAsgnService<M, F, P> create(String key) {
+		IAsgnService<M, F, P> s = (IAsgnService<M, F, P>) this
+				.getApplicationContext().getBean(key, IAsgnService.class);
 		s.setAsgnTxServiceFactories(asgnTxServiceFactories);
-		return s; 		 
-	}
-	 
-	public ApplicationContext getAppContext() {
-		return appContext;
-	}
-	public void setAppContext(ApplicationContext appContext) {
-		this.appContext = appContext;
+		return s;
 	}
 
 	public List<IAsgnTxServiceFactory> getAsgnTxServiceFactories() {
@@ -39,6 +28,5 @@ public class AsgnServiceFactory implements IAsgnServiceFactory {
 			List<IAsgnTxServiceFactory> asgnTxServiceFactories) {
 		this.asgnTxServiceFactories = asgnTxServiceFactories;
 	}
- 
-	
+
 }

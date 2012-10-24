@@ -71,10 +71,10 @@ Ext.define("dnet.core.dc.DcvGridBuilder", {
 				this.addTextColumn({ name:"uuid", dataIndex:"uuid", hidden:true,width:100 })   	
 			}
 			if(f.name=="createdAt" && !cols.containsKey("createdAt") ) {
-				this.addDateColumn({ name:"createdAt", dataIndex:"createdAt", hidden:true,format:Dnet.DATETIMESEC_FORMAT})   
+				this.addDateColumn({ name:"createdAt", dataIndex:"createdAt", hidden:true, format:Dnet.DATETIME_FORMAT})   
 			}
 			if(f.name=="modifiedAt" && !cols.containsKey("modifiedAt") ) {
-				this.addDateColumn({ name:"modifiedAt", dataIndex:"modifiedAt", hidden:true,format:Dnet.DATETIMESEC_FORMAT}) 
+				this.addDateColumn({ name:"modifiedAt", dataIndex:"modifiedAt", hidden:true, format:Dnet.DATETIME_FORMAT}) 
 			}
 			if(f.name=="createdBy" && !cols.containsKey("createdBy") ) {
 				this.addTextColumn({ name:"createdBy", dataIndex:"createdBy", hidden:true,width:100 })   	

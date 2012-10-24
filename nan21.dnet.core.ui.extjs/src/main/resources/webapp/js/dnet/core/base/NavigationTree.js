@@ -81,7 +81,7 @@ Ext.define("dnet.core.base.NavigationTree", {
 	        		scope:this,
 	        		fn:  function( store,  operation,  eOpts ) {	
 	        			//alert("store-beforeload");
-						store.proxy.extraParams.data = Ext.encode({
+						store.proxy.extraParams[Dnet.requestParam.FILTER] = Ext.encode({
 							menu : this._menuName_
 						});
 					}
@@ -115,11 +115,11 @@ Ext.define("dnet.core.base.NavigationTree", {
 	beforeStoreLoad: function( store,  operation,  eOpts ) {
 		//alert("tree-beforeload");
 		if(operation.node.data) {
-			store.proxy.extraParams.data = Ext.encode({
+			store.proxy.extraParams[Dnet.requestParam.FILTER] = Ext.encode({
 				menuItemId : operation.node.raw.id	
 			});
 		} else {
-			store.proxy.extraParams.data = Ext.encode({
+			store.proxy.extraParams[Dnet.requestParam.FILTER] = Ext.encode({
 				menu : this._menuName_		
 			});
 		}

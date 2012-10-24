@@ -8,6 +8,8 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.nan21.dnet.core.api.Constants;
+import net.nan21.dnet.core.api.SysParam;
 import net.nan21.dnet.core.api.session.Params;
 import net.nan21.dnet.core.api.session.Session;
 import net.nan21.dnet.core.api.session.User;
@@ -28,11 +30,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 public abstract class AbstractUiExtjsController extends AbstractDnetController {
 
-	// TODO: externalize these configs and propagate them to the client as well
-	private final static String COOKIE_NAME_THEME = "dnet-theme";
-	private final static String DEFAULT_THEME = "gray";
-	private final static String COOKIE_NAME_LANG = "dnet-lang";
-	private final static String DEFAULT_LANG = "en";
+	private String constantsJsFragment;
 
 	/**
 	 * List of extension file providers.
@@ -63,7 +61,7 @@ public abstract class AbstractUiExtjsController extends AbstractDnetController {
 
 		request.setCharacterEncoding("UTF-8");
 		response.setCharacterEncoding("UTF-8");
-		
+
 		if (logger.isDebugEnabled()) {
 			logger.debug("Handling request for ui.extjs: ",
 					request.getPathInfo());
@@ -74,20 +72,7 @@ public abstract class AbstractUiExtjsController extends AbstractDnetController {
 		String contextPath = request.getContextPath();
 		String path = request.getServletPath();
 
-		String userUsername = "";
-		String userDisplayName = "";
-		String userClientCode = "";
-		String userClientId = "";
-
-		String extjsDateFormat = UserPreferences.EXTJS_DATE_FORMAT;
-		String extjsTimeFormat = UserPreferences.EXTJS_TIME_FORMAT;
-		String extjsDateTimeFormat = UserPreferences.EXTJS_DATETIME_FORMAT;
-		String extjsAltFormats = UserPreferences.EXTJS_ALT_FORMATS;
-
-		String decimalSeparator = UserPreferences.DECIMAL_SEPARATOR;
-		String thousandSeparator = UserPreferences.THOUSAND_SEPARATOR;
 		String userRolesStr = null;
-		boolean userSystemClient = false;
 
 		try {
 			SessionUser su = (SessionUser) SecurityContextHolder.getContext()
@@ -102,19 +87,21 @@ public abstract class AbstractUiExtjsController extends AbstractDnetController {
 			Session.profile.set(profile);
 			Session.params.set(params);
 
-			userUsername = user.getUsername();
-			userDisplayName = user.getDisplayName();
-			userClientCode = user.getClientCode();
-			userClientId = user.getClientId().toString();
-			userSystemClient = params.isSystemClient();
+			model.put("constantsJsFragment", this.getConstantsJsFragment());
 
-			extjsDateFormat = prefs.getExtjsDateFormat();
-			extjsTimeFormat = prefs.getExtjsTimeFormat();
-			extjsDateTimeFormat = prefs.getExtjsDateTimeFormat();
-			extjsAltFormats = prefs.getExtjsAltFormats();
+			model.put("userUsername", user.getUsername());
+			model.put("userDisplayName", user.getDisplayName());
+			model.put("userClientCode", user.getClientCode());
+			model.put("userClientId", user.getClientId().toString());
+			model.put("userSystemClient", params.isSystemClient());
 
-			decimalSeparator = prefs.getDecimalSeparator();
-			thousandSeparator = prefs.getThousandSeparator();
+			model.put("extjsDateFormat", prefs.getExtjsDateFormat());
+			model.put("extjsTimeFormat", prefs.getExtjsTimeFormat());
+			model.put("extjsDateTimeFormat", prefs.getExtjsDateTimeFormat());
+			model.put("extjsAltFormats", prefs.getExtjsAltFormats());
+
+			model.put("decimalSeparator", prefs.getDecimalSeparator());
+			model.put("thousandSeparator", prefs.getThousandSeparator());
 
 			Set<GrantedAuthority> roles = su.getAuthorities();
 			StringBuffer sb = new StringBuffer();
@@ -140,12 +127,6 @@ public abstract class AbstractUiExtjsController extends AbstractDnetController {
 		model.put("uiUrl", uiUrl);
 		model.put("product", this.getProductInfo());
 
-		model.put("userUsername", userUsername);
-		model.put("userDisplayName", userDisplayName);
-		model.put("userClientCode", userClientCode);
-		model.put("userClientId", userClientId);
-		model.put("userSystemClient", userSystemClient);
-
 		// extjs library and themes
 		model.put("urlUiExtjsLib", getUiExtjsSettings().getUrlLib());
 		model.put("urlUiExtjsThemes", getUiExtjsSettings().getUrlThemes());
@@ -165,14 +146,95 @@ public abstract class AbstractUiExtjsController extends AbstractDnetController {
 		model.put("theme", this.resolveTheme(request, response));
 		model.put("sysCfg_workingMode", this.getSystemConfig().getWorkingMode());
 
-		model.put("extjsDateFormat", extjsDateFormat);
-		model.put("extjsTimeFormat", extjsTimeFormat);
-		model.put("extjsDateTimeFormat", extjsDateTimeFormat);
-		model.put("extjsAltFormats", extjsAltFormats);
-		model.put("decimalSeparator", decimalSeparator);
-		model.put("thousandSeparator", thousandSeparator);
 		model.put("userRolesStr", userRolesStr);
 
+	}
+
+	private void addConstant(StringBuffer sb, String name, String value) {
+		this.addConstant(sb, name, value, false);
+	}
+
+	private void addConstant(StringBuffer sb, String name, String value,
+			boolean isLast) {
+		sb.append(name + ":\"" + value + "\"");
+		if (!isLast) {
+			sb.append(",\n");
+		}
+	}
+
+	private synchronized String getConstantsJsFragment() {
+
+		if (this.constantsJsFragment == null) {
+
+			StringBuffer sb = new StringBuffer("Constants={");
+
+			addConstant(sb, "DATA_FORMAT_CSV", Constants.DATA_FORMAT_CSV);
+			addConstant(sb, "DATA_FORMAT_HTML", Constants.DATA_FORMAT_HTML);
+			addConstant(sb, "DATA_FORMAT_JSON", Constants.DATA_FORMAT_JSON);
+			addConstant(sb, "DATA_FORMAT_XML", Constants.DATA_FORMAT_XML);
+			addConstant(sb, "DATA_FORMAT_PDF", Constants.DATA_FORMAT_PDF);
+
+			addConstant(sb, "REQUEST_PARAM_THEME",
+					Constants.REQUEST_PARAM_THEME);
+			addConstant(sb, "REQUEST_PARAM_LANG", Constants.REQUEST_PARAM_LANG);
+			
+			
+			addConstant(sb, "REQUEST_PARAM_ACTION", Constants.REQUEST_PARAM_ACTION);
+			addConstant(sb, "REQUEST_PARAM_DATA", Constants.REQUEST_PARAM_DATA);
+			addConstant(sb, "REQUEST_PARAM_FILTER", Constants.REQUEST_PARAM_FILTER);
+			addConstant(sb, "REQUEST_PARAM_ADVANCED_FILTER", Constants.REQUEST_PARAM_ADVANCED_FILTER);			
+			
+			addConstant(sb, "REQUEST_PARAM_PARAMS",
+					Constants.REQUEST_PARAM_PARAMS);
+			addConstant(sb, "REQUEST_PARAM_SORT", Constants.REQUEST_PARAM_SORT);
+			addConstant(sb, "REQUEST_PARAM_SENSE",
+					Constants.REQUEST_PARAM_SENSE);
+			addConstant(sb, "REQUEST_PARAM_START",
+					Constants.REQUEST_PARAM_START);
+			addConstant(sb, "REQUEST_PARAM_SIZE", Constants.REQUEST_PARAM_SIZE);
+			addConstant(sb, "REQUEST_PARAM_ORDERBY",
+					Constants.REQUEST_PARAM_ORDERBY);
+
+			addConstant(sb, "REQUEST_PARAM_EXPORT_COL_NAMES",
+					Constants.REQUEST_PARAM_EXPORT_COL_NAMES);
+			addConstant(sb, "REQUEST_PARAM_EXPORT_COL_TITLES",
+					Constants.REQUEST_PARAM_EXPORT_COL_TITLES);
+			addConstant(sb, "REQUEST_PARAM_EXPORT_COL_WIDTHS",
+					Constants.REQUEST_PARAM_EXPORT_COL_WIDTHS);
+			addConstant(sb, "REQUEST_PARAM_SERVICE_NAME_PARAM",
+					Constants.REQUEST_PARAM_SERVICE_NAME_PARAM);
+
+			addConstant(sb, "EXTJS_DATE_FORMAT", Constants.EXTJS_DATE_FORMAT);
+			addConstant(sb, "EXTJS_TIME_FORMAT", Constants.EXTJS_TIME_FORMAT);
+			addConstant(sb, "EXTJS_DATETIME_FORMAT",
+					Constants.EXTJS_DATETIME_FORMAT);
+			addConstant(sb, "EXTJS_DATETIMESEC_FORMAT",
+					Constants.EXTJS_DATETIMESEC_FORMAT);
+			addConstant(sb, "EXTJS_MONTH_FORMAT", Constants.EXTJS_MONTH_FORMAT);
+			addConstant(sb, "EXTJS_MODEL_DATE_FORMAT",
+					Constants.EXTJS_MODEL_DATE_FORMAT);
+			addConstant(sb, "EXTJS_ALT_FORMATS", Constants.EXTJS_ALT_FORMATS);
+
+			addConstant(sb, "DECIMAL_SEPARATOR", Constants.DECIMAL_SEPARATOR);
+			addConstant(sb, "THOUSAND_SEPARATOR", Constants.THOUSAND_SEPARATOR);
+
+			addConstant(sb, "DS_QUERY", Constants.DS_QUERY);
+			addConstant(sb, "DS_INSERT", Constants.DS_INSERT);
+			addConstant(sb, "DS_UPDATE", Constants.DS_UPDATE);
+			addConstant(sb, "DS_DELETE", Constants.DS_DELETE);
+			addConstant(sb, "DS_SAVE", Constants.DS_SAVE);
+			addConstant(sb, "DS_IMPORT", Constants.DS_IMPORT);
+			addConstant(sb, "DS_EXPORT", Constants.DS_EXPORT);
+			addConstant(sb, "DS_PRINT", Constants.DS_PRINT);
+			addConstant(sb, "DS_RPC", Constants.DS_RPC, true);
+
+			sb.append("}");
+
+			this.constantsJsFragment = sb.toString();
+
+		}
+
+		return this.constantsJsFragment;
 	}
 
 	/**
@@ -242,23 +304,28 @@ public abstract class AbstractUiExtjsController extends AbstractDnetController {
 	 * @param request
 	 * @param response
 	 * @return
+	 * @throws Exception
 	 */
 	private String resolveTheme(HttpServletRequest request,
-			HttpServletResponse response) {
+			HttpServletResponse response) throws Exception {
 		Cookie[] cookies = request.getCookies();
-		Cookie c = this.getCookie(cookies, COOKIE_NAME_THEME);
+		Cookie c = this.getCookie(cookies, Constants.COOKIE_NAME_THEME);
 		if (c == null) {
-			c = this.createCookie(COOKIE_NAME_THEME, DEFAULT_THEME,
+			c = this.createCookie(
+					Constants.COOKIE_NAME_THEME,
+					this.getSystemConfig().getSysParamValue(
+							SysParam.CORE_DEFAULT_THEME_EXTJS),
 					60 * 60 * 24 * 365);
 			response.addCookie(c);
 		}
 
-		String theme = request.getParameter("theme");
+		String theme = request.getParameter(Constants.REQUEST_PARAM_THEME);
 		if (theme == null || theme.equals("")) {
 			theme = c.getValue();
 		} else {
 			c.setMaxAge(0);
-			c = this.createCookie(COOKIE_NAME_THEME, theme, 60 * 60 * 24 * 365);
+			c = this.createCookie(Constants.COOKIE_NAME_THEME, theme,
+					60 * 60 * 24 * 365);
 			response.addCookie(c);
 		}
 		return theme;
@@ -270,23 +337,27 @@ public abstract class AbstractUiExtjsController extends AbstractDnetController {
 	 * @param request
 	 * @param response
 	 * @return
+	 * @throws Exception
 	 */
 	private String resolveLang(HttpServletRequest request,
-			HttpServletResponse response) {
+			HttpServletResponse response) throws Exception {
 		Cookie[] cookies = request.getCookies();
-		Cookie c = this.getCookie(cookies, COOKIE_NAME_LANG);
+		Cookie c = this.getCookie(cookies, Constants.COOKIE_NAME_LANG);
 		if (c == null) {
-			c = this.createCookie(COOKIE_NAME_LANG, DEFAULT_LANG,
-					60 * 60 * 24 * 365);
+			c = this.createCookie(
+					Constants.COOKIE_NAME_LANG,
+					this.getSystemConfig().getSysParamValue(
+							SysParam.CORE_DEFAULT_LANG), 60 * 60 * 24 * 365);
 			response.addCookie(c);
 		}
 
-		String lang = request.getParameter("lang");
+		String lang = request.getParameter(Constants.REQUEST_PARAM_LANG);
 		if (lang == null || lang.equals("")) {
 			lang = c.getValue();
 		} else {
 			c.setMaxAge(0);
-			c = this.createCookie(COOKIE_NAME_LANG, lang, 60 * 60 * 24 * 365);
+			c = this.createCookie(Constants.COOKIE_NAME_LANG, lang,
+					60 * 60 * 24 * 365);
 			response.addCookie(c);
 		}
 		return lang;

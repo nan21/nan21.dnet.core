@@ -15,20 +15,19 @@ Ext.define("dnet.core.dc.command.DcQueryCommand",{
 		}
 		var request = dnet.core.base.RequestParamFactory
 				.findRequest(dc.filter.data);
-		for ( var p in request.data) {
-			if (request.data[p] === "") {
-				request.data[p] = null;
+		var data = request[Dnet.requestParam.FILTER];
+		for ( var p in data) {
+			if (data[p] === "") {
+				data[p] = null;
 			}
 		}
-		var data = Ext.encode(request.data);
-		request.data = data;
-		request.params = Ext.encode(dc.params.data);
-		dc.store.proxy.extraParams.params = request.params;
-		dc.store.proxy.extraParams.data = request.data;
+
+		dc.store.proxy.extraParams[Dnet.requestParam.PARAMS] = Ext.encode(dc.params.data);
+		dc.store.proxy.extraParams[Dnet.requestParam.FILTER] = Ext.encode(data);
+		dc.store.proxy.extraParams[Dnet.requestParam.ADVANCED_FILTER] = Ext.encode(dc.advancedFilter || []);
 		dc.store.currentPage = 1;
 		
 		dc.store.load( {
-			//params : request,
 			scope : dc
 		});
 	},

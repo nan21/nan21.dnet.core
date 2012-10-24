@@ -17,6 +17,7 @@ public class UiSenchaTouchFrameController extends
 			HttpServletResponse response) throws Exception {
 
 		try {
+			@SuppressWarnings("unused")
 			SessionUser su = (SessionUser) SecurityContextHolder.getContext()
 					.getAuthentication().getPrincipal();
 		} catch (java.lang.ClassCastException e) {

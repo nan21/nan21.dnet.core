@@ -9,8 +9,10 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.nan21.dnet.core.api.Constants;
 import net.nan21.dnet.core.api.IProductInfo;
 import net.nan21.dnet.core.api.ISystemConfig;
+import net.nan21.dnet.core.api.SysParam;
 import net.nan21.dnet.core.api.session.Params;
 import net.nan21.dnet.core.api.session.Session;
 import net.nan21.dnet.core.api.session.User;
@@ -31,11 +33,6 @@ import org.springframework.web.servlet.mvc.AbstractController;
 public abstract class AbstractUiSenchaTouchController extends
 		AbstractController {
 
-	private final static String COOKIE_NAME_THEME = "dnet-theme";
-	private final static String DEFAULT_THEME = "gray";
-	private final static String COOKIE_NAME_LANG = "dnet-lang";
-	private final static String DEFAULT_LANG = "en";
-
 	final static Logger logger = LoggerFactory
 			.getLogger(AbstractUiSenchaTouchController.class);
 
@@ -55,22 +52,10 @@ public abstract class AbstractUiSenchaTouchController extends
 		String contextPath = request.getContextPath();
 		String path = request.getServletPath();
 
-		logger.info("Handling request for ui.sencha-touch: {}", request.getPathInfo());
+		logger.info("Handling request for ui.sencha-touch: {}",
+				request.getPathInfo());
 
-		String userUsername = "";
-		String userDisplayName = "";
-		String userClientCode = "";
-		String userClientId = "";
-
-		String extjsDateFormat = UserPreferences.EXTJS_DATE_FORMAT;
-		String extjsTimeFormat = UserPreferences.EXTJS_TIME_FORMAT;
-		String extjsDateTimeFormat = UserPreferences.EXTJS_DATETIME_FORMAT;
-		String extjsAltFormats = UserPreferences.EXTJS_ALT_FORMATS;
-
-		String decimalSeparator = UserPreferences.DECIMAL_SEPARATOR;
-		String thousandSeparator = UserPreferences.THOUSAND_SEPARATOR;
 		String userRolesStr = null;
-		boolean userSystemClient = false;
 
 		try {
 			SessionUser su = (SessionUser) SecurityContextHolder.getContext()
@@ -85,19 +70,19 @@ public abstract class AbstractUiSenchaTouchController extends
 			Session.profile.set(profile);
 			Session.params.set(params);
 
-			userUsername = user.getUsername();
-			userDisplayName = user.getDisplayName();
-			userClientCode = user.getClientCode();
-			userClientId = user.getClientId().toString();
-			userSystemClient = params.isSystemClient();
+			model.put("userUsername", user.getUsername());
+			model.put("userDisplayName", user.getDisplayName());
+			model.put("userClientCode", user.getClientCode());
+			model.put("userClientId", user.getClientId().toString());
+			model.put("userSystemClient", params.isSystemClient());
 
-			extjsDateFormat = prefs.getExtjsDateFormat();
-			extjsTimeFormat = prefs.getExtjsTimeFormat();
-			extjsDateTimeFormat = prefs.getExtjsDateTimeFormat();
-			extjsAltFormats = prefs.getExtjsAltFormats();
+			model.put("extjsDateFormat", prefs.getExtjsDateFormat());
+			model.put("extjsTimeFormat", prefs.getExtjsTimeFormat());
+			model.put("extjsDateTimeFormat", prefs.getExtjsDateTimeFormat());
+			model.put("extjsAltFormats", prefs.getExtjsAltFormats());
 
-			decimalSeparator = prefs.getDecimalSeparator();
-			thousandSeparator = prefs.getThousandSeparator();
+			model.put("decimalSeparator", prefs.getDecimalSeparator());
+			model.put("thousandSeparator", prefs.getThousandSeparator());
 
 			Set<GrantedAuthority> roles = su.getAuthorities();
 			StringBuffer sb = new StringBuffer();
@@ -124,68 +109,80 @@ public abstract class AbstractUiSenchaTouchController extends
 		this.model.put("uiUrl", this.uiUrl);
 		this.model.put("product", this.productInfo);
 
-		this.model.put("userUsername", userUsername);
-		this.model.put("userDisplayName", userDisplayName);
-		this.model.put("userClientCode", userClientCode);
-		this.model.put("userClientId", userClientId);
-		this.model.put("userSystemClient", userSystemClient);
-
 		this.model.put("urlUiStModules", uiSenchaTouchSettings.getUrlModules());
 		this.model.put("urlUiStCore", uiSenchaTouchSettings.getUrlCore());
-		this.model.put("urlUiStLibSenchaTouch", uiSenchaTouchSettings.getUrlLib());
+		this.model.put("urlUiStLibSenchaTouch",
+				uiSenchaTouchSettings.getUrlLib());
 
 		this.model.put("shortLanguage", this.resolveLang(request, response));
 		this.model.put("theme", this.resolveTheme(request, response));
 		this.model
 				.put("sysCfg_workingMode", this.systemConfig.getWorkingMode());
 
-		this.model.put("extjsDateFormat", extjsDateFormat);
-		this.model.put("extjsTimeFormat", extjsTimeFormat);
-		this.model.put("extjsDateTimeFormat", extjsDateTimeFormat);
-		this.model.put("extjsAltFormats", extjsAltFormats);
-		this.model.put("decimalSeparator", decimalSeparator);
-		this.model.put("thousandSeparator", thousandSeparator);
 		this.model.put("userRolesStr", userRolesStr);
 
 	}
 
+	/**
+	 * Resolve the user's current theme from the cookie.
+	 * 
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
 	private String resolveTheme(HttpServletRequest request,
-			HttpServletResponse response) {
+			HttpServletResponse response) throws Exception {
 		Cookie[] cookies = request.getCookies();
-		Cookie c = this.getCookie(cookies, COOKIE_NAME_THEME);
+		Cookie c = this.getCookie(cookies, Constants.COOKIE_NAME_THEME);
 		if (c == null) {
-			c = this.createCookie(COOKIE_NAME_THEME, DEFAULT_THEME,
+			c = this.createCookie(
+					Constants.COOKIE_NAME_THEME,
+					this.getSystemConfig().getSysParamValue(
+							SysParam.CORE_DEFAULT_THEME_STOUCH),
 					60 * 60 * 24 * 365);
 			response.addCookie(c);
 		}
 
-		String theme = request.getParameter("theme");
+		String theme = request.getParameter(Constants.REQUEST_PARAM_THEME);
 		if (theme == null || theme.equals("")) {
 			theme = c.getValue();
 		} else {
 			c.setMaxAge(0);
-			c = this.createCookie(COOKIE_NAME_THEME, theme, 60 * 60 * 24 * 365);
+			c = this.createCookie(Constants.COOKIE_NAME_THEME, theme,
+					60 * 60 * 24 * 365);
 			response.addCookie(c);
 		}
 		return theme;
 	}
 
+	/**
+	 * Resolve the user's current language from the cookie.
+	 * 
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
 	private String resolveLang(HttpServletRequest request,
-			HttpServletResponse response) {
+			HttpServletResponse response) throws Exception {
 		Cookie[] cookies = request.getCookies();
-		Cookie c = this.getCookie(cookies, COOKIE_NAME_LANG);
+		Cookie c = this.getCookie(cookies, Constants.COOKIE_NAME_LANG);
 		if (c == null) {
-			c = this.createCookie(COOKIE_NAME_LANG, DEFAULT_LANG,
-					60 * 60 * 24 * 365);
+			c = this.createCookie(
+					Constants.COOKIE_NAME_LANG,
+					this.getSystemConfig().getSysParamValue(
+							SysParam.CORE_DEFAULT_LANG), 60 * 60 * 24 * 365);
 			response.addCookie(c);
 		}
 
-		String lang = request.getParameter("lang");
+		String lang = request.getParameter(Constants.REQUEST_PARAM_LANG);
 		if (lang == null || lang.equals("")) {
 			lang = c.getValue();
 		} else {
 			c.setMaxAge(0);
-			c = this.createCookie(COOKIE_NAME_LANG, lang, 60 * 60 * 24 * 365);
+			c = this.createCookie(Constants.COOKIE_NAME_LANG, lang,
+					60 * 60 * 24 * 365);
 			response.addCookie(c);
 		}
 		return lang;

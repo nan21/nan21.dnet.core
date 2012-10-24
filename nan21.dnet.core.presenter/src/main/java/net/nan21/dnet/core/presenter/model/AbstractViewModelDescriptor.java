@@ -113,7 +113,7 @@ public abstract class AbstractViewModelDescriptor<M> implements IViewModelDescri
 				queryHints = new HashMap<String, Object>();
 			}
 			//this.nestedFetchJoins = new HashMap<String, String>();
-			Class clz = this.modelClass;
+			Class<?> clz = this.modelClass;
 			
 			while (clz != null ) {
 				Field[] fields = clz.getDeclaredFields();

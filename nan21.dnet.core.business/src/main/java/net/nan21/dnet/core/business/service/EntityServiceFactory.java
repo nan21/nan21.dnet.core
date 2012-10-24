@@ -1,31 +1,36 @@
 package net.nan21.dnet.core.business.service;
- 
+
 import net.nan21.dnet.core.api.service.IEntityService;
 import net.nan21.dnet.core.api.service.IEntityServiceFactory;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 
-public class EntityServiceFactory implements IEntityServiceFactory{
-	@Autowired
-	private ApplicationContext appContext;
-	
+public class EntityServiceFactory implements IEntityServiceFactory,
+		ApplicationContextAware {
+
+	private ApplicationContext applicationContext;
+
 	@Override
 	public <E> IEntityService<E> create(String key) {
-		IEntityService<E> s = (IEntityService<E>)this.appContext.getBean(key);
-		return s; 		 
+		@SuppressWarnings("unchecked")
+		IEntityService<E> s = (IEntityService<E>) this.applicationContext
+				.getBean(key);
+		return s;
 	}
-	
+
 	public <E> IEntityService<E> create(Class<E> type) {
-		IEntityService<E> s = (IEntityService<E>)this.appContext.getBean(type);
-		return s; 		 
+		@SuppressWarnings("unchecked")
+		IEntityService<E> s = (IEntityService<E>) this.applicationContext
+				.getBean(type);
+		return s;
 	}
-	
-	public ApplicationContext getAppContext() {
-		return appContext;
+
+	public ApplicationContext getApplicationContext() {
+		return applicationContext;
 	}
-	public void setAppContext(ApplicationContext appContext) {
-		this.appContext = appContext;
+
+	public void setApplicationContext(ApplicationContext applicationContext) {
+		this.applicationContext = applicationContext;
 	}
-	
+
 }

@@ -1,21 +1,23 @@
 package net.nan21.dnet.core.presenter.model;
 
-import net.nan21.dnet.core.presenter.service.AbstractDsDelegate;
+import net.nan21.dnet.core.presenter.service.AbstractPresenterBaseService;
 
 public class RpcDefinition {
 
-	private final Class<? extends AbstractDsDelegate> delegateClass;
+	private final Class<? extends AbstractPresenterBaseService> delegateClass;
 	private final String methodName;
 	private boolean reloadFromEntity;
 
-	public RpcDefinition(Class<? extends AbstractDsDelegate> delegateClass,
+	public RpcDefinition(
+			Class<? extends AbstractPresenterBaseService> delegateClass,
 			String methodName) {
 		super();
 		this.delegateClass = delegateClass;
 		this.methodName = methodName;
 	}
 
-	public RpcDefinition(Class<? extends AbstractDsDelegate> delegateClass,
+	public RpcDefinition(
+			Class<? extends AbstractPresenterBaseService> delegateClass,
 			String methodName, boolean reloadFromEntity) {
 		super();
 		this.delegateClass = delegateClass;
@@ -23,7 +25,7 @@ public class RpcDefinition {
 		this.reloadFromEntity = reloadFromEntity;
 	}
 
-	public Class<? extends AbstractDsDelegate> getDelegateClass() {
+	public Class<? extends AbstractPresenterBaseService> getDelegateClass() {
 		return delegateClass;
 	}
 

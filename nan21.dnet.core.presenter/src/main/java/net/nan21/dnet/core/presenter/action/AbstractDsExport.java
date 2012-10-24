@@ -22,37 +22,36 @@ public abstract class AbstractDsExport<M> {
 	protected String outFileName;
 	protected String outFilePath;
 	protected String outFileExtension;
-	
+
 	protected Map<String, String> fieldGetterNames;
 	protected Map<String, Method> fieldGetters;
 
 	protected List<String> fieldNames;
 	protected List<String> fieldTitles;
 	protected List<String> fieldWidths;
-	
+
 	protected Map<String, Object> properties;
-	
+
 	protected SimpleDateFormat serverDateFormat;
-	 
-	
+
 	public AbstractDsExport(Class<M> modelClass) {
 		super();
 		this.modelClass = modelClass;
 		this.init();
 	}
 
-	public abstract void write(M data, boolean isFirst) throws Exception ;
-	
+	public abstract void write(M data, boolean isFirst) throws Exception;
+
 	private void init() {
 		this.serverDateFormat = new SimpleDateFormat("yyyy-MM-dd kk:mm");
-		
+
 		if (this.outFileName == null) {
 			this.outFileName = UUID.randomUUID().toString();
 		}
-		
+
 		this.fieldGetters = new HashMap<String, Method>();
 		this.fieldGetterNames = new HashMap<String, String>();
-		
+
 		if (this.getFieldNames() == null) {
 			Class<?> clz = this.modelClass;
 			while (clz != null) {
@@ -69,14 +68,14 @@ public abstract class AbstractDsExport<M> {
 				}
 				clz = clz.getSuperclass();
 			}
-			
+
 		} else {
 
 			for (String fn : this.getFieldNames()) {
 				Method m;
 				try {
-					m = this.modelClass.getMethod("get"
-							+ StringUtils.capitalize(fn), null);
+					m = this.modelClass.getMethod(
+							"get" + StringUtils.capitalize(fn), null);
 					this.fieldGetterNames.put(fn, m.getName());
 					this.fieldGetters.put(m.getName(), m);
 				} catch (SecurityException e) {
@@ -93,37 +92,42 @@ public abstract class AbstractDsExport<M> {
 	}
 
 	public void begin() throws Exception {
-        this.openWriter();
-        this.beginContent();
-    }
-     
-    public void end() throws Exception {
-        this.endContent();
-        this.closeWriter();
-    }
-    protected abstract void beginContent() throws Exception;
-    protected abstract void endContent() throws Exception;
-     
-    private void openWriter() throws Exception {
-        if (this.outFile == null) {
-        	if (this.outFilePath == null || this.outFileName == null || this.outFileExtension == null) {
-        		throw new Exception("Either a File or a file-path, file-name and file-extension must be provided");
-        	}
-        	File dir = new File(this.outFilePath );
-        	if (!dir.exists()) {
-        		dir.mkdirs();
-        	}
-        	this.outFile = File.createTempFile(this.outFileName, "."+this.outFileExtension, dir);            
-        }         
-        FileWriter fstream = new FileWriter(this.outFile);
-        this.bufferedWriter = new BufferedWriter(fstream);
-    }
-    
-    private void closeWriter() throws IOException {
-        this.bufferedWriter.flush();
-        this.bufferedWriter.close();
-    }
-    
+		this.openWriter();
+		this.beginContent();
+	}
+
+	public void end() throws Exception {
+		this.endContent();
+		this.closeWriter();
+	}
+
+	protected abstract void beginContent() throws Exception;
+
+	protected abstract void endContent() throws Exception;
+
+	private void openWriter() throws Exception {
+		if (this.outFile == null) {
+			if (this.outFilePath == null || this.outFileName == null
+					|| this.outFileExtension == null) {
+				throw new Exception(
+						"Either a File or a file-path, file-name and file-extension must be provided");
+			}
+			File dir = new File(this.outFilePath);
+			if (!dir.exists()) {
+				dir.mkdirs();
+			}
+			this.outFile = File.createTempFile(this.outFileName, "."
+					+ this.outFileExtension, dir);
+		}
+		FileWriter fstream = new FileWriter(this.outFile);
+		this.bufferedWriter = new BufferedWriter(fstream);
+	}
+
+	private void closeWriter() throws IOException {
+		this.bufferedWriter.flush();
+		this.bufferedWriter.close();
+	}
+
 	public List<String> getFieldNames() {
 		return fieldNames;
 	}
@@ -205,5 +209,4 @@ public abstract class AbstractDsExport<M> {
 		this.properties = properties;
 	}
 
-	
 }

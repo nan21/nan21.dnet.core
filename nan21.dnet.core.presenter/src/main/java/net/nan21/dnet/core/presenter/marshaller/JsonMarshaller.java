@@ -171,4 +171,8 @@ public class JsonMarshaller<M, F, P> extends AbstractMarshaller<M, F, P>
 		this.mapper.writeValue(out, result);
 	}
 
+	@Override
+	public ObjectMapper getDelegate() {
+		return this.mapper;
+	}
 }

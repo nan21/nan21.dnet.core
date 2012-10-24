@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import net.nan21.dnet.core.api.IProductInfo;
 import net.nan21.dnet.core.api.ISystemConfig;
+import net.nan21.dnet.core.api.SysParam;
 import net.nan21.dnet.core.api.security.IAuthorizationFactory;
 import net.nan21.dnet.core.api.session.Params;
 import net.nan21.dnet.core.api.session.Session;
@@ -99,10 +100,11 @@ public abstract class AbstractDnetController implements ApplicationContextAware 
 		Session.params.set(params);
 
 		String checkIp = this.getSystemConfig().getSysParamValue(
-				"SESSION_CHECK_IP");
+				SysParam.CORE_SESSION_CHECK_IP);
 		if (checkIp != null && checkIp.equals("true")) {
 			if (logger.isDebugEnabled()) {
-				logger.debug("SESSION_CHECK_IP enabled, checking IP against login IP...");
+				logger.debug(SysParam.CORE_SESSION_CHECK_IP
+						+ " enabled, checking IP against login IP...");
 			}
 			String ip = request.getRemoteAddr();
 			if (!su.getClientIp().equals(ip)) {
@@ -114,10 +116,11 @@ public abstract class AbstractDnetController implements ApplicationContextAware 
 		}
 
 		String checkAgent = this.getSystemConfig().getSysParamValue(
-				"SESSION_CHECK_USER_AGENT");
+				SysParam.CORE_SESSION_CHECK_USER_AGENT);
 		if (checkAgent != null && checkAgent.equals("true")) {
 			if (logger.isDebugEnabled()) {
-				logger.debug("SESSION_CHECK_USER_AGENT enabled, checking user-agent agianst login user-agent...");
+				logger.debug(SysParam.CORE_SESSION_CHECK_USER_AGENT
+						+ " enabled, checking user-agent agianst login user-agent...");
 			}
 			String agent = request.getHeader("User-Agent");
 			if (!su.getUserAgent().equals(agent)) {
@@ -171,7 +174,6 @@ public abstract class AbstractDnetController implements ApplicationContextAware 
 		mapper.configure(
 				DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 		return mapper;
-
 	}
 
 	// private String buildErrorMessage(String msg) {

@@ -6,11 +6,11 @@ Ext.define("dnet.core.dc.AbstractDNetDcGrid", {
 
 	mixins : {
 		elemBuilder : "dnet.core.base.AbstractDNetView",
-		dcViewSupport: "dnet.core.dc.AbstractDNetDcView"
+		dcViewSupport : "dnet.core.dc.AbstractDNetDcView"
 	},
 
 	// **************** Properties *****************
- 
+
 	/**
 	 * Columns definition map
 	 * 
@@ -24,6 +24,13 @@ Ext.define("dnet.core.dc.AbstractDNetDcGrid", {
 	 * @type Boolean
 	 */
 	_noSort_ : false,
+
+	/**
+	 * Flag to switch on/off advanced filter.
+	 * 
+	 * @type Boolean
+	 */
+	_noFilter_ : false,
 
 	/**
 	 * Flag to switch on/off data export.
@@ -40,6 +47,13 @@ Ext.define("dnet.core.dc.AbstractDNetDcGrid", {
 	_noImport_ : false,
 
 	/**
+	 * Flag to switch on/off data printing.
+	 * 
+	 * @type Boolean
+	 */
+	_noPrint_ : false,
+
+	/**
 	 * Flag to switch on/off custom layout management.
 	 * 
 	 * @type Boolean
@@ -48,16 +62,24 @@ Ext.define("dnet.core.dc.AbstractDNetDcGrid", {
 
 	/**
 	 * Flag to switch on/off paging toolbar
+	 * 
 	 * @type Boolean
 	 */
-	_noPaginator_: false,
-	
+	_noPaginator_ : false,
+
 	/**
 	 * Data export window.
 	 * 
 	 * @type dnet.core.dc.DataExportWindow
 	 */
 	_exportWindow_ : null,
+
+	/**
+	 * Data print window.
+	 * 
+	 * @type dnet.core.dc.DataPrintWindow
+	 */
+	_printWindow_ : null,
 
 	/**
 	 * Data import window.
@@ -72,7 +94,6 @@ Ext.define("dnet.core.dc.AbstractDNetDcGrid", {
 	 * @type dnet.core.dc.DataExportWindow
 	 */
 	_layoutWindow_ : null,
-
 
 	// **************** Public API *****************
 
@@ -92,24 +113,40 @@ Ext.define("dnet.core.dc.AbstractDNetDcGrid", {
 	_doImport_ : function() {
 		if (this._importWindow_ == null) {
 			this._importWindow_ = new dnet.core.base.FileUploadWindow2({
-				//_description_ : "Select a CSV file to import its content.",
-				_uploadUrl_: "/nan21.dnet.core.web/upload/ds-csv-import/"+this._controller_.dsName,
-				_fields_: {
-					separator: {
-						xtype:"combo", store:[";"], value:";", fieldLabel:"Field separator", allowBlank:false, labelSeparator:"*"
+				// _description_ : "Select a CSV file to import its content.",
+				_uploadUrl_ : "/nan21.dnet.core.web/upload/ds-csv-import/"
+						+ this._controller_.dsName,
+				_fields_ : {
+					separator : {
+						xtype : "combo",
+						store : [ ";" ],
+						value : ";",
+						fieldLabel : "Field separator",
+						allowBlank : false,
+						labelSeparator : "*"
 					},
-					quoteChar: {
-						xtype:"combo", store:['"'], value:'"', fieldLabel:"Optionally enclosed by", allowBlank:false, labelSeparator:"*"
+					quoteChar : {
+						xtype : "combo",
+						store : [ '"' ],
+						value : '"',
+						fieldLabel : "Optionally enclosed by",
+						allowBlank : false,
+						labelSeparator : "*"
 					},
-					encoding: {
-						xtype:"combo", store:["AUTO","UTF-8"], value:"UTF-8", fieldLabel:"Character encoding", allowBlank:false, labelSeparator:"*"
+					encoding : {
+						xtype : "combo",
+						store : [ "AUTO", "UTF-8" ],
+						value : "UTF-8",
+						fieldLabel : "Character encoding",
+						allowBlank : false,
+						labelSeparator : "*"
 					}
 				},
-				_succesCallbackScope_: this,
-				_succesCallbackFn_: function() {
+				_succesCallbackScope_ : this,
+				_succesCallbackFn_ : function() {
 					this._controller_.doQuery();
 				}
-			}) ; 
+			});
 		}
 		this._importWindow_.show();
 	},
@@ -120,10 +157,22 @@ Ext.define("dnet.core.dc.AbstractDNetDcGrid", {
 	_doExport_ : function() {
 		if (this._exportWindow_ == null) {
 			this._exportWindow_ = new dnet.core.dc.DataExportWindow({
-						_grid_ : this
-					});
+				_grid_ : this
+			});
 		}
 		this._exportWindow_.show();
+	},
+
+	/**
+	 * Open the data-print window
+	 */
+	_doPrint_ : function() {
+		if (this._printWindow_ == null) {
+			this._printWindow_ = new dnet.core.dc.DataPrintWindow({
+				_grid_ : this
+			});
+		}
+		this._printWindow_.show();
 	},
 
 	/**
@@ -132,10 +181,22 @@ Ext.define("dnet.core.dc.AbstractDNetDcGrid", {
 	_doSort_ : function() {
 		// if (this._sortWindow_ == null) {
 		this._sortWindow_ = new dnet.core.dc.DataSortWindow({
-					_grid_ : this
-				});
+			_grid_ : this
+		});
 		// }
 		this._sortWindow_.show();
+	},
+
+	/**
+	 * Show the advanced filter window
+	 */
+	_doFilter_ : function() {
+		if (this._sortWindow_ == null) {
+			this._filterWindow_ = new dnet.core.dc.DataFilterWindow({
+				_grid_ : this
+			});
+		}
+		this._filterWindow_.show();
 	},
 
 	/**
@@ -144,35 +205,32 @@ Ext.define("dnet.core.dc.AbstractDNetDcGrid", {
 	_doLayoutManager_ : function() {
 		if (this._layoutWindow_ == null) {
 			this._layoutWindow_ = new dnet.core.dc.GridLayoutManager({
-						_grid_ : this
-					});
+				_grid_ : this
+			});
 		}
 		this._layoutWindow_.show();
 	},
 
 	// **************** Defaults and overrides *****************
- 
+
 	buttonAlign : "left",
 	forceFit : false,
 	autoScroll : false,
 	scroll : "both",
-	 
 	border : true,
 	frame : true,
 	deferRowRender : true,
-	//enableLocking : true,
-	loadMask: {
-            msg: 'Loading...'
-        },
+	// enableLocking : true,
+	loadMask : {
+		msg : 'Loading...'
+	},
 	viewConfig : {
-		loadMask: {
-            msg: 'Loading...'
-        },
-		enableTextSelection: true,
+		loadMask : {
+			msg : 'Loading...'
+		},
+		enableTextSelection : true,
 		stripeRows : true,
-		//loadingText : "Loading...",
 		emptyText : Dnet.translate("msg", "grid_emptytext")
-		
 	},
 
 	/**
@@ -192,7 +250,7 @@ Ext.define("dnet.core.dc.AbstractDNetDcGrid", {
 	applyState : function(state) {
 		return this._applyViewState_(state);
 	},
-	
+
 	beforeDestroy : function() {
 		// call the contributed helpers from mixins
 		this._beforeDestroyDNetDcView_();
@@ -203,9 +261,6 @@ Ext.define("dnet.core.dc.AbstractDNetDcGrid", {
 	// **************** Private methods *****************
 
 	_initDcGrid_ : function() {
-
-		// currently disabled until is finalized
-		//this._noImport_ = true;
 
 		this._elems_ = new Ext.util.MixedCollection();
 		this._columns_ = new Ext.util.MixedCollection();
@@ -261,6 +316,7 @@ Ext.define("dnet.core.dc.AbstractDNetDcGrid", {
 			}
 		} else {
 			this._noExport_ = true;
+			this._noPrint_ = true;
 			this._noImport_ = true;
 			this._noSort_ = true;
 			this._noLayoutCfg_ = true;
@@ -268,14 +324,13 @@ Ext.define("dnet.core.dc.AbstractDNetDcGrid", {
 		}
 		return cfg;
 	},
-
 	/**
 	 * Register event listeners
 	 */
 	_registerListeners_ : function() {
 		this.mon(this._controller_.store, "load", this._onStore_load_, this);
-		this.mon(this._controller_, "selectionChange",  // selectionChange
-				this._onController_selectionChange, this );
+		this.mon(this._controller_, "selectionChange", // selectionChange
+		this._onController_selectionChange, this);
 	},
 
 	/**
@@ -288,8 +343,9 @@ Ext.define("dnet.core.dc.AbstractDNetDcGrid", {
 		var s = evnt.dc.getSelectedRecords();
 		// console.log("Abstractdcvgrid. onController_selectionChange sel.len =
 		// " + s.length );
-		if ( evnt.eOpts && evnt.eOpts.fromGrid === true && evnt.eOpts.grid === this) {
-			return;			
+		if (evnt.eOpts && evnt.eOpts.fromGrid === true
+				&& evnt.eOpts.grid === this) {
+			return;
 		}
 		if (s !== this.getSelectionModel().getSelection()) {
 			this.getSelectionModel().suspendEvents();
@@ -316,7 +372,14 @@ Ext.define("dnet.core.dc.AbstractDNetDcGrid", {
 				this._get_("_btnExport_").disable();
 			}
 		}
-		if (store.getCount() > 0) {			 
+		if (!this._noPrint_) {
+			if (store.getCount() > 0) {
+				this._get_("_btnPrint_").enable();
+			} else {
+				this._get_("_btnPrint_").disable();
+			}
+		}
+		if (store.getCount() > 0) {
 			if (this.selModel.getCount() == 0) {
 				this.selModel.select(0);
 			} else {
@@ -341,7 +404,10 @@ Ext.define("dnet.core.dc.AbstractDNetDcGrid", {
 			bbitems.push("-");
 			bbitems.push(this._elems_.get("_btnSort_"));
 		}
-
+		if (!this._noFilter_) {
+			bbitems.push("-");
+			bbitems.push(this._elems_.get("_btnFilter_"));
+		}
 		if (!this._noImport_) {
 			bbitems.push("-");
 			bbitems.push(this._elems_.get("_btnImport_"));
@@ -351,6 +417,11 @@ Ext.define("dnet.core.dc.AbstractDNetDcGrid", {
 			bbitems.push("-");
 			bbitems.push(this._elems_.get("_btnExport_"));
 		}
+
+		if (!this._noPrint_) {
+			bbitems.push("-");
+			bbitems.push(this._elems_.get("_btnPrint_"));
+		}
 	},
 
 	/**
@@ -358,42 +429,55 @@ Ext.define("dnet.core.dc.AbstractDNetDcGrid", {
 	 */
 	_defineDefaultElements_ : function() {
 		this._elems_.add("_btnExport_", {
-					xtype : "button",
-					id : Ext.id(),
-					disabled : true,
-					// text : Dnet.translate("dcvgrid", "exp_btn"),
-					tooltip : Dnet.translate("dcvgrid", "exp_title"),
-					iconCls : 'icon-action-export',
-					handler : this._doExport_,
-					scope : this
-				});
+			xtype : "button",
+			id : Ext.id(),
+			disabled : true,
+			tooltip : Dnet.translate("dcvgrid", "exp_title"),
+			iconCls : 'icon-action-export',
+			handler : this._doExport_,
+			scope : this
+		});
+		this._elems_.add("_btnPrint_", {
+			xtype : "button",
+			id : Ext.id(),
+			disabled : true,
+			tooltip : Dnet.translate("dcvgrid", "print_title"),
+			iconCls : 'icon-action-print',
+			handler : this._doPrint_,
+			scope : this
+		});
 		this._elems_.add("_btnImport_", {
-					xtype : "button",
-					id : Ext.id(),
-					// text : Dnet.translate("dcvgrid", "imp_btn"),
-					tooltip : Dnet.translate("dcvgrid", "imp_title"),
-					iconCls : 'icon-action-import',
-					handler : this._doImport_,
-					scope : this
-				});
+			xtype : "button",
+			id : Ext.id(),
+			tooltip : Dnet.translate("dcvgrid", "imp_title"),
+			iconCls : 'icon-action-import',
+			handler : this._doImport_,
+			scope : this
+		});
 		this._elems_.add("_btnSort_", {
-					xtype : "button",
-					id : Ext.id(),
-					// text : Dnet.translate("dcvgrid", "sort_btn"),
-					tooltip : Dnet.translate("dcvgrid", "sort_title"),
-					iconCls : 'icon-action-sort',
-					handler : this._doSort_,
-					scope : this
-				});
+			xtype : "button",
+			id : Ext.id(),
+			tooltip : Dnet.translate("dcvgrid", "sort_title"),
+			iconCls : 'icon-action-sort',
+			handler : this._doSort_,
+			scope : this
+		});
+		this._elems_.add("_btnFilter_", {
+			xtype : "button",
+			id : Ext.id(),
+			tooltip : Dnet.translate("dcvgrid", "filter_title"),
+			iconCls : 'icon-action-filter',
+			handler : this._doFilter_,
+			scope : this
+		});
 		this._elems_.add("_btnLayout_", {
-					xtype : "button",
-					id : Ext.id(),
-					// text : Dnet.translate("dcvgrid", "btn_perspective_txt"),
-					tooltip : Dnet.translate("dcvgrid", "btn_perspective_tlp"),
-					iconCls : 'icon-action-customlayout',
-					handler : this._doLayoutManager_,
-					scope : this
-				});
+			xtype : "button",
+			id : Ext.id(),
+			tooltip : Dnet.translate("dcvgrid", "btn_perspective_tlp"),
+			iconCls : 'icon-action-customlayout',
+			handler : this._doLayoutManager_,
+			scope : this
+		});
 	},
 
 	/**
@@ -403,14 +487,19 @@ Ext.define("dnet.core.dc.AbstractDNetDcGrid", {
 	 * @return {}
 	 */
 	_getViewState_ : function() {
-		var me = this, state = null, colStates = [], cm = this.headerCt, cols = cm.items.items;
-		for (var i = 0, len = cols.length; i < len; i++) {
+		var me = this;
+		var state = null;
+		var colStates = [];
+		var cm = this.headerCt;
+		var cols = cm.items.items;
+
+		for ( var i = 0, len = cols.length; i < len; i++) {
 			var c = cols[i];
 			colStates.push({
-						n : c.name,
-						h : c.hidden,
-						w : c.width
-					});
+				n : c.name,
+				h : c.hidden,
+				w : c.width
+			});
 		}
 		state = me.addPropertyToState(state, 'columns', colStates);
 		return state;
@@ -425,20 +514,23 @@ Ext.define("dnet.core.dc.AbstractDNetDcGrid", {
 	_applyViewState_ : function(state) {
 		if (!this.rendered) {
 			this.on("afterrender", this._applyViewStateAfterRender_, this, {
-						single : true,
-						state : state
-					});
+				single : true,
+				state : state
+			});
 			return;
 		}
-		var sCols = state.columns, cm = this.headerCt, cols = cm.items.items, col = null;
 
-		for (var i = 0, slen = sCols.length; i < slen; i++) {
+		var sCols = state.columns;
+		var cm = this.headerCt;
+		var cols = cm.items.items;
+		var col = null;
+
+		for ( var i = 0, slen = sCols.length; i < slen; i++) {
 			var sCol = sCols[i];
 			var colIndex = -1;
 
-			for (var j = 0, len = cols.length; j < len; j++) {
-				if (cols[j].name == sCol.n) { // && (!myCM.config[i]._aSel_)
-					// ){
+			for ( var j = 0, len = cols.length; j < len; j++) {
+				if (cols[j].name == sCol.n) {
 					colIndex = j;
 					col = cols[j];
 					break;
@@ -452,8 +544,6 @@ Ext.define("dnet.core.dc.AbstractDNetDcGrid", {
 					col.show();
 				}
 				col.setWidth(sCol.w);
-				// cm.setColumnWidth(colIndex, s.width, true);
-				// cm.setColumnHeader(colIndex, s.header, true);
 				if (colIndex != i) {
 					col.move(colIndex, i);
 				}
@@ -465,26 +555,38 @@ Ext.define("dnet.core.dc.AbstractDNetDcGrid", {
 		this._applyViewState_(eOpts.state);
 	},
 
-	_selectionHandler_: function(sm, selected, options) {
+	_selectionHandler_ : function(sm, selected, options) {
 		var gridSel = this.getSelectionModel().getSelection();
 		var dcSel = this._controller_.selectedRecords;
-	 
+
 		var ctrl = this._controller_;
-		ctrl.setSelectedRecords(gridSel, {fromGrid: true, grid: this});
+		ctrl.setSelectedRecords(gridSel, {
+			fromGrid : true,
+			grid : this
+		});
 		if (gridSel.length <= 1) {
 			if (gridSel.length == 1) {
-				ctrl.setRecord(gridSel[0],{fromGrid: true, grid: this});
+				ctrl.setRecord(gridSel[0], {
+					fromGrid : true,
+					grid : this
+				});
 			} else {
-				ctrl.setRecord(null,{fromGrid: true, grid: this});
+				ctrl.setRecord(null, {
+					fromGrid : true,
+					grid : this
+				});
 			}
 		}
 		if (gridSel.length > 1) {
 			if (ctrl.record == null || gridSel.indexOf(ctrl.record) < 0) {
-				ctrl.setRecord(gridSel[0],{fromGrid: true, grid: this});
+				ctrl.setRecord(gridSel[0], {
+					fromGrid : true,
+					grid : this
+				});
 			}
 		}
 	},
-	 
+
 	/**
 	 * Postprocessor run to inject framework specific settings into the columns.
 	 * 
@@ -499,7 +601,6 @@ Ext.define("dnet.core.dc.AbstractDNetDcGrid", {
 		if (column.header == undefined) {
 			Dnet.translateColumn(this._trl_, this._controller_._trl_, column);
 		}
-	} 
-
+	}
 
 });

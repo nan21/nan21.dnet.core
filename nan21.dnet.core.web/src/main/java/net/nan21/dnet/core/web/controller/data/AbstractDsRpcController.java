@@ -5,6 +5,7 @@ import java.io.InputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.nan21.dnet.core.api.Constants;
 import net.nan21.dnet.core.api.action.IActionResultRpcData;
 import net.nan21.dnet.core.api.action.IActionResultRpcFilter;
 import net.nan21.dnet.core.api.marshall.IDsMarshaller;
@@ -32,14 +33,16 @@ public class AbstractDsRpcController<M, F, P> extends
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(params = { "action=rpc", "rpcType=data" })
+	@RequestMapping(params = {
+			Constants.REQUEST_PARAM_ACTION + "=" + Constants.DS_RPC,
+			Constants.DS_RPC + "Type=data" })
 	@ResponseBody
 	public String rpcData(
 			@PathVariable String resourceName,
 			@PathVariable String dataFormat,
-			@RequestParam(value = "rpcName", required = true) String rpcName,
-			@RequestParam(value = "data", required = false, defaultValue = "[]") String dataString,
-			@RequestParam(value = "params", required = false, defaultValue = "{}") String paramString,
+			@RequestParam(value = Constants.REQUEST_PARAM_SERVICE_NAME_PARAM, required = true) String rpcName,
+			@RequestParam(value = Constants.REQUEST_PARAM_DATA, required = false, defaultValue = "{}") String dataString,
+			@RequestParam(value = Constants.REQUEST_PARAM_PARAMS, required = false, defaultValue = "{}") String paramString,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 
@@ -97,15 +100,16 @@ public class AbstractDsRpcController<M, F, P> extends
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(method = RequestMethod.POST, params = { "action=rpc",
-			"rpcType=filter" })
+	@RequestMapping(method = RequestMethod.POST, params = {
+			Constants.REQUEST_PARAM_ACTION + "=" + Constants.DS_RPC,
+			Constants.DS_RPC + "Type=filter" })
 	@ResponseBody
 	public String rpcFilter(
 			@PathVariable String resourceName,
 			@PathVariable String dataFormat,
-			@RequestParam(value = "rpcName", required = true) String rpcName,
-			@RequestParam(value = "data", required = false, defaultValue = "{}") String dataString,
-			@RequestParam(value = "params", required = false, defaultValue = "{}") String paramString,
+			@RequestParam(value = Constants.REQUEST_PARAM_SERVICE_NAME_PARAM, required = true) String rpcName,
+			@RequestParam(value = Constants.REQUEST_PARAM_DATA, required = false, defaultValue = "{}") String dataString,
+			@RequestParam(value = Constants.REQUEST_PARAM_PARAMS, required = false, defaultValue = "{}") String paramString,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 

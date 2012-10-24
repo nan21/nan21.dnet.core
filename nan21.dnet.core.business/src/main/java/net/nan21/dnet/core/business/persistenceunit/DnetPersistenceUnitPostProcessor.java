@@ -15,7 +15,6 @@ import java.util.Properties;
 
 import javax.sql.DataSource;
 
-import org.eclipse.persistence.config.PersistenceUnitProperties;
 import org.springframework.orm.jpa.persistenceunit.MutablePersistenceUnitInfo;
 import org.springframework.orm.jpa.persistenceunit.PersistenceUnitPostProcessor;
 
@@ -46,7 +45,7 @@ public class DnetPersistenceUnitPostProcessor implements
     	  }
     	  pui.getManagedClassNames().addAll(classes);
 
-    	  final List<String> names = pui.getManagedClassNames();
+    	  //final List<String> names = pui.getManagedClassNames();
     	  classes.addAll(pui.getManagedClassNames());
     	  
     	  

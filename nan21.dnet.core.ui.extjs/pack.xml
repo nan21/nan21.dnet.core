@@ -42,7 +42,7 @@
 			<filelist dir="${sourcePathJs}" files="extjs-extend.js,extjs-ux-extend.js" />
 			
 			<filelist dir="${sourcePathJsCore}/base" files="UserPreferences.js,Logger.js,NavigationTree.js,TemplateRepository.js,Session.js,Application.js,ApplicationMenu.js,LoginWindow.js,ChangePasswordWindow.js,FrameInspector.js" />
-			<filelist dir="${sourcePathJsCore}/base" files="AbstractDNetView.js,HomePanel.js,UrlBuilder.js,UiHeader.js,FrameNavigatorWithIframe.js,FrameNavigator.js,FileUploadWindow.js,WorkflowFormWithHtmlWindow.js,WfAbstractFormWindowExtjs.js,WfTaskFormWindowExtjs.js,WfStartFormWindowExtjs.js,WorkflowFormFactory.js" />
+			<filelist dir="${sourcePathJsCore}/base" files="DisplayField.js,AbstractDNetView.js,HomePanel.js,UrlBuilder.js,UiHeader.js,FrameNavigatorWithIframe.js,FrameNavigator.js,FileUploadWindow.js,WorkflowFormWithHtmlWindow.js,WfAbstractFormWindowExtjs.js,WfTaskFormWindowExtjs.js,WfStartFormWindowExtjs.js,WorkflowFormFactory.js" />
 			
 			<filelist dir="${sourcePathJsCore}/asgn" files="AbstractAsgn.js,AbstractAsgnGrid.js,AbstractAsgnUi.js,AsgnGridBuilder.js,AsgnUiBuilder.js" />
 			
@@ -53,7 +53,7 @@
 
 
 			<filelist dir="${sourcePathJsCore}/ui" files="FrameBuilder.js,ActionBuilder.js,FrameButtonStateManager.js,AbstractUi.js" />
-			<filelist dir="${sourcePathJsCore}/dc" files="DcActionsStateManager.js,DcContext.js,DcExceptions.js,DataExportWindow.js,DataImportWindow.js,DataSortWindow.js,GridLayoutManager.js" />
+			<filelist dir="${sourcePathJsCore}/dc" files="DcActionsStateManager.js,DcContext.js,DcExceptions.js,DataFilterWindow.js,DataExportWindow.js,DataPrintWindow.js,DataImportWindow.js,DataSortWindow.js,GridLayoutManager.js" />
 			<filelist dir="${sourcePathJsCore}/lov" files="AbstractRemoteCombo.js,AbstractCombo.js,AbstractLov.js" />
 		</concat>
 		<echo message="Done." />

@@ -2,12 +2,16 @@ package net.nan21.dnet.core.presenter.action;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
+
+import net.nan21.dnet.core.api.model.IFilterRule;
+import net.nan21.dnet.core.presenter.model.FilterRule;
 
 import org.eclipse.persistence.config.QueryHints;
 import org.eclipse.persistence.queries.FetchGroup;
@@ -17,6 +21,23 @@ import org.springframework.util.StringUtils;
 
 public class QueryBuilderWithJpql<M, F, P> extends
 		AbstractQueryBuilder<M, F, P> {
+
+	public static final String OP_LIKE = "like";
+	public static final String OP_NOT_LIKE = "not like";
+
+	public static final String OP_EQ = "=";
+	public static final String OP_NOT_EQ = "<>";
+
+	public static final String OP_LT = "<";
+	public static final String OP_LT_EQ = "<=";
+
+	public static final String OP_GT = ">";
+	public static final String OP_GT_EQ = ">=";
+
+	public static final String OP_BETWEEN = "between";
+
+	private static final String OP_IN = "in";
+	private static final String OP_NOT_IN = "not in";
 
 	final static Logger logger = LoggerFactory
 			.getLogger(QueryBuilderWithJpql.class);
@@ -29,10 +50,6 @@ public class QueryBuilderWithJpql<M, F, P> extends
 
 	protected String baseEql;
 	protected String baseEqlCount;
-
-	protected Map<String, Object> customFilterItems;
-	protected Map<String, Object> defaultFilterItems;
-	protected List<String> noFilterItems;
 
 	/**
 	 * Dirty work-around to avoid eclipselink bug when using fetch-groups with
@@ -72,7 +89,9 @@ public class QueryBuilderWithJpql<M, F, P> extends
 		beforeBuildQueryStatement();
 		String qs = onBuildQueryStatement();
 		afterBuildQueryStatement(qs);
-		logger.info("JQPL data: {}", qs);
+		if (logger.isDebugEnabled()) {
+			logger.debug("JQPL to execute: ", qs);
+		}
 		return qs;
 	}
 
@@ -131,7 +150,9 @@ public class QueryBuilderWithJpql<M, F, P> extends
 		beforeBuildCountStatement();
 		String qs = onBuildCountStatement();
 		afterBuildCountStatement(qs);
-		logger.info("JQPL count: {}", qs);
+		if (logger.isDebugEnabled()) {
+			logger.debug("count JQPL to execute: ", qs);
+		}
 		return qs;
 	}
 
@@ -151,13 +172,21 @@ public class QueryBuilderWithJpql<M, F, P> extends
 
 	}
 
+	/**
+	 * Append fetch joins based on the model descriptor.
+	 * 
+	 * @param eql
+	 */
 	private void addFetchJoins(StringBuffer eql) {
-		if (this.descriptor.getFetchJoins() != null) {
-			Iterator<String> it = this.descriptor.getFetchJoins().keySet()
+		if (logger.isDebugEnabled()) {
+			logger.debug("Adding fetch joins ... ");
+		}
+		if (this.getDescriptor().getFetchJoins() != null) {
+			Iterator<String> it = this.getDescriptor().getFetchJoins().keySet()
 					.iterator();
 			while (it.hasNext()) {
 				String p = it.next();
-				String type = this.descriptor.getFetchJoins().get(p);
+				String type = this.getDescriptor().getFetchJoins().get(p);
 				if (type != null && type.equals("left")) {
 					eql.append(" left join fetch " + p);
 				} else {
@@ -167,6 +196,12 @@ public class QueryBuilderWithJpql<M, F, P> extends
 		}
 	}
 
+	/**
+	 * Append where clause. Use the default where as well as the calculated one
+	 * based on the filter criteria.
+	 * 
+	 * @param eql
+	 */
 	private void attachWhereClause(StringBuffer eql) {
 		if ((this.where != null && !this.where.equals(""))
 				|| (this.defaultWhere != null && !this.defaultWhere.equals(""))) {
@@ -183,43 +218,66 @@ public class QueryBuilderWithJpql<M, F, P> extends
 		}
 	}
 
+	/**
+	 * Append order by. If there is an explicit order by use that one otherwise
+	 * use the default one if any.
+	 * 
+	 * @param eql
+	 */
 	private void attachSortClause(StringBuffer eql) {
 		if (this.sort != null) {
-			eql.append(" order by " + sort.toString());
+			String orderBy = sort.toString();
+			if (logger.isDebugEnabled()) {
+				logger.debug("Attaching calculated order by: " + orderBy);
+			}
+			eql.append(" order by " + orderBy);
 		} else {
 			if (defaultSort != null && !defaultSort.equals("")) {
+				if (logger.isDebugEnabled()) {
+					logger.debug("No specific order by, using the default one: "
+							+ defaultSort);
+				}
 				eql.append(" order by " + defaultSort);
 			}
 		}
 	}
 
+	/**
+	 * Build order by information.
+	 */
 	private void buildSort() {
-		if (this.sortColumnNames != null && this.sortColumnNames.length > 0) {
+		if (logger.isDebugEnabled()) {
+			logger.debug("Binding JPQL order by ...");
+		}
+
+		String[] sortColumnNames = this.getSortColumnNames();
+		String[] sortColumnSense = this.getSortColumnSense();
+
+		if (sortColumnNames != null && sortColumnNames.length > 0) {
 			this.sort = new StringBuffer();
-			for (int i = 0; i < this.sortColumnNames.length; i++) {
+			for (int i = 0; i < sortColumnNames.length; i++) {
 				if (i > 0) {
 					this.sort.append(",");
 				}
-				if (this.getDescriptor().getOrderBys().containsKey(
-						this.sortColumnNames[i])) {
-					String[] fields = this.getDescriptor().getOrderBys().get(
-							this.sortColumnNames[i]);
+				if (this.getDescriptor().getOrderBys()
+						.containsKey(sortColumnNames[i])) {
+					String[] fields = this.getDescriptor().getOrderBys()
+							.get(sortColumnNames[i]);
 
 					for (int k = 0, l = fields.length; k < l; k++) {
 						if (k > 0) {
 							this.sort.append(",");
 						}
 						this.sort.append(this.entityAlias + "." + fields[k]
-								+ " " + this.sortColumnSense[i]);
+								+ " " + sortColumnSense[i]);
 					}
 				} else {
 					this.sort.append(this.entityAlias
 							+ "."
-							+ this.getDescriptor().getRefPaths().get(
-									this.sortColumnNames[i]) + " "
-							+ this.sortColumnSense[i]);
+							+ this.getDescriptor().getRefPaths()
+									.get(sortColumnNames[i]) + " "
+							+ sortColumnSense[i]);
 				}
-
 			}
 		}
 	}
@@ -235,52 +293,128 @@ public class QueryBuilderWithJpql<M, F, P> extends
 	}
 
 	protected void onBuildWhere() throws Exception {
+		this.processFilter();
+		this.processAdvancedFilter();
+	}
 
-		Map<String, String> refpaths = this.descriptor.getRefPaths();
-		Map<String, String> jpqlFilterRules = this.descriptor
+	private void appendFilterRule1(String source, FilterRule filterRule, int cnt)
+			throws Exception {
+		String key = filterRule.getFieldName() + "_" + cnt;
+		addFilterCondition(entityAlias + "." + source + " "
+				+ filterRule.getOperation() + " :" + key);
+		String op = filterRule.getOperation();
+		if (op.equals(OP_IN) || op.equals(OP_NOT_IN)) {
+			String[] inVals = filterRule.getValue1().split(",");
+			this.defaultFilterItems.put(key, Arrays.asList(inVals));
+		} else {
+			this.defaultFilterItems.put(key, filterRule.getConvertedValue1());
+		}
+
+	}
+
+	private void appendFilterRule2(String source, FilterRule filterRule, int cnt)
+			throws Exception {
+
+		String key1 = filterRule.getFieldName() + "_" + cnt + "_1";
+		String key2 = filterRule.getFieldName() + "_" + cnt + "_2";
+
+		addFilterCondition(entityAlias + "." + source + " "
+				+ filterRule.getOperation() + " :" + key1 + " and :" + key2);
+		this.defaultFilterItems.put(key1, filterRule.getConvertedValue1());
+		this.defaultFilterItems.put(key2, filterRule.getConvertedValue2());
+
+	}
+
+	private List<String> operations1 = null;
+	private List<String> operations2 = null;
+
+	private void appendJpqlFragmentForFilterRule(FilterRule filterRule,
+			String refPath, int cnt) throws Exception {
+
+		String op = filterRule.getOperation();
+
+		if (operations1.contains(op)) {
+			appendFilterRule1(refPath, filterRule, cnt);
+		}
+		if (operations2.contains(op)) {
+			appendFilterRule2(refPath, filterRule, cnt);
+		}
+
+	}
+
+	protected void processAdvancedFilter() throws Exception {
+
+		if (this.filterRules == null || this.filterRules.size() == 0) {
+			return;
+		}
+
+		operations1 = Arrays
+				.asList(new String[] { OP_LIKE, OP_NOT_LIKE, OP_EQ, OP_NOT_EQ,
+						OP_LT, OP_LT_EQ, OP_GT, OP_GT_EQ, OP_IN, OP_NOT_IN });
+		operations2 = Arrays.asList(new String[] { OP_BETWEEN });
+
+		Map<String, String> refpaths = this.getDescriptor().getRefPaths();
+		Class<?> clz = this.getModelClass();
+		Method m = null;
+		int cnt = 0;
+		for (IFilterRule ifr : this.filterRules) {
+			FilterRule fr = (FilterRule) ifr;
+			String fieldName = fr.getFieldName();
+			if (this.shouldProcessFilterField(fieldName, fieldName)) {
+				// get the filter getter
+				cnt++;
+				try {
+					m = clz.getMethod("get" + StringUtils.capitalize(fieldName));
+					fr.setDataTypeFQN(m.getReturnType().getCanonicalName());
+					this.appendJpqlFragmentForFilterRule(fr,
+							refpaths.get(fieldName), cnt);
+
+				} catch (NoSuchMethodException e) {
+					throw new Exception("Invalid field name: "+fieldName);
+				}
+
+			}
+
+		}
+
+	}
+
+	protected void processFilter() throws Exception {
+		if (logger.isDebugEnabled()) {
+			logger.debug("Building JPQL where ...");
+		}
+		Map<String, String> refpaths = this.getDescriptor().getRefPaths();
+		Map<String, String> jpqlFilterRules = this.getDescriptor()
 				.getJpqlFieldFilterRules();
 
 		this.defaultFilterItems = new HashMap<String, Object>();
-		boolean isFrom = false;
-		boolean isTo = false;
-		// Method[] methods = this.getFilterClass().getMethods();
 
 		Class<?> clz = this.getFilterClass();
 
-		// The filter used may be a ds model, ensure we do not apply filter on
-		// the framework specific properties
+		// The filter object could be a dedicated filter class or the
+		// data-source model.
+		// Ensure we do not apply filter on the framework specific properties
 
-		String nofield1 = "_entity_";
-		String nofield2 = "__clientRecordId__";
+		List<String> excludes = Arrays.asList(new String[] { "_entity_",
+				"__clientRecordId__" });
+
 		while (clz != null) {
 			Field[] fields = clz.getDeclaredFields();
 
 			for (Field field : fields) {
-				isFrom = false;
-				isTo = false;
+
 				String fieldName = field.getName();
-				String filterFieldName = fieldName;
 
-				if (!Modifier.isStatic(field.getModifiers())
-						&& !fieldName.equals(nofield1)
-						&& !fieldName.equals(nofield2)) {
+				if (this.isValidFilterField(field, excludes)) {
+					String filterFieldName = fieldName;
+					FilterFieldNameAndRangeType fnrt = this
+							.resolveRealFilterFieldNameAndRangeType(field);
+					fieldName = fnrt.getName();
 
-					if (fieldName.endsWith("_From")) {
-						fieldName = fieldName.substring(0,
-								fieldName.length() - 5);
-						isFrom = true;
-					}
+					if (this.shouldProcessFilterField(fieldName,
+							filterFieldName)) {
 
-					if (fieldName.endsWith("_To")) {
-						fieldName = fieldName.substring(0,
-								fieldName.length() - 3);
-						isTo = true;
-					}
-
-					if (!(this.noFilterItems != null && this.noFilterItems
-							.contains(fieldName))
-							&& !(this.customFilterItems != null && this.customFilterItems
-									.containsKey(filterFieldName))) {
+						// get the filter getter
 						Method m = null;
 						try {
 							m = clz.getMethod("get"
@@ -289,7 +423,9 @@ public class QueryBuilderWithJpql<M, F, P> extends
 							// break;
 						}
 
-						Object fv = m.invoke(filter);
+						// get the value
+						Object fv = m.invoke(getFilter());
+
 						if (fv != null) {
 							if (m.getReturnType() == java.lang.String.class) {
 								if (jpqlFilterRules.containsKey(fieldName)) {
@@ -307,8 +443,8 @@ public class QueryBuilderWithJpql<M, F, P> extends
 									}
 								}
 							} else {
-								if (isFrom || isTo) {
-									if (isFrom) {
+								if (fnrt.getType() != FilterFieldNameAndRangeType.NO_RANGE) {
+									if (fnrt.getType() == FilterFieldNameAndRangeType.RANGE_FROM) {
 										this.addFilterCondition(entityAlias
 												+ "." + refpaths.get(fieldName)
 												+ " >= :" + filterFieldName);
@@ -331,14 +467,11 @@ public class QueryBuilderWithJpql<M, F, P> extends
 									}
 									this.defaultFilterItems.put(fieldName, fv);
 								}
-
 							}
 						}
 					}
 				}
-
 			}
-
 			clz = clz.getSuperclass();
 		}
 
@@ -366,7 +499,9 @@ public class QueryBuilderWithJpql<M, F, P> extends
 	}
 
 	private void bindFilterParams(Query q) throws Exception {
-		logger.debug("Binding filter params...");
+		if (logger.isDebugEnabled()) {
+			logger.debug("Binding filter params...");
+		}
 		if (this.defaultFilterItems != null) {
 			for (String key : this.defaultFilterItems.keySet()) {
 				Object value = this.defaultFilterItems.get(key);
@@ -392,14 +527,14 @@ public class QueryBuilderWithJpql<M, F, P> extends
 
 	protected void addFetchGroup(Query q) {
 		// see the reason of forExport flag
-		if (this.forExport || this.systemConfig.isDisableFetchGroups())
+		if (this.forExport || this.getSystemConfig().isDisableFetchGroups())
 			return;
 		logger.debug("Adding fetchGroup...");
 		FetchGroup fg = new FetchGroup("default");
 		fg.setShouldLoad(true);
 
-		if (this.descriptor.getRefPaths() != null) {
-			Map<String, String> refPaths = this.descriptor.getRefPaths();
+		if (this.getDescriptor().getRefPaths() != null) {
+			Map<String, String> refPaths = this.getDescriptor().getRefPaths();
 			Iterator<String> it = refPaths.keySet().iterator();
 			while (it.hasNext()) {
 				String p = it.next();
@@ -412,31 +547,35 @@ public class QueryBuilderWithJpql<M, F, P> extends
 
 	public Query createQuery() throws Exception {
 		String jpql = this.buildQueryStatement();
-		Query q = this.em.createQuery(jpql);
-		if (this.descriptor.getQueryHints() != null) {
-			Map<String, Object> queryHints = this.descriptor.getQueryHints();
+		Query q = this.getEntityManager().createQuery(jpql);
+		createQuery_(q);
+		return q;
+	}
+
+	public <E> TypedQuery<E> createQuery(Class<E> resultType) throws Exception {
+		String jpql = this.buildQueryStatement();
+		TypedQuery<E> q = this.getEntityManager().createQuery(jpql, resultType);
+		createQuery_(q);
+		return q;
+	}
+
+	private void createQuery_(Query q) throws Exception {
+		if (this.getDescriptor().getQueryHints() != null) {
+			Map<String, Object> queryHints = this.getDescriptor()
+					.getQueryHints();
 			Iterator<String> it = queryHints.keySet().iterator();
 			while (it.hasNext()) {
 				String p = it.next();
 				q.setHint(p, queryHints.get(p));
-
-				// if(p!=null && !p.equals("")) {
-				// String type = nestedFetchJoins.get(p);
-				// if (type != null && type.equals("left")) {
-				// q.setHint(QueryHints.LEFT_FETCH, p);
-				// } else {
-				// q.setHint(QueryHints.FETCH, p);
-				// }
-				// }
 			}
 		}
 		addFetchGroup(q);
 		bindFilterParams(q);
-		return q;
 	}
 
 	public Query createQueryCount() throws Exception {
-		Query q = this.em.createQuery(this.buildCountStatement());
+		Query q = this.getEntityManager().createQuery(
+				this.buildCountStatement());
 		bindFilterParams(q);
 		return q;
 	}

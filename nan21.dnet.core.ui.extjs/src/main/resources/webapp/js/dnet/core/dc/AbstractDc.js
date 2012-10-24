@@ -34,6 +34,9 @@ Ext.define("dnet.core.dc.AbstractDc", {
 	 * @type Ext.data.Model
 	 */
 	filter : null,
+	
+	
+	advancedFilter: null,
 
 	/**
 	 * Data model instance.

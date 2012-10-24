@@ -191,14 +191,12 @@ Ext.define("dnet.core.base.ApplicationMenu", {
 	/**
 	 * Create the application logo element using the URL set in Dnet.logoUrl
 	 */
-	_createAppLogo_ : function() {
+	_createAppLogo_ : function() {		
 		return {
 			xtype : "container",
-			items : [ Ext.create('Ext.Img', {
-				src : Dnet.logoUrl,
-				id : "net.nan21.dnet.core.menu.ApplicationMenu$Item$Logo",
-				style : "vertical-align:middle;"
-			}) ]
+			height: 48,
+			width:120,
+			style : "background: url('"+Dnet.logoUrl+"') no-repeat ;background-position:center;  "
 		}
 	},
 
