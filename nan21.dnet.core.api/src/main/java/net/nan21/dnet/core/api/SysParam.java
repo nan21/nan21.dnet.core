@@ -15,8 +15,7 @@ public class SysParam {
 	public static final String CORE_LOGO_URL_EXTJS = "CORE_LOGO_URL_EXTJS";
 
 	/**
-	 * Link to the company logo to be displayed in the Extjs based application
-	 * header.
+	 * Link to the company logo to be displayed in report header.
 	 */
 	public static final String CORE_LOGO_URL_STOUCH = "CORE_LOGO_URL_STOUCH";
 

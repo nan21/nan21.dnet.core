@@ -8,13 +8,15 @@ import javax.persistence.PersistenceContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 
 import net.nan21.dnet.core.api.ISystemConfig;
 import net.nan21.dnet.core.api.setup.IInitDataProviderFactory;
 import net.nan21.dnet.core.api.setup.ISetupParticipant;
 import net.nan21.dnet.core.api.setup.ISetupTask;
 
-public abstract class AbstractBusinessSetupParticipant {
+public abstract class AbstractBusinessSetupParticipant implements
+		ApplicationContextAware {
 
 	@PersistenceContext
 	@Autowired
@@ -139,6 +141,7 @@ public abstract class AbstractBusinessSetupParticipant {
 		this.em = em;
 	}
 
+	@SuppressWarnings("unchecked")
 	protected List<IInitDataProviderFactory> getDataProviderFactories() {
 		return (List<IInitDataProviderFactory>) this.getApplicationContext()
 				.getBean("osgiInitDataProviderFactories");
