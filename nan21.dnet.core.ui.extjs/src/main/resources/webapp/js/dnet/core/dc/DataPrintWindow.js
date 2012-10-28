@@ -5,6 +5,7 @@ Ext.define("dnet.core.dc.DataPrintForm", {
 	_elems_ : null,
 	_formats_ : [ "html" ],
 	_layouts_ : [ "portrait", "landscape" ],
+	
 	_grid_ : null,
 
 	initComponent : function(config) {
@@ -54,7 +55,6 @@ Ext.define("dnet.core.dc.DataPrintForm", {
 			xtype : "combo",
 			allowBlank : false,
 			selectOnFocus : true,
-			// width : 100,
 			id : Ext.id(),
 			triggerAction : "all",
 			store : this._formats_,
@@ -68,12 +68,12 @@ Ext.define("dnet.core.dc.DataPrintForm", {
 				}
 			}
 		});
+
 		this._elems_.add("fld_layout", {
 			fieldLabel : Dnet.translate("dcvgrid", "exp_layout"),
 			xtype : "combo",
 			allowBlank : false,
 			selectOnFocus : true,
-			// width : 100,
 			id : Ext.id(),
 			triggerAction : "all",
 			store : this._layouts_,
@@ -95,10 +95,10 @@ Ext.define("dnet.core.dc.DataPrintForm", {
 			id : Ext.id(),
 			checked : true
 		});
+
 		this._elems_.add("fld_records", new Ext.form.RadioGroup({
 			fieldLabel : Dnet.translate("dcvgrid", "exp_records"),
 			xtype : "radiogroup",
-			// itemCls : "x-check-group-alt",
 			style : "border-top:1px outset",
 			columns : 1,
 			id : Ext.id(),
@@ -111,6 +111,9 @@ Ext.define("dnet.core.dc.DataPrintForm", {
 	executeTask : function() {
 
 		var ctrl = this._grid_._controller_;
+		var reportTitle = this._grid_._printTitle_;
+		var reportLayout = this._getElement_("fld_layout").getValue();
+
 		var url = Dnet.dsAPI(ctrl.dsName, this._getElement_("fld_format")
 				.getValue());
 
@@ -129,8 +132,8 @@ Ext.define("dnet.core.dc.DataPrintForm", {
 		var fcv = "xxx"; // this._getElement_("fld_columns").getValue().fld_columns;
 
 		if (this._getElement_("fld_records").getValue().fld_records == "c") {
-			params["resultSize"] = 30;
-			params["resultStart"] = 0;
+			params[Dnet.requestParam.SIZE] = 30;
+			params[Dnet.requestParam.START] = 0;
 		}
 
 		var sortCols = "";
@@ -169,7 +172,12 @@ Ext.define("dnet.core.dc.DataPrintForm", {
 			}
 			params[Dnet.requestParam.EXPORT_COL_NAMES] = cs;
 			params[Dnet.requestParam.EXPORT_COL_TITLES] = cst;
+			params[Dnet.requestParam.EXPORT_FILTER_NAMES] = "";
+			params[Dnet.requestParam.EXPORT_FILTER_TITLES] = "";
+
 			params[Dnet.requestParam.EXPORT_COL_WIDTHS] = csw;
+			params[Dnet.requestParam.EXPORT_TITLE] = reportTitle;
+			params[Dnet.requestParam.EXPORT_LAYOUT] = reportLayout;
 
 		}
 		var _wv = 720;

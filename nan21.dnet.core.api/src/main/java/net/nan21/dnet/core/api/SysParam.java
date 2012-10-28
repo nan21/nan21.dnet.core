@@ -42,6 +42,11 @@ public class SysParam {
 	public static final String CORE_EXP_HTML_CSS = "CORE_EXP_HTML_CSS";
 
 	/**
+	 * Default template used when printing in html format with FreeMarker
+	 */
+	public static final String CORE_PRINT_HTML_TPL = "CORE_PRINT_HTML_TPL";
+
+	/**
 	 * Default language to be used if no language preference set by user.
 	 */
 	public static final String CORE_DEFAULT_LANG = "en";

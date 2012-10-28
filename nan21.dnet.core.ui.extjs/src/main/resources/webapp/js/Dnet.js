@@ -139,9 +139,13 @@ Dnet = {
 		SIZE : Constants.REQUEST_PARAM_SIZE,
 		ORDERBY : Constants.REQUEST_PARAM_ORDERBY,
 		SERVICE_NAME_PARAM : Constants.REQUEST_PARAM_SERVICE_NAME_PARAM,
+		EXPORT_TITLE : Constants.REQUEST_PARAM_EXPORT_TITLE,
+		EXPORT_LAYOUT : Constants.REQUEST_PARAM_EXPORT_LAYOUT,
 		EXPORT_COL_NAMES : Constants.REQUEST_PARAM_EXPORT_COL_NAMES,
 		EXPORT_COL_TITLES : Constants.REQUEST_PARAM_EXPORT_COL_TITLES,
-		EXPORT_COL_WIDTHS : Constants.REQUEST_PARAM_EXPORT_COL_WIDTHS
+		EXPORT_COL_WIDTHS : Constants.REQUEST_PARAM_EXPORT_COL_WIDTHS,
+		EXPORT_FILTER_NAMES : Constants.REQUEST_PARAM_EXPORT_FILTER_NAMES,
+		EXPORT_FILTER_TITLES : Constants.REQUEST_PARAM_EXPORT_FILTER_TITLES
 	},
 
 	dsAction : {
@@ -194,26 +198,26 @@ Dnet = {
 	 */
 	dsAPI : function(resource, format) {
 		return {
-			read : this.dsUrl + "/" + resource + "." + format + "?"+this.requestParam.ACTION+"="
-					+ this.dsAction.QUERY,
-			load : this.dsUrl + "/" + resource + "." + format + "?"+this.requestParam.ACTION+"="
-					+ this.dsAction.QUERY,
-			print : this.dsUrl + "/" + resource + "." + format + "?"+this.requestParam.ACTION+"="
-					+ this.dsAction.PRINT,
+			read : this.dsUrl + "/" + resource + "." + format + "?"
+					+ this.requestParam.ACTION + "=" + this.dsAction.QUERY,
+			load : this.dsUrl + "/" + resource + "." + format + "?"
+					+ this.requestParam.ACTION + "=" + this.dsAction.QUERY,
+			print : this.dsUrl + "/" + resource + "." + format + "?"
+					+ this.requestParam.ACTION + "=" + this.dsAction.PRINT,
 			exportdata : this.dsUrl + "/" + resource + "." + format
 					+ "?action=" + this.dsAction.EXPORT,
 			importdata : this.dsUrl + "/" + resource + "." + format
 					+ "?action=" + this.dsAction.IMPORT,
-			create : this.dsUrl + "/" + resource + "." + format + "?"+this.requestParam.ACTION+"="
-					+ this.dsAction.INSERT,
-			update : this.dsUrl + "/" + resource + "." + format + "?"+this.requestParam.ACTION+"="
-					+ this.dsAction.UPDATE,
-			save : this.dsUrl + "/" + resource + "." + format + "?"+this.requestParam.ACTION+"="
-					+ this.dsAction.SAVE,
-			destroy : this.dsUrl + "/" + resource + "." + format + "?"+this.requestParam.ACTION+"="
-					+ this.dsAction.DELETE,
-			service : this.dsUrl + "/" + resource + "." + format + "?"+this.requestParam.ACTION+"="
-					+ this.dsAction.RPC
+			create : this.dsUrl + "/" + resource + "." + format + "?"
+					+ this.requestParam.ACTION + "=" + this.dsAction.INSERT,
+			update : this.dsUrl + "/" + resource + "." + format + "?"
+					+ this.requestParam.ACTION + "=" + this.dsAction.UPDATE,
+			save : this.dsUrl + "/" + resource + "." + format + "?"
+					+ this.requestParam.ACTION + "=" + this.dsAction.SAVE,
+			destroy : this.dsUrl + "/" + resource + "." + format + "?"
+					+ this.requestParam.ACTION + "=" + this.dsAction.DELETE,
+			service : this.dsUrl + "/" + resource + "." + format + "?"
+					+ this.requestParam.ACTION + "=" + this.dsAction.RPC
 		};
 	},
 
@@ -226,9 +230,12 @@ Dnet = {
 					+ "?action=findLeft",
 			exportdata : this.asgnUrl + "/" + resource + "." + format
 					+ "?action=",
-			create : this.asgnUrl + "/" + resource + "." + format + "?"+this.requestParam.ACTION+"=",
-			update : this.asgnUrl + "/" + resource + "." + format + "?"+this.requestParam.ACTION+"=",
-			destroy : this.asgnUrl + "/" + resource + "." + format + "?"+this.requestParam.ACTION+"="
+			create : this.asgnUrl + "/" + resource + "." + format + "?"
+					+ this.requestParam.ACTION + "=",
+			update : this.asgnUrl + "/" + resource + "." + format + "?"
+					+ this.requestParam.ACTION + "=",
+			destroy : this.asgnUrl + "/" + resource + "." + format + "?"
+					+ this.requestParam.ACTION + "="
 
 		};
 	},
@@ -238,13 +245,16 @@ Dnet = {
 	 */
 	asgnRightAPI : function(resource, format) {
 		return {
-			read : this.asgnUrl + "/" + resource + "." + format
-					+ "?"+this.requestParam.ACTION+"=findRight",
-			exportdata : this.asgnUrl + "/" + resource + "." + format
-					+ "?"+this.requestParam.ACTION+"=",
-			create : this.asgnUrl + "/" + resource + "." + format + "?"+this.requestParam.ACTION+"=",
-			update : this.asgnUrl + "/" + resource + "." + format + "?"+this.requestParam.ACTION+"=",
-			destroy : this.asgnUrl + "/" + resource + "." + format + "?"+this.requestParam.ACTION+"="
+			read : this.asgnUrl + "/" + resource + "." + format + "?"
+					+ this.requestParam.ACTION + "=findRight",
+			exportdata : this.asgnUrl + "/" + resource + "." + format + "?"
+					+ this.requestParam.ACTION + "=",
+			create : this.asgnUrl + "/" + resource + "." + format + "?"
+					+ this.requestParam.ACTION + "=",
+			update : this.asgnUrl + "/" + resource + "." + format + "?"
+					+ this.requestParam.ACTION + "=",
+			destroy : this.asgnUrl + "/" + resource + "." + format + "?"
+					+ this.requestParam.ACTION + "="
 
 		};
 	},
@@ -253,8 +263,8 @@ Dnet = {
 	 * URLs for RPC type requests.
 	 */
 	rpcAPI : function(resource, fnName, format) {
-		return this.rpcUrl + "/" + resource + "." + format + "?"+this.requestParam.ACTION+"="
-				+ fnName
+		return this.rpcUrl + "/" + resource + "." + format + "?"
+				+ this.requestParam.ACTION + "=" + fnName
 	},
 
 	/**
@@ -343,7 +353,8 @@ Dnet = {
 		for ( var i = 0; i < list.length; i++) {
 			if (!Ext.isEmpty(list[i])) {
 				var rd = this.describeResource(list[i]);
-				document.write("<" + "scr" + "ipt type=\"text/javascript\" src=\""
+				document.write("<" + "scr"
+						+ "ipt type=\"text/javascript\" src=\""
 						+ Dnet.staticResourceUrlModules + "/" + rd.bundle
 						+ this.moduleSubpath + "/" + rd.type + "/" + rd.name
 						+ ".js\"></script>");

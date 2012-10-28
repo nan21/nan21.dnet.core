@@ -47,8 +47,11 @@ public abstract class AbstractEntityDsReadService<M extends AbstractDsModel<E>, 
 	 * @return
 	 * @throws Exception
 	 */
-	public Long count(F filter, P params, IQueryBuilder<M, F, P> builder)
-			throws Exception {
+	public Long count(IQueryBuilder<M, F, P> builder) throws Exception {
+		if (builder == null) {
+			throw new Exception(
+					"Cannot run a count query with null query builder.");
+		}
 		QueryBuilderWithJpql<M, F, P> bld = (QueryBuilderWithJpql<M, F, P>) builder;
 		Object count = bld.createQueryCount().getSingleResult();
 		if (count instanceof Integer) {
@@ -211,8 +214,8 @@ public abstract class AbstractEntityDsReadService<M extends AbstractDsModel<E>, 
 	 * @throws Exception
 	 */
 	@SuppressWarnings("unchecked")
-	public void doExport(F filter, P params, IQueryBuilder<M, F, P> builder,
-			IDsExport<M> writer) throws Exception {
+	public void doExport(IQueryBuilder<M, F, P> builder, IDsExport<M> writer)
+			throws Exception {
 
 		QueryBuilderWithJpql<M, F, P> bld = (QueryBuilderWithJpql<M, F, P>) builder;
 		bld.setForExport(true);
@@ -222,17 +225,6 @@ public abstract class AbstractEntityDsReadService<M extends AbstractDsModel<E>, 
 		bld.setEntityManager(em);
 
 		try {
-
-			if (filter != null) {
-				bld.setFilter(filter);
-			} else {
-				bld.setFilter(getFilterClass().newInstance());
-			}
-			if (params != null) {
-				bld.setParams(params);
-			} else {
-				bld.setParams(getParamClass().newInstance());
-			}
 
 			Query q = bld.createQuery(this.getEntityClass())
 					.setHint(QueryHints.CURSOR, true)

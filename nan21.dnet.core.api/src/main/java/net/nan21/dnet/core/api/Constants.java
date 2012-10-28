@@ -37,9 +37,13 @@ public class Constants {
 	public static final String REQUEST_PARAM_START = "resultStart";
 	public static final String REQUEST_PARAM_SIZE = "resultSize";
 	public static final String REQUEST_PARAM_ORDERBY = "orderBy";
+	public static final String REQUEST_PARAM_EXPORT_TITLE = "export_title";
+	public static final String REQUEST_PARAM_EXPORT_LAYOUT = "export_layout";
 	public static final String REQUEST_PARAM_EXPORT_COL_NAMES = "export_col_names";
 	public static final String REQUEST_PARAM_EXPORT_COL_TITLES = "export_col_titles";
 	public static final String REQUEST_PARAM_EXPORT_COL_WIDTHS = "export_col_widths";
+	public static final String REQUEST_PARAM_EXPORT_FILTER_NAMES = "export_filter_names";
+	public static final String REQUEST_PARAM_EXPORT_FILTER_TITLES = "export_filter_titles";
 	public static final String REQUEST_PARAM_SERVICE_NAME_PARAM = "rpcName";
 
 	/* Cookie names */

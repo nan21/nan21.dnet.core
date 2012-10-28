@@ -177,13 +177,15 @@ public abstract class AbstractUiExtjsController extends AbstractDnetController {
 			addConstant(sb, "REQUEST_PARAM_THEME",
 					Constants.REQUEST_PARAM_THEME);
 			addConstant(sb, "REQUEST_PARAM_LANG", Constants.REQUEST_PARAM_LANG);
-			
-			
-			addConstant(sb, "REQUEST_PARAM_ACTION", Constants.REQUEST_PARAM_ACTION);
+
+			addConstant(sb, "REQUEST_PARAM_ACTION",
+					Constants.REQUEST_PARAM_ACTION);
 			addConstant(sb, "REQUEST_PARAM_DATA", Constants.REQUEST_PARAM_DATA);
-			addConstant(sb, "REQUEST_PARAM_FILTER", Constants.REQUEST_PARAM_FILTER);
-			addConstant(sb, "REQUEST_PARAM_ADVANCED_FILTER", Constants.REQUEST_PARAM_ADVANCED_FILTER);			
-			
+			addConstant(sb, "REQUEST_PARAM_FILTER",
+					Constants.REQUEST_PARAM_FILTER);
+			addConstant(sb, "REQUEST_PARAM_ADVANCED_FILTER",
+					Constants.REQUEST_PARAM_ADVANCED_FILTER);
+
 			addConstant(sb, "REQUEST_PARAM_PARAMS",
 					Constants.REQUEST_PARAM_PARAMS);
 			addConstant(sb, "REQUEST_PARAM_SORT", Constants.REQUEST_PARAM_SORT);
@@ -195,6 +197,10 @@ public abstract class AbstractUiExtjsController extends AbstractDnetController {
 			addConstant(sb, "REQUEST_PARAM_ORDERBY",
 					Constants.REQUEST_PARAM_ORDERBY);
 
+			addConstant(sb, "REQUEST_PARAM_EXPORT_TITLE",
+					Constants.REQUEST_PARAM_EXPORT_TITLE);
+			addConstant(sb, "REQUEST_PARAM_EXPORT_LAYOUT",
+					Constants.REQUEST_PARAM_EXPORT_LAYOUT);
 			addConstant(sb, "REQUEST_PARAM_EXPORT_COL_NAMES",
 					Constants.REQUEST_PARAM_EXPORT_COL_NAMES);
 			addConstant(sb, "REQUEST_PARAM_EXPORT_COL_TITLES",
@@ -203,6 +209,10 @@ public abstract class AbstractUiExtjsController extends AbstractDnetController {
 					Constants.REQUEST_PARAM_EXPORT_COL_WIDTHS);
 			addConstant(sb, "REQUEST_PARAM_SERVICE_NAME_PARAM",
 					Constants.REQUEST_PARAM_SERVICE_NAME_PARAM);
+			addConstant(sb, "REQUEST_PARAM_EXPORT_FILTER_NAMES",
+					Constants.REQUEST_PARAM_EXPORT_FILTER_NAMES);
+			addConstant(sb, "REQUEST_PARAM_EXPORT_FILTER_TITLES",
+					Constants.REQUEST_PARAM_EXPORT_FILTER_TITLES);
 
 			addConstant(sb, "EXTJS_DATE_FORMAT", Constants.EXTJS_DATE_FORMAT);
 			addConstant(sb, "EXTJS_TIME_FORMAT", Constants.EXTJS_TIME_FORMAT);

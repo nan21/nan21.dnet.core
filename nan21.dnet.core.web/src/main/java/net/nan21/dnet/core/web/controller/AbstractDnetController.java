@@ -37,6 +37,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+/**
+ * Root of the abstract controllers hierarchy.
+ * 
+ * @author amathe
+ * 
+ */
 public abstract class AbstractDnetController implements ApplicationContextAware {
 
 	private ApplicationContext applicationContext;
@@ -61,13 +67,13 @@ public abstract class AbstractDnetController implements ApplicationContextAware 
 	 */
 	private IAuthorizationFactory authorizationFactory;
 
-	final static Logger logger = LoggerFactory
-			.getLogger(AbstractDnetController.class);
-
 	/**
 	 * Default transfer buffer size.
 	 */
 	protected final static int FILE_TRANSFER_BUFFER_SIZE = 4 * 1024;
+
+	final static Logger logger = LoggerFactory
+			.getLogger(AbstractDnetController.class);
 
 	protected void prepareRequest(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {

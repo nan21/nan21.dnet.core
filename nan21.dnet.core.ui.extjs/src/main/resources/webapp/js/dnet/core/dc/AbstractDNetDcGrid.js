@@ -95,6 +95,11 @@ Ext.define("dnet.core.dc.AbstractDNetDcGrid", {
 	 */
 	_layoutWindow_ : null,
 
+	/**
+	 * Title to be used in the dynamically generated reports.
+	 */
+	_printTitle_ : null,
+
 	// **************** Public API *****************
 
 	_defineColumns_ : function() {

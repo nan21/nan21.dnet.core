@@ -106,8 +106,7 @@ public interface IDsService<M, F, P> {
 
 	public List<M> find(IQueryBuilder<M, F, P> builder) throws Exception;
 
-	public Long count(F filter, P params, IQueryBuilder<M, F, P> builder)
-			throws Exception;
+	public Long count(IQueryBuilder<M, F, P> builder) throws Exception;
 
 	/**
 	 * Handler for basic data import given an input stream. Performs an insert.
@@ -164,8 +163,8 @@ public interface IDsService<M, F, P> {
 	public void doImport(String relativeFileName, String path,
 			String ukFieldName, int batchSize) throws Exception;
 
-	public void doExport(F filter, P params, IQueryBuilder<M, F, P> builder,
-			IDsExport<M> writer) throws Exception;
+	public void doExport(IQueryBuilder<M, F, P> builder, IDsExport<M> writer)
+			throws Exception;
 
 	public IQueryBuilder<M, F, P> createQueryBuilder() throws Exception;
 

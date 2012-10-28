@@ -11,12 +11,12 @@
         http://www.springframework.org/schema/osgi 
 		http://www.springframework.org/schema/osgi/spring-osgi.xsd">
 
-	<bean name="baseDsController"
-		class="net.nan21.dnet.core.web.controller.data.BaseDsController">
+	<bean name="defaultDsController"
+		class="net.nan21.dnet.core.web.controller.data.DefaultDsController">
 	</bean>
 
-	<bean name="baseAsgnController"
-		class="net.nan21.dnet.core.web.controller.data.BaseAsgnController">
+	<bean name="defaultAsgnController"
+		class="net.nan21.dnet.core.web.controller.data.DefaultAsgnController">
 	</bean>
 
 	<bean
