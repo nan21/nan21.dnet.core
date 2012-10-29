@@ -90,7 +90,7 @@ public class QueryBuilderWithJpql<M, F, P> extends
 		String qs = onBuildQueryStatement();
 		afterBuildQueryStatement(qs);
 		if (logger.isDebugEnabled()) {
-			logger.debug("JQPL to execute: ", qs);
+			logger.debug("JQPL to execute: {}", qs);
 		}
 		return qs;
 	}
@@ -151,7 +151,7 @@ public class QueryBuilderWithJpql<M, F, P> extends
 		String qs = onBuildCountStatement();
 		afterBuildCountStatement(qs);
 		if (logger.isDebugEnabled()) {
-			logger.debug("count JQPL to execute: ", qs);
+			logger.debug("count JQPL to execute: {}", qs);
 		}
 		return qs;
 	}

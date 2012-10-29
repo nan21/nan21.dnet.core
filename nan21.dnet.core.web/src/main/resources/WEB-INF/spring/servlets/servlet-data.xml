@@ -11,11 +11,11 @@
         http://www.springframework.org/schema/osgi 
 		http://www.springframework.org/schema/osgi/spring-osgi.xsd">
 
-	<bean name="defaultDsController"
+	<bean name="defaultDsController" lazy-init="true"
 		class="net.nan21.dnet.core.web.controller.data.DefaultDsController">
 	</bean>
 
-	<bean name="defaultAsgnController"
+	<bean name="defaultAsgnController" lazy-init="true"
 		class="net.nan21.dnet.core.web.controller.data.DefaultAsgnController">
 	</bean>
 

@@ -53,7 +53,7 @@
 
 
 			<filelist dir="${sourcePathJsCore}/ui" files="FrameBuilder.js,ActionBuilder.js,FrameButtonStateManager.js,AbstractUi.js" />
-			<filelist dir="${sourcePathJsCore}/dc" files="DcActionsStateManager.js,DcContext.js,DcExceptions.js,DataFilterWindow.js,DataExportWindow.js,DataPrintWindow.js,DataImportWindow.js,DataSortWindow.js,GridLayoutManager.js" />
+			<filelist dir="${sourcePathJsCore}/dc" files="DcActionsStateManager.js,DcContext.js,DcExceptions.js,DataFilterWindow.js,DataExportWindow.js,DataPrintWindow.js,DataSortWindow.js,GridLayoutManager.js" />
 			<filelist dir="${sourcePathJsCore}/lov" files="AbstractRemoteCombo.js,AbstractCombo.js,AbstractLov.js" />
 		</concat>
 		<echo message="Done." />

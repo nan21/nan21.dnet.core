@@ -231,9 +231,6 @@
 	"text": "DataExportWindow.js",
 	"path": "src/dnet/core/dc/"
 },{
-	"text": "DataImportWindow.js",
-	"path": "src/dnet/core/dc/"
-},{
 	"text": "DataFilterWindow.js",
 	"path": "src/dnet/core/dc/"
 },{

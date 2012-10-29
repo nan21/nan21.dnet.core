@@ -2,7 +2,6 @@ package net.nan21.dnet.core.presenter.service;
 
 import java.util.List;
 
-import net.nan21.dnet.core.api.ISystemConfig;
 import net.nan21.dnet.core.api.service.IAsgnService;
 import net.nan21.dnet.core.api.service.IAsgnServiceFactory;
 import net.nan21.dnet.core.api.service.IDsService;
@@ -11,21 +10,17 @@ import net.nan21.dnet.core.api.service.IEntityService;
 import net.nan21.dnet.core.api.service.IEntityServiceFactory;
 
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 
 /**
  * Service locator utility methods.
  * 
  * @author amathe
  */
-public class ServiceLocator {
+public class ServiceLocator implements ApplicationContextAware {
 
-	@Autowired
-	protected ApplicationContext appContext;
-
-	@Autowired
-	protected ISystemConfig systemConfig;
+	private ApplicationContext applicationContext;
 
 	private List<IEntityServiceFactory> entityServiceFactories;
 
@@ -42,7 +37,7 @@ public class ServiceLocator {
 	 * @return
 	 * @throws Exception
 	 */
-	public <M,F,P> IDsService<M,F,P> findDsService(String dsName)
+	public <M, F, P> IDsService<M, F, P> findDsService(String dsName)
 			throws Exception {
 		return this.findDsService(dsName, this.getDsServiceFactories());
 	}
@@ -56,10 +51,10 @@ public class ServiceLocator {
 	 * @return
 	 * @throws Exception
 	 */
-	public <M,F,P> IDsService<M,F,P> findDsService(Class<?> modelClass)
+	public <M, F, P> IDsService<M, F, P> findDsService(Class<?> modelClass)
 			throws Exception {
-		return this.findDsService(modelClass.getSimpleName(), this
-				.getDsServiceFactories());
+		return this.findDsService(modelClass.getSimpleName(),
+				this.getDsServiceFactories());
 	}
 
 	/**
@@ -73,15 +68,13 @@ public class ServiceLocator {
 	 * @return
 	 * @throws Exception
 	 */
-	public <M,F,P> IDsService<M,F,P> findDsService(String dsName,
+	public <M, F, P> IDsService<M, F, P> findDsService(String dsName,
 			List<IDsServiceFactory> factories) throws Exception {
-		IDsService<M,F,P> srv = null;
+		IDsService<M, F, P> srv = null;
 		for (IDsServiceFactory f : factories) {
-			try { 
+			try {
 				srv = f.create(dsName + "Service");
 				if (srv != null) {
-					// srv.setDsServiceFactories(factories);
-					srv.setSystemConfig(this.systemConfig);
 					return srv;
 				}
 			} catch (NoSuchBeanDefinitionException e) {
@@ -101,8 +94,8 @@ public class ServiceLocator {
 	 */
 	public <E> IEntityService<E> findEntityService(Class<E> entityClass)
 			throws Exception {
-		return this.findEntityService(entityClass, this
-				.getEntityServiceFactories());
+		return this.findEntityService(entityClass,
+				this.getEntityServiceFactories());
 	}
 
 	/**
@@ -121,7 +114,6 @@ public class ServiceLocator {
 				IEntityService<E> srv = esf.create(entityClass.getSimpleName()
 						+ "Service"); // this.getEntityClass()
 				if (srv != null) {
-					srv.setSystemConfig(this.systemConfig);
 					return srv;
 				}
 			} catch (NoSuchBeanDefinitionException e) {
@@ -141,7 +133,7 @@ public class ServiceLocator {
 	 * @return
 	 * @throws Exception
 	 */
-	public <M,F,P> IAsgnService<M,F,P> findAsgnService(String asgnName)
+	public <M, F, P> IAsgnService<M, F, P> findAsgnService(String asgnName)
 			throws Exception {
 		return this.findAsgnService(asgnName, this.getAsgnServiceFactories());
 	}
@@ -157,15 +149,13 @@ public class ServiceLocator {
 	 * @return
 	 * @throws Exception
 	 */
-	public <M,F,P> IAsgnService<M,F,P> findAsgnService(String asgnName,
+	public <M, F, P> IAsgnService<M, F, P> findAsgnService(String asgnName,
 			List<IAsgnServiceFactory> factories) throws Exception {
-		IAsgnService<M,F,P> srv = null;
+		IAsgnService<M, F, P> srv = null;
 		for (IAsgnServiceFactory f : factories) {
 			try {
 				srv = f.create(asgnName);
 				if (srv != null) {
-					// srv.setDsServiceFactories(serviceFactories);
-					srv.setSystemConfig(this.systemConfig);
 					return srv;
 				}
 			} catch (NoSuchBeanDefinitionException e) {
@@ -180,39 +170,15 @@ public class ServiceLocator {
 	 * 
 	 * @return
 	 */
-	public ApplicationContext getAppContext() {
-		return appContext;
+	public ApplicationContext getApplicationContext() {
+		return applicationContext;
 	}
 
 	/**
 	 * Setter for the spring application context.
-	 * 
-	 * @param appContext
 	 */
-	public void setAppContext(ApplicationContext appContext) {
-		this.appContext = appContext;
-	}
-
-	/**
-	 * Get system configuration object. If it is null attempts to retrieve it
-	 * from Spring context.
-	 * 
-	 * @return
-	 */
-	public ISystemConfig getSystemConfig() {
-		if (this.systemConfig == null) {
-			this.systemConfig = this.appContext.getBean(ISystemConfig.class);
-		}
-		return systemConfig;
-	}
-
-	/**
-	 * Set system configuration object.
-	 * 
-	 * @param systemConfig
-	 */
-	public void setSystemConfig(ISystemConfig systemConfig) {
-		this.systemConfig = systemConfig;
+	public void setApplicationContext(ApplicationContext applicationContext) {
+		this.applicationContext = applicationContext;
 	}
 
 	/**
@@ -224,8 +190,9 @@ public class ServiceLocator {
 	@SuppressWarnings("unchecked")
 	public List<IEntityServiceFactory> getEntityServiceFactories() {
 		if (this.entityServiceFactories == null) {
-			this.entityServiceFactories = (List<IEntityServiceFactory>) this.appContext
-					.getBean("osgiEntityServiceFactories");
+			this.entityServiceFactories = (List<IEntityServiceFactory>) this
+					.getApplicationContext().getBean(
+							"osgiEntityServiceFactories");
 		}
 		return this.entityServiceFactories;
 	}
@@ -249,8 +216,8 @@ public class ServiceLocator {
 	@SuppressWarnings("unchecked")
 	public List<IDsServiceFactory> getDsServiceFactories() {
 		if (this.dsServiceFactories == null) {
-			this.dsServiceFactories = (List<IDsServiceFactory>) this.appContext
-					.getBean("osgiDsServiceFactories");
+			this.dsServiceFactories = (List<IDsServiceFactory>) this
+					.getApplicationContext().getBean("osgiDsServiceFactories");
 		}
 		return this.dsServiceFactories;
 	}
@@ -273,7 +240,8 @@ public class ServiceLocator {
 	@SuppressWarnings("unchecked")
 	public List<IAsgnServiceFactory> getAsgnServiceFactories() {
 		if (this.asgnServiceFactories == null) {
-			this.asgnServiceFactories = (List<IAsgnServiceFactory>) this.appContext
+			this.asgnServiceFactories = (List<IAsgnServiceFactory>) this
+					.getApplicationContext()
 					.getBean("osgiAsgnServiceFactories");
 		}
 		return asgnServiceFactories;

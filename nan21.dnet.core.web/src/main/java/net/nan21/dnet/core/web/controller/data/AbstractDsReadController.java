@@ -368,7 +368,7 @@ public class AbstractDsReadController<M, F, P> extends
 //					+ printTitle + "." + dataFormat.toLowerCase() + "\";");
 
 			Template temp = cfg.getTemplate(_tplName);
-			Writer out = new OutputStreamWriter(response.getOutputStream());
+			Writer out = new OutputStreamWriter(response.getOutputStream(), response.getCharacterEncoding());
 			temp.process(root, out);
 			out.flush();
 			return null;

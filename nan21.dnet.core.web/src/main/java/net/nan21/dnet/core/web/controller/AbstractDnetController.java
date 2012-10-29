@@ -290,14 +290,14 @@ public abstract class AbstractDnetController implements ApplicationContextAware 
 			return null;
 		}
 		StringBuffer sb = new StringBuffer();
-		if (e.getMessage() != null) {
-			sb.append(e.getMessage());
+		if (e.getLocalizedMessage() != null) {
+			sb.append(e.getLocalizedMessage() );
 		}
 		if (e.getCause() != null) {
 			if (sb.length() > 0) {
 				sb.append(" Reason: ");
 			}
-			sb.append(e.getCause().getMessage());
+			sb.append(e.getCause().getLocalizedMessage());
 		}
 		response.setStatus(HttpStatus.EXPECTATION_FAILED.value());
 		response.getOutputStream().print(sb.toString());

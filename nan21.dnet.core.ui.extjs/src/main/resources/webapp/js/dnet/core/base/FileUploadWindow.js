@@ -125,7 +125,7 @@ Ext.define("dnet.core.base.FileUploadWindow2", {
 			                Ext.Msg.alert('Failure', action.response.responseText);
 			                break;
 			            case Ext.form.Action.SERVER_INVALID:
-			               Ext.Msg.alert('Failure', action.result.msg);
+			               Ext.Msg.alert('Failure', action.response.responseText);
 			       }
 			       this.close();
 			    }
