@@ -2,14 +2,14 @@ package net.nan21.dnet.core.presenter.service.stream;
 
 import net.nan21.dnet.core.api.service.IFileUploadService;
 import net.nan21.dnet.core.api.service.IFileUploadServiceFactory;
-import net.nan21.dnet.core.presenter.service.AbstractPresenterServiceFactory;
+import net.nan21.dnet.core.presenter.service.AbstractApplicationContextAware;
 
 /**
  * 
  * @author amathe
  * 
  */
-public class FileUploadServiceFactory extends AbstractPresenterServiceFactory
+public class FileUploadServiceFactory extends AbstractApplicationContextAware
 		implements IFileUploadServiceFactory {
 
 	@Override

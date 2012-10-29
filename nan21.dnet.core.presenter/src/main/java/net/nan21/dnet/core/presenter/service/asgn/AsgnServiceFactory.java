@@ -4,9 +4,9 @@ import java.util.List;
 import net.nan21.dnet.core.api.service.IAsgnService;
 import net.nan21.dnet.core.api.service.IAsgnServiceFactory;
 import net.nan21.dnet.core.api.service.IAsgnTxServiceFactory;
-import net.nan21.dnet.core.presenter.service.AbstractPresenterServiceFactory;
+import net.nan21.dnet.core.presenter.service.AbstractApplicationContextAware;
 
-public class AsgnServiceFactory extends AbstractPresenterServiceFactory
+public class AsgnServiceFactory extends AbstractApplicationContextAware
 		implements IAsgnServiceFactory {
 
 	private List<IAsgnTxServiceFactory> asgnTxServiceFactories;

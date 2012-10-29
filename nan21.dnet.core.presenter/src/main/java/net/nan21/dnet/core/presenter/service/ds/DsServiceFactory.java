@@ -5,9 +5,9 @@ import java.util.List;
 import net.nan21.dnet.core.api.service.IDsService;
 import net.nan21.dnet.core.api.service.IDsServiceFactory;
 import net.nan21.dnet.core.api.service.IEntityServiceFactory;
-import net.nan21.dnet.core.presenter.service.AbstractPresenterServiceFactory;
+import net.nan21.dnet.core.presenter.service.AbstractApplicationContextAware;
 
-public class DsServiceFactory extends AbstractPresenterServiceFactory implements
+public class DsServiceFactory extends AbstractApplicationContextAware implements
 		IDsServiceFactory {
 
 	private List<IEntityServiceFactory> entityServiceFactories;

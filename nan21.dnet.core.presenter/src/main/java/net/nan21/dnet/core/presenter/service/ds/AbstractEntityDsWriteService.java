@@ -39,7 +39,7 @@ public abstract class AbstractEntityDsWriteService<M extends AbstractDsModel<E>,
 	private boolean noDelete = false;
 	private boolean readOnly = false;
 
-	/* ========================== IMSERT =========================== */
+	/* ========================== INSERT =========================== */
 
 	/**
 	 * Provide custom logic to decide if the action can be executed.

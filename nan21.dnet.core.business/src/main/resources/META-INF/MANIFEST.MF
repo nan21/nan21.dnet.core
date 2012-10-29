@@ -8,7 +8,10 @@ Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.txt
 Export-Package: 
  net.nan21.dnet.core.business.job;version="1.0.4",
  net.nan21.dnet.core.business.persistenceunit;version="1.0.4",
- net.nan21.dnet.core.business.service;version="1.0.4"
+ net.nan21.dnet.core.business.service;version="1.0.4",
+ net.nan21.dnet.core.business.service.asgn;version="1.0.4",
+ net.nan21.dnet.core.business.service.entity;version="1.0.4",
+ net.nan21.dnet.core.business.service.setup;version="1.0.4"
 Import-Package: 
  javax.persistence;version="[2.0,2.1)",
  javax.persistence.criteria;version="[2.0,2.1)",

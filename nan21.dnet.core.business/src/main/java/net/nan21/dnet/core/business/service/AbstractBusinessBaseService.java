@@ -16,24 +16,28 @@ import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 
-public class AbstractBusinessProcessor {
+/**
+ * Root abstract class for business service hierarchy. It provides support for
+ * the sub-classes with the generally needed elements like an
+ * applicationContext, system configuration parameters, workflow services etc.
+ * 
+ * 
+ * @author amathe
+ * 
+ */
+public abstract class AbstractBusinessBaseService extends
+		AbstractApplicationContextAware {
 
-	@Autowired
-	private ApplicationContext appContext;
-
-	@Autowired
 	private ISystemConfig systemConfig;
 
-	@Autowired
 	private ServiceLocatorBusiness serviceLocator;
+
+	private ProcessEngine workflowEngine;
 
 	@PersistenceContext
 	@Autowired
 	protected EntityManager em;
-
-	private ProcessEngine workflowEngine;
 
 	/**
 	 * Lookup an entity service.
@@ -46,6 +50,45 @@ public class AbstractBusinessProcessor {
 	public <T> IEntityService<T> findEntityService(Class<T> entityClass)
 			throws Exception {
 		return this.getServiceLocator().findEntityService(entityClass);
+	}
+
+	/**
+	 * Return a new instance of a business delegate by the given class.
+	 * 
+	 * @param <T>
+	 * @param clazz
+	 * @return
+	 * @throws Exception
+	 */
+	public <T extends AbstractBusinessDelegate> T getBusinessDelegate(
+			Class<T> clazz) throws Exception {
+		T delegate = clazz.newInstance();
+		delegate.setApplicationContext(this.getApplicationContext());
+		delegate.setEntityManager(this.em);
+		return delegate;
+	}
+
+	/**
+	 * Get system configuration object. If it is null attempts to retrieve it
+	 * from Spring context.
+	 * 
+	 * @return
+	 */
+	public ISystemConfig getSystemConfig() {
+		if (this.systemConfig == null) {
+			this.systemConfig = this.getApplicationContext().getBean(
+					ISystemConfig.class);
+		}
+		return systemConfig;
+	}
+
+	/**
+	 * Set system configuration object
+	 * 
+	 * @param systemConfig
+	 */
+	public void setSystemConfig(ISystemConfig systemConfig) {
+		this.systemConfig = systemConfig;
 	}
 
 	/**
@@ -64,54 +107,14 @@ public class AbstractBusinessProcessor {
 	}
 
 	/**
-	 * Get spring application context.
-	 * 
-	 * @return
-	 */
-	public ApplicationContext getAppContext() {
-		return appContext;
-	}
-
-	/**
-	 * Set spring application context.
-	 * 
-	 * @param appContext
-	 */
-	public void setAppContext(ApplicationContext appContext) {
-		this.appContext = appContext;
-	}
-
-	/**
-	 * Get system configuration object. If it is null attempts to retrieve it
-	 * from Spring context.
-	 * 
-	 * @return
-	 */
-	public ISystemConfig getSystemConfig() {
-		if (this.systemConfig == null) {
-			this.systemConfig = this.appContext.getBean(ISystemConfig.class);
-		}
-		return systemConfig;
-	}
-
-	/**
-	 * Set system configuration object.
-	 * 
-	 * @param systemConfig
-	 */
-	public void setSystemConfig(ISystemConfig systemConfig) {
-		this.systemConfig = systemConfig;
-	}
-
-	/**
 	 * Get business service locator. If it is null attempts to retrieve it
 	 * 
 	 * @return
 	 */
 	public ServiceLocatorBusiness getServiceLocator() {
 		if (this.serviceLocator == null) {
-			this.serviceLocator = this.appContext
-					.getBean(ServiceLocatorBusiness.class);
+			this.serviceLocator = this.getApplicationContext().getBean(
+					ServiceLocatorBusiness.class);
 		}
 		return serviceLocator;
 	}
@@ -127,8 +130,9 @@ public class AbstractBusinessProcessor {
 
 	public ProcessEngine getWorkflowEngine() throws Exception {
 		if (this.workflowEngine == null) {
-			this.workflowEngine = (ProcessEngine) this.getAppContext().getBean(
-					IActivitiProcessEngineHolder.class).getProcessEngine();
+			this.workflowEngine = (ProcessEngine) this.getApplicationContext()
+					.getBean(IActivitiProcessEngineHolder.class)
+					.getProcessEngine();
 		}
 		return this.workflowEngine;
 	}

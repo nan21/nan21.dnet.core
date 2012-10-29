@@ -1,41 +1,40 @@
-package net.nan21.dnet.core.business.service;
+package net.nan21.dnet.core.business.service.asgn;
 
 import java.util.List;
 import java.util.UUID;
 
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import net.nan21.dnet.core.business.service.AbstractBusinessBaseService;
 
-public abstract class AbstractAsgnTxService<E>  {
-	@PersistenceContext
-	@Autowired
-	protected EntityManager em;	 
-	
-	protected abstract Class<E> getEntityClass();
-	
+public abstract class AbstractAsgnTxService<E> extends
+		AbstractBusinessBaseService {
+
+	private Class<E> entityClass;
+
 	protected final String ASGN_TEMP_TABLE = "AD_TEMP_ASGN";
 	protected final String ASGNLINE_TEMP_TABLE = "AD_TEMP_ASGN_LINE";
- 
+
 	protected String leftTable;
 	protected String leftPkField;
-	
+
 	protected String rightTable;
 	protected String rightObjectIdField;
 	protected String rightItemIdField;
-	
+
 	protected boolean saveAsSqlInsert = true;
+
+	// TODO: get rid of these here
 	protected String selectionId;
 	protected Long objectId;
-	
+
 	/**
 	 * Add the specified list of IDs to the selected ones.
 	 * 
 	 * @param ids
 	 * @throws Exception
-	 */ 
-	 
+	 */
+
 	public void moveRight(List<Long> ids) throws Exception {
 		StringBuffer sb = new StringBuffer("(-1");
 		for (Long id : ids) {
@@ -52,9 +51,7 @@ public abstract class AbstractAsgnTxService<E>  {
 				.executeUpdate();
 		this.em.flush();
 	}
-	
-	
-	
+
 	/**
 	 * Add all the available values to the selected ones.
 	 * 
@@ -69,7 +66,7 @@ public abstract class AbstractAsgnTxService<E>  {
 				.setParameter(1, this.selectionId).executeUpdate();
 		this.em.flush();
 	}
-	
+
 	/**
 	 * Remove the specified list of IDs from the selected ones.
 	 * 
@@ -90,7 +87,7 @@ public abstract class AbstractAsgnTxService<E>  {
 		this.em.flush();
 
 	}
-	
+
 	/**
 	 * Remove all the selected values.
 	 * 
@@ -99,13 +96,11 @@ public abstract class AbstractAsgnTxService<E>  {
 	public void moveLeftAll() throws Exception {
 		this.em.createNativeQuery(
 				"delete from " + this.ASGNLINE_TEMP_TABLE
-						+ " WHERE selection_uuid = ?").setParameter(1,
-				this.selectionId).executeUpdate();
+						+ " WHERE selection_uuid = ?")
+				.setParameter(1, this.selectionId).executeUpdate();
 		this.em.flush();
 	}
 
-	
-	
 	/**
 	 * Initialize the temporary table with the existing selection. Creates a
 	 * record in the TEMP_ASGN table and the existing selections in
@@ -114,19 +109,18 @@ public abstract class AbstractAsgnTxService<E>  {
 	 * @return the UUID of the selection
 	 * @throws Exception
 	 */
-	public String setup(String asgnName) throws Exception {		 
+	public String setup(String asgnName) throws Exception {
 		this.selectionId = UUID.randomUUID().toString();
 		this.em.createNativeQuery(
 				"insert into " + this.ASGN_TEMP_TABLE
-						+ " (uuid, asgncmp) values( ? ,?  ) ").setParameter(1,
-				this.selectionId).setParameter(2, asgnName)
+						+ " (uuid, asgncmp) values( ? ,?  ) ")
+				.setParameter(1, this.selectionId).setParameter(2, asgnName)
 				.executeUpdate();
 		this.em.flush();
 		this.reset();
 		return this.selectionId;
 	}
-	
-	
+
 	/**
 	 * Clean-up the temporary tables.
 	 * 
@@ -135,14 +129,14 @@ public abstract class AbstractAsgnTxService<E>  {
 	public void cleanup() throws Exception {
 		this.em.createNativeQuery(
 				"delete from " + this.ASGNLINE_TEMP_TABLE
-						+ "  WHERE   selection_uuid = ? ").setParameter(1,
-				this.selectionId).executeUpdate();
+						+ "  WHERE   selection_uuid = ? ")
+				.setParameter(1, this.selectionId).executeUpdate();
 		this.em.createNativeQuery(
 				"delete from " + this.ASGN_TEMP_TABLE + "   WHERE uuid = ? ")
 				.setParameter(1, this.selectionId).executeUpdate();
 		this.em.flush();
 	}
-	
+
 	/**
 	 * Restores all the changes made by the user in the TEMP_ASGN_LINE table to
 	 * the initial state.
@@ -152,8 +146,8 @@ public abstract class AbstractAsgnTxService<E>  {
 	public void reset() throws Exception {
 		this.em.createNativeQuery(
 				"delete from " + this.ASGNLINE_TEMP_TABLE
-						+ " where selection_uuid = ? ").setParameter(1,
-				this.selectionId).executeUpdate();
+						+ " where selection_uuid = ? ")
+				.setParameter(1, this.selectionId).executeUpdate();
 		this.em.flush();
 
 		this.em.createNativeQuery(
@@ -161,54 +155,59 @@ public abstract class AbstractAsgnTxService<E>  {
 						+ " (selection_uuid, itemId)" + " select ?, "
 						+ this.rightItemIdField + " from " + this.rightTable
 						+ " where " + this.rightObjectIdField + " = ? ")
-				.setParameter(1, this.selectionId).setParameter(2,
-						this.objectId).executeUpdate();
+				.setParameter(1, this.selectionId)
+				.setParameter(2, this.objectId).executeUpdate();
 		this.em.flush();
 	}
- 
-	 
+
 	public void save() throws Exception {
 		this.em.createNativeQuery(
 				"delete from " + this.rightTable + " where  "
-						+ this.rightObjectIdField + " = ? ").setParameter(1,
-				this.objectId).executeUpdate();
+						+ this.rightObjectIdField + " = ? ")
+				.setParameter(1, this.objectId).executeUpdate();
 		this.em.flush();
-		if (this.saveAsSqlInsert) {						
+		if (this.saveAsSqlInsert) {
 			this.em.createNativeQuery(
 					"insert into " + this.rightTable + " ( "
 							+ this.rightObjectIdField + ",  "
 							+ this.rightItemIdField + " ) "
 							+ " select ?, itemId from  "
 							+ this.ASGNLINE_TEMP_TABLE + " "
-							+ "  where selection_uuid = ? ").setParameter(1,
-					this.objectId).setParameter(2, this.selectionId)
-					.executeUpdate();	
+							+ "  where selection_uuid = ? ")
+					.setParameter(1, this.objectId)
+					.setParameter(2, this.selectionId).executeUpdate();
 		} else {
-			List<Long> list = this.em.createNativeQuery(
-					" select itemId from  "
-					+ this.ASGNLINE_TEMP_TABLE + " "
-					+ "  where selection_uuid = ? ") 
-					.setParameter(1, this.selectionId)
-					.getResultList();
+			@SuppressWarnings("unchecked")
+			List<Long> list = this.em
+					.createNativeQuery(
+							" select itemId from  " + this.ASGNLINE_TEMP_TABLE
+									+ " " + "  where selection_uuid = ? ")
+					.setParameter(1, this.selectionId).getResultList();
 			this.onSave(list);
-			//TODO: find a solution other than create entities 
+			// TODO: find a solution other than create entities
 			// Might be expensive if there are lots of selected items
-			// Anyway this situations requires custom code 
-		}		
+			// Anyway this situations requires custom code
+		}
 	}
-	
+
 	protected void onSave(List<Long> ids) throws Exception {
 	}
-	
-	// ====================  getters- setters =====================
-	
-	
-	
+
+	// ==================== getters- setters =====================
+
 	/*
-	 * @return the entity manager  
+	 * @return the entity manager
 	 */
 	public EntityManager getEntityManager() {
 		return this.em;
+	}
+
+	public Class<E> getEntityClass() {
+		return entityClass;
+	}
+
+	public void setEntityClass(Class<E> entityClass) {
+		this.entityClass = entityClass;
 	}
 
 	public String getRightTable() {
@@ -227,43 +226,41 @@ public abstract class AbstractAsgnTxService<E>  {
 		this.selectionId = selectionId;
 	}
 
-	 
 	public Long getObjectId() {
 		return objectId;
 	}
- 
+
 	public void setObjectId(Long objectId) {
 		this.objectId = objectId;
 	}
 
- 
 	/*
 	 * @param em the entity manager to set
 	 */
 	public void setEntityManager(EntityManager em) {
-		this.em = em;		 
+		this.em = em;
 	}
 
 	public String getLeftTable() {
 		return leftTable;
 	}
- 
+
 	public void setLeftTable(String leftTable) {
 		this.leftTable = leftTable;
 	}
- 
+
 	public String getRightObjectIdField() {
 		return rightObjectIdField;
 	}
- 
+
 	public void setRightObjectIdField(String rightObjectIdField) {
 		this.rightObjectIdField = rightObjectIdField;
 	}
- 
+
 	public String getRightItemIdField() {
 		return rightItemIdField;
 	}
- 
+
 	public void setRightItemIdField(String rightItemIdField) {
 		this.rightItemIdField = rightItemIdField;
 	}
@@ -274,6 +271,5 @@ public abstract class AbstractAsgnTxService<E>  {
 
 	public void setLeftPkField(String leftPkField) {
 		this.leftPkField = leftPkField;
-	}  
-	
+	}
 }
