@@ -11,8 +11,6 @@ import org.activiti.engine.ProcessEngine;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 
 /**
  * Root abstract class for presenter service hierarchy. It provides support for
@@ -25,10 +23,8 @@ import org.springframework.context.ApplicationContextAware;
  * @author amathe
  * 
  */
-public abstract class AbstractPresenterBaseService implements
-		ApplicationContextAware {
-
-	private ApplicationContext applicationContext;
+public abstract class AbstractPresenterBaseService extends
+		AbstractApplicationContextAware {
 
 	/**
 	 * System configuration. May be null, use the getter.
@@ -69,8 +65,9 @@ public abstract class AbstractPresenterBaseService implements
 	 * with <code>@Autowired</code> for which there is no attempt to auto-load
 	 * on-demand from the spring-context.
 	 */
-	protected <M, F, P> void prepareDelegate(AbstractPresenterBaseService delegate) {
-		delegate.setApplicationContext(this.applicationContext);
+	protected <M, F, P> void prepareDelegate(
+			AbstractPresenterBaseService delegate) {
+		delegate.setApplicationContext(this.getApplicationContext());
 	}
 
 	/**
@@ -81,8 +78,8 @@ public abstract class AbstractPresenterBaseService implements
 	 */
 	public ServiceLocator getServiceLocator() {
 		if (this.serviceLocator == null) {
-			this.serviceLocator = this.applicationContext
-					.getBean(ServiceLocator.class);
+			this.serviceLocator = this.getApplicationContext().getBean(
+					ServiceLocator.class);
 		}
 		return serviceLocator;
 	}
@@ -94,14 +91,6 @@ public abstract class AbstractPresenterBaseService implements
 	 */
 	public void setServiceLocator(ServiceLocator serviceLocator) {
 		this.serviceLocator = serviceLocator;
-	}
-
-	public ApplicationContext getApplicationContext() {
-		return applicationContext;
-	}
-
-	public void setApplicationContext(ApplicationContext applicationContext) {
-		this.applicationContext = applicationContext;
 	}
 
 	/**
@@ -129,7 +118,7 @@ public abstract class AbstractPresenterBaseService implements
 
 	public ProcessEngine getWorkflowEngine() throws Exception {
 		if (this.workflowEngine == null) {
-			this.workflowEngine = (ProcessEngine) this.applicationContext
+			this.workflowEngine = (ProcessEngine) this.getApplicationContext()
 					.getBean(IActivitiProcessEngineHolder.class)
 					.getProcessEngine();
 		}

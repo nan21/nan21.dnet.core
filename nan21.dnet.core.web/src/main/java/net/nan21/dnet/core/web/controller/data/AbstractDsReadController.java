@@ -247,10 +247,9 @@ public class AbstractDsReadController<M, F, P> extends
 				response.setContentType("text/xml");
 			}
 			response.setHeader("Content-Description", "File Transfer");
-			response.setHeader(
-					"Content-Disposition",
-					"inline; filename=\"export_file."
-							+ dataFormat.toLowerCase() + "\";");
+			response.setHeader("Content-Disposition", "inline; filename=\""
+					+ service.getModelClass().getSimpleName() + "."
+					+ dataFormat.toLowerCase() + "\";");
 
 			this.sendFile(writer.getOutFile(), response.getOutputStream());
 			return null;
@@ -363,12 +362,10 @@ public class AbstractDsReadController<M, F, P> extends
 			if (dataFormat.equals(Constants.DATA_FORMAT_HTML)) {
 				response.setContentType("text/html");
 			}
-//			response.setHeader("Content-Description", "File Transfer");
-//			response.setHeader("Content-Disposition", "inline; filename=\""
-//					+ printTitle + "." + dataFormat.toLowerCase() + "\";");
 
 			Template temp = cfg.getTemplate(_tplName);
-			Writer out = new OutputStreamWriter(response.getOutputStream(), response.getCharacterEncoding());
+			Writer out = new OutputStreamWriter(response.getOutputStream(),
+					response.getCharacterEncoding());
 			temp.process(root, out);
 			out.flush();
 			return null;
