@@ -23,18 +23,13 @@
 	<!-- Default properties -->
 	<osgi-compendium:cm-properties id="net.nan21.dnet.properties"
 		persistent-id="net.nan21.dnet" />
-		
+
 	<bean id="serviceLocator" class="net.nan21.dnet.core.workflow.ServiceLocator">
 		<property name="entityServiceFactories" ref="osgiEntityServiceFactories" />
 		<property name="dsServiceFactories" ref="osgiDsServiceFactories" />
 		<property name="systemConfig" ref="systemConfig" />
 	</bean>
-	<!--
-		<bean id="wfDataSource"
-		class="org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy">
-		<property name="targetDataSource" ref="osgiDataSource" /> <property
-		name="reobtainTransactionalConnections" value="true" /> </bean>
-	-->
+
 	<bean id="processEngineConfiguration"
 		class="net.nan21.dnet.core.workflow.DNetProcessEngineConfiguration">
 		<property name="dataSource" ref="osgiDataSource" />
@@ -54,21 +49,10 @@
 			</list>
 		</property>
 	</bean>
-	
-<!-- 	<bean id="processEngineConfigurationPostProcessor"
-		class="net.nan21.dnet.core.workflow.ProcessEngineConfigurationPostProcessor">
-		<constructor-arg name="processEngineConfiguration"
-			ref="processEngineConfiguration" />
-		<constructor-arg name="processEngine" ref="activitiProcessEngine" />
-	</bean> -->
-	
-	
-	<bean id="activitiProcessEngineHolder" class="net.nan21.dnet.core.workflow.ActivitiProcessEngineHolder">
+
+	<bean id="activitiProcessEngineHolder"
+		class="net.nan21.dnet.core.workflow.ActivitiProcessEngineHolder">
 		<property name="processEngineConfiguration" ref="processEngineConfiguration" />
 	</bean>
-	
-	<!-- <bean id="activitiProcessEngine" class="org.activiti.spring.ProcessEngineFactoryBean">
-		<property name="processEngineConfiguration" ref="processEngineConfiguration" />
-	</bean> -->
-	
+
 </beans>

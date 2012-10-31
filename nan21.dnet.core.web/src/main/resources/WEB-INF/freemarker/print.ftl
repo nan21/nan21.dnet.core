@@ -1,6 +1,7 @@
 <html>
 <head>
   <title>${cfg.title} | By: ${cfg.runBy} / ${printer.print(cfg.runAt)} </title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <style>
 a,abbr,acronym,address,applet,article,aside,audio,
 b,blockquote,big,body,
@@ -34,19 +35,16 @@ table,table td{
 img{
 	vertical-align:top
 }
-embed{
-	vertical-align:top
+* {
+	font-family: Arial, tahoma, verdana;
+	font-size:13px;
+	color: #333;
+	line-height:1.6em;
 }
-article,aside,audio,canvas,command,datalist,details,embed,figcaption,figure,footer,header,hgroup,keygen,meter,nav,output,progress,section,source,video{display:block}
-mark,rp,rt,ruby,summary,time{
-	display:inline
-}
-
 body{
 	font-family: Arial, Helvetica, sans-serif;
 	line-height:1.4em;
 	font-size:0.9em;
-    background:url(../images/header-bg2.png) top repeat-x #fff;
 	color:#555;
 }
 h1,h2,h3,h4,h5 {
@@ -55,15 +53,21 @@ h1,h2,h3,h4,h5 {
 h1 {
    font-size:24px;
 }
-.col-header {
-	font-weight: bold;
-	border-bottom: 1px solid #333;
-	padding: 3;
+table.result {
+  border: 1px solid gray ;
+  border-collapse:collapse;
 }
-.col-data {
-	border-bottom: 1px dashed #333;
-	padding: 2;
+
+table.result thead tr td {
+  border-bottom: 1px solid gray;
+  padding:3px 2px 3px 4px;
+  font-weight:bold;
 }
+table.result tbody tr td {
+  border-bottom: 1px solid #dedede;
+  padding:2px 2px 2px 6px;
+}
+
   </style>
 </head>
 <body>
@@ -90,13 +94,14 @@ h1 {
 </tr>
 <tr>
 	<td>
-		<table style="width:100%">
+		<table style="width:100%" class="result">
+		<thead>
 		  <tr>
 		  <#list colTitles as t>
-		     <td class="col-header">${t} </td>
+		     <td>${t} </td>
 		  </#list>
 		  </tr>
-
+         </thead>
 		  <#list data as m>
 		  	<tr>
 		    <#list colNames as c>

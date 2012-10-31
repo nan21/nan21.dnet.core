@@ -36,6 +36,7 @@ Import-Package:
  net.nan21.dnet.core.api.util;version="1.0.4",
  net.nan21.dnet.core.api.wf;version="1.0.4",
  org.eclipse.persistence.jpa;version="[2.1,2.5)",
+ org.joda.time;version="[1.6,2.0)",
  org.slf4j;version="[1.0,2.0]"
 Import-Bundle: 
  activiti-engine;version="[5.9,5.9]",

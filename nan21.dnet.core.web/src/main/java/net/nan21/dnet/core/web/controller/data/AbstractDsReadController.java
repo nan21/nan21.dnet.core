@@ -86,8 +86,16 @@ public class AbstractDsReadController<M, F, P> extends
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		try {
+
 			StopWatch stopWatch = new StopWatch();
 			stopWatch.start();
+
+			if (logger.isDebugEnabled()) {
+				logger.debug("Processing request: {}.{} -> action = {} ",
+						new String[] { resourceName, dataFormat,
+								Constants.DS_QUERY });
+			}
+
 			this.prepareRequest(request, response);
 
 			this.authorizeDsAction(
@@ -171,6 +179,13 @@ public class AbstractDsReadController<M, F, P> extends
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		try {
+
+			if (logger.isDebugEnabled()) {
+				logger.debug("Processing request: {}.{} -> action = {} ",
+						new String[] { resourceName, dataFormat,
+								Constants.DS_EXPORT });
+			}
+
 			this.prepareRequest(request, response);
 
 			this.authorizeDsAction(
@@ -235,16 +250,16 @@ public class AbstractDsReadController<M, F, P> extends
 			service.doExport(builder, writer);
 
 			if (dataFormat.equals(Constants.DATA_FORMAT_CSV)) {
-				response.setContentType("application/vnd.ms-excel");
+				response.setContentType("application/vnd.ms-excel; charset=UTF-8");
 			}
 			if (dataFormat.equals(Constants.DATA_FORMAT_JSON)) {
-				response.setContentType("text/plain");
+				response.setContentType("text/plain; charset=UTF-8");
 			}
 			if (dataFormat.equals(Constants.DATA_FORMAT_HTML)) {
-				response.setContentType("text/html");
+				response.setContentType("text/html; charset=UTF-8");
 			}
 			if (dataFormat.equals(Constants.DATA_FORMAT_XML)) {
-				response.setContentType("text/xml");
+				response.setContentType("text/xml; charset=UTF-8");
 			}
 			response.setHeader("Content-Description", "File Transfer");
 			response.setHeader("Content-Disposition", "inline; filename=\""
@@ -285,6 +300,13 @@ public class AbstractDsReadController<M, F, P> extends
 			throws Exception {
 
 		try {
+
+			if (logger.isDebugEnabled()) {
+				logger.debug("Processing request: {}.{} -> action = {} ",
+						new String[] { resourceName, dataFormat,
+								Constants.DS_PRINT });
+			}
+
 			this.prepareRequest(request, response);
 
 			this.authorizeDsAction(
@@ -360,7 +382,7 @@ public class AbstractDsReadController<M, F, P> extends
 			root.put("cfg", reportConfig);
 
 			if (dataFormat.equals(Constants.DATA_FORMAT_HTML)) {
-				response.setContentType("text/html");
+				response.setContentType("text/html; charset=UTF-8");
 			}
 
 			Template temp = cfg.getTemplate(_tplName);

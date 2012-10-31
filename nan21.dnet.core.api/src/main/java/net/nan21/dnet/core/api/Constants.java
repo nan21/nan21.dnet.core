@@ -2,6 +2,8 @@ package net.nan21.dnet.core.api;
 
 public class Constants {
 
+	public static final String ENCODING = "UTF-8";
+
 	/* Data format */
 
 	public static final String DATA_FORMAT_CSV = "csv";
@@ -69,5 +71,12 @@ public class Constants {
 
 	public static final String DECIMAL_SEPARATOR = ".";
 	public static final String THOUSAND_SEPARATOR = ",";
+
+	/* CSV settings */
+
+	public static final char CSV_SEPARATOR = ';';
+	public static final char CSV_QUOTECHAR = '"';
+	public static final char CSV_ESCAPECHAR = '"';
+	public static final String CSV_LINE_END = "\n";
 
 }

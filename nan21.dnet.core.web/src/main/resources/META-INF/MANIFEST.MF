@@ -24,6 +24,7 @@ Import-Package:
  javax.persistence.criteria;version="[2.0,2.1)",
  javax.persistence.metamodel;version="[2.0,2.1)",
  javax.persistence.spi;version="[2.0,2.1)",
+ javax.servlet,
  javax.servlet.http,
  javax.servlet.jsp.jstl.core;version="[1.2,2.0)",
  javax.sql,

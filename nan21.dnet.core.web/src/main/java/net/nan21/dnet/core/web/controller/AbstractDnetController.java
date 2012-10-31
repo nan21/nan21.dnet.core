@@ -277,21 +277,32 @@ public abstract class AbstractDnetController implements ApplicationContextAware 
 			return this.handleException((NotAuthorizedRequestException) e,
 					response);
 		} else if (e instanceof InvocationTargetException) {
-			Exception exc = (Exception) ((InvocationTargetException) e)
+			StringBuffer sb = new StringBuffer();
+			if (e.getMessage() != null) {
+				sb.append(e.getMessage() + "\n");
+			}
+			Throwable exc = ((InvocationTargetException) e)
 					.getTargetException();
 
+			if (exc.getMessage() != null) {
+				sb.append( exc.getMessage()+ "\n");
+			}
+			
 			if (exc.getCause() != null) {
-				exc = (Exception) exc.getCause();
+				if (sb.length() > 0) {
+					sb.append(" Reason: ");
+				}
+				sb.append(exc.getCause().getLocalizedMessage());
 			}
 
 			exc.printStackTrace();
 			response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
-			response.getOutputStream().print(exc.getMessage());
+			response.getOutputStream().print(sb.toString());
 			return null;
 		}
 		StringBuffer sb = new StringBuffer();
 		if (e.getLocalizedMessage() != null) {
-			sb.append(e.getLocalizedMessage() );
+			sb.append(e.getLocalizedMessage());
 		}
 		if (e.getCause() != null) {
 			if (sb.length() > 0) {

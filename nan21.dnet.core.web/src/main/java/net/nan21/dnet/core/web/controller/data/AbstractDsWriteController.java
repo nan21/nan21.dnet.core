@@ -50,6 +50,11 @@ public class AbstractDsWriteController<M, F, P> extends
 			StopWatch stopWatch = new StopWatch();
 			stopWatch.start();
 
+			if (logger.isDebugEnabled()) {
+				logger.debug("Processing request: {}.{} -> action = {} ",
+						new String[] { resourceName, dataFormat,
+								Constants.DS_INSERT });
+			}
 			this.prepareRequest(request, response);
 
 			this.authorizeDsAction(
@@ -107,6 +112,12 @@ public class AbstractDsWriteController<M, F, P> extends
 			StopWatch stopWatch = new StopWatch();
 			stopWatch.start();
 
+			if (logger.isDebugEnabled()) {
+				logger.debug("Processing request: {}.{} -> action = {} ",
+						new String[] { resourceName, dataFormat,
+								Constants.DS_UPDATE });
+			}
+
 			this.prepareRequest(request, response);
 
 			this.authorizeDsAction(
@@ -163,6 +174,12 @@ public class AbstractDsWriteController<M, F, P> extends
 
 			StopWatch stopWatch = new StopWatch();
 			stopWatch.start();
+
+			if (logger.isDebugEnabled()) {
+				logger.debug("Processing request: {}.{} -> action = {} ",
+						new String[] { resourceName, dataFormat,
+								Constants.DS_DELETE });
+			}
 
 			this.prepareRequest(request, response);
 

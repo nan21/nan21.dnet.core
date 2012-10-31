@@ -187,7 +187,7 @@ Ext.define("dnet.core.dc.DataPrintForm", {
 		var opts = "adress=yes, width=" + _wv + ", height=450,"
 				+ "scrollbars=yes, resizable=yes,menubar=yes";
 		var v = window.open(url["print"] + "&" + Dnet.requestParam.FILTER + "="
-				+ request.data + "&" + Ext.urlEncode(params), 'Print', opts);
+				+ request.data + "&" + Ext.Object.toQueryString(params), 'Print', opts);
 		v.focus();
 	}
 });
