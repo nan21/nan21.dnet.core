@@ -42,17 +42,7 @@ Ext.define('dnet.core.dashboard.Portal', {
 							items : [{
 								id : 'col-1',
 								items : [
-										// {
-										// id: 'portlet-1',
-										// title: 'Grid Portlet',
-										// tools: this.getTools(),
-										// // items:[], //
-										// Ext.create('Ext.app.GridPortlet'),
-										// listeners: {
-										// 'close':
-										// Ext.bind(this.onPortletClose, this)
-										// }
-										// },
+										 
 
 										{
 									id : 'portlet-2',
@@ -68,19 +58,21 @@ Ext.define('dnet.core.dashboard.Portal', {
 										'close' : Ext.bind(this.onPortletClose,
 												this)
 									}
-								}, {
-									id : 'portlet-3',
-									title : 'About Dashboard',
-									tpl : dnet.core.base.TemplateRepository.ABOUT_DASHBOARD,
-									data : {},
-									 
-									// tools: this.getTools(),
-
-									listeners : {
-										'close' : Ext.bind(this.onPortletClose,
-												this)
-									}
-								}]
+								}
+//										, {
+//									id : 'portlet-3',
+//									title : 'About Dashboard',
+//									tpl : dnet.core.base.TemplateRepository.ABOUT_DASHBOARD,
+//									data : {},
+//									 
+//									// tools: this.getTools(),
+//
+//									listeners : {
+//										'close' : Ext.bind(this.onPortletClose,
+//												this)
+//									}
+//								}
+										]
 							}, {
 								id : 'col-2',
 

@@ -26,6 +26,9 @@ Ext.define("dnet.core.dc.DcvGridBuilder", {
 			trueText : Dnet.translate("msg", "bool_true"),
 			falseText : Dnet.translate("msg", "bool_false")
 		});
+		Ext.applyIf(config, {
+			width : Dnet.viewConfig.BOOLEAN_COL_WIDTH
+		});
 		this.applySharedConfig(config);
 		return this;
 	},

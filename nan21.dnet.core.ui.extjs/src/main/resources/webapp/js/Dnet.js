@@ -86,6 +86,11 @@ Dnet = {
 	DEFAULT_THEME : "gray",
 	DEFAULT_LANGUAGE : "en",
 
+	viewConfig : {
+		BOOLEAN_COL_WIDTH: 60,
+		DATE_COL_WIDTH: 80
+	},
+	
 	/**
 	 * Creates a set of number formats up to 6 decimals according to the user
 	 * locale.

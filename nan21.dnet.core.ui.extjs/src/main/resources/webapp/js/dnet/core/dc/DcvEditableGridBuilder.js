@@ -23,6 +23,9 @@ Ext.define("dnet.core.dc.DcvEditableGridBuilder", {
 			falseText : Dnet.translate("msg", "bool_false"),
 			autoSelect: true
 		});
+		Ext.applyIf(config, {
+			width : Dnet.viewConfig.BOOLEAN_COL_WIDTH
+		});
 		if (config.editor == undefined && !config._noEdit_ === true) {
 
 			var yesNoStore = Ext.create('Ext.data.Store', {
