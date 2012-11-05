@@ -46,21 +46,24 @@ public class SysParam {
 	 */
 	public static final String CORE_PRINT_HTML_TPL = "CORE_PRINT_HTML_TPL";
 
+
+
 	/**
 	 * Default language to be used if no language preference set by user.
 	 */
-	public static final String CORE_DEFAULT_LANG = "en";
+	public static final String CORE_DEFAULT_LANGUAGE = "CORE_DEFAULT_LANGUAGE";
 
 	/**
 	 * Default theme to be used in Extjs based user interface if no theme
 	 * preference set by user.
 	 */
-	public static final String CORE_DEFAULT_THEME_EXTJS = "gray";
+	public static final String CORE_DEFAULT_THEME_EXTJS = "CORE_DEFAULT_THEME_EXTJS";
 
 	/**
 	 * Default theme to be used in Sencha Toucha based user interface if no
 	 * theme preference set by user.
 	 */
-	public static final String CORE_DEFAULT_THEME_STOUCH = "gray";
+	public static final String CORE_DEFAULT_THEME_STOUCH = "CORE_DEFAULT_THEME_STOUCH";
 
+	
 }

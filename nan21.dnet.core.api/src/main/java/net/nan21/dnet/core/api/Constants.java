@@ -3,6 +3,9 @@ package net.nan21.dnet.core.api;
 public class Constants {
 
 	public static final String ENCODING = "UTF-8";
+	public static final String DEFAULT_LANGUAGE = "en";
+	public static final String DEFAULT_THEME_EXTJS = "gray";
+	public static final String DEFAULT_THEME_STOUCH = "gray";
 
 	/* Data format */
 

@@ -321,10 +321,12 @@ public abstract class AbstractUiExtjsController extends AbstractDnetController {
 		Cookie[] cookies = request.getCookies();
 		Cookie c = this.getCookie(cookies, Constants.COOKIE_NAME_THEME);
 		if (c == null) {
-			c = this.createCookie(
-					Constants.COOKIE_NAME_THEME,
-					this.getSystemConfig().getSysParamValue(
-							SysParam.CORE_DEFAULT_THEME_EXTJS),
+			String defaultValue = this.getSystemConfig().getSysParamValue(
+					SysParam.CORE_DEFAULT_THEME_EXTJS);
+			if (defaultValue == null || defaultValue.equals("")) {
+				defaultValue = Constants.DEFAULT_THEME_EXTJS;
+			}
+			c = this.createCookie(Constants.COOKIE_NAME_THEME, defaultValue,
 					60 * 60 * 24 * 365);
 			response.addCookie(c);
 		}
@@ -354,10 +356,13 @@ public abstract class AbstractUiExtjsController extends AbstractDnetController {
 		Cookie[] cookies = request.getCookies();
 		Cookie c = this.getCookie(cookies, Constants.COOKIE_NAME_LANG);
 		if (c == null) {
-			c = this.createCookie(
-					Constants.COOKIE_NAME_LANG,
-					this.getSystemConfig().getSysParamValue(
-							SysParam.CORE_DEFAULT_LANG), 60 * 60 * 24 * 365);
+			String defaultValue = this.getSystemConfig().getSysParamValue(
+					SysParam.CORE_DEFAULT_LANGUAGE);
+			if (defaultValue == null || defaultValue.equals("")) {
+				defaultValue = Constants.DEFAULT_LANGUAGE;
+			}
+			c = this.createCookie(Constants.COOKIE_NAME_LANG, defaultValue,
+					60 * 60 * 24 * 365);
 			response.addCookie(c);
 		}
 

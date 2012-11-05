@@ -172,7 +172,7 @@ public abstract class AbstractUiSenchaTouchController extends
 			c = this.createCookie(
 					Constants.COOKIE_NAME_LANG,
 					this.getSystemConfig().getSysParamValue(
-							SysParam.CORE_DEFAULT_LANG), 60 * 60 * 24 * 365);
+							SysParam.CORE_DEFAULT_LANGUAGE), 60 * 60 * 24 * 365);
 			response.addCookie(c);
 		}
 
