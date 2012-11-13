@@ -73,7 +73,7 @@ Ext.define("dnet.core.base.NavigationTree", {
 	        },
 	        folderSort: true,
 	        sorters: [{
-	            property: 'text',
+	            property: 'sequenceNo',
 	            direction: 'ASC'
 	        }] ,
 	        listeners: {
