@@ -49,7 +49,15 @@ public class AbstractDsRpcController<M, F, P> extends
 		try {
 			StopWatch stopWatch = new StopWatch();
 			stopWatch.start();
-
+			if (logger.isDebugEnabled()) {
+				logger.debug("Processing request: {}.{} -> action = {}-data / {}",
+						new String[] { resourceName, dataFormat,
+								Constants.DS_RPC,rpcName });
+				logger.debug("  --> request-data: {} ",
+						new String[] { dataString });
+				logger.debug("  --> request-params: {} ",
+						new String[] { paramString });
+			}
 			this.prepareRequest(request, response);
 
 			this.authorizeDsAction(
@@ -116,7 +124,15 @@ public class AbstractDsRpcController<M, F, P> extends
 		try {
 			StopWatch stopWatch = new StopWatch();
 			stopWatch.start();
-
+			if (logger.isDebugEnabled()) {
+				logger.debug("Processing request: {}.{} -> action = {}-filter / {}",
+						new String[] { resourceName, dataFormat,
+								Constants.DS_RPC,rpcName });
+				logger.debug("  --> request-data: {} ",
+						new String[] { dataString });
+				logger.debug("  --> request-params: {} ",
+						new String[] { paramString });
+			}
 			this.prepareRequest(request, response);
 
 			this.authorizeDsAction(

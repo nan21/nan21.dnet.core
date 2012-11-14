@@ -241,7 +241,7 @@ Ext.define("dnet.core.dc.DcvFilterFormBuilder", {
 		if (!config.listeners[en]) {
 			config.listeners[en] = {};
 		}
-		config.listeners[en]['buffer'] = 250;
+		config.listeners[en]['buffer'] = 500;
 		if(fn!=null) {
 			if (config.listeners[en].fn) {
 				config.listeners[en].fn = Ext.Function.createInterceptor(config.listeners[en].fn, fn);

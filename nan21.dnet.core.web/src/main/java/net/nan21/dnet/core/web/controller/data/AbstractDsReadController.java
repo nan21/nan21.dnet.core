@@ -94,6 +94,12 @@ public class AbstractDsReadController<M, F, P> extends
 				logger.debug("Processing request: {}.{} -> action = {} ",
 						new String[] { resourceName, dataFormat,
 								Constants.DS_QUERY });
+				logger.debug("  --> request-filter: {} ",
+						new String[] { filterString });
+				logger.debug("  --> request-params: {} ",
+						new String[] { paramString });
+				logger.debug("  --> request-result-range: {} ", new String[] {
+						resultStart + "", (resultStart + resultSize) + "" });
 			}
 
 			this.prepareRequest(request, response);
@@ -184,6 +190,12 @@ public class AbstractDsReadController<M, F, P> extends
 				logger.debug("Processing request: {}.{} -> action = {} ",
 						new String[] { resourceName, dataFormat,
 								Constants.DS_EXPORT });
+				logger.debug("  --> request-filter: {} ",
+						new String[] { filterString });
+				logger.debug("  --> request-params: {} ",
+						new String[] { paramString });
+				logger.debug("  --> request-result-range: {} ", new String[] {
+						resultStart + "", (resultStart + resultSize) + "" });
 			}
 
 			this.prepareRequest(request, response);
@@ -305,6 +317,12 @@ public class AbstractDsReadController<M, F, P> extends
 				logger.debug("Processing request: {}.{} -> action = {} ",
 						new String[] { resourceName, dataFormat,
 								Constants.DS_PRINT });
+				logger.debug("  --> request-filter: {} ",
+						new String[] { filterString });
+				logger.debug("  --> request-params: {} ",
+						new String[] { paramString });
+				logger.debug("  --> request-result-range: {} ", new String[] {
+						resultStart + "", (resultStart + resultSize) + "" });
 			}
 
 			this.prepareRequest(request, response);

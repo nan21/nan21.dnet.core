@@ -2,6 +2,7 @@ package net.nan21.dnet.core.business.service;
 
 import java.util.List;
 
+import net.nan21.dnet.core.api.exceptions.BusinessException;
 import net.nan21.dnet.core.api.service.IEntityService;
 import net.nan21.dnet.core.api.service.IEntityServiceFactory;
 
@@ -26,10 +27,10 @@ public class ServiceLocatorBusiness implements ApplicationContextAware {
 	 * @param <E>
 	 * @param entityClass
 	 * @return
-	 * @throws Exception
+	 * @throws BusinessException
 	 */
 	public <E> IEntityService<E> findEntityService(Class<E> entityClass)
-			throws Exception {
+			throws BusinessException {
 		return this.findEntityService(entityClass,
 				this.getEntityServiceFactories());
 	}
@@ -41,10 +42,10 @@ public class ServiceLocatorBusiness implements ApplicationContextAware {
 	 * @param entityClass
 	 * @param factories
 	 * @return
-	 * @throws Exception
+	 * @throws BusinessException
 	 */
 	public <E> IEntityService<E> findEntityService(Class<E> entityClass,
-			List<IEntityServiceFactory> factories) throws Exception {
+			List<IEntityServiceFactory> factories) throws BusinessException {
 		for (IEntityServiceFactory esf : factories) {
 			try {
 				IEntityService<E> srv = esf.create(entityClass.getSimpleName()
@@ -56,7 +57,7 @@ public class ServiceLocatorBusiness implements ApplicationContextAware {
 				// service not found in this factory, ignore
 			}
 		}
-		throw new Exception(entityClass.getSimpleName() + "Service"
+		throw new BusinessException(entityClass.getSimpleName() + "Service"
 				+ " not found ");
 	}
 

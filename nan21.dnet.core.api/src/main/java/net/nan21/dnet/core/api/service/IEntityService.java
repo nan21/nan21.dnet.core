@@ -6,6 +6,7 @@ import java.util.Map;
 import javax.persistence.EntityManager;
 
 import net.nan21.dnet.core.api.ISystemConfig;
+import net.nan21.dnet.core.api.exceptions.BusinessException;
 
 /**
  * Base interface to be implemented by business services. A business service or
@@ -50,27 +51,27 @@ public interface IEntityService<E> {
 	 * Retrieve all entities of the given type.
 	 * 
 	 * @return
-	 * @throws Exception
+	 * @throws BusinessException
 	 */
-	public List<E> findAll() throws Exception;
+	public List<E> findAll() throws BusinessException;
 
 	/**
 	 * Retrieve an entity by its ID
 	 * 
 	 * @param id
 	 * @return
-	 * @throws Exception
+	 * @throws BusinessException
 	 */
-	public E findById(Object id) throws Exception;
+	public E findById(Object id) throws BusinessException;
 
 	/**
 	 * Retrieve entities which match the given list of IDs.
 	 * 
 	 * @param ids
 	 * @return
-	 * @throws Exception
+	 * @throws BusinessException
 	 */
-	public List<E> findByIds(List<Object> ids) throws Exception;
+	public List<E> findByIds(List<Object> ids) throws BusinessException;
 
 	/**
 	 * Find an entity by unique-key.
@@ -80,59 +81,59 @@ public interface IEntityService<E> {
 	 * @param params
 	 *            Parameters with values for the unique-key fields.
 	 * @return
-	 * @throws Exception
+	 * @throws BusinessException
 	 */
 	public E findByUk(String namedQueryName, Map<String, Object> params)
-			throws Exception;
+			throws BusinessException;
 
 	public <T> List<T> findEntitiesByAttributes(Class<T> entityClass,
-			Map<String, Object> params) throws Exception;
+			Map<String, Object> params) throws BusinessException;
 
 	public <T> T findEntityByAttributes(Class<T> entityClass,
-			Map<String, Object> params) throws Exception;
+			Map<String, Object> params) throws BusinessException;
 
 	public List<E> findEntitiesByAttributes(Map<String, Object> params)
-			throws Exception;
+			throws BusinessException;
 
 	public E findEntityByAttributes(Map<String, Object> params)
-			throws Exception;
+			throws BusinessException;
 
-	public void deleteById(Object id) throws Exception;
+	public void deleteById(Object id) throws BusinessException;
 
-	public void deleteByIds(List<Object> ids) throws Exception;
+	public void deleteByIds(List<Object> ids) throws BusinessException;
 
 	/**
 	 * Insert a new entity. This should be a transactional method.
 	 * 
 	 * @param e
-	 * @throws Exception
+	 * @throws BusinessException
 	 */
-	public void insert(E e) throws Exception;
+	public void insert(E e) throws BusinessException;
 
 	/**
 	 * Insert a list of new entities. This should be a transactional method.
 	 * 
 	 * @param list
-	 * @throws Exception
+	 * @throws BusinessException
 	 */
-	public void insert(List<E> list) throws Exception;
+	public void insert(List<E> list) throws BusinessException;
 
 	/**
 	 * Update an existing entity. This should be a transactional method.
 	 * 
 	 * @param e
-	 * @throws Exception
+	 * @throws BusinessException
 	 */
-	public void update(E e) throws Exception;
+	public void update(E e) throws BusinessException;
 
 	/**
 	 * Update a list of existing entities. This should be a transactional
 	 * method.
 	 * 
 	 * @param list
-	 * @throws Exception
+	 * @throws BusinessException
 	 */
-	public void update(List<E> list) throws Exception;
+	public void update(List<E> list) throws BusinessException;
 
 	/**
 	 * Execute an update JPQL statement. This should be a transactional method.
@@ -140,15 +141,15 @@ public interface IEntityService<E> {
 	 * @param jpqlStatement
 	 * @param parameters
 	 * @return
-	 * @throws Exception
+	 * @throws BusinessException
 	 */
 	public int update(String jpqlStatement, Map<String, Object> parameters)
-			throws Exception;
+			throws BusinessException;
 
-	// public void remove(E e) throws Exception;
-	// public void remove(List<E> list) throws Exception;
+	// public void remove(E e) throws BusinessException;
+	// public void remove(List<E> list) throws BusinessException;
 
-	public E create() throws Exception;
+	public E create() throws BusinessException;
 
 	/**
 	 * Getter for system configuration.
@@ -165,13 +166,15 @@ public interface IEntityService<E> {
 	public void setSystemConfig(ISystemConfig systemConfig);
 
 	public void doStartWfProcessInstanceByKey(String processDefinitionKey,
-			String businessKey, Map<String, Object> variables) throws Exception;
+			String businessKey, Map<String, Object> variables)
+			throws BusinessException;
 
 	public void doStartWfProcessInstanceById(String processDefinitionId,
-			String businessKey, Map<String, Object> variables) throws Exception;
+			String businessKey, Map<String, Object> variables)
+			throws BusinessException;
 
 	public void doStartWfProcessInstanceByMessage(String messageName,
 			String businessKey, Map<String, Object> processVariables)
-			throws Exception;
+			throws BusinessException;
 
 }

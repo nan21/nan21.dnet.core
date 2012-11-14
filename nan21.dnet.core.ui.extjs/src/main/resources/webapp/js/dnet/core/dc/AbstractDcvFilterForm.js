@@ -159,7 +159,19 @@ Ext.define("dnet.core.dc.AbstractDcvFilterForm", {
 			if (this.disabled) {
 				this.enable();
 			}
-			this.form.loadRecord(filter);
+			 
+			var fields = this.getForm().getFields();
+			
+			fields.each(function(field) {
+				if (field.dataIndex) {
+					var nv = filter.data[field.dataIndex];
+					if (field.getValue() != nv) {
+						if ( !(field.hasFocus && field.isDirty)) {
+							field.setValue(nv);
+						}
+					}
+				}
+			});
 		}
 	}
 

@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.persistence.Query;
 
+import net.nan21.dnet.core.api.exceptions.BusinessException;
 import net.nan21.dnet.core.api.model.IModelWithClientId;
 import net.nan21.dnet.core.api.session.Session;
 
@@ -41,7 +42,7 @@ public abstract class AbstractEntityWriteService<E> extends
 	 * 
 	 * @param e
 	 */
-	protected void preInsert(E e) throws Exception {
+	protected void preInsert(E e) throws BusinessException {
 	}
 
 	/**
@@ -49,14 +50,14 @@ public abstract class AbstractEntityWriteService<E> extends
 	 * 
 	 * @param e
 	 */
-	protected void onInsert(E e) throws Exception {
+	protected void onInsert(E e) throws BusinessException {
 		this.em.persist(e);
 	}
 
 	/**
 	 * Insert (persist) one entity.
 	 */
-	public void insert(E e) throws Exception {
+	public void insert(E e) throws BusinessException {
 		this.preInsert(e);
 		this.onInsert(e);
 		this.postInsert(e);
@@ -67,7 +68,7 @@ public abstract class AbstractEntityWriteService<E> extends
 	 * 
 	 * @param list
 	 */
-	protected void postInsert(E e) throws Exception {
+	protected void postInsert(E e) throws BusinessException {
 	}
 
 	/**
@@ -75,7 +76,7 @@ public abstract class AbstractEntityWriteService<E> extends
 	 * 
 	 * @param list
 	 */
-	protected void preInsert(List<E> list) throws Exception {
+	protected void preInsert(List<E> list) throws BusinessException {
 	}
 
 	/**
@@ -84,7 +85,7 @@ public abstract class AbstractEntityWriteService<E> extends
 	 * 
 	 * @param list
 	 */
-	protected void onInsert(List<E> list) throws Exception {
+	protected void onInsert(List<E> list) throws BusinessException {
 		for (E e : list) {
 			this.insert(e);
 		}
@@ -93,7 +94,7 @@ public abstract class AbstractEntityWriteService<E> extends
 	/**
 	 * Insert (persist) a list of entities.
 	 */
-	public void insert(List<E> list) throws Exception {
+	public void insert(List<E> list) throws BusinessException {
 		this.preInsert(list);
 		this.onInsert(list);
 		this.postInsert(list);
@@ -104,7 +105,7 @@ public abstract class AbstractEntityWriteService<E> extends
 	 * 
 	 * @param list
 	 */
-	protected void postInsert(List<E> list) throws Exception {
+	protected void postInsert(List<E> list) throws BusinessException {
 	}
 
 	/* ========================== UPDATE =========================== */
@@ -114,7 +115,7 @@ public abstract class AbstractEntityWriteService<E> extends
 	 * 
 	 * @param e
 	 */
-	protected void preUpdate(E e) throws Exception {
+	protected void preUpdate(E e) throws BusinessException {
 	}
 
 	/**
@@ -122,14 +123,14 @@ public abstract class AbstractEntityWriteService<E> extends
 	 * 
 	 * @param e
 	 */
-	protected void onUpdate(E e) throws Exception {
+	protected void onUpdate(E e) throws BusinessException {
 		this.em.merge(e);
 	}
 
 	/**
 	 * Update (merge) one entity.
 	 */
-	public void update(E e) throws Exception {
+	public void update(E e) throws BusinessException {
 		this.preUpdate(e);
 		this.onUpdate(e);
 		this.postUpdate(e);
@@ -140,7 +141,7 @@ public abstract class AbstractEntityWriteService<E> extends
 	 * 
 	 * @param e
 	 */
-	protected void postUpdate(E e) throws Exception {
+	protected void postUpdate(E e) throws BusinessException {
 	}
 
 	/**
@@ -148,7 +149,7 @@ public abstract class AbstractEntityWriteService<E> extends
 	 * 
 	 * @param list
 	 */
-	protected void preUpdate(List<E> list) throws Exception {
+	protected void preUpdate(List<E> list) throws BusinessException {
 	}
 
 	/**
@@ -157,7 +158,7 @@ public abstract class AbstractEntityWriteService<E> extends
 	 * 
 	 * @param list
 	 */
-	protected void onUpdate(List<E> list) throws Exception {
+	protected void onUpdate(List<E> list) throws BusinessException {
 		for (E e : list) {
 			this.update(e);
 		}
@@ -167,7 +168,7 @@ public abstract class AbstractEntityWriteService<E> extends
 	 * Update (merge) a list of entities.
 	 */
 
-	public void update(List<E> list) throws Exception {
+	public void update(List<E> list) throws BusinessException {
 		this.preUpdate(list);
 		this.onUpdate(list);
 		this.postUpdate(list);
@@ -178,7 +179,7 @@ public abstract class AbstractEntityWriteService<E> extends
 	 * 
 	 * @param list
 	 */
-	protected void postUpdate(List<E> list) throws Exception {
+	protected void postUpdate(List<E> list) throws BusinessException {
 	}
 
 	/**
@@ -187,10 +188,10 @@ public abstract class AbstractEntityWriteService<E> extends
 	 * @param jpqlStatement
 	 * @param parameters
 	 * @return
-	 * @throws Exception
+	 * @throws BusinessException
 	 */
 	public int update(String jpqlStatement, Map<String, Object> parameters)
-			throws Exception {
+			throws BusinessException {
 		Query q = this.getEntityManager().createQuery(jpqlStatement);
 
 		for (Map.Entry<String, Object> p : parameters.entrySet()) {
@@ -206,7 +207,7 @@ public abstract class AbstractEntityWriteService<E> extends
 	 * 
 	 * @param list
 	 */
-	protected void preDeleteById(Object id) throws Exception {
+	protected void preDeleteById(Object id) throws BusinessException {
 	}
 
 	/**
@@ -214,7 +215,7 @@ public abstract class AbstractEntityWriteService<E> extends
 	 * 
 	 * @param list
 	 */
-	protected void onDeleteById(Object id) throws Exception {
+	protected void onDeleteById(Object id) throws BusinessException {
 
 		if (IModelWithClientId.class.isAssignableFrom(this.getEntityClass())) {
 			this.em.createQuery(
@@ -237,7 +238,7 @@ public abstract class AbstractEntityWriteService<E> extends
 	/**
 	 * Delete entity by id.
 	 */
-	public void deleteById(Object id) throws Exception {
+	public void deleteById(Object id) throws BusinessException {
 		this.preDeleteById(id);
 		this.onDeleteById(id);
 		this.postDeleteById(id);
@@ -248,7 +249,7 @@ public abstract class AbstractEntityWriteService<E> extends
 	 * 
 	 * @param list
 	 */
-	protected void postDeleteById(Object id) throws Exception {
+	protected void postDeleteById(Object id) throws BusinessException {
 	}
 
 	/**
@@ -256,7 +257,7 @@ public abstract class AbstractEntityWriteService<E> extends
 	 * 
 	 * @param list
 	 */
-	protected void preDeleteByIds(List<Object> ids) throws Exception {
+	protected void preDeleteByIds(List<Object> ids) throws BusinessException {
 	}
 
 	/**
@@ -264,7 +265,7 @@ public abstract class AbstractEntityWriteService<E> extends
 	 * 
 	 * @param list
 	 */
-	protected void onDeleteByIds(List<Object> ids) throws Exception {
+	protected void onDeleteByIds(List<Object> ids) throws BusinessException {
 
 		if (IModelWithClientId.class.isAssignableFrom(this.getEntityClass())) {
 			this.em.createQuery(
@@ -287,7 +288,7 @@ public abstract class AbstractEntityWriteService<E> extends
 	/**
 	 * Delete entities by a list of IDs.
 	 */
-	public void deleteByIds(List<Object> ids) throws Exception {
+	public void deleteByIds(List<Object> ids) throws BusinessException {
 		this.preDeleteByIds(ids);
 		this.onDeleteByIds(ids);
 		this.postDeleteByIds(ids);
@@ -298,7 +299,7 @@ public abstract class AbstractEntityWriteService<E> extends
 	 * 
 	 * @param list
 	 */
-	protected void postDeleteByIds(List<Object> ids) throws Exception {
+	protected void postDeleteByIds(List<Object> ids) throws BusinessException {
 	}
 
 }

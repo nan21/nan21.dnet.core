@@ -12,6 +12,7 @@ import javax.persistence.criteria.Root;
 
 import org.springframework.util.Assert;
 
+import net.nan21.dnet.core.api.exceptions.BusinessException;
 import net.nan21.dnet.core.api.model.IModelWithClientId;
 import net.nan21.dnet.core.api.session.Session;
 import net.nan21.dnet.core.business.service.AbstractBusinessBaseService;
@@ -32,8 +33,13 @@ public abstract class AbstractEntityReadService<E> extends
 	/**
 	 * Create a new entity instance
 	 */
-	public E create() throws Exception {
-		return this.getEntityClass().newInstance();
+	public E create() throws BusinessException {
+		try {
+			return this.getEntityClass().newInstance();
+		} catch (Exception e) {
+			throw new BusinessException("Cannot create a new instance of "
+					+ this.getEntityClass().getCanonicalName(), e);
+		}
 	}
 
 	/**
@@ -103,17 +109,17 @@ public abstract class AbstractEntityReadService<E> extends
 	}
 
 	public List<E> findEntitiesByAttributes(Map<String, Object> params)
-			throws Exception {
+			throws BusinessException {
 		return findEntitiesByAttributes(this.getEntityClass(), params);
 	}
 
 	public E findEntityByAttributes(Map<String, Object> params)
-			throws Exception {
+			throws BusinessException {
 		return findEntityByAttributes(this.getEntityClass(), params);
 	}
 
 	public <T> List<T> findEntitiesByAttributes(Class<T> entityClass,
-			Map<String, Object> params) throws Exception {
+			Map<String, Object> params) throws BusinessException {
 		CriteriaBuilder cb = this.em.getCriteriaBuilder();
 		CriteriaQuery<T> cq = cb.createQuery(entityClass);
 		Root<T> root = cq.from(entityClass);
@@ -134,7 +140,7 @@ public abstract class AbstractEntityReadService<E> extends
 	}
 
 	public <T> T findEntityByAttributes(Class<T> entityClass,
-			Map<String, Object> params) throws Exception {
+			Map<String, Object> params) throws BusinessException {
 		CriteriaBuilder cb = this.em.getCriteriaBuilder();
 		CriteriaQuery<T> cq = cb.createQuery(entityClass);
 		Root<T> root = cq.from(entityClass);

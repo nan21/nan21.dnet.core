@@ -54,6 +54,10 @@ public class AbstractDsWriteController<M, F, P> extends
 				logger.debug("Processing request: {}.{} -> action = {} ",
 						new String[] { resourceName, dataFormat,
 								Constants.DS_INSERT });
+				logger.debug("  --> request-data: {} ",
+						new String[] { dataString });
+				logger.debug("  --> request-params: {} ",
+						new String[] { paramString });
 			}
 			this.prepareRequest(request, response);
 
@@ -116,6 +120,10 @@ public class AbstractDsWriteController<M, F, P> extends
 				logger.debug("Processing request: {}.{} -> action = {} ",
 						new String[] { resourceName, dataFormat,
 								Constants.DS_UPDATE });
+				logger.debug("  --> request-data: {} ",
+						new String[] { dataString });
+				logger.debug("  --> request-params: {} ",
+						new String[] { paramString });
 			}
 
 			this.prepareRequest(request, response);

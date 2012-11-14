@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import javax.persistence.Parameter;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
@@ -247,7 +249,7 @@ public class QueryBuilderWithJpql<M, F, P> extends
 	 */
 	private void buildSort() {
 		if (logger.isDebugEnabled()) {
-			logger.debug("Binding JPQL order by ...");
+			logger.debug("Building JPQL order by ...");
 		}
 
 		String[] sortColumnNames = this.getSortColumnNames();
@@ -370,7 +372,7 @@ public class QueryBuilderWithJpql<M, F, P> extends
 							refpaths.get(fieldName), cnt);
 
 				} catch (NoSuchMethodException e) {
-					throw new Exception("Invalid field name: "+fieldName);
+					throw new Exception("Invalid field name: " + fieldName);
 				}
 
 			}
@@ -499,9 +501,7 @@ public class QueryBuilderWithJpql<M, F, P> extends
 	}
 
 	private void bindFilterParams(Query q) throws Exception {
-		if (logger.isDebugEnabled()) {
-			logger.debug("Binding filter params...");
-		}
+
 		if (this.defaultFilterItems != null) {
 			for (String key : this.defaultFilterItems.keySet()) {
 				Object value = this.defaultFilterItems.get(key);
@@ -522,7 +522,12 @@ public class QueryBuilderWithJpql<M, F, P> extends
 				}
 			}
 		}
-
+		if (logger.isDebugEnabled()) {
+			logger.debug("Bound filter params:");
+			for (Parameter<?> p : q.getParameters()) {
+				logger.debug( " -> " +p.getName() + " = " + q.getParameterValue(p));
+			}
+		}
 	}
 
 	protected void addFetchGroup(Query q) {

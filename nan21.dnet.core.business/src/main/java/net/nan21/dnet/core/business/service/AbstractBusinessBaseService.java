@@ -6,6 +6,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import net.nan21.dnet.core.api.ISystemConfig;
+import net.nan21.dnet.core.api.exceptions.BusinessException;
 import net.nan21.dnet.core.api.service.IEntityService;
 import net.nan21.dnet.core.api.wf.IActivitiProcessEngineHolder;
 
@@ -45,10 +46,10 @@ public abstract class AbstractBusinessBaseService extends
 	 * @param <T>
 	 * @param entityClass
 	 * @return
-	 * @throws Exception
+	 * @throws BusinessException
 	 */
 	public <T> IEntityService<T> findEntityService(Class<T> entityClass)
-			throws Exception {
+			throws BusinessException {
 		return this.getServiceLocator().findEntityService(entityClass);
 	}
 
@@ -58,11 +59,17 @@ public abstract class AbstractBusinessBaseService extends
 	 * @param <T>
 	 * @param clazz
 	 * @return
-	 * @throws Exception
+	 * @throws BusinessException
 	 */
 	public <T extends AbstractBusinessDelegate> T getBusinessDelegate(
-			Class<T> clazz) throws Exception {
-		T delegate = clazz.newInstance();
+			Class<T> clazz) throws BusinessException {
+		T delegate;
+		try {
+			delegate = clazz.newInstance();
+		} catch (Exception e) {
+			throw new BusinessException("Cannot create a new instance of  "
+					+ clazz.getCanonicalName(), e);
+		}
 		delegate.setApplicationContext(this.getApplicationContext());
 		delegate.setEntityManager(this.em);
 		return delegate;
@@ -128,50 +135,59 @@ public abstract class AbstractBusinessBaseService extends
 		this.serviceLocator = serviceLocator;
 	}
 
-	public ProcessEngine getWorkflowEngine() throws Exception {
+	public ProcessEngine getWorkflowEngine() throws BusinessException {
 		if (this.workflowEngine == null) {
-			this.workflowEngine = (ProcessEngine) this.getApplicationContext()
-					.getBean(IActivitiProcessEngineHolder.class)
-					.getProcessEngine();
+			try {
+				this.workflowEngine = (ProcessEngine) this
+						.getApplicationContext()
+						.getBean(IActivitiProcessEngineHolder.class)
+						.getProcessEngine();
+			} catch (Exception e) {
+				throw new BusinessException(
+						"Cannot get the Activiti workflow engine.", e);
+			}
 		}
 		return this.workflowEngine;
 	}
 
-	public RuntimeService getWorkflowRuntimeService() throws Exception {
+	public RuntimeService getWorkflowRuntimeService() throws BusinessException {
 		return this.getWorkflowEngine().getRuntimeService();
 	}
 
-	public TaskService getWorkflowTaskService() throws Exception {
+	public TaskService getWorkflowTaskService() throws BusinessException {
 		return this.getWorkflowEngine().getTaskService();
 	}
 
-	public RepositoryService getWorkflowRepositoryService() throws Exception {
+	public RepositoryService getWorkflowRepositoryService()
+			throws BusinessException {
 		return this.getWorkflowEngine().getRepositoryService();
 	}
 
-	public HistoryService getWorkflowHistoryService() throws Exception {
+	public HistoryService getWorkflowHistoryService() throws BusinessException {
 		return this.getWorkflowEngine().getHistoryService();
 	}
 
-	public FormService getWorkflowFormService() throws Exception {
+	public FormService getWorkflowFormService() throws BusinessException {
 		return this.getWorkflowEngine().getFormService();
 	}
 
 	public void doStartWfProcessInstanceByKey(String processDefinitionKey,
-			String businessKey, Map<String, Object> variables) throws Exception {
+			String businessKey, Map<String, Object> variables)
+			throws BusinessException {
 		this.getWorkflowRuntimeService().startProcessInstanceByKey(
 				processDefinitionKey, businessKey, variables);
 	}
 
 	public void doStartWfProcessInstanceById(String processDefinitionId,
-			String businessKey, Map<String, Object> variables) throws Exception {
+			String businessKey, Map<String, Object> variables)
+			throws BusinessException {
 		this.getWorkflowRuntimeService().startProcessInstanceById(
 				processDefinitionId, businessKey, variables);
 	}
 
 	public void doStartWfProcessInstanceByMessage(String messageName,
 			String businessKey, Map<String, Object> processVariables)
-			throws Exception {
+			throws BusinessException {
 		this.getWorkflowRuntimeService().startProcessInstanceByMessage(
 				messageName, businessKey, processVariables);
 	}

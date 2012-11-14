@@ -32,7 +32,7 @@
 
 	<bean id="processEngineConfiguration"
 		class="net.nan21.dnet.core.workflow.DNetProcessEngineConfiguration">
-		<property name="dataSource" ref="osgiDataSource" />
+		<property name="dataSource" ref="osgiDataSource" />		
 		<property name="transactionManager">
 			<bean id="transactionManager"
 				class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
