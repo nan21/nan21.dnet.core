@@ -8,8 +8,10 @@ import javax.persistence.Table;
 import net.nan21.dnet.core.domain.model.AbstractTypeWithCode;
 
 @Entity
-@Table(name="X_DUMMY4")
+@Table(name = "X_DUMMY4")
 public class AbstractTypeWithCodeDummy extends AbstractTypeWithCode {
+
+	private static final long serialVersionUID = -1L;
 
 	@Id
 	@GeneratedValue

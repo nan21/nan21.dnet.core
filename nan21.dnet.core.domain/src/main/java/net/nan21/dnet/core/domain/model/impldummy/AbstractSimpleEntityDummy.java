@@ -11,6 +11,8 @@ import net.nan21.dnet.core.domain.model.AbstractSimpleEntity;
 @Table(name = "X_DUMMY2")
 public class AbstractSimpleEntityDummy extends AbstractSimpleEntity {
 
+	private static final long serialVersionUID = -1L;
+	
 	@Id
 	@GeneratedValue
 	private Long id;

@@ -11,6 +11,8 @@ import net.nan21.dnet.core.domain.model.AbstractType;
 @Table(name="X_DUMMY3")
 public class AbstractTypeDummy extends AbstractType {
 
+	private static final long serialVersionUID = -1L;
+	
 	@Id
 	@GeneratedValue
 	private Long id;

@@ -11,6 +11,8 @@ import net.nan21.dnet.core.domain.model.AbstractAuditable;
 @Table(name="X_DUMMY1")
 public class AbstractAuditableDummy extends AbstractAuditable {
 
+	private static final long serialVersionUID = -1L;
+	
 	@Id
 	@GeneratedValue
 	private Long id;
