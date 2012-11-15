@@ -7,11 +7,14 @@
  */
 package net.nan21.dnet.core.api.session;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 
 import net.nan21.dnet.core.api.Constants;
 
-public class UserPreferences {
+public class UserPreferences implements Serializable {
+
+	private static final long serialVersionUID = -7951956639299795918L;
 
 	private SimpleDateFormat dateFormat;
 	private SimpleDateFormat dateTimeFormat;
