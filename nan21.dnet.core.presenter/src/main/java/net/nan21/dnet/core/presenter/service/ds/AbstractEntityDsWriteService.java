@@ -344,7 +344,7 @@ public abstract class AbstractEntityDsWriteService<M extends AbstractDsModel<E>,
 		this.postUpdate(list, params);
 	}
 
-	private E lookupEntityById(List<E> list, Object id) {
+	protected E lookupEntityById(List<E> list, Object id) {
 		for (E e : list) {
 			if (((IModelWithId) e).getId().equals(id)) {
 				return e;

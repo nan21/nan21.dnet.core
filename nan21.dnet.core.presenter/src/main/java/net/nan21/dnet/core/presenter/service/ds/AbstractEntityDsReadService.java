@@ -61,18 +61,6 @@ public abstract class AbstractEntityDsReadService<M extends AbstractDsModel<E>, 
 		}
 	}
 
-	/**
-	 * Template method for pre-query.
-	 * 
-	 * @param filter
-	 * @param params
-	 * @param builder
-	 * @throws Exception
-	 */
-	protected void preFind(F filter, P params, IQueryBuilder<M, F, P> builder)
-			throws Exception {
-	}
-
 	public List<M> find(F filter) throws Exception {
 		return this.find(filter, null, null, DEFAULT_RESULT_START,
 				DEFAULT_RESULT_SIZE, null);
@@ -140,7 +128,7 @@ public abstract class AbstractEntityDsReadService<M extends AbstractDsModel<E>, 
 		if (builder == null) {
 			throw new Exception("Cannot run a query with null query builder.");
 		}
-
+		this.preFind(builder);
 		QueryBuilderWithJpql<M, F, P> bld = (QueryBuilderWithJpql<M, F, P>) builder;
 
 		List<M> result = new ArrayList<M>();
@@ -153,10 +141,22 @@ public abstract class AbstractEntityDsReadService<M extends AbstractDsModel<E>, 
 			this.getConverter().entityToModel(e, m);
 			result.add(m);
 		}
+		this.postFind(builder, result);
 		return result;
 	}
 
-	protected void postFind(F filter, P params, IQueryBuilder<M, F, P> builder)
+	/**
+	 * Template method for pre-query.
+	 * 
+	 * @param filter
+	 * @param params
+	 * @param builder
+	 * @throws Exception
+	 */
+	protected void preFind(IQueryBuilder<M, F, P> builder) throws Exception {
+	}
+
+	protected void postFind(IQueryBuilder<M, F, P> builder, List<M> result)
 			throws Exception {
 	}
 
