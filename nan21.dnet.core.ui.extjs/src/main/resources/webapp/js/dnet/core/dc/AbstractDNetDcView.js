@@ -148,6 +148,24 @@ Ext.define("dnet.core.dc.AbstractDNetDcView", {
 			},
 
 			/**
+			 * Bind the parameters to the elements which declare a paramIndex
+			 * based binding.
+			 */
+			_bindParams_: function() {
+				var params = this._controller_.params;
+				var fields = this._elems_.filterBy(function(item) {
+					return (!Ext.isEmpty(item.paramIndex));
+				});
+				fields.each(function(field) {
+					var f = this._getElement_(field.name);
+					f.suspendEvents();
+					f.setValue(params.get(field.paramIndex));
+					f.resumeEvents();
+				}, this);
+			},
+			
+			
+			/**
 			 * Get the translation from the resource bundle for the specified
 			 * key.
 			 * 

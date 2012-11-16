@@ -388,6 +388,7 @@ Ext.define("dnet.core.dc.AbstractDc", {
 	doRpcFilter : function(options) {
 		this.commands.doRpcFilter.execute(options);
 	},
+	
 	/**
 	 * Deprecated: Alias for doRpcFilter Shall be removed
 	 */

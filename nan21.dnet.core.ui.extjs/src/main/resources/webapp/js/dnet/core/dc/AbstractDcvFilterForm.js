@@ -75,8 +75,10 @@ Ext.define("dnet.core.dc.AbstractDcvFilterForm", {
 		} else {
 			this._onUnbind_(null);
 		}
+		this._bindParams_();
 	},
 
+	
 	beforeDestroy : function() {		
 		this._elems_.each(function(item,idx,len) {
 			delete item._dcView_;

@@ -103,12 +103,13 @@ Ext.define("dnet.core.dc.AbstractDcvEditForm", {
 		} else {
 			this._onUnbind_(null);
 		}
+		this._bindParams_();
 	},
 	
 	beforeDestroy : function() {		
 		this._elems_.each(function(item,idx,len) {
 			delete item._dcView_;
-		}, this)
+		}, this);
 		this.callParent(arguments);
 	},
 	// **************** Private API *****************
@@ -118,6 +119,9 @@ Ext.define("dnet.core.dc.AbstractDcvEditForm", {
 	 */
 	_registerListeners_ : function() {
 
+		this.mon(this._controller_, "parameterValueChanged",
+				this._onParameterValueChanged_, this);
+		
 		this.mon(this._controller_.store, "datachanged",
 				this._onStore_datachanged_, this);
 		this
