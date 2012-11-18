@@ -1,5 +1,6 @@
 package net.nan21.dnet.core.business.service.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -14,6 +15,7 @@ import org.springframework.util.Assert;
 
 import net.nan21.dnet.core.api.exceptions.BusinessException;
 import net.nan21.dnet.core.api.model.IModelWithClientId;
+import net.nan21.dnet.core.api.model.IModelWithId;
 import net.nan21.dnet.core.api.session.Session;
 import net.nan21.dnet.core.business.service.AbstractBusinessBaseService;
 
@@ -160,4 +162,11 @@ public abstract class AbstractEntityReadService<E> extends
 
 	}
 
+	protected List<Object> collectIds(List<? extends IModelWithId> entities) {
+		List<Object> result = new ArrayList<Object>();
+		for (IModelWithId e : entities) {
+			result.add(e.getId());
+		}
+		return result;
+	}
 }

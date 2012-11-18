@@ -266,7 +266,9 @@ public abstract class AbstractEntityWriteService<E> extends
 	 * @param list
 	 */
 	protected void onDeleteByIds(List<Object> ids) throws BusinessException {
-
+		if (ids == null || ids.size() == 0) {
+			return;
+		}
 		if (IModelWithClientId.class.isAssignableFrom(this.getEntityClass())) {
 			this.em.createQuery(
 					"delete from "
