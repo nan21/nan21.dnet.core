@@ -38,7 +38,12 @@ Ext.define("dnet.core.dc.command.DcReloadRecCommand", {
 		r.endEdit();
 		if(shouldCommit) {
 			r.commit();
-		}		
+		}	
+		dc.fireEvent('recordReload', {
+			dc : dc,
+			record : r//,			 
+			//eOpts: opts
+		});
 	},
 	
 	checkActionState : function() {
