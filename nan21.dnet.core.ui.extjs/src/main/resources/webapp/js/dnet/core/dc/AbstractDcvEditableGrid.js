@@ -172,12 +172,12 @@ Ext.define("dnet.core.dc.AbstractDcvEditableGrid", {
 		this.callParent(arguments);
 		this._registerListeners_();
 
-		this.on("afteredit", this._afterEdit_, this);
+		this.on("edit", this._afterEdit_, this);
 
 	},
 
-	_afterEdit_ : function() {
-
+	_afterEdit_ : function( editor, e, eOpts ) {
+			 
 	}
 
 });

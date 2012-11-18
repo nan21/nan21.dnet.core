@@ -132,6 +132,9 @@ Ext.define("dnet.core.dc.AbstractDcvEditForm", {
 		this.mon(this._controller_, "recordChange",
 				this._onController_recordChange_, this);
 
+		this.mon(this._controller_, "recordReload",
+				this._onController_recordReload_, this);
+		
 		this.mon(this._controller_, "readOnlyChanged",
 				function() {this._applyStates_(this._controller_.getRecord());} , this); 
 		// this.mon(this, "afterrender", this.on_afterrender, this);
@@ -221,6 +224,13 @@ Ext.define("dnet.core.dc.AbstractDcvEditForm", {
 		}
 	},
 
+	
+	_onController_recordReload_ : function(evnt) {
+		var r = evnt.record;
+		if (this.getForm()._record == r) {
+			this._applyStates_(r);
+		}
+	},
 	/**
 	 * Bind the current record of the data-control to the form.
 	 * 
