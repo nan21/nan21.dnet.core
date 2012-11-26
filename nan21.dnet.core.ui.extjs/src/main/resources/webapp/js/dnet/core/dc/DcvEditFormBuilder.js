@@ -70,6 +70,7 @@ Ext.define("dnet.core.dc.DcvEditFormBuilder", {
 		Ext.applyIf(config, {
 			_validateListValue_ : true
 		});
+		this.applyModelUpdater(config);
 		this.applySharedConfig(config);
 		return this;
 	},
@@ -113,8 +114,7 @@ Ext.define("dnet.core.dc.DcvEditFormBuilder", {
 		this.applySharedConfig(config);
 		return this;
 	},
-	
-	
+
 	addDisplayFieldDate : function(config) {
 		config.xtype = "displayfielddate";
 		Ext.applyIf(config, {
@@ -125,7 +125,6 @@ Ext.define("dnet.core.dc.DcvEditFormBuilder", {
 		return this;
 	},
 
-	
 	addDisplayFieldBoolean : function(config) {
 		config.xtype = "displayfieldboolean";
 		Ext.applyIf(config, {
@@ -136,7 +135,6 @@ Ext.define("dnet.core.dc.DcvEditFormBuilder", {
 		return this;
 	},
 
-	
 	addPanel : function(config) {
 		Ext.applyIf(config, this.dcv.defaults);
 		Ext.applyIf(config, {
@@ -148,7 +146,6 @@ Ext.define("dnet.core.dc.DcvEditFormBuilder", {
 		return this;
 	},
 
-	
 	addChildrenTo : function(c, list) {
 		var items = this.dcv._elems_.get(c)["items"] || [];
 		for ( var i = 0, len = list.length; i < len; i++) {
@@ -234,58 +231,55 @@ Ext.define("dnet.core.dc.DcvEditFormBuilder", {
 		return fn;
 	},
 
-	// move these functions out, onChange call them buffered ,
-	// on blur call immediatly and cancel the buffered event
-	// -> fix for very fast typing
-
-	createModelUpdaterField : function(config) {
-		var fn = null;
-		if (config.paramIndex) {
-			fn = function(f, nv, ov, eopts) {
-				if (!f.isValid()) {
-					return;
-				}
-				var r = f._dcView_._controller_.getParams();
-				if (!r)
-					return;
-				var rv = r.get(f.paramIndex);
-				if (Ext.isDate(rv)) {
-					var rd = Ext.Date.parse(Ext.Date.format(rv, f.format),
-							f.format);
-					if (!r.isEqual(rd, nv)) {
-						r.set(f.paramIndex, nv);
-					}
-				} else {
-					if (!r.isEqual(rv, nv)) {
-						r.set(f.paramIndex, nv);
-					}
-				}
-			};
-		} else if (config.dataIndex) {
-			fn = function(f, nv, ov, eopts) {
-				if (!f.isValid()) {
-					return;
-				}
-				var r = f._dcView_._controller_.getRecord();
-				if (!r)
-					return;
-				var rv = r.get(f.dataIndex);
-				if (Ext.isDate(rv)) {
-					var rd = Ext.Date.parse(Ext.Date.format(rv, f.format),
-							f.format);
-					if (!r.isEqual(rd, nv)) {
-						r.set(f.dataIndex, nv);
-					}
-				} else {
-					if (!r.isEqual(rv, nv)) {
-						// r.beginEdit();
-						r.set(f.dataIndex, nv);
-						// r.endEdit();
-					}
-				}
+	_fld_model_updater_param_ : function(f, nv, ov, eopts) {
+		if (!f.isValid()) {
+			return;
+		}
+		var r = f._dcView_._controller_.getParams();
+		if (!r)
+			return;
+		var rv = r.get(f.paramIndex);
+		var ctrl = f._dcView_._controller_;
+		if (Ext.isDate(rv)) {
+			var rd = Ext.Date.parse(Ext.Date.format(rv, f.format), f.format);
+			if (!r.isEqual(rd, nv)) {
+				ctrl.setParamValue(f.paramIndex, nv);
+			}
+		} else {
+			if (!r.isEqual(rv, nv)) {
+				ctrl.setParamValue(f.paramIndex, nv);
 			}
 		}
-		return fn;
+	},
+
+	_fld_model_updater_data_ : function(f, nv, ov, eopts) {
+		if (!f.isValid()) {
+			return;
+		}
+		var r = f._dcView_._controller_.getRecord();
+		if (!r)
+			return;
+		var rv = r.get(f.dataIndex);
+		if (Ext.isDate(rv)) {
+			var rd = Ext.Date.parse(Ext.Date.format(rv, f.format), f.format);
+			if (!r.isEqual(rd, nv)) {
+				r.set(f.dataIndex, nv);
+			}
+		} else {
+			if (!r.isEqual(rv, nv)) {
+				// r.beginEdit();
+				r.set(f.dataIndex, nv);
+				// r.endEdit();
+			}
+		}
+	},
+
+	createModelUpdaterField : function(config) {
+		if (config.paramIndex) {
+			return this._fld_model_updater_param_;
+		} else if (config.dataIndex) {
+			return this._fld_model_updater_data_;
+		}
 	},
 
 	applySharedConfig : function(config) {

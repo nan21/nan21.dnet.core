@@ -107,10 +107,12 @@ Ext.define("dnet.core.dc.AbstractDNetDcView", {
 						});
 				if (fld) {
 					fld = this._getElement_(fld.name);
-					if (fld.getValue() != nv) {
-						fld.suspendEvents();
-						fld.setValue(nv);
-						fld.resumeEvents();
+					if ( !fld.hasFocus) {
+						if (fld.getValue() != nv ) {
+							fld.suspendEvents();
+							fld.setValue(nv);
+							fld.resumeEvents();
+						}
 					}
 				}
 			},
@@ -139,10 +141,12 @@ Ext.define("dnet.core.dc.AbstractDNetDcView", {
 						});
 				if (fld) {
 					fld = this._getElement_(fld.name);
-					if (fld.getValue() != nv) {
-						fld.suspendEvents();
-						fld.setValue(nv);
-						fld.resumeEvents();
+					if ( !fld.hasFocus) {
+						if (fld.getValue() != nv ) {
+							fld.suspendEvents();
+							fld.setValue(nv);
+							fld.resumeEvents();
+						}
 					}
 				}
 			},

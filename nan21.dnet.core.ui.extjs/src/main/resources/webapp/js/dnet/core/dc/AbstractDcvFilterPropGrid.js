@@ -189,6 +189,7 @@ Ext.define("dnet.core.dc.AbstractDcvFilterPropGrid", {
 					this.setProperty(property, nv, false);
 				}
 			},
+			
 			/**
 			 * @private The parameters model is not part of a store, so we have
 			 *          listen to changes made to the model through the
@@ -196,7 +197,7 @@ Ext.define("dnet.core.dc.AbstractDcvFilterPropGrid", {
 			 *          data-control. Changes to the parameters model should be
 			 *          done through the setParamValue method of the
 			 *          data-control in order to be listened and picked-up to
-			 *          refresh the correcponding form fields.
+			 *          refresh the corresponding form fields.
 			 * 
 			 * @param {dnet.core.dc.AbstractDc}
 			 *            dc The controller

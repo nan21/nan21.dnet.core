@@ -75,8 +75,7 @@ Ext.define("dnet.core.dc.DcvFilterFormBuilder", {
 	},
 
 	addLov : function(config) {
-		// this.applyModelUpdater(config);
-
+		this.applyModelUpdater(config);
 		this.applySharedConfig(config);
 		return this;
 	},
@@ -165,123 +164,8 @@ Ext.define("dnet.core.dc.DcvFilterFormBuilder", {
 	},
 
 	createAuditFilter2 : function() {
-		this.addDateField({
-			name : "createdAt_From",
-			dataIndex : "createdAt_From",
-			emptyText : "From"
-		}).addDateField({
-			name : "createdAt_To",
-			dataIndex : "createdAt_To",
-			emptyText : "To"
-		}).addTextField({
-			name : "createdBy",
-			dataIndex : "createdBy",
-			emptyText : "Created"
-		})
-
-		.addDateField({
-			name : "modifiedAt_From",
-			dataIndex : "modifiedAt_From",
-			emptyText : "From"
-		}).addDateField({
-			name : "modifiedAt_To",
-			dataIndex : "modifiedAt_To",
-			emptyText : "To"
-		}).addTextField({
-			name : "modifiedBy",
-			dataIndex : "modifiedBy",
-			emptyText : "Modified"
-		})
-
-		.addTextField({
-			name : "id",
-			dataIndex : "id",
-			fieldLabel : "ID",
-			emptyText : "ID"
-		}).addTextField({
-			name : "uuid",
-			dataIndex : "uuid",
-			fieldLabel : "UUID",
-			emptyText : "UUID"
-		});
-		this.add({
-			xtype : 'fieldcontainer',
-			fieldLabel : 'Created',
-			name : 'created',
-			combineErrors : true,
-			msgTarget : 'side',
-			layout : 'hbox',
-			margin : 0,
-			padding : 0,
-			defaults : {
-				flex : 1,
-				padding : 0,
-				margin : 0,
-				hideLabel : true
-			}
-		}).add({
-			xtype : 'fieldcontainer',
-			fieldLabel : 'Modified',
-			name : 'modified',
-			combineErrors : true,
-			msgTarget : 'side',
-			layout : 'hbox',
-			defaults : {
-				flex : 1,
-				padding : 0,
-				margin : 0,
-				hideLabel : true
-			}
-		}).add({
-			xtype : 'fieldcontainer',
-			fieldLabel : 'By',
-			name : 'cre_mod_user',
-			combineErrors : true,
-			msgTarget : 'side',
-			layout : 'hbox',
-			defaults : {
-				flex : 1,
-				padding : 0,
-				margin : 0,
-				hideLabel : true
-			}
-		}).add({
-			xtype : 'fieldcontainer',
-			fieldLabel : 'ID/UUID',
-			name : 'id_uuid',
-			combineErrors : true,
-			msgTarget : 'side',
-			layout : 'hbox',
-			defaults : {
-				flex : 1,
-				padding : 0,
-				margin : 0,
-				hideLabel : true
-			}
-		});
-		this.addPanel({
-			name : "colAudit",
-			xtype : "fieldset",
-			collapsed : true,
-			defaults : {
-				labelWidth : 70
-			},
-			padding : '0 10 0 0',
-			margin : '0 0 0 5',
-			title : "Audit",
-			border : true,
-			collapsible : true,
-			layout : "form",
-			width : 280
-		}).addChildrenTo("colAudit",
-				[ "created", "modified", "cre_mod_user", "id_uuid" ])
-				.addChildrenTo("created", [ "createdAt_From", "createdAt_To" ])
-				.addChildrenTo("modified",
-						[ "modifiedAt_From", "modifiedAt_To" ]).addChildrenTo(
-						"cre_mod_user", [ "createdBy", "modifiedBy" ])
-				.addChildrenTo("id_uuid", [ "id", "uuid" ]).addChildrenTo(
-						"main", [ "colAudit" ])
-		return this;
+		alert("AuditFilter is removed. This functionality"
+				+ " is available in the advanced filter.");
 	},
 
 	add : function(config) {
@@ -359,54 +243,57 @@ Ext.define("dnet.core.dc.DcvFilterFormBuilder", {
 		}
 		return fn;
 	},
-	createModelUpdaterField : function(config) {
-		var fn = null;
-		if (config.paramIndex) {
-			fn = function(f, nv, ov, eopts) {
-				if (!f.isValid()) {
-					return;
-				}
-				var r = f._dcView_._controller_.getParams();
-				if (!r)
-					return;
-				var rv = r.get(f.paramIndex);
-				var ctrl = f._dcView_._controller_;
-				if (Ext.isDate(rv)) {
-					var rd = Ext.Date.parse(Ext.Date.format(rv, f.format),
-							f.format);
-					if (!r.isEqual(rd, nv)) {
-						ctrl.setParamValue(f.paramIndex, nv);
-					}
-				} else {
-					if (!r.isEqual(rv, nv)) {
-						ctrl.setParamValue(f.paramIndex, nv);
-					}
-				}
-			};
-		} else if (config.dataIndex) {
-			fn = function(f, nv, ov, eopts) {
-				if (!f.isValid()) {
-					return;
-				}
-				var r = f._dcView_._controller_.getFilter();
-				if (!r)
-					return;
-				var rv = r.get(f.dataIndex);
-				var ctrl = f._dcView_._controller_;
-				if (Ext.isDate(rv)) {
-					var rd = Ext.Date.parse(Ext.Date.format(rv, f.format),
-							f.format);
-					if (!r.isEqual(rd, nv)) {
-						ctrl.setFilterValue(f.dataIndex, nv);
-					}
-				} else {
-					if (!r.isEqual(rv, nv)) {
-						ctrl.setFilterValue(f.dataIndex, nv);
-					}
-				}
+
+	_fld_model_updater_param_ : function(f, nv, ov, eopts) {
+		if (!f.isValid()) {
+			return;
+		}
+		var r = f._dcView_._controller_.getParams();
+		if (!r)
+			return;
+		var rv = r.get(f.paramIndex);
+		var ctrl = f._dcView_._controller_;
+		if (Ext.isDate(rv)) {
+			var rd = Ext.Date.parse(Ext.Date.format(rv, f.format), f.format);
+			if (!r.isEqual(rd, nv)) {
+				ctrl.setParamValue(f.paramIndex, nv);
+			}
+		} else {
+			if (!r.isEqual(rv, nv)) {
+				ctrl.setParamValue(f.paramIndex, nv);
 			}
 		}
-		return fn;
+	},
+
+	_fld_model_updater_data_ : function(f, nv, ov, eopts) {
+		if (!f.isValid()) {
+			return;
+		}
+		var r = f._dcView_._controller_.getFilter();
+		if (!r)
+			return;
+		var rv = r.get(f.dataIndex);
+		var ctrl = f._dcView_._controller_;
+		if (Ext.isDate(rv)) {
+			var rd = Ext.Date.parse(Ext.Date.format(rv, f.format), f.format);
+			if (!r.isEqual(rd, nv)) {
+				ctrl.setFilterValue(f.dataIndex, nv);
+			}
+		} else {
+			if (!r.isEqual(rv, nv)) {
+				ctrl.setFilterValue(f.dataIndex, nv);
+			}
+		}
+	},
+
+	createModelUpdaterField : function(config) {
+		// var fn = null;
+		if (config.paramIndex) {
+			return this._fld_model_updater_param_;
+		} else if (config.dataIndex) {
+			return this._fld_model_updater_data_;
+		}
+		// return fn;
 	},
 
 	// ==============================================
