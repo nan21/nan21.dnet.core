@@ -35,9 +35,11 @@ Ext.define("dnet.core.dc.command.DcRpcFilterCommand", {
 		var serviceName = options.name;
 		var s = options || {};
 		var p = {
-			data : Ext.encode(dc.filter.data),
-			params : Ext.encode(dc.params.data)
+			data : Ext.encode(dc.filter.data)			
 		};
+		if(dc.params != null ) {
+			p["params"] = Ext.encode(dc.params.data);
+		}
 		p[Dnet.requestParam.SERVICE_NAME_PARAM] = serviceName;
 		p["rpcType"] = "filter";
 		if (s.modal) {

@@ -35,9 +35,11 @@ Ext.define("dnet.core.dc.command.DcRpcDataCommand", {
 		var serviceName = options.name;
 		//var s = options || {};
 		var p = {
-			data : Ext.encode(dc.record.data),
-			params : Ext.encode(dc.params.data)
+			data : Ext.encode(dc.record.data)
 		};
+		if(dc.params != null ) {
+			p["params"] = Ext.encode(dc.params.data);
+		}
 		options.sourceRec = dc.record;
 		p[Dnet.requestParam.SERVICE_NAME_PARAM] = serviceName;
 		p["rpcType"] = "data";

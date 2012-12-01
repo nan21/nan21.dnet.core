@@ -81,7 +81,8 @@ public class SessionController {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		try {
-
+			request.getSession().invalidate();
+			request.getSession();
 			DefaultLoginAuthParams.clientCode.set(clientCode);
 			DefaultLoginAuthParams.language.set(language);
 
@@ -122,8 +123,9 @@ public class SessionController {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 		try {
-			// TODO: copy attributes
+			// TODO: copy attributes ? 
 			request.getSession().invalidate();
+			request.getSession();
 
 			DefaultLoginAuthParams.clientCode.set(clientCode);
 			DefaultLoginAuthParams.language.set(language);

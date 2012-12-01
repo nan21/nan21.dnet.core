@@ -235,8 +235,10 @@ Ext.define("dnet.core.dc.AbstractDc", {
 			this.filterModel = this.recordModel;
 		}
 		this.setFilter(this.newFilterInstance());
-		this.setParams(Ext.create(this.paramModel, {}));
-
+		if(!Ext.isEmpty(this.paramModel)) {
+			this.setParams(Ext.create(this.paramModel, {}));
+		}
+		
 		this.actionNames = dnet.core.dc.DcActionsFactory.actionNames();
 		this.commandNames = dnet.core.dc.DcCommandFactory.commandNames();
 

@@ -21,8 +21,9 @@ Ext.define("dnet.core.dc.command.DcQueryCommand",{
 				data[p] = null;
 			}
 		}
-
-		dc.store.proxy.extraParams[Dnet.requestParam.PARAMS] = Ext.encode(dc.params.data);
+		if(dc.params != null ) {
+			dc.store.proxy.extraParams[Dnet.requestParam.PARAMS] = Ext.encode(dc.params.data);
+		}
 		dc.store.proxy.extraParams[Dnet.requestParam.FILTER] = Ext.encode(data);
 		dc.store.proxy.extraParams[Dnet.requestParam.ADVANCED_FILTER] = Ext.encode(dc.advancedFilter || []);
 		dc.store.currentPage = 1;
