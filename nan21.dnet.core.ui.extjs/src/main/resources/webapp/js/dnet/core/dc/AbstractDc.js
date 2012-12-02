@@ -64,6 +64,7 @@ Ext.define("dnet.core.dc.AbstractDc", {
 	 */
 	filterModel : null,
 
+	
 	/**
 	 * Parameters model signature - record constructor.
 	 */
@@ -232,13 +233,16 @@ Ext.define("dnet.core.dc.AbstractDc", {
 		}
 
 		if (Ext.isEmpty(this.filterModel)) {
-			this.filterModel = this.recordModel;
+			Dnet.createFilterModelFromRecordModel({
+				recordModelFqn: this.recordModel
+			});
+			this.filterModel = this.recordModel + "Filter";
 		}
 		this.setFilter(this.newFilterInstance());
-		if(!Ext.isEmpty(this.paramModel)) {
+		if (!Ext.isEmpty(this.paramModel)) {
 			this.setParams(Ext.create(this.paramModel, {}));
 		}
-		
+
 		this.actionNames = dnet.core.dc.DcActionsFactory.actionNames();
 		this.commandNames = dnet.core.dc.DcCommandFactory.commandNames();
 
@@ -250,6 +254,8 @@ Ext.define("dnet.core.dc.AbstractDc", {
 		this._registerListeners_();
 
 	},
+
+	 
 
 	_registerListeners_ : function() {
 		this.mon(this.store, "beforeload", this.onStore_beforeload, this);
@@ -303,7 +309,7 @@ Ext.define("dnet.core.dc.AbstractDc", {
 		this.updateActionsState();
 		if (operation.action == "update" || operation.action == "create") {
 			this.afterDoSaveSuccess();
-		} 
+		}
 		this.fireEvent("afterDoCommitSuccess", this);
 	},
 

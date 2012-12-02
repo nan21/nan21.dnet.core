@@ -459,6 +459,36 @@ Dnet = {
 			},
 			scope : scope
 		});
+	},
+	
+	createFilterModelFromRecordModel: function (cfg) {
+		var rm = Ext.create(cfg.recordModelFqn);
+		var flds = [];
+		var x = rm.fields.items;
+		for ( var i = 0; i < x.length; i++) {
+			f = {
+				name : x[i].name,
+				type : x[i].type
+			}
+			if (f.type.type == "bool" || f.type.type == "int"
+					|| f.type.type == "float") {
+				f.useNull = true;
+			}
+			if (f.type.type == "date") {
+				f.dateFormat = x[i].dateFormat;
+			}
+			flds[i] = f;
+		}
+		if (cfg != null && cfg.fields != null) {
+			for (var j=0; j < cfg.fields; j++) {
+				flds[flds.length+1] = cfg.fields[j];
+			}
+		}
+		var fmn = cfg.recordModelFqn + "Filter";
+		Ext.define(fmn, {
+			extend : 'Ext.data.Model',
+			fields : flds
+		});
 	}
 
 };
