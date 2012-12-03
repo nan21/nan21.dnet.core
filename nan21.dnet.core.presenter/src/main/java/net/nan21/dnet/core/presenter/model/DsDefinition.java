@@ -24,10 +24,16 @@ public class DsDefinition implements IDsDefinition {
 	private boolean asgn;
 
 	/**
+	 * Flag which indicates that this components provides only read-only
+	 * functionality.
+	 */
+	private boolean readOnly;
+
+	/**
 	 * List of publicly exposed service methods.
 	 */
 	private List<String> serviceMethods;
-	
+
 	public String getName() {
 		return name;
 	}
@@ -52,6 +58,14 @@ public class DsDefinition implements IDsDefinition {
 		this.asgn = isAsgn;
 	}
 
+	public boolean isReadOnly() {
+		return readOnly;
+	}
+
+	public void setReadOnly(boolean readOnly) {
+		this.readOnly = readOnly;
+	}
+
 	public List<String> getServiceMethods() {
 		return serviceMethods;
 	}
@@ -59,10 +73,10 @@ public class DsDefinition implements IDsDefinition {
 	public void setServiceMethods(List<String> serviceMethods) {
 		this.serviceMethods = serviceMethods;
 	}
-	
+
 	public void addServiceMethod(String serviceMethod) {
 		if (this.serviceMethods == null) {
-			this.serviceMethods = new ArrayList<String>();			
+			this.serviceMethods = new ArrayList<String>();
 		}
 		this.serviceMethods.add(serviceMethod);
 	}
