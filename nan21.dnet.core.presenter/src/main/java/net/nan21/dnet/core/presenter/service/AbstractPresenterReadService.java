@@ -29,8 +29,12 @@ public abstract class AbstractPresenterReadService<M, F, P> extends
 		return modelClass;
 	}
 
+	@SuppressWarnings("unchecked")
 	public void setModelClass(Class<M> modelClass) throws Exception {
 		this.modelClass = modelClass;
+		if (this.filterClass == null) {
+			this.filterClass = (Class<F>) modelClass;
+		}
 	}
 
 	public Class<F> getFilterClass() {
