@@ -102,13 +102,7 @@ public interface IEntityService<E> {
 
 	public void deleteByIds(List<Object> ids) throws BusinessException;
 
-	/**
-	 * Insert a new entity. This should be a transactional method.
-	 * 
-	 * @param e
-	 * @throws BusinessException
-	 */
-	public void insert(E e) throws BusinessException;
+	public void delete(List<E> list) throws BusinessException;
 
 	/**
 	 * Insert a list of new entities. This should be a transactional method.
@@ -119,12 +113,11 @@ public interface IEntityService<E> {
 	public void insert(List<E> list) throws BusinessException;
 
 	/**
-	 * Update an existing entity. This should be a transactional method.
-	 * 
-	 * @param e
-	 * @throws BusinessException
+	 * Helper insert method for one single entity. It creates a list with this
+	 * single entity and delegates to the <code> insert(List<E> list)</code>
+	 * method
 	 */
-	public void update(E e) throws BusinessException;
+	public void insert(E e) throws BusinessException;
 
 	/**
 	 * Update a list of existing entities. This should be a transactional
@@ -136,6 +129,13 @@ public interface IEntityService<E> {
 	public void update(List<E> list) throws BusinessException;
 
 	/**
+	 * Helper update method for one single entity. It creates a list with this
+	 * single entity and delegates to the <code> update(List<E> list)</code>
+	 * method
+	 */
+	public void update(E e) throws BusinessException;
+
+	/**
 	 * Execute an update JPQL statement. This should be a transactional method.
 	 * 
 	 * @param jpqlStatement
@@ -145,9 +145,6 @@ public interface IEntityService<E> {
 	 */
 	public int update(String jpqlStatement, Map<String, Object> parameters)
 			throws BusinessException;
-
-	// public void remove(E e) throws BusinessException;
-	// public void remove(List<E> list) throws BusinessException;
 
 	public E create() throws BusinessException;
 

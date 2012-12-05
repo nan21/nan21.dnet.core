@@ -525,7 +525,12 @@ public class QueryBuilderWithJpql<M, F, P> extends
 		if (logger.isDebugEnabled()) {
 			logger.debug("Bound filter params:");
 			for (Parameter<?> p : q.getParameters()) {
-				logger.debug( " -> " +p.getName() + " = " + q.getParameterValue(p));
+				try {
+					logger.debug(" -> " + p.getName() + " = "
+							+ q.getParameterValue(p));
+				} catch (Exception e) {
+					// maybe a parameter has not been bound
+				}
 			}
 		}
 	}

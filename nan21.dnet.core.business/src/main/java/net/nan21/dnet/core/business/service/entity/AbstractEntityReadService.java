@@ -48,7 +48,7 @@ public abstract class AbstractEntityReadService<E> extends
 	 * Find entity by id.
 	 */
 	public E findById(Object object) {
-		return this.em.find(getEntityClass(), object);
+		return this.getEntityManager().find(getEntityClass(), object);
 	}
 
 	/**
@@ -57,14 +57,16 @@ public abstract class AbstractEntityReadService<E> extends
 	@SuppressWarnings("unchecked")
 	public List<E> findAll() {
 		if (IModelWithClientId.class.isAssignableFrom(this.getEntityClass())) {
-			return (List<E>) this.em
+			return (List<E>) this
+					.getEntityManager()
 					.createQuery(
 							"select e from " + getEntityClass().getSimpleName()
 									+ " e where e.clientId = :pClientId ")
 					.setParameter("pClientId", Session.user.get().getClientId())
 					.getResultList();
 		} else {
-			return (List<E>) this.em
+			return (List<E>) this
+					.getEntityManager()
 					.createQuery(
 							"select e from " + getEntityClass().getSimpleName()
 									+ " e ").getResultList();
@@ -78,7 +80,8 @@ public abstract class AbstractEntityReadService<E> extends
 	@SuppressWarnings("unchecked")
 	public List<E> findByIds(List<Object> ids) {
 		if (IModelWithClientId.class.isAssignableFrom(this.getEntityClass())) {
-			return (List<E>) this.em
+			return (List<E>) this
+					.getEntityManager()
 					.createQuery(
 							"select e from "
 									+ getEntityClass().getSimpleName()
@@ -87,7 +90,8 @@ public abstract class AbstractEntityReadService<E> extends
 					.setParameter("pClientId", Session.user.get().getClientId())
 					.getResultList();
 		} else {
-			return (List<E>) this.em
+			return (List<E>) this
+					.getEntityManager()
 					.createQuery(
 							"select e from " + getEntityClass().getSimpleName()
 									+ " e where e.id in :pIds ")
@@ -100,8 +104,8 @@ public abstract class AbstractEntityReadService<E> extends
 	 * Find an entity by unique-key.
 	 */
 	public E findByUk(String namedQueryName, Map<String, Object> params) {
-		TypedQuery<E> q = this.em.createNamedQuery(namedQueryName,
-				this.getEntityClass());
+		TypedQuery<E> q = this.getEntityManager().createNamedQuery(
+				namedQueryName, this.getEntityClass());
 		Set<String> keys = params.keySet();
 		q.setParameter("pClientId", Session.user.get().getClientId());
 		for (String key : keys) {
@@ -122,7 +126,7 @@ public abstract class AbstractEntityReadService<E> extends
 
 	public <T> List<T> findEntitiesByAttributes(Class<T> entityClass,
 			Map<String, Object> params) throws BusinessException {
-		CriteriaBuilder cb = this.em.getCriteriaBuilder();
+		CriteriaBuilder cb = this.getEntityManager().getCriteriaBuilder();
 		CriteriaQuery<T> cq = cb.createQuery(entityClass);
 		Root<T> root = cq.from(entityClass);
 		cq.select(root);
@@ -136,14 +140,14 @@ public abstract class AbstractEntityReadService<E> extends
 			p = cb.and(cb.equal(root.get(entry.getKey()), entry.getValue()));
 		}
 		cq.where(p);
-		TypedQuery<T> query = this.em.createQuery(cq);
+		TypedQuery<T> query = this.getEntityManager().createQuery(cq);
 		return (List<T>) query.getResultList();
 
 	}
 
 	public <T> T findEntityByAttributes(Class<T> entityClass,
 			Map<String, Object> params) throws BusinessException {
-		CriteriaBuilder cb = this.em.getCriteriaBuilder();
+		CriteriaBuilder cb = this.getEntityManager().getCriteriaBuilder();
 		CriteriaQuery<T> cq = cb.createQuery(entityClass);
 		Root<T> root = cq.from(entityClass);
 		cq.select(root);
@@ -157,7 +161,7 @@ public abstract class AbstractEntityReadService<E> extends
 			p = cb.and(cb.equal(root.get(entry.getKey()), entry.getValue()));
 		}
 		cq.where(p);
-		TypedQuery<T> query = this.em.createQuery(cq);
+		TypedQuery<T> query = this.getEntityManager().createQuery(cq);
 		return (T) query.getSingleResult();
 
 	}

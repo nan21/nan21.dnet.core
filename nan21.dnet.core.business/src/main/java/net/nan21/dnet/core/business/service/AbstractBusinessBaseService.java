@@ -17,6 +17,9 @@ import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.integration.Message;
+import org.springframework.integration.MessageChannel;
+import org.springframework.integration.support.MessageBuilder;
 
 /**
  * Root abstract class for business service hierarchy. It provides support for
@@ -38,7 +41,7 @@ public abstract class AbstractBusinessBaseService extends
 
 	@PersistenceContext
 	@Autowired
-	protected EntityManager em;
+	private EntityManager entityManager;
 
 	/**
 	 * Lookup an entity service.
@@ -71,7 +74,7 @@ public abstract class AbstractBusinessBaseService extends
 					+ clazz.getCanonicalName(), e);
 		}
 		delegate.setApplicationContext(this.getApplicationContext());
-		delegate.setEntityManager(this.em);
+		delegate.setEntityManager(this.getEntityManager());
 		return delegate;
 	}
 
@@ -102,15 +105,15 @@ public abstract class AbstractBusinessBaseService extends
 	 * @return the entity manager
 	 */
 	public EntityManager getEntityManager() {
-		return this.em;
+		return this.entityManager;
 	}
 
 	/**
-	 * @param em
+	 * @param entityManager
 	 *            the entity manager to set
 	 */
-	public void setEntityManager(EntityManager em) {
-		this.em = em;
+	public void setEntityManager(EntityManager entityManager) {
+		this.entityManager = entityManager;
 	}
 
 	/**
@@ -190,6 +193,12 @@ public abstract class AbstractBusinessBaseService extends
 			throws BusinessException {
 		this.getWorkflowRuntimeService().startProcessInstanceByMessage(
 				messageName, businessKey, processVariables);
+	}
+
+	protected void sendMessage(String to, Object content) {
+		Message<Object> message = MessageBuilder.withPayload(content).build();
+		this.getApplicationContext().getBean(to, MessageChannel.class)
+				.send(message);
 	}
 
 }

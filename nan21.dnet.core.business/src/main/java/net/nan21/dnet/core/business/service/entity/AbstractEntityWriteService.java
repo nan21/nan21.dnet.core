@@ -1,5 +1,7 @@
 package net.nan21.dnet.core.business.service.entity;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -19,22 +21,11 @@ import net.nan21.dnet.core.api.session.Session;
  */
 public abstract class AbstractEntityWriteService<E> extends
 		AbstractEntityReadService<E> {
-	//
-	// /**
-	// * Return a new instance of a business delegate by the given class.
-	// *
-	// * @param <T>
-	// * @param clazz
-	// * @return
-	// * @throws Exception
-	// */
-	// public <T extends AbstractBusinessDelegate> T getBusinessDelegate(
-	// Class<T> clazz) throws Exception {
-	// T delegate = clazz.newInstance();
-	// delegate.setAppContext(this.getApplicationContext());
-	// delegate.setEntityManager(this.em);
-	// return delegate;
-	// }
+
+	private boolean noInsert = false;
+	private boolean noUpdate = false;
+	private boolean noDelete = false;
+	private boolean noDeleteById = false;
 
 	/* ========================== INSERT =========================== */
 	/**
@@ -51,16 +42,7 @@ public abstract class AbstractEntityWriteService<E> extends
 	 * @param e
 	 */
 	protected void onInsert(E e) throws BusinessException {
-		this.em.persist(e);
-	}
-
-	/**
-	 * Insert (persist) one entity.
-	 */
-	public void insert(E e) throws BusinessException {
-		this.preInsert(e);
-		this.onInsert(e);
-		this.postInsert(e);
+		this.getEntityManager().persist(e);
 	}
 
 	/**
@@ -87,17 +69,10 @@ public abstract class AbstractEntityWriteService<E> extends
 	 */
 	protected void onInsert(List<E> list) throws BusinessException {
 		for (E e : list) {
-			this.insert(e);
+			this.preInsert(e);
+			this.onInsert(e);
+			this.postInsert(e);
 		}
-	}
-
-	/**
-	 * Insert (persist) a list of entities.
-	 */
-	public void insert(List<E> list) throws BusinessException {
-		this.preInsert(list);
-		this.onInsert(list);
-		this.postInsert(list);
 	}
 
 	/**
@@ -106,6 +81,30 @@ public abstract class AbstractEntityWriteService<E> extends
 	 * @param list
 	 */
 	protected void postInsert(List<E> list) throws BusinessException {
+	}
+
+	/**
+	 * Insert (persist) a list of entities.
+	 */
+	public void insert(List<E> list) throws BusinessException {
+		if (this.noInsert) {
+			throw new BusinessException("Insert not allowed for type "
+					+ this.getEntityClass().getCanonicalName());
+		}
+		this.preInsert(list);
+		this.onInsert(list);
+		this.postInsert(list);
+	}
+
+	/**
+	 * Helper insert method for one single entity. It creates a list with this
+	 * single entity and delegates to the <code> insert(List<E> list)</code>
+	 * method
+	 */
+	public void insert(E e) throws BusinessException {
+		List<E> list = new ArrayList<E>();
+		list.add(e);
+		this.insert(list);
 	}
 
 	/* ========================== UPDATE =========================== */
@@ -124,16 +123,16 @@ public abstract class AbstractEntityWriteService<E> extends
 	 * @param e
 	 */
 	protected void onUpdate(E e) throws BusinessException {
-		this.em.merge(e);
-	}
-
-	/**
-	 * Update (merge) one entity.
-	 */
-	public void update(E e) throws BusinessException {
-		this.preUpdate(e);
-		this.onUpdate(e);
-		this.postUpdate(e);
+		if (IModelWithClientId.class.isAssignableFrom(e.getClass())) {
+			IModelWithClientId x = (IModelWithClientId) e;
+			if (x.getClientId() == null || 
+					  x.getClientId() == Session.user.get().getClientId()) {
+				this.getEntityManager().merge(e);
+			} else {
+				throw new BusinessException(
+						"You are trying to update an object which doesn't belong to your current client.");
+			}
+		}
 	}
 
 	/**
@@ -160,18 +159,10 @@ public abstract class AbstractEntityWriteService<E> extends
 	 */
 	protected void onUpdate(List<E> list) throws BusinessException {
 		for (E e : list) {
-			this.update(e);
+			this.preUpdate(e);
+			this.onUpdate(e);
+			this.postUpdate(e);
 		}
-	}
-
-	/**
-	 * Update (merge) a list of entities.
-	 */
-
-	public void update(List<E> list) throws BusinessException {
-		this.preUpdate(list);
-		this.onUpdate(list);
-		this.postUpdate(list);
 	}
 
 	/**
@@ -180,6 +171,31 @@ public abstract class AbstractEntityWriteService<E> extends
 	 * @param list
 	 */
 	protected void postUpdate(List<E> list) throws BusinessException {
+	}
+
+	/**
+	 * Update (merge) a list of entities.
+	 */
+
+	public void update(List<E> list) throws BusinessException {
+		if (this.noUpdate) {
+			throw new BusinessException("Update not allowed for type "
+					+ this.getEntityClass().getCanonicalName());
+		}
+		this.preUpdate(list);
+		this.onUpdate(list);
+		this.postUpdate(list);
+	}
+
+	/**
+	 * Helper update method for one single entity. It creates a list with this
+	 * single entity and delegates to the <code> update(List<E> list)</code>
+	 * method
+	 */
+	public void update(E e) throws BusinessException {
+		List<E> list = new ArrayList<E>();
+		list.add(e);
+		this.update(list);
 	}
 
 	/**
@@ -203,61 +219,102 @@ public abstract class AbstractEntityWriteService<E> extends
 	/* ========================== DELETE =========================== */
 
 	/**
-	 * Pre-delete template method for a given id.
+	 * Pre-delete template method for one entity.
 	 * 
-	 * @param list
+	 * @param e
 	 */
-	protected void preDeleteById(Object id) throws BusinessException {
+	protected void preDelete(E e) throws BusinessException {
 	}
 
 	/**
-	 * On-delete method for a given id, it actually does the work.
+	 * On-delete template method for one entity, it actually does the work.
 	 * 
-	 * @param list
+	 * @param e
 	 */
-	protected void onDeleteById(Object id) throws BusinessException {
-
-		if (IModelWithClientId.class.isAssignableFrom(this.getEntityClass())) {
-			this.em.createQuery(
-					"delete from "
-							+ getEntityClass().getSimpleName()
-							+ " e where e.clientId = :pClientId and e.id = :pId")
-					.setParameter("pId", id)
-					.setParameter("pClientId", Session.user.get().getClientId())
-					.executeUpdate();
-
-		} else {
-			this.em.createQuery(
-					"delete from " + getEntityClass().getSimpleName()
-							+ " e where e.id = :pId").setParameter("pId", id)
-					.executeUpdate();
+	protected void onDelete(E e) throws BusinessException {
+		if (IModelWithClientId.class.isAssignableFrom(e.getClass())) {
+			IModelWithClientId x = (IModelWithClientId) e;
+			if (x.getClientId() == null
+					|| x.getClientId() == Session.user.get().getClientId()) {
+				this.getEntityManager().remove(e);
+			} else {
+				throw new BusinessException(
+						"You are trying to delete an object which doesn't belong to your current client.");
+			}
 		}
-
 	}
 
 	/**
-	 * Delete entity by id.
+	 * Post-delete template method for one entity.
+	 * 
+	 * @param e
 	 */
-	public void deleteById(Object id) throws BusinessException {
-		this.preDeleteById(id);
-		this.onDeleteById(id);
-		this.postDeleteById(id);
+	protected void postDelete(E e) throws BusinessException {
 	}
 
 	/**
-	 * Post-delete template method for a given id.
+	 * Pre-delete template method for a collection of entities.
 	 * 
 	 * @param list
 	 */
-	protected void postDeleteById(Object id) throws BusinessException {
+	protected void preDelete(List<E> list) throws BusinessException {
 	}
+
+	/**
+	 * On-delete template method for a collection of entities, it actually does
+	 * the work.
+	 * 
+	 * @param list
+	 */
+	protected void onDelete(List<E> list) throws BusinessException {
+		for (E e : list) {
+			this.preDelete(e);
+			this.onDelete(e);
+			this.postDelete(e);
+		}
+	}
+
+	/**
+	 * Post-delete template method for a collection of entities.
+	 * 
+	 * @param list
+	 */
+	protected void postDelete(List<E> list) throws BusinessException {
+	}
+
+	/**
+	 * Delete (remove) a list of entities.
+	 */
+	public void delete(List<E> list) throws BusinessException {
+		if (this.noDelete) {
+			throw new BusinessException("Delete not allowed for type "
+					+ this.getEntityClass().getCanonicalName());
+		}
+		this.preDelete(list);
+		this.onDelete(list);
+		this.postDelete(list);
+	}
+
+	/**
+	 * Helper delete method for one single entity. It creates a list with this
+	 * single entity and delegates to the <code> delete(List<E> list)</code>
+	 * method
+	 */
+	public void delete(E e) throws BusinessException {
+		List<E> list = new ArrayList<E>();
+		list.add(e);
+		this.delete(list);
+	}
+
+	/* ========================== DELETE BY ID =========================== */
 
 	/**
 	 * Pre-delete template method for a list of IDs.
 	 * 
 	 * @param list
 	 */
-	protected void preDeleteByIds(List<Object> ids) throws BusinessException {
+	protected void preDeleteByIds(List<Object> ids, Map<String, Object> context)
+			throws BusinessException {
 	}
 
 	/**
@@ -265,35 +322,29 @@ public abstract class AbstractEntityWriteService<E> extends
 	 * 
 	 * @param list
 	 */
-	protected void onDeleteByIds(List<Object> ids) throws BusinessException {
+	protected void onDeleteByIds(List<Object> ids, Map<String, Object> context)
+			throws BusinessException {
 		if (ids == null || ids.size() == 0) {
 			return;
 		}
 		if (IModelWithClientId.class.isAssignableFrom(this.getEntityClass())) {
-			this.em.createQuery(
-					"delete from "
-							+ getEntityClass().getSimpleName()
-							+ " e where e.clientId = :pClientId and e.id in :pIds")
+			this.getEntityManager()
+					.createQuery(
+							"delete from "
+									+ getEntityClass().getSimpleName()
+									+ " e where e.clientId = :pClientId and e.id in :pIds")
 					.setParameter("pIds", ids)
 					.setParameter("pClientId", Session.user.get().getClientId())
 					.executeUpdate();
 
 		} else {
-			this.em.createQuery(
-					"delete from " + getEntityClass().getSimpleName()
-							+ " e where  e.id in :pIds")
+			this.getEntityManager()
+					.createQuery(
+							"delete from " + getEntityClass().getSimpleName()
+									+ " e where  e.id in :pIds")
 					.setParameter("pIds", ids).executeUpdate();
 		}
 
-	}
-
-	/**
-	 * Delete entities by a list of IDs.
-	 */
-	public void deleteByIds(List<Object> ids) throws BusinessException {
-		this.preDeleteByIds(ids);
-		this.onDeleteByIds(ids);
-		this.postDeleteByIds(ids);
 	}
 
 	/**
@@ -301,7 +352,109 @@ public abstract class AbstractEntityWriteService<E> extends
 	 * 
 	 * @param list
 	 */
-	protected void postDeleteByIds(List<Object> ids) throws BusinessException {
+	protected void postDeleteByIds(List<Object> ids, Map<String, Object> context)
+			throws BusinessException {
+	}
+
+	/**
+	 * Delete entities by a list of IDs.If delete-by-id is not allowed it
+	 * redirects to delete-by-entity.
+	 */
+	public void deleteByIds(List<Object> ids) throws BusinessException {
+		if (this.noDeleteById) {
+			List<E> list = this.findByIds(ids);
+			this.delete(list);
+		} else {
+			Map<String, Object> context = new HashMap<String, Object>();
+			this.preDeleteByIds(ids, context);
+			this.onDeleteByIds(ids, context);
+			this.postDeleteByIds(ids, context);
+		}
+	}
+
+	// /**
+	// * Pre-delete template method for a given id.
+	// *
+	// * @param list
+	// */
+	// protected void preDeleteById(Object id) throws BusinessException {
+	// }
+	//
+	// /**
+	// * On-delete method for a given id, it actually does the work.
+	// *
+	// * @param list
+	// */
+	// protected void onDeleteById(Object id) throws BusinessException {
+	//
+	// if (IModelWithClientId.class.isAssignableFrom(this.getEntityClass())) {
+	// this.getEntityManager()
+	// .createQuery(
+	// "delete from "
+	// + getEntityClass().getSimpleName()
+	// + " e where e.clientId = :pClientId and e.id = :pId")
+	// .setParameter("pId", id)
+	// .setParameter("pClientId", Session.user.get().getClientId())
+	// .executeUpdate();
+	//
+	// } else {
+	// this.getEntityManager()
+	// .createQuery(
+	// "delete from " + getEntityClass().getSimpleName()
+	// + " e where e.id = :pId")
+	// .setParameter("pId", id).executeUpdate();
+	// }
+	//
+	// }
+	//
+	// /**
+	// * Post-delete template method for a given id.
+	// *
+	// * @param list
+	// */
+	// protected void postDeleteById(Object id) throws BusinessException {
+	// }
+
+	/**
+	 * Helper delete method for one ID. It creates a list with this single ID
+	 * and delegates to the <code> delete(List&lt;Object&gt; ids)</code> method
+	 */
+	public void deleteById(Object id) throws BusinessException {
+		List<Object> list = new ArrayList<Object>();
+		list.add(id);
+		this.deleteByIds(list);
+	}
+
+	public boolean isNoInsert() {
+		return noInsert;
+	}
+
+	public void setNoInsert(boolean noInsert) {
+		this.noInsert = noInsert;
+	}
+
+	public boolean isNoUpdate() {
+		return noUpdate;
+	}
+
+	public void setNoUpdate(boolean noUpdate) {
+		this.noUpdate = noUpdate;
+	}
+
+	public boolean isNoDelete() {
+		return noDelete;
+	}
+
+	public void setNoDelete(boolean noDelete) {
+		this.noDelete = noDelete;
+	}
+
+	public boolean isNoDeleteById() {
+		return noDeleteById;
+	}
+
+	public void setNoDeleteById(boolean noDeleteById) {
+		this.noDeleteById = noDeleteById;
 	}
 
 }

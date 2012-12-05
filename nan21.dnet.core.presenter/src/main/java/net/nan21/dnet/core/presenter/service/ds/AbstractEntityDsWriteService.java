@@ -109,39 +109,6 @@ public abstract class AbstractEntityDsWriteService<M extends AbstractDsModel<E>,
 	}
 
 	/**
-	 * Insert event. The steps performed during this phase are: <li>Check if
-	 * action is allowed. <li>Create a new backing entity for the data-source.
-	 * <li>Apply the new values from the data-source and call the
-	 * <code>pre-insert</code> events <li>Delegate execution of insert to the
-	 * business-service. <li>Call the <code>post-insert</code> event.
-	 * 
-	 * @param ds
-	 * @throws Exception
-	 */
-	public void insert(M ds, P params) throws Exception {
-		if (this.readOnly || this.noInsert || !this.canInsert(ds, params)) {
-			throw new ActionNotSupportedException("Insert not allowed.");
-		}
-		// add the client
-		if (ds instanceof IModelWithClientId) {
-			((IModelWithClientId) ds).setClientId(Session.user.get()
-					.getClientId());
-		}
-		this.preInsert(ds, params);
-		E e = (E) this.getEntityService().create();
-		this.getConverter().modelToEntity(ds, e, true);
-		this.preInsert(ds, e, params);
-		this.onInsert(ds, e, params);
-		postInsertBeforeModel(ds, e, params);
-		this.getConverter().entityToModel(e, ds);
-		postInsertAfterModel(ds, e, params);
-	}
-
-	protected void onInsert(M ds, E e, P params) throws Exception {
-		this.getEntityService().insert(e);
-	}
-
-	/**
 	 * Template method for <code>pre-insert</code>.
 	 * 
 	 * @param list
@@ -185,6 +152,20 @@ public abstract class AbstractEntityDsWriteService<M extends AbstractDsModel<E>,
 		this.postInsert(list, params);
 	}
 
+	/**
+	 * Helper insert method for one object. It creates a list with this single
+	 * object and delegates to the <code>insert(List<M> list, P params)</code>
+	 * method
+	 * 
+	 * @param ds
+	 * @throws Exception
+	 */
+	public void insert(M ds, P params) throws Exception {
+		List<M> list = new ArrayList<M>();
+		list.add(ds);
+		this.insert(list, params);
+	}
+
 	protected void onInsert(List<M> list, List<E> entities, P params)
 			throws Exception {
 		this.getEntityService().insert(entities);
@@ -196,7 +177,7 @@ public abstract class AbstractEntityDsWriteService<M extends AbstractDsModel<E>,
 	 * @param list
 	 * @throws Exception
 	 */
-	public void postInsert(List<M> list, P params) throws Exception {
+	protected void postInsert(List<M> list, P params) throws Exception {
 
 	}
 
@@ -283,38 +264,12 @@ public abstract class AbstractEntityDsWriteService<M extends AbstractDsModel<E>,
 	}
 
 	/**
-	 * Update event. The steps performed during this phase are: <li>Check if
-	 * action is allowed. <li>Find the backing entity of the data-source. <li>
-	 * Apply the new values from the data-source and call the
-	 * <code>pre-update</code> events <li>Delegate execution of update to the
-	 * business-service. <li>Call the <code>post-update</code> event.
-	 * 
-	 * @param ds
-	 * @throws Exception
-	 */
-	public void update(M ds, P params) throws Exception {
-		if (this.readOnly || this.noUpdate || !this.canUpdate(ds, params)) {
-			throw new ActionNotSupportedException("Update not allowed.");
-		}
-
-		this.preUpdate(ds, params);
-		E e = (E) this.getEntityService().findById(((IModelWithId) ds).getId());
-		this.preUpdateBeforeEntity(ds, e, params);
-		this.getConverter().modelToEntity(ds, e, false);
-		this.preUpdateAfterEntity(ds, e, params);
-		this.getEntityService().update(e);
-		postUpdateBeforeModel(ds, e, params);
-		this.getConverter().entityToModel(e, ds);
-		postUpdateAfterModel(ds, e, params);
-	}
-
-	/**
 	 * Template method for <code>pre-update</code>.
 	 * 
 	 * @param list
 	 * @throws Exception
 	 */
-	public void preUpdate(List<M> list, P params) throws Exception {
+	protected void preUpdate(List<M> list, P params) throws Exception {
 	}
 
 	public void update(List<M> list, P params) throws Exception {
@@ -344,6 +299,20 @@ public abstract class AbstractEntityDsWriteService<M extends AbstractDsModel<E>,
 		this.postUpdate(list, params);
 	}
 
+	/**
+	 * Helper update method for one object. It creates a list with this single
+	 * object and delegates to the <code>update(List<M> list, P params)</code>
+	 * method
+	 * 
+	 * @param ds
+	 * @throws Exception
+	 */
+	public void update(M ds, P params) throws Exception {
+		List<M> list = new ArrayList<M>();
+		list.add(ds);
+		this.update(list, params);
+	}
+
 	protected E lookupEntityById(List<E> list, Object id) {
 		for (E e : list) {
 			if (((IModelWithId) e).getId().equals(id)) {
@@ -359,7 +328,7 @@ public abstract class AbstractEntityDsWriteService<M extends AbstractDsModel<E>,
 	 * @param list
 	 * @throws Exception
 	 */
-	public void postUpdate(List<M> list, P params) throws Exception {
+	protected void postUpdate(List<M> list, P params) throws Exception {
 
 	}
 
@@ -529,6 +498,8 @@ public abstract class AbstractEntityDsWriteService<M extends AbstractDsModel<E>,
 			}
 		}
 
+		List<M> targets = new ArrayList<M>();
+
 		for (M newDs : list) {
 			filterUkFieldSetter
 					.invoke(filter, modelUkFieldGetter.invoke(newDs));
@@ -542,9 +513,12 @@ public abstract class AbstractEntityDsWriteService<M extends AbstractDsModel<E>,
 					entry.getValue().invoke(oldDs,
 							modelGetters.get(entry.getKey()).invoke(newDs));
 				}
-				this.update(oldDs, null);
+				targets.add(oldDs);
+				// this.update(oldDs, null);
 			}
 		}
+
+		this.update(targets, null);
 	}
 
 	// ======================== Getters-setters ===========================

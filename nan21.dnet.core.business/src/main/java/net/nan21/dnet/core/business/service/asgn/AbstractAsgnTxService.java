@@ -3,8 +3,6 @@ package net.nan21.dnet.core.business.service.asgn;
 import java.util.List;
 import java.util.UUID;
 
-import javax.persistence.EntityManager;
-
 import net.nan21.dnet.core.business.service.AbstractBusinessBaseService;
 
 public abstract class AbstractAsgnTxService<E> extends
@@ -42,14 +40,15 @@ public abstract class AbstractAsgnTxService<E> extends
 		}
 		sb.append(")");
 
-		this.em.createNativeQuery(
-				"insert into " + this.ASGNLINE_TEMP_TABLE
-						+ " (selection_uuid, itemId)" + " select ?, "
-						+ this.leftPkField + " from " + this.leftTable
-						+ " r where r." + this.leftPkField + "  in "
-						+ sb.toString()).setParameter(1, this.selectionId)
-				.executeUpdate();
-		this.em.flush();
+		this.getEntityManager()
+				.createNativeQuery(
+						"insert into " + this.ASGNLINE_TEMP_TABLE
+								+ " (selection_uuid, itemId)" + " select ?, "
+								+ this.leftPkField + " from " + this.leftTable
+								+ " r where r." + this.leftPkField + "  in "
+								+ sb.toString())
+				.setParameter(1, this.selectionId).executeUpdate();
+		this.getEntityManager().flush();
 	}
 
 	/**
@@ -59,12 +58,14 @@ public abstract class AbstractAsgnTxService<E> extends
 	 */
 	public void moveRightAll() throws Exception {
 		moveLeftAll();
-		this.em.createNativeQuery(
-				"insert into " + this.ASGNLINE_TEMP_TABLE
-						+ " ( selection_uuid, itemId)" + " select  ?,  "
-						+ this.leftPkField + "  from " + this.leftTable + " ")
+		this.getEntityManager()
+				.createNativeQuery(
+						"insert into " + this.ASGNLINE_TEMP_TABLE
+								+ " ( selection_uuid, itemId)"
+								+ " select  ?,  " + this.leftPkField
+								+ "  from " + this.leftTable + " ")
 				.setParameter(1, this.selectionId).executeUpdate();
-		this.em.flush();
+		this.getEntityManager().flush();
 	}
 
 	/**
@@ -79,12 +80,13 @@ public abstract class AbstractAsgnTxService<E> extends
 			sb.append("," + id);
 		}
 		sb.append(")");
-		this.em.createNativeQuery(
-				"delete from " + this.ASGNLINE_TEMP_TABLE
-						+ " WHERE  selection_uuid = ? and itemId in "
-						+ sb.toString() + "").setParameter(1, this.selectionId)
-				.executeUpdate();
-		this.em.flush();
+		this.getEntityManager()
+				.createNativeQuery(
+						"delete from " + this.ASGNLINE_TEMP_TABLE
+								+ " WHERE  selection_uuid = ? and itemId in "
+								+ sb.toString() + "")
+				.setParameter(1, this.selectionId).executeUpdate();
+		this.getEntityManager().flush();
 
 	}
 
@@ -94,11 +96,12 @@ public abstract class AbstractAsgnTxService<E> extends
 	 * @throws Exception
 	 */
 	public void moveLeftAll() throws Exception {
-		this.em.createNativeQuery(
-				"delete from " + this.ASGNLINE_TEMP_TABLE
-						+ " WHERE selection_uuid = ?")
+		this.getEntityManager()
+				.createNativeQuery(
+						"delete from " + this.ASGNLINE_TEMP_TABLE
+								+ " WHERE selection_uuid = ?")
 				.setParameter(1, this.selectionId).executeUpdate();
-		this.em.flush();
+		this.getEntityManager().flush();
 	}
 
 	/**
@@ -111,12 +114,13 @@ public abstract class AbstractAsgnTxService<E> extends
 	 */
 	public String setup(String asgnName) throws Exception {
 		this.selectionId = UUID.randomUUID().toString();
-		this.em.createNativeQuery(
-				"insert into " + this.ASGN_TEMP_TABLE
-						+ " (uuid, asgncmp) values( ? ,?  ) ")
+		this.getEntityManager()
+				.createNativeQuery(
+						"insert into " + this.ASGN_TEMP_TABLE
+								+ " (uuid, asgncmp) values( ? ,?  ) ")
 				.setParameter(1, this.selectionId).setParameter(2, asgnName)
 				.executeUpdate();
-		this.em.flush();
+		this.getEntityManager().flush();
 		this.reset();
 		return this.selectionId;
 	}
@@ -127,14 +131,17 @@ public abstract class AbstractAsgnTxService<E> extends
 	 * @throws Exception
 	 */
 	public void cleanup() throws Exception {
-		this.em.createNativeQuery(
-				"delete from " + this.ASGNLINE_TEMP_TABLE
-						+ "  WHERE   selection_uuid = ? ")
+		this.getEntityManager()
+				.createNativeQuery(
+						"delete from " + this.ASGNLINE_TEMP_TABLE
+								+ "  WHERE   selection_uuid = ? ")
 				.setParameter(1, this.selectionId).executeUpdate();
-		this.em.createNativeQuery(
-				"delete from " + this.ASGN_TEMP_TABLE + "   WHERE uuid = ? ")
+		this.getEntityManager()
+				.createNativeQuery(
+						"delete from " + this.ASGN_TEMP_TABLE
+								+ "   WHERE uuid = ? ")
 				.setParameter(1, this.selectionId).executeUpdate();
-		this.em.flush();
+		this.getEntityManager().flush();
 	}
 
 	/**
@@ -144,41 +151,47 @@ public abstract class AbstractAsgnTxService<E> extends
 	 * @throws Exception
 	 */
 	public void reset() throws Exception {
-		this.em.createNativeQuery(
-				"delete from " + this.ASGNLINE_TEMP_TABLE
-						+ " where selection_uuid = ? ")
+		this.getEntityManager()
+				.createNativeQuery(
+						"delete from " + this.ASGNLINE_TEMP_TABLE
+								+ " where selection_uuid = ? ")
 				.setParameter(1, this.selectionId).executeUpdate();
-		this.em.flush();
+		this.getEntityManager().flush();
 
-		this.em.createNativeQuery(
-				"insert into " + this.ASGNLINE_TEMP_TABLE
-						+ " (selection_uuid, itemId)" + " select ?, "
-						+ this.rightItemIdField + " from " + this.rightTable
-						+ " where " + this.rightObjectIdField + " = ? ")
+		this.getEntityManager()
+				.createNativeQuery(
+						"insert into " + this.ASGNLINE_TEMP_TABLE
+								+ " (selection_uuid, itemId)" + " select ?, "
+								+ this.rightItemIdField + " from "
+								+ this.rightTable + " where "
+								+ this.rightObjectIdField + " = ? ")
 				.setParameter(1, this.selectionId)
 				.setParameter(2, this.objectId).executeUpdate();
-		this.em.flush();
+		this.getEntityManager().flush();
 	}
 
 	public void save() throws Exception {
-		this.em.createNativeQuery(
-				"delete from " + this.rightTable + " where  "
-						+ this.rightObjectIdField + " = ? ")
+		this.getEntityManager()
+				.createNativeQuery(
+						"delete from " + this.rightTable + " where  "
+								+ this.rightObjectIdField + " = ? ")
 				.setParameter(1, this.objectId).executeUpdate();
-		this.em.flush();
+		this.getEntityManager().flush();
 		if (this.saveAsSqlInsert) {
-			this.em.createNativeQuery(
-					"insert into " + this.rightTable + " ( "
-							+ this.rightObjectIdField + ",  "
-							+ this.rightItemIdField + " ) "
-							+ " select ?, itemId from  "
-							+ this.ASGNLINE_TEMP_TABLE + " "
-							+ "  where selection_uuid = ? ")
+			this.getEntityManager()
+					.createNativeQuery(
+							"insert into " + this.rightTable + " ( "
+									+ this.rightObjectIdField + ",  "
+									+ this.rightItemIdField + " ) "
+									+ " select ?, itemId from  "
+									+ this.ASGNLINE_TEMP_TABLE + " "
+									+ "  where selection_uuid = ? ")
 					.setParameter(1, this.objectId)
 					.setParameter(2, this.selectionId).executeUpdate();
 		} else {
 			@SuppressWarnings("unchecked")
-			List<Long> list = this.em
+			List<Long> list = this
+					.getEntityManager()
 					.createNativeQuery(
 							" select itemId from  " + this.ASGNLINE_TEMP_TABLE
 									+ " " + "  where selection_uuid = ? ")
@@ -194,13 +207,6 @@ public abstract class AbstractAsgnTxService<E> extends
 	}
 
 	// ==================== getters- setters =====================
-
-	/*
-	 * @return the entity manager
-	 */
-	public EntityManager getEntityManager() {
-		return this.em;
-	}
 
 	public Class<E> getEntityClass() {
 		return entityClass;
@@ -232,13 +238,6 @@ public abstract class AbstractAsgnTxService<E> extends
 
 	public void setObjectId(Long objectId) {
 		this.objectId = objectId;
-	}
-
-	/*
-	 * @param em the entity manager to set
-	 */
-	public void setEntityManager(EntityManager em) {
-		this.em = em;
 	}
 
 	public String getLeftTable() {
