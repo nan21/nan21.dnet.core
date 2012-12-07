@@ -774,13 +774,13 @@ Ext.define("dnet.core.dc.AbstractDc", {
 	 * Creates a new record instance and initialize it
 	 */
 	newRecordInstance : function() {
-		var o = Ext.create(this.recordModel, this.initNewRecordInstance({}));
-		o.data["clientId"] = getApplication().getSession().client.id;
-		return o;
+		var r = Ext.create(this.recordModel);
+		this.initNewRecordInstance(r)
+		r.data["clientId"] = getApplication().getSession().client.id;
+		return r;
 	},
 
-	initNewRecordInstance : function(o) {
-		return o;
+	initNewRecordInstance : function(r) {
 	},
 
 	/**
