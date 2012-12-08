@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>net.nan21.dnet</groupId>
 		<artifactId>nan21.dnet.core</artifactId>
-		<version>1.0.5-SNAPSHOT</version>
+		<version>1.0.5</version>
 	</parent>
 	<artifactId>nan21.dnet.core.extjs.themes</artifactId>
 	<name>DNet Core - Extjs themes</name>
