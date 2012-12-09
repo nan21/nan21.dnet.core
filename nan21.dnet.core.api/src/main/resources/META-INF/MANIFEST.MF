@@ -3,26 +3,26 @@ Bundle-ManifestVersion: 2
 Bundle-Name: DNet Core - API
 Bundle-SymbolicName: nan21.dnet.core.api
 Bundle-Vendor: Nan21
-Bundle-Version: 1.0.5
+Bundle-Version: 1.0.6
 Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.txt
 Export-Package: 
- net.nan21.dnet.core.api;version="1.0.5",
- net.nan21.dnet.core.api.action;version="1.0.5",
- net.nan21.dnet.core.api.annotation;version="1.0.5",
- net.nan21.dnet.core.api.converter;version="1.0.5",
- net.nan21.dnet.core.api.descriptor;version="1.0.5",
- net.nan21.dnet.core.api.email;version="1.0.5",
- net.nan21.dnet.core.api.exceptions;version="1.0.5",
- net.nan21.dnet.core.api.job;version="1.0.5",
- net.nan21.dnet.core.api.marshall;version="1.0.5",
- net.nan21.dnet.core.api.model;version="1.0.5",
- net.nan21.dnet.core.api.security;version="1.0.5",
- net.nan21.dnet.core.api.service;version="1.0.5",
- net.nan21.dnet.core.api.session;version="1.0.5",
- net.nan21.dnet.core.api.setup;version="1.0.5",
- net.nan21.dnet.core.api.ui.extjs;version="1.0.5",
- net.nan21.dnet.core.api.util;version="1.0.5",
- net.nan21.dnet.core.api.wf;version="1.0.5"
+ net.nan21.dnet.core.api;version="1.0.6",
+ net.nan21.dnet.core.api.action;version="1.0.6",
+ net.nan21.dnet.core.api.annotation;version="1.0.6",
+ net.nan21.dnet.core.api.converter;version="1.0.6",
+ net.nan21.dnet.core.api.descriptor;version="1.0.6",
+ net.nan21.dnet.core.api.email;version="1.0.6",
+ net.nan21.dnet.core.api.exceptions;version="1.0.6",
+ net.nan21.dnet.core.api.job;version="1.0.6",
+ net.nan21.dnet.core.api.marshall;version="1.0.6",
+ net.nan21.dnet.core.api.model;version="1.0.6",
+ net.nan21.dnet.core.api.security;version="1.0.6",
+ net.nan21.dnet.core.api.service;version="1.0.6",
+ net.nan21.dnet.core.api.session;version="1.0.6",
+ net.nan21.dnet.core.api.setup;version="1.0.6",
+ net.nan21.dnet.core.api.ui.extjs;version="1.0.6",
+ net.nan21.dnet.core.api.util;version="1.0.6",
+ net.nan21.dnet.core.api.wf;version="1.0.6"
 Import-Package: 
  javax.persistence;version="[2.0,2.1)",
  org.springframework.context;version="[3.1,3.2)"

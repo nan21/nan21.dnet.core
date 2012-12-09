@@ -9,8 +9,7 @@ dnet.core.base.FrameNavigator = {
 		
 	,isFrameActive:  function(frame) {
 		return (getApplication().getViewBody().getActiveTab().getId() == __CmpId__.FRAME_TAB_PREFIX);  
-	}	
-	
+	}		
 	
 	,showFrame: function(frame, params) {				
 		this._showFrameImpl(frame, params);
@@ -23,8 +22,6 @@ dnet.core.base.FrameNavigator = {
 		 	
 		var vb = getApplication().getViewBody();
 		
-		 
-
         if (this.isFrameOpened(frame)) {
           if (!this.isFrameActive(frame)) {           
         	  getApplication().getViewBody().activate(tabID);
