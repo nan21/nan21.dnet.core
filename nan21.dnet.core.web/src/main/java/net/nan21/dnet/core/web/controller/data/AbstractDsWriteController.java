@@ -71,7 +71,7 @@ public class AbstractDsWriteController<M, F, P> extends
 
 			IDsService<M, F, P> service = this.findDsService(resourceName);
 			IDsMarshaller<M, F, P> marshaller = service
-					.createMarshaller(dataFormat);
+					.createMarshaller(IDsMarshaller.JSON);
 
 			List<M> list = marshaller.readListFromString(dataString);
 			P params = marshaller.readParamsFromString(paramString);
@@ -82,7 +82,20 @@ public class AbstractDsWriteController<M, F, P> extends
 			stopWatch.stop();
 			result.setExecutionTime(stopWatch.getTime());
 
-			return marshaller.writeResultToString(result);
+			String out = null;
+
+			if (dataFormat.equals(IDsMarshaller.XML)) {
+				IDsMarshaller<M, F, P> resultMarshaller = service
+						.createMarshaller(dataFormat);
+				out = resultMarshaller.writeResultToString(result);
+				response.setContentType("text/xml; charset=UTF-8");
+			} else {
+				out = marshaller.writeResultToString(result);
+				response.setContentType("text/plain; charset=UTF-8");
+			}
+
+			return out;
+
 		} catch (Exception e) {
 			return this.handleException(e, response);
 		} finally {
@@ -137,7 +150,7 @@ public class AbstractDsWriteController<M, F, P> extends
 			}
 			IDsService<M, F, P> service = this.findDsService(resourceName);
 			IDsMarshaller<M, F, P> marshaller = service
-					.createMarshaller(dataFormat);
+					.createMarshaller(IDsMarshaller.JSON);
 
 			List<M> list = marshaller.readListFromString(dataString);
 			P params = marshaller.readParamsFromString(paramString);
@@ -148,7 +161,19 @@ public class AbstractDsWriteController<M, F, P> extends
 			stopWatch.stop();
 			result.setExecutionTime(stopWatch.getTime());
 
-			return marshaller.writeResultToString(result);
+			String out = null;
+
+			if (dataFormat.equals(IDsMarshaller.XML)) {
+				IDsMarshaller<M, F, P> resultMarshaller = service
+						.createMarshaller(dataFormat);
+				out = resultMarshaller.writeResultToString(result);
+				response.setContentType("text/xml; charset=UTF-8");
+			} else {
+				out = marshaller.writeResultToString(result);
+				response.setContentType("text/plain; charset=UTF-8");
+			}
+
+			return out;
 		} catch (Exception e) {
 			this.handleException(e, response);
 			return null;
@@ -200,7 +225,7 @@ public class AbstractDsWriteController<M, F, P> extends
 			}
 			IDsService<M, F, P> service = this.findDsService(resourceName);
 			IDsMarshaller<M, F, P> marshaller = service
-					.createMarshaller(dataFormat);
+					.createMarshaller(IDsMarshaller.JSON);
 
 			List<M> list = marshaller.readListFromString(dataString);
 			// P params = marshaller.readParamsFromString(paramString);
@@ -215,7 +240,19 @@ public class AbstractDsWriteController<M, F, P> extends
 			stopWatch.stop();
 			result.setExecutionTime(stopWatch.getTime());
 
-			return marshaller.writeResultToString(result);
+			String out = null;
+
+			if (dataFormat.equals(IDsMarshaller.XML)) {
+				IDsMarshaller<M, F, P> resultMarshaller = service
+						.createMarshaller(dataFormat);
+				out = resultMarshaller.writeResultToString(result);
+				response.setContentType("text/xml; charset=UTF-8");
+			} else {
+				out = marshaller.writeResultToString(result);
+				response.setContentType("text/plain; charset=UTF-8");
+			}
+
+			return out;
 
 		} catch (Exception e) {
 			this.handleException(e, response);
@@ -262,7 +299,7 @@ public class AbstractDsWriteController<M, F, P> extends
 			}
 			IDsService<M, F, P> service = this.findDsService(resourceName);
 			IDsMarshaller<M, F, P> marshaller = service
-					.createMarshaller(dataFormat);
+					.createMarshaller(IDsMarshaller.JSON);
 
 			List<Object> list = marshaller.readListFromString(idsString,
 					Object.class);
@@ -273,7 +310,19 @@ public class AbstractDsWriteController<M, F, P> extends
 			stopWatch.stop();
 			result.setExecutionTime(stopWatch.getTime());
 
-			return marshaller.writeResultToString(result);
+			String out = null;
+
+			if (dataFormat.equals(IDsMarshaller.XML)) {
+				IDsMarshaller<M, F, P> resultMarshaller = service
+						.createMarshaller(dataFormat);
+				out = resultMarshaller.writeResultToString(result);
+				response.setContentType("text/xml; charset=UTF-8");
+			} else {
+				out = marshaller.writeResultToString(result);
+				response.setContentType("text/plain; charset=UTF-8");
+			}
+
+			return out;
 		} catch (Exception e) {
 			this.handleException(e, response);
 			return null;

@@ -228,6 +228,7 @@ public abstract class AbstractUiExtjsController extends AbstractDnetController {
 			addConstant(sb, "DECIMAL_SEPARATOR", Constants.DECIMAL_SEPARATOR);
 			addConstant(sb, "THOUSAND_SEPARATOR", Constants.THOUSAND_SEPARATOR);
 
+			addConstant(sb, "DS_INFO", Constants.DS_INFO);
 			addConstant(sb, "DS_QUERY", Constants.DS_QUERY);
 			addConstant(sb, "DS_INSERT", Constants.DS_INSERT);
 			addConstant(sb, "DS_UPDATE", Constants.DS_UPDATE);

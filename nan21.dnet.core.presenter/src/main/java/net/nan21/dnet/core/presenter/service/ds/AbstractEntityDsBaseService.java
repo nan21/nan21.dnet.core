@@ -10,6 +10,7 @@ import net.nan21.dnet.core.api.service.IEntityService;
 import net.nan21.dnet.core.presenter.converter.AbstractDsConverter;
 import net.nan21.dnet.core.presenter.converter.BaseDsConverter;
 import net.nan21.dnet.core.presenter.marshaller.JsonMarshaller;
+import net.nan21.dnet.core.presenter.marshaller.XmlMarshaller;
 import net.nan21.dnet.core.presenter.model.AbstractDsModel;
 import net.nan21.dnet.core.presenter.model.DsDescriptor;
 import net.nan21.dnet.core.presenter.model.ViewModelDescriptorManager;
@@ -69,6 +70,9 @@ public abstract class AbstractEntityDsBaseService<M extends AbstractDsModel<E>, 
 		IDsMarshaller<M, F, P> marshaller = null;
 		if (dataFormat.equals(IDsMarshaller.JSON)) {
 			marshaller = new JsonMarshaller<M, F, P>(this.getModelClass(),
+					this.getFilterClass(), this.getParamClass());
+		} else if (dataFormat.equals(IDsMarshaller.XML)) {
+			marshaller = new XmlMarshaller<M, F, P>(this.getModelClass(),
 					this.getFilterClass(), this.getParamClass());
 		}
 		return marshaller;

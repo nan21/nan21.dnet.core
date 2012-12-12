@@ -19,7 +19,7 @@
 	<bean id="productInfo" class="net.nan21.dnet.core.api.ProductInfo"
 		scope="singleton">
 		<property name="name" value="DNet eBusiness Suite" />
-		<property name="version" value="1.0.5" />
+		<property name="version" value="1.0.6" />
 	</bean>
 
 	<bean id="systemConfig" class="net.nan21.dnet.core.api.SystemConfig"

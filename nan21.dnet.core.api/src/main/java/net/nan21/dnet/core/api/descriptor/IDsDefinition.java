@@ -12,6 +12,14 @@ public interface IDsDefinition {
 
 	public void setModelClass(Class<?> modelClass);
 
+	public Class<?> getFilterClass();
+
+	public void setFilterClass(Class<?> filterClass);
+
+	public Class<?> getParamClass();
+
+	public void setParamClass(Class<?> paramClass);
+
 	public boolean isAsgn();
 
 	public boolean isReadOnly();

@@ -16,7 +16,7 @@ public class Constants {
 	public static final String DATA_FORMAT_PDF = "pdf";
 
 	/* DS actions */
-
+	public static final String DS_INFO = "info";
 	public static final String DS_QUERY = "find";
 	public static final String DS_INSERT = "insert";
 	public static final String DS_UPDATE = "update";

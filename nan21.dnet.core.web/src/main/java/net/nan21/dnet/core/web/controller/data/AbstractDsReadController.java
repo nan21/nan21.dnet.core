@@ -2,6 +2,8 @@ package net.nan21.dnet.core.web.controller.data;
 
 import java.io.File;
 import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Arrays;
 import java.util.Date;
@@ -17,6 +19,8 @@ import net.nan21.dnet.core.api.SysParam;
 import net.nan21.dnet.core.api.action.IActionResultFind;
 import net.nan21.dnet.core.api.action.IDsExport;
 import net.nan21.dnet.core.api.action.IQueryBuilder;
+import net.nan21.dnet.core.api.descriptor.IDsDefinition;
+import net.nan21.dnet.core.api.descriptor.IDsDefinitions;
 import net.nan21.dnet.core.api.marshall.IDsMarshaller;
 import net.nan21.dnet.core.api.service.IDsService;
 import net.nan21.dnet.core.api.session.Session;
@@ -24,6 +28,8 @@ import net.nan21.dnet.core.presenter.action.DsCsvExport;
 import net.nan21.dnet.core.presenter.action.DsHtmlExport;
 import net.nan21.dnet.core.presenter.action.DsJsonExport;
 import net.nan21.dnet.core.presenter.action.DsXmlExport;
+import net.nan21.dnet.core.presenter.marshaller.XmlMarshaller;
+import net.nan21.dnet.core.presenter.model.DsDefinition;
 import net.nan21.dnet.core.presenter.model.FilterRule;
 import net.nan21.dnet.core.presenter.model.ModelPrinter;
 import net.nan21.dnet.core.presenter.model.SortToken;
@@ -31,13 +37,13 @@ import net.nan21.dnet.core.web.result.ActionResultFind;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.time.StopWatch;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -55,6 +61,107 @@ public class AbstractDsReadController<M, F, P> extends
 			.getLogger(AbstractDsReadController.class);
 
 	/**
+	 * Returns information about the given resource ( data-source )
+	 * 
+	 * @param resourceName
+	 * @param dataFormat
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(params = Constants.REQUEST_PARAM_ACTION + "="
+			+ Constants.DS_INFO)
+	public String info(@PathVariable String resourceName,
+			@PathVariable String dataFormat, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		try {
+			StopWatch stopWatch = new StopWatch();
+			stopWatch.start();
+
+			if (logger.isDebugEnabled()) {
+				logger.debug("Processing request: {}.{} -> action = {} ",
+						new String[] { resourceName, dataFormat,
+								Constants.DS_INFO });
+
+			}
+
+			this.prepareRequest(request, response);
+
+			@SuppressWarnings("unchecked")
+			List<IDsDefinitions> defsList = (List<IDsDefinitions>) this
+					.getApplicationContext().getBean("osgiDsDefinitions");
+
+			String out = null;
+			for (IDsDefinitions defs : defsList) {
+				if (defs.containsDs(resourceName)) {
+					IDsDefinition def = defs.getDsDefinition(resourceName);
+
+					((DsDefinition) def).getModelFields();
+					((DsDefinition) def).getFilterFields();
+					((DsDefinition) def).getParamFields();
+
+					IDsService<M, F, P> service = this
+							.findDsService(resourceName);
+
+					if (dataFormat.equals(IDsMarshaller.JSON)) {
+
+						IDsMarshaller<M, F, P> marshaller = service
+								.createMarshaller(dataFormat);
+						response.setContentType("text/plain; charset=UTF-8");
+
+						out = ((ObjectMapper) marshaller.getDelegate())
+								.writeValueAsString(def);
+						PrintWriter w = response.getWriter();
+						w.write(out);
+						w.flush();
+						return null;
+					} else if (dataFormat.equals(IDsMarshaller.XML)) {
+
+						IDsMarshaller<M, F, P> marshaller = service
+								.createMarshaller(dataFormat);
+						StringWriter writer = new StringWriter();
+						((XmlMarshaller<M, F, P>) marshaller).createMarshaller(
+								def.getClass()).marshal(def, writer);
+						response.setContentType("text/xml; charset=UTF-8");
+						out = writer.toString();
+						PrintWriter w = response.getWriter();
+						w.write(out);
+						w.flush();
+						return null;
+					} else if (dataFormat.equals("html")) {
+
+						IDsMarshaller<M, F, P> marshaller = service
+								.createMarshaller(IDsMarshaller.XML);
+
+						StringWriter writer = new StringWriter();
+						((XmlMarshaller<M, F, P>) marshaller).createMarshaller(
+								def.getClass()).marshal(def, writer);
+						out = writer.toString();
+						String t1 = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>";
+						String t2 = "<?xml-stylesheet type=\"text/xsl\" href=\"/nan21.dnet.core.web/webapp/resources/xsl/ds-info.xsl\"?>";
+						out = out.replace(t1, t1 + '\n' + t2);
+						response.setContentType("text/xml; charset=UTF-8");
+
+						PrintWriter w = response.getWriter();
+						w.write(out);
+						w.flush();
+						return null;
+					}
+				}
+			}
+
+			throw new Exception("Data-source " + resourceName
+					+ " cannot be found.");
+
+		} catch (Exception e) {
+			return this.handleException(e, response);
+		} finally {
+			this.finishRequest();
+		}
+	}
+
+	/**
 	 * Default handler for find action.
 	 * 
 	 * @param resourceName
@@ -69,8 +176,8 @@ public class AbstractDsReadController<M, F, P> extends
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(method = RequestMethod.POST, params = Constants.REQUEST_PARAM_ACTION
-			+ "=" + Constants.DS_QUERY)
+	@RequestMapping(params = Constants.REQUEST_PARAM_ACTION + "="
+			+ Constants.DS_QUERY)
 	@ResponseBody
 	public String find(
 			@PathVariable String resourceName,
@@ -110,7 +217,7 @@ public class AbstractDsReadController<M, F, P> extends
 
 			IDsService<M, F, P> service = this.findDsService(resourceName);
 			IDsMarshaller<M, F, P> marshaller = service
-					.createMarshaller(dataFormat);
+					.createMarshaller(IDsMarshaller.JSON);
 
 			F filter = marshaller.readFilterFromString(filterString);
 			P params = marshaller.readParamsFromString(paramString);
@@ -141,7 +248,18 @@ public class AbstractDsReadController<M, F, P> extends
 			stopWatch.stop();
 			result.setExecutionTime(stopWatch.getTime());
 
-			String out = marshaller.writeResultToString(result);
+			String out = null;
+
+			if (dataFormat.equals(IDsMarshaller.XML)) {
+				IDsMarshaller<M, F, P> resultMarshaller = service
+						.createMarshaller(dataFormat);
+				out = resultMarshaller.writeResultToString(result);
+				response.setContentType("text/xml; charset=UTF-8");
+			} else {
+				out = marshaller.writeResultToString(result);
+				response.setContentType("text/plain; charset=UTF-8");
+			}
+
 			return out;
 		} catch (Exception e) {
 			return this.handleException(e, response);

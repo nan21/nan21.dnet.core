@@ -84,6 +84,9 @@
 	<osgi:list id="osgiStartupParticipants" cardinality="0..N"
 		interface="net.nan21.dnet.core.api.setup.IStartupParticipant" />
 
+	<osgi:list id="osgiDsDefinitions" cardinality="0..N"
+		interface="net.nan21.dnet.core.api.descriptor.IDsDefinitions" />
+
 	<osgi:reference id="osgiActivitiProcessEngineHolder"
 		cardinality="0..1" interface="net.nan21.dnet.core.api.wf.IActivitiProcessEngineHolder" />
 

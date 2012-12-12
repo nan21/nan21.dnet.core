@@ -87,10 +87,10 @@ Dnet = {
 	DEFAULT_LANGUAGE : "en",
 
 	viewConfig : {
-		BOOLEAN_COL_WIDTH: 60,
-		DATE_COL_WIDTH: 80
+		BOOLEAN_COL_WIDTH : 60,
+		DATE_COL_WIDTH : 80
 	},
-	
+
 	/**
 	 * Creates a set of number formats up to 6 decimals according to the user
 	 * locale.
@@ -154,6 +154,7 @@ Dnet = {
 	},
 
 	dsAction : {
+		INFO : Constants.DS_INFO,
 		QUERY : Constants.DS_QUERY,
 		INSERT : Constants.DS_INSERT,
 		UPDATE : Constants.DS_UPDATE,
@@ -203,6 +204,8 @@ Dnet = {
 	 */
 	dsAPI : function(resource, format) {
 		return {
+			info : this.dsUrl + "/" + resource + "." + format + "?"
+					+ this.requestParam.ACTION + "=" + this.dsAction.INFO,
 			read : this.dsUrl + "/" + resource + "." + format + "?"
 					+ this.requestParam.ACTION + "=" + this.dsAction.QUERY,
 			load : this.dsUrl + "/" + resource + "." + format + "?"
@@ -460,8 +463,8 @@ Dnet = {
 			scope : scope
 		});
 	},
-	
-	createFilterModelFromRecordModel: function (cfg) {
+
+	createFilterModelFromRecordModel : function(cfg) {
 		var rm = Ext.create(cfg.recordModelFqn);
 		var flds = [];
 		var x = rm.fields.items;
@@ -480,8 +483,8 @@ Dnet = {
 			flds[i] = f;
 		}
 		if (cfg != null && cfg.fields != null) {
-			for (var j=0; j < cfg.fields; j++) {
-				flds[flds.length+1] = cfg.fields[j];
+			for ( var j = 0; j < cfg.fields; j++) {
+				flds[flds.length + 1] = cfg.fields[j];
 			}
 		}
 		var fmn = cfg.recordModelFqn + "Filter";
