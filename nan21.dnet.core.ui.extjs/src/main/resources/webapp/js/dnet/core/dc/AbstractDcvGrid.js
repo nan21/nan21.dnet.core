@@ -72,9 +72,7 @@ Ext.define("dnet.core.dc.AbstractDcvGrid", {
 			}
  
 		});
-//		Ext.apply(this.viewConfig, {
-//			enableTextSelection: true
-//		}); 
+ 
 		Ext.apply(this, cfg);
 		this.callParent(arguments);
 		this._registerListeners_();

@@ -11,7 +11,7 @@ Ext.define("dnet.core.dc.command.DcNewCommand", {
 		var r = dc.newRecordInstance();
 		if (dc.dcContext) {
 			dc.dcContext._applyContextData_(r);
-		}
+		}		
 		dc.setRecord(r, true);
 		dc.store.add(r);
 

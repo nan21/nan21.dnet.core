@@ -384,12 +384,28 @@ Ext.define("dnet.core.dc.AbstractDNetDcGrid", {
 				this._get_("_btnPrint_").disable();
 			}
 		}
+		/*
+		 * restore the selected records from the controller. Select first if
+		 * record from store if controller has no selection or the current store
+		 * doesn't contain any of the previous selection
+		 */
 		if (store.getCount() > 0) {
-			if (this.selModel.getCount() == 0) {
-				this.selModel.select(0);
+			var ctrlSel = this._controller_.getSelectedRecords();
+			if (ctrlSel.length > 0) {
+				var newSel = [];
+				for(var i=0,l=ctrlSel.length;i<l;i++) {
+					var r = store.getById(ctrlSel[i].get(ctrlSel[i].idProperty));
+					if (r != null) {
+						newSel[newSel.length] = r;
+					}
+				}
+				if (newSel.length > 0) {
+					this._controller_.setSelectedRecords(newSel);
+				} else {
+					this.selModel.select(0);
+				}				
 			} else {
-				this._controller_.setSelectedRecords(this.selModel
-						.getSelection());
+				this.selModel.select(0);
 			}
 		}
 	},

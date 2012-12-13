@@ -1,39 +1,11 @@
-/* ==================== general javascript overrides======================== */
+/* ==================== general javascript overrides ======================== */
 
 String.prototype.endsWith = function(suffix) {
 	return this.indexOf(suffix, this.length - suffix.length) !== -1;
 };
 
-/* ==================== Extjs overrides======================== */
-
-Ext.override(Ext.form.field.Picker, {
-	collapse : function() {
-		if (this.isExpanded && !this.isDestroyed) {
-			var me = this, openCls = me.openCls, picker = me.picker, doc = Ext
-					.getDoc(), collapseIf = me.collapseIf, aboveSfx = '-above';
-
-			// hide the picker and set isExpanded flag
-			picker.hide();
-			me.isExpanded = false;
-
-			// remove the openCls
-			me.bodyEl.removeCls([ openCls, openCls + aboveSfx ]);
-			picker.el.removeCls(picker.baseCls + aboveSfx);
-
-			// remove event listeners
-			doc.un('mousewheel', collapseIf, me);
-			doc.un('mousedown', collapseIf, me);
-			Ext.EventManager.removeResizeListener(me.alignPicker, me);
-			me.fireEvent('collapse', me);
-			me.onCollapse();
-			this.focus(true);
-		}
-
-	}
-});
-
 Ext.override(Ext.data.Model, {
-	clientIdProperty : "__clientRecordId__"
+	clientIdProperty : "__clientRecordId__"	 
 });
 
 Ext.override(Ext.form.Basic, {

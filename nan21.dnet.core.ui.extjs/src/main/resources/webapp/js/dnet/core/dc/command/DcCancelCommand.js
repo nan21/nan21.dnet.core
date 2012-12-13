@@ -18,21 +18,23 @@ Ext.define("dnet.core.dc.command.DcCancelCommand", {
 		var dc = this.dc;
 		var s = dc.store;
  
+		if (dc.record.phantom) {
+			/* workaround to avoid the dirty check in AbstractDc.setRecord */
+			var cr = dc.record;
+			cr.phantom = false;
+			cr.dirty = false;
+			dc.setRecord(null, true);
+			cr.phantom = true;
+			cr.dirty = true;
+		} 
+		
 		if (dc.multiEdit) {
 			s.rejectChanges();
 		} else {
 			s.rejectChanges();			
-			if (dc.record.phantom) {
-				/* workaround to avoid the dirty check in AbstractDc.setRecord */
-				var cr = dc.record;
-				cr.phantom = false;
-				cr.dirty = false;
-				dc.setRecord(null, true);
-				cr.phantom = true;
-				cr.dirty = true;
-			} 
+			
 		}
- 		
+		
 	},
 
 	discardChildrenChanges : function() {

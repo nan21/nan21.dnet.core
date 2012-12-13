@@ -730,6 +730,19 @@ Ext.define("dnet.core.dc.AbstractDc", {
 
 		if (this.selectedRecords !== recArray) {
 			this.selectedRecords = recArray;
+			
+			if (this.record != null) {
+				var found = false;
+				for(var i=0,l=this.selectedRecords.length; i<l;i++) {
+					if (this.record === this.selectedRecords[i]) {
+						found = true;
+						break;
+					}
+				}
+				if (!found) {
+					this.setRecord(this.selectedRecords[0], false);
+				}
+			}						
 			this.fireEvent('selectionChange', {
 				dc : this,
 				eOpts : eOpts
@@ -775,7 +788,11 @@ Ext.define("dnet.core.dc.AbstractDc", {
 	 */
 	newRecordInstance : function() {
 		var r = Ext.create(this.recordModel);
-		this.initNewRecordInstance(r)
+		if (r.initRecord) {
+			r.beginEdit();
+			r.initRecord();
+			r.endEdit();
+		}	
 		r.data["clientId"] = getApplication().getSession().client.id;
 		return r;
 	},
