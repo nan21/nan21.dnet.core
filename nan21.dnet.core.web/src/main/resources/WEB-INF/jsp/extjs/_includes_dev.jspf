@@ -2,7 +2,7 @@
     <!-- Extjs  --> 
      
     <link rel="stylesheet" type="text/css" href="${urlUiExtjsThemes}/resources/css/ext-all-${theme}.css"/> 
-    <script type="text/javascript" src="${urlUiExtjsLib}/js/ext-all.js"></script>
+    <script type="text/javascript" src="${urlUiExtjsLib}/js/ext-all-debug.js"></script>
      
     <script type="text/javascript" src="${urlUiExtjsCore}/js/Dnet.js" ></script>    
     <script type="text/javascript" src="${urlUiExtjsCore}/js/extjs-extend.js"></script>     

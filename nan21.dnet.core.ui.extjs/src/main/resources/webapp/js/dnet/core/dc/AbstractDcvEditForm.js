@@ -36,6 +36,11 @@ Ext.define("dnet.core.dc.AbstractDcvEditForm", {
 	 */
 	_dcViewType_ : "edit-form",
 
+	/**
+	 * Array of image fields. Kept separately to manage binding.
+	 */
+	_images_ : null,
+	
 	// **************** Public API *****************
 
 	/**
@@ -239,6 +244,12 @@ Ext.define("dnet.core.dc.AbstractDcvEditForm", {
 	 */
 	_onBind_ : function(record) {
 		if (record) {
+			if (this._images_ != null) {
+				for (var i=0,l=this._images_.length; i<l; i++) {
+					var img = this._getElement_(this._images_[i]);
+					img.setSrc(record.get(img.dataIndex));
+				}
+			}
 			var fields = this.getForm().getFields();
 
 			fields.each(function(field) {
@@ -271,6 +282,12 @@ Ext.define("dnet.core.dc.AbstractDcvEditForm", {
 	 *            record
 	 */
 	_onUnbind_ : function(record) {
+		if (this._images_ != null) {
+			for (var i=0,l=this._images_.length; i<l; i++) {
+				var img = this._getElement_(this._images_[i]);
+				img.setSrc("");
+			}
+		}
 		this.getForm().getFields().each(function(field) {
 					if (field.dataIndex) {
 						field.setRawValue(null);

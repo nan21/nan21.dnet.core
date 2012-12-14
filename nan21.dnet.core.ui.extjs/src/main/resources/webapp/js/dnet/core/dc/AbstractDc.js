@@ -742,6 +742,8 @@ Ext.define("dnet.core.dc.AbstractDc", {
 				if (!found) {
 					this.setRecord(this.selectedRecords[0], false);
 				}
+			} else {
+				this.setRecord(this.selectedRecords[0], false);
 			}						
 			this.fireEvent('selectionChange', {
 				dc : this,

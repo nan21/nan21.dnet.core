@@ -63,7 +63,7 @@ public class Constants {
 	public static final String EXTJS_DATETIME_FORMAT = "Y-m-d H:i";
 	public static final String EXTJS_DATETIMESEC_FORMAT = "Y-m-d H:i:s";
 	public static final String EXTJS_MONTH_FORMAT = "Y-m";
-	public static final String EXTJS_MODEL_DATE_FORMAT = "Y-m-d\\TH:i:s";
+	public static final String EXTJS_MODEL_DATE_FORMAT = "Y-m-d\\\\TH:i:s";
 	public static final String EXTJS_ALT_FORMATS = "j|j.n|d|d.m";
 
 	public static final String JAVA_DATE_FORMAT = "yyyy-MM-dd";

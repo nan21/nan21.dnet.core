@@ -93,6 +93,22 @@ Ext.define("dnet.core.dc.DcvEditFormBuilder", {
 		return this;
 	},
 
+	addImage : function(config) {
+		config.xtype = "image";	
+		Ext.applyIf(config, { border:true,
+			style:{
+				backgroundColor: "#fff",
+				border: "1px solid #777"
+			}
+		});
+		if(this.dcv._images_ == null) {
+			var imgs = this.dcv._images_ = [];
+			imgs[imgs.length] = config.name;
+		}
+		this.applySharedConfig(config);
+		return this;
+	},
+	
 	addDisplayFieldText : function(config) {
 		config.xtype = "displayfieldtext";
 		Ext.applyIf(config, {
