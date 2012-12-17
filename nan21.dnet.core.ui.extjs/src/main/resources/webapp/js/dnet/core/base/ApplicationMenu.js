@@ -191,12 +191,13 @@ Ext.define("dnet.core.base.ApplicationMenu", {
 	/**
 	 * Create the application logo element using the URL set in Dnet.logoUrl
 	 */
-	_createAppLogo_ : function() {		
+	_createAppLogo_ : function() {
 		return {
 			xtype : "container",
-			height: 48,
-			width:120,
-			style : "background: url('"+Dnet.logoUrl+"') no-repeat ;background-position:center;  "
+			height : 48,
+			width : 120,
+			style : "background: url('" + Dnet.logoUrl
+					+ "') no-repeat ;background-position:center;  "
 		}
 	},
 
@@ -287,7 +288,7 @@ Ext.define("dnet.core.base.ApplicationMenu", {
 	 * as other platform level management tasks.
 	 */
 	createSystemClientMenu : function() {
-		var _item = {
+		var _items = [{
 			text : "Clients management",
 			handler : function() {
 				var bundle = "nan21.dnet.module.ad.ui.extjs";
@@ -297,12 +298,22 @@ Ext.define("dnet.core.base.ApplicationMenu", {
 					url : path
 				});
 			}
-		};
+		}, {
+			text : Dnet.translate("appmenuitem", "dbchangelog__lbl"),
+			handler : function() {
+				var bundle = "nan21.dnet.module.ad.ui.extjs";
+				var frame = "net.nan21.dnet.module.ad.system.frame.DbChangeLog_UI";
+				var path = Dnet.buildUiPath(bundle, frame, false);
+				getApplication().showFrame(frame, {
+					url : path
+				});
+			}
+		}];
 		var _menu = {
 			xtype : "splitbutton",
 			text : "Tools",
 			menu : new Ext.menu.Menu({
-				items : [ _item ]
+				items : _items
 			})
 		};
 		this.systemClientMenu = Ext.create('Ext.button.Split', _menu);
