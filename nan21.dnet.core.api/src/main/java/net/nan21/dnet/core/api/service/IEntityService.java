@@ -74,6 +74,15 @@ public interface IEntityService<E> {
 	public List<E> findByIds(List<Object> ids) throws BusinessException;
 
 	/**
+	 * Retrieve entities which match the given list of UUIDs.
+	 * 
+	 * @param ids
+	 * @return
+	 * @throws BusinessException
+	 */
+	public List<E> findByUUIDs(List<Object> uuids) throws BusinessException;
+
+	/**
 	 * Find an entity by unique-key.
 	 * 
 	 * @param namedQueryName

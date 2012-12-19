@@ -101,6 +101,32 @@ public abstract class AbstractEntityReadService<E> extends
 	}
 
 	/**
+	 * Find entities by UUID.
+	 */
+	@SuppressWarnings("unchecked")
+	public List<E> findByUUIDs(List<Object> uuids) {
+		if (IModelWithClientId.class.isAssignableFrom(this.getEntityClass())) {
+			return (List<E>) this
+					.getEntityManager()
+					.createQuery(
+							"select e from "
+									+ getEntityClass().getSimpleName()
+									+ " e where  e.clientId = :pClientId and e.uuid in :pUUIDs ")
+
+					.setParameter("pClientId", Session.user.get().getClientId())
+					.setParameter("pUUIDs", uuids).getResultList();
+		} else {
+			return (List<E>) this
+					.getEntityManager()
+					.createQuery(
+							"select e from " + getEntityClass().getSimpleName()
+									+ " e where e.uuid in :pUUIDs ")
+					.setParameter("pUUIDs", uuids).getResultList();
+		}
+
+	}
+
+	/**
 	 * Find an entity by unique-key.
 	 */
 	public E findByUk(String namedQueryName, Map<String, Object> params) {

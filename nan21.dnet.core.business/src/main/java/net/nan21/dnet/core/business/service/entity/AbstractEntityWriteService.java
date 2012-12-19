@@ -7,7 +7,12 @@ import java.util.Map;
 
 import javax.persistence.Query;
 
+import org.springframework.integration.Message;
+import org.springframework.integration.MessageChannel;
+import org.springframework.integration.support.MessageBuilder;
+
 import net.nan21.dnet.core.api.exceptions.BusinessException;
+import net.nan21.dnet.core.api.model.EventData;
 import net.nan21.dnet.core.api.model.IModelWithClientId;
 import net.nan21.dnet.core.api.session.Session;
 
@@ -125,8 +130,8 @@ public abstract class AbstractEntityWriteService<E> extends
 	protected void onUpdate(E e) throws BusinessException {
 		if (IModelWithClientId.class.isAssignableFrom(e.getClass())) {
 			IModelWithClientId x = (IModelWithClientId) e;
-			if (x.getClientId() == null || 
-					  x.getClientId() == Session.user.get().getClientId()) {
+			if (x.getClientId() == null
+					|| x.getClientId() == Session.user.get().getClientId()) {
 				this.getEntityManager().merge(e);
 			} else {
 				throw new BusinessException(
@@ -423,6 +428,39 @@ public abstract class AbstractEntityWriteService<E> extends
 		List<Object> list = new ArrayList<Object>();
 		list.add(id);
 		this.deleteByIds(list);
+	}
+
+	/**
+	 * Fire an entity specific event
+	 * 
+	 * @param eventData
+	 */
+	protected void fireEvent(EventData eventData) {
+		Message<EventData> message = MessageBuilder.withPayload(eventData)
+				.build();
+
+		this.getApplicationContext()
+				.getBean(
+						this.getEntityClass().getSimpleName() + "EventChannel",
+						MessageChannel.class).send(message);
+	}
+
+	/**
+	 * Fire an event with the specified action and data-map.
+	 * 
+	 * @param action
+	 * @param data
+	 */
+	protected void fireEvent(String action, Map<String, Object> data) {
+		EventData eventData = new EventData(this.getEntityClass()
+				.getCanonicalName(), action, data);
+		Message<EventData> message = MessageBuilder.withPayload(eventData)
+				.build();
+
+		this.getApplicationContext()
+				.getBean(
+						this.getEntityClass().getSimpleName() + "EventChannel",
+						MessageChannel.class).send(message);
 	}
 
 	public boolean isNoInsert() {

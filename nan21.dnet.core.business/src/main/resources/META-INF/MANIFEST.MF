@@ -42,6 +42,7 @@ Import-Package:
  org.springframework.integration.channel;version="[2.0,3.0)",
  org.springframework.integration.config;version="[2.0,3.0)",
  org.springframework.integration.config.xml;version="[2.0,3.0)",
+ org.springframework.integration.core;version="[2.0,3.0)",
  org.springframework.integration.endpoint;version="[2.0,3.0)",
  org.springframework.integration.handler;version="[2.0,3.0)",
  org.springframework.integration.support;version="[2.0,3.0)"

@@ -7,6 +7,7 @@ import javax.persistence.PersistenceContext;
 
 import net.nan21.dnet.core.api.ISystemConfig;
 import net.nan21.dnet.core.api.exceptions.BusinessException;
+import net.nan21.dnet.core.api.model.EventData;
 import net.nan21.dnet.core.api.service.IEntityService;
 import net.nan21.dnet.core.api.wf.IActivitiProcessEngineHolder;
 
