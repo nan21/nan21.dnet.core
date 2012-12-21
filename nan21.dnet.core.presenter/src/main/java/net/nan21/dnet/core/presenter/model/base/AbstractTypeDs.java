@@ -10,26 +10,26 @@ import net.nan21.dnet.core.presenter.model.AbstractDsModel;
 public class AbstractTypeDs<E> extends AbstractDsModel<E> implements
 		IModelWithId, IModelWithClientId {
 
-	public static final String fNAME = "name";
-	public static final String fACTIVE = "active";
-	public static final String fDESCRIPTION = "description";
-	public static final String fID = "id";
-	public static final String fUUID = "uuid";
-	public static final String fCLIENTID = "clientId";
-	public static final String fCREATEDAT = "createdAt";
-	public static final String fMODIFIEDAT = "modifiedAt";
-	public static final String fCREATEDBY = "createdBy";
-	public static final String fMODIFIEDBY = "modifiedBy";
-	public static final String fVERSION = "version";
-	public static final String fENTITYFQN = "entityFQN";
+	public static final String f_id = "id";
+	public static final String f_uuid = "uuid";
+	public static final String f_clientId = "clientId";
+	public static final String f_createdAt = "createdAt";
+	public static final String f_modifiedAt = "modifiedAt";
+	public static final String f_createdBy = "createdBy";
+	public static final String f_modifiedBy = "modifiedBy";
+	public static final String f_version = "version";
+	public static final String f_entityFQN = "entityFQN";
+	public static final String f_name = "name";
+	public static final String f_active = "active";
+	public static final String f_description = "description";
 
-	@DsField()
+	@DsField
 	protected String name;
 
-	@DsField()
+	@DsField
 	protected Boolean active;
 
-	@DsField()
+	@DsField
 	protected String description;
 
 	@DsField(noUpdate = true)
@@ -53,7 +53,7 @@ public class AbstractTypeDs<E> extends AbstractDsModel<E> implements
 	@DsField(noUpdate = true)
 	protected String modifiedBy;
 
-	@DsField()
+	@DsField
 	protected Long version;
 
 	@DsField(noUpdate = true, fetch = false, path = "className")

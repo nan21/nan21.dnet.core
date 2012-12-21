@@ -10,17 +10,17 @@ import net.nan21.dnet.core.presenter.model.AbstractDsModel;
 public class AbstractAuditableWithPeriodDs<E> extends AbstractDsModel<E>
 		implements IModelWithId, IModelWithClientId {
 
-	public static final String fID = "id";
-	public static final String fSTARTDATE = "startDate";
-	public static final String fENDDATE = "endDate";
-	public static final String fUUID = "uuid";
-	public static final String fCLIENTID = "clientId";
-	public static final String fCREATEDAT = "createdAt";
-	public static final String fMODIFIEDAT = "modifiedAt";
-	public static final String fCREATEDBY = "createdBy";
-	public static final String fMODIFIEDBY = "modifiedBy";
-	public static final String fVERSION = "version";
-	public static final String fENTITYFQN = "entityFQN";
+	public static final String f_id = "id";
+	public static final String f_uuid = "uuid";
+	public static final String f_clientId = "clientId";
+	public static final String f_createdAt = "createdAt";
+	public static final String f_modifiedAt = "modifiedAt";
+	public static final String f_createdBy = "createdBy";
+	public static final String f_modifiedBy = "modifiedBy";
+	public static final String f_version = "version";
+	public static final String f_entityFQN = "entityFQN";
+	public static final String f_startDate = "startDate";
+	public static final String f_endDate = "endDate";
 
 	@DsField(noUpdate = true)
 	protected Long id;

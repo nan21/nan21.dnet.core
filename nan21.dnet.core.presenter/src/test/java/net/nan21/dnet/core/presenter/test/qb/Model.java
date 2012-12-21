@@ -6,8 +6,8 @@ import net.nan21.dnet.core.api.annotation.SortField;
 import net.nan21.dnet.core.presenter.model.base.AbstractTypeWithCodeDs;
 
 @Ds(entity = Object.class, jpqlWhere = " e.name not null ", sort = {
-		@SortField(field = Model.fCODE),
-		@SortField(field = Model.fNAME, desc = true) })
+		@SortField(field = Model.f_code),
+		@SortField(field = Model.f_name, desc = true) })
 public class Model extends AbstractTypeWithCodeDs<Object> {
 
 	@DsField()

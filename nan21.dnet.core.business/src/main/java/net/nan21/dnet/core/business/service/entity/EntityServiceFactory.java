@@ -2,7 +2,7 @@ package net.nan21.dnet.core.business.service.entity;
 
 import net.nan21.dnet.core.api.service.IEntityService;
 import net.nan21.dnet.core.api.service.IEntityServiceFactory;
-import net.nan21.dnet.core.business.service.AbstractApplicationContextAware;
+import net.nan21.dnet.core.business.AbstractApplicationContextAware;
 
 public class EntityServiceFactory extends AbstractApplicationContextAware
 		implements IEntityServiceFactory {

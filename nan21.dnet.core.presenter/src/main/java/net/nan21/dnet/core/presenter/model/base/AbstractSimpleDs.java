@@ -8,9 +8,9 @@ import net.nan21.dnet.core.presenter.model.AbstractDsModel;
 public class AbstractSimpleDs<E> extends AbstractDsModel<E> implements
 		IModelWithId, IModelWithClientId {
 
-	public static final String fID = "id";
-	public static final String fCLIENTID = "clientId";
-	public static final String fENTITYFQN = "entityFQN";
+	public static final String f_id = "id";
+	public static final String f_clientId = "clientId";
+	public static final String f_entityFQN = "entityFQN";
 
 	@DsField(noUpdate = true)
 	protected Long id;

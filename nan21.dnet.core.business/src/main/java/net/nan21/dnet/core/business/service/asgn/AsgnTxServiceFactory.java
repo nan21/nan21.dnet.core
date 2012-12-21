@@ -2,7 +2,7 @@ package net.nan21.dnet.core.business.service.asgn;
 
 import net.nan21.dnet.core.api.service.IAsgnTxService;
 import net.nan21.dnet.core.api.service.IAsgnTxServiceFactory;
-import net.nan21.dnet.core.business.service.AbstractApplicationContextAware;
+import net.nan21.dnet.core.business.AbstractApplicationContextAware;
 
 public class AsgnTxServiceFactory extends AbstractApplicationContextAware
 		implements IAsgnTxServiceFactory {

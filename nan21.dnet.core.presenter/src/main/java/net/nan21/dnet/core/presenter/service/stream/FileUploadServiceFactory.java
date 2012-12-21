@@ -2,7 +2,7 @@ package net.nan21.dnet.core.presenter.service.stream;
 
 import net.nan21.dnet.core.api.service.IFileUploadService;
 import net.nan21.dnet.core.api.service.IFileUploadServiceFactory;
-import net.nan21.dnet.core.presenter.service.AbstractApplicationContextAware;
+import net.nan21.dnet.core.presenter.AbstractApplicationContextAware;
 
 /**
  * 

@@ -8,8 +8,8 @@ import net.nan21.dnet.core.presenter.model.AbstractDsModel;
 public class AbstractAuditableLov<E> extends AbstractDsModel<E> implements
 		IModelWithId, IModelWithClientId {
 
-	public static final String fID = "id";
-	public static final String fCLIENTID = "clientId";
+	public static final String f_id = "id";
+	public static final String f_clientId = "clientId";
 
 	@DsField()
 	protected Long id;

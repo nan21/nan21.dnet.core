@@ -106,7 +106,7 @@ public abstract class AbstractEntityDsBaseService<M extends AbstractDsModel<E>, 
 		}
 
 		converter.setEntityManager(this.getEntityService().getEntityManager());
-		converter.setAppContext(this.getApplicationContext());
+		converter.setApplicationContext(this.getApplicationContext());
 		converter.setDescriptor(this.getDescriptor());
 		converter.setEntityClass(this.getEntityClass());
 		converter.setModelClass(this.getModelClass());

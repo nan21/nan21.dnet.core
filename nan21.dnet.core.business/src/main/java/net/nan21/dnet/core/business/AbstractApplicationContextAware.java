@@ -1,9 +1,10 @@
-package net.nan21.dnet.core.business.service;
+package net.nan21.dnet.core.business;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
-public class AbstractApplicationContextAware implements ApplicationContextAware {
+public abstract class AbstractApplicationContextAware implements
+		ApplicationContextAware {
 
 	private ApplicationContext applicationContext;
 

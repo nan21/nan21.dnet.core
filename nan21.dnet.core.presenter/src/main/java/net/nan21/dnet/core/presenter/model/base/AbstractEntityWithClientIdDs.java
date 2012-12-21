@@ -7,7 +7,7 @@ import net.nan21.dnet.core.presenter.model.AbstractDsModel;
 public class AbstractEntityWithClientIdDs<E> extends AbstractDsModel<E>
 		implements IModelWithClientId {
 
-	public static final String fCLIENTID = "clientId";
+	public static final String f_clientId = "clientId";
 
 	@DsField(noUpdate = true)
 	protected Long clientId;

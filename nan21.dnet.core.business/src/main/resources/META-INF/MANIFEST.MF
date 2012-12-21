@@ -6,6 +6,7 @@ Bundle-Vendor: Nan21
 Bundle-Version: 1.0.6
 Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.txt
 Export-Package: 
+ net.nan21.dnet.core.business;version="1.0.6",
  net.nan21.dnet.core.business.job;version="1.0.6",
  net.nan21.dnet.core.business.persistenceunit;version="1.0.6",
  net.nan21.dnet.core.business.service;version="1.0.6",

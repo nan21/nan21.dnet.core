@@ -1,9 +1,9 @@
 package net.nan21.dnet.core.presenter.service;
 
-import net.nan21.dnet.core.api.ISystemConfig;
 import net.nan21.dnet.core.api.service.IDsService;
 import net.nan21.dnet.core.api.service.IEntityService;
 import net.nan21.dnet.core.api.wf.IActivitiProcessEngineHolder;
+import net.nan21.dnet.core.presenter.AbstractPresenterBase;
 
 import org.activiti.engine.FormService;
 import org.activiti.engine.HistoryService;
@@ -24,14 +24,7 @@ import org.activiti.engine.TaskService;
  * 
  */
 public abstract class AbstractPresenterBaseService extends
-		AbstractApplicationContextAware {
-
-	/**
-	 * System configuration. May be null, use the getter.
-	 */
-	private ISystemConfig systemConfig;
-
-	private ServiceLocator serviceLocator;
+		AbstractPresenterBase {
 
 	private ProcessEngine workflowEngine;
 
@@ -68,52 +61,6 @@ public abstract class AbstractPresenterBaseService extends
 	protected <M, F, P> void prepareDelegate(
 			AbstractPresenterBaseService delegate) {
 		delegate.setApplicationContext(this.getApplicationContext());
-	}
-
-	/**
-	 * Get presenter service locator. If it is null attempts to retrieve it from
-	 * Spring context.
-	 * 
-	 * @return
-	 */
-	public ServiceLocator getServiceLocator() {
-		if (this.serviceLocator == null) {
-			this.serviceLocator = this.getApplicationContext().getBean(
-					ServiceLocator.class);
-		}
-		return serviceLocator;
-	}
-
-	/**
-	 * Set presenter service locator.
-	 * 
-	 * @param serviceLocator
-	 */
-	public void setServiceLocator(ServiceLocator serviceLocator) {
-		this.serviceLocator = serviceLocator;
-	}
-
-	/**
-	 * Get system configuration object. If it is null attempts to retrieve it
-	 * from Spring context.
-	 * 
-	 * @return
-	 */
-	public ISystemConfig getSystemConfig() {
-		if (this.systemConfig == null) {
-			this.systemConfig = this.getApplicationContext().getBean(
-					ISystemConfig.class);
-		}
-		return systemConfig;
-	}
-
-	/**
-	 * Set system configuration object
-	 * 
-	 * @param systemConfig
-	 */
-	public void setSystemConfig(ISystemConfig systemConfig) {
-		this.systemConfig = systemConfig;
 	}
 
 	public ProcessEngine getWorkflowEngine() throws Exception {
