@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.persistence.EntityManager;
 
+import org.springframework.util.ReflectionUtils;
 import org.springframework.util.StringUtils;
 
 import net.nan21.dnet.core.api.annotation.DsField;
@@ -75,9 +76,9 @@ public class ReflookupResolver<M, E> extends AbstractPresenterBase {
 					RefLookups.class).value();
 
 			for (RefLookup rl : refLookups) {
-				//if (rl.params().length == 1) {
-					this.doRefLookup1(ds, e, rl, isInsert);
-				//}
+				// if (rl.params().length == 1) {
+				this.doRefLookup1(ds, e, rl, isInsert);
+				// }
 			}
 		}
 	}
@@ -90,7 +91,7 @@ public class ReflookupResolver<M, E> extends AbstractPresenterBase {
 	 * @throws Exception
 	 */
 	private Field _getDsField(String fieldName) throws Exception {
-		return this.modelClass.getDeclaredField(fieldName);
+		return ReflectionUtils.findField(this.modelClass, fieldName);
 	}
 
 	/**
@@ -101,8 +102,8 @@ public class ReflookupResolver<M, E> extends AbstractPresenterBase {
 	 * @throws Exception
 	 */
 	private Method _getDsGetter(String fieldName) throws Exception {
-		return this.modelClass.getMethod("get"
-				+ StringUtils.capitalize(fieldName));
+		return ReflectionUtils.findMethod(this.modelClass,
+				"get" + StringUtils.capitalize(fieldName));
 	}
 
 	/**
@@ -138,7 +139,7 @@ public class ReflookupResolver<M, E> extends AbstractPresenterBase {
 	 * @throws Exception
 	 */
 	private Field _getEntityField(String fieldName) throws Exception {
-		return this.entityClass.getDeclaredField(fieldName);
+		return ReflectionUtils.findField(this.entityClass, fieldName);
 	}
 
 	/**
