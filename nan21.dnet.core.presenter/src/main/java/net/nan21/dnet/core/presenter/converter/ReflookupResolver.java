@@ -250,27 +250,33 @@ public class ReflookupResolver<M, E> extends AbstractPresenterBase {
 			 */
 
 			boolean shouldTryToFindReference = true;
+			String namedQueryName = refLookup.namedQuery();
+
 			Map<String, Object> values = new HashMap<String, Object>();
 			Map<String, Object> namedQueryParams = new HashMap<String, Object>();
-			for (Param p : refLookup.params()) {
-				String paramName = p.name();
-				String fieldName = p.field();
-				Object fieldValue = this._getDsFieldValue(fieldName);
 
-				if (fieldValue == null
-						|| (fieldValue instanceof String && ((String) fieldValue)
-								.equals(""))) {
-					shouldTryToFindReference = false;
-					break;
-				} else {
-					values.put(fieldName, fieldValue);
-					namedQueryParams.put(paramName, fieldValue);
+			if (namedQueryName == null || namedQueryName.equals("")) {
+				shouldTryToFindReference = false;
+			} else {
+				for (Param p : refLookup.params()) {
+					String paramName = p.name();
+					String fieldName = p.field();
+					Object fieldValue = this._getDsFieldValue(fieldName);
+
+					if (fieldValue == null
+							|| (fieldValue instanceof String && ((String) fieldValue)
+									.equals(""))) {
+						shouldTryToFindReference = false;
+						break;
+					} else {
+						values.put(fieldName, fieldValue);
+						namedQueryParams.put(paramName, fieldValue);
+					}
 				}
 			}
 
 			if (shouldTryToFindReference) {
 
-				String namedQueryName = refLookup.namedQuery();
 				Object theReference = null;
 				try {
 					theReference = (findEntityService(refClass)).findByUk(
