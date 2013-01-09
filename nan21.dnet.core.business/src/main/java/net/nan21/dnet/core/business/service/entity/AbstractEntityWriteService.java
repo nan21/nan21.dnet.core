@@ -215,8 +215,10 @@ public abstract class AbstractEntityWriteService<E> extends
 			throws BusinessException {
 		Query q = this.getEntityManager().createQuery(jpqlStatement);
 
-		for (Map.Entry<String, Object> p : parameters.entrySet()) {
-			q.setParameter(p.getKey(), p.getValue());
+		if (parameters != null) {
+			for (Map.Entry<String, Object> p : parameters.entrySet()) {
+				q.setParameter(p.getKey(), p.getValue());
+			}
 		}
 		return q.executeUpdate();
 	}

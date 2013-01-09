@@ -12,7 +12,6 @@ import javax.persistence.Transient;
 import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 
-import net.nan21.dnet.core.api.model.IModelWithClientId;
 import net.nan21.dnet.core.api.model.IModelWithId;
 import net.nan21.dnet.core.api.session.Session;
 
@@ -20,10 +19,17 @@ import org.eclipse.persistence.descriptors.DescriptorEvent;
 import org.hibernate.validator.constraints.NotBlank;
 
 @MappedSuperclass
-public abstract class AbstractType extends AbstractEntityBase implements Serializable, IModelWithId,
-		IModelWithClientId {
+public abstract class AbstractTypeWithCodeNoTenant implements Serializable,
+		IModelWithId {
 
 	private static final long serialVersionUID = -1L;
+
+	/**
+	 * Code of record.
+	 */
+	@Column(name = "CODE", nullable = false, length = 32)
+	@NotBlank
+	protected String code;
 
 	/**
 	 * Name of record.
@@ -45,10 +51,11 @@ public abstract class AbstractType extends AbstractEntityBase implements Seriali
 	@Column(name = "DESCRIPTION", length = 400)
 	protected String description;
 
-	/** Owner client */
-	@Column(name = "CLIENTID", nullable = false)
-	@NotNull
-	protected Long clientId;
+	/**
+	 * Notes about record.
+	 */
+	@Column(name = "NOTES", length = 4000)
+	protected String notes;
 
 	/** Time-stamp when this record was created. */
 	@Temporal(TemporalType.TIMESTAMP)
@@ -93,6 +100,14 @@ public abstract class AbstractType extends AbstractEntityBase implements Seriali
 
 	public abstract void setId(Long id);
 
+	public String getCode() {
+		return this.code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
 	public String getName() {
 		return this.name;
 	}
@@ -109,20 +124,12 @@ public abstract class AbstractType extends AbstractEntityBase implements Seriali
 		this.active = active;
 	}
 
-	public String getDescription() {
-		return this.description;
+	public String getNotes() {
+		return this.notes;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public Long getClientId() {
-		return clientId;
-	}
-
-	public void setClientId(Long clientId) {
-		this.clientId = clientId;
+	public void setNotes(String notes) {
+		this.notes = notes;
 	}
 
 	public Date getCreatedAt() {
@@ -173,6 +180,14 @@ public abstract class AbstractType extends AbstractEntityBase implements Seriali
 		this.uuid = uuid;
 	}
 
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
 	public void aboutToInsert(DescriptorEvent event) {
 
 		event.updateAttributeWithObject("createdAt", new Date());
@@ -181,8 +196,7 @@ public abstract class AbstractType extends AbstractEntityBase implements Seriali
 				.getUsername());
 		event.updateAttributeWithObject("modifiedBy", Session.user.get()
 				.getUsername());
-		event.updateAttributeWithObject("clientId", Session.user.get()
-				.getClientId());
+
 		if (this.uuid == null || this.uuid.equals("")) {
 			event.updateAttributeWithObject("uuid", UUID.randomUUID()
 					.toString().toUpperCase());
@@ -193,7 +207,7 @@ public abstract class AbstractType extends AbstractEntityBase implements Seriali
 	}
 
 	public void aboutToUpdate(DescriptorEvent event) {
-		this.__validate_client_context__(this.clientId);
+
 		event.updateAttributeWithObject("modifiedAt", new Date());
 		event.updateAttributeWithObject("modifiedBy", Session.user.get()
 				.getUsername());

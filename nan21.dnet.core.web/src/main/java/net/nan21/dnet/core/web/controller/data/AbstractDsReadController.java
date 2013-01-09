@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.nan21.dnet.core.api.Constants;
-import net.nan21.dnet.core.api.SysParam;
+import net.nan21.dnet.core.api.SysParams;
 import net.nan21.dnet.core.api.action.IActionResultFind;
 import net.nan21.dnet.core.api.action.IDsExport;
 import net.nan21.dnet.core.api.action.IQueryBuilder;
@@ -363,8 +363,11 @@ public class AbstractDsReadController<M, F, P> extends
 			if (dataFormat.equals(Constants.DATA_FORMAT_HTML)) {
 				writer = new DsHtmlExport<M>(service.getModelClass());
 				Map<String, Object> properties = new HashMap<String, Object>();
-				properties.put("cssUrl", this.getSystemConfig()
-						.getSysParamValue(SysParam.CORE_EXP_HTML_CSS));
+				properties.put(
+						"cssUrl",
+						this.getSystemConfig().getSysParamValue(
+								SysParams.CORE_EXP_HTML_CSS,
+								SysParams.CORE_EXP_HTML_CSS_DEFVAL));
 				writer.setProperties(properties);
 			}
 
@@ -511,7 +514,8 @@ public class AbstractDsReadController<M, F, P> extends
 			reportConfig.put(
 					"logo",
 					this.getSystemConfig().getSysParamValue(
-							SysParam.CORE_LOGO_URL_REPORT));
+							SysParams.CORE_LOGO_URL_REPORT,
+							SysParams.CORE_LOGO_URL_REPORT_DEFVAL));
 			reportConfig.put("runBy", Session.user.get().getDisplayName());
 			reportConfig.put("runAt", new Date());
 

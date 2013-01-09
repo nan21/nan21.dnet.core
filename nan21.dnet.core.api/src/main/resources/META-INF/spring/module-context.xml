@@ -30,4 +30,7 @@
 		<property name="portalClientId" value="${sys.portalClientId}" />
 	</bean>
 
+	<bean id="sysParams" class="net.nan21.dnet.core.api.SysParams"
+		scope="singleton" />
+
 </beans>

@@ -2,45 +2,72 @@ package net.nan21.dnet.core.presenter.model.base;
 
 import java.util.Date;
 
-import net.nan21.dnet.core.api.model.IModelWithClientId;
+import net.nan21.dnet.core.api.annotation.DsField;
 import net.nan21.dnet.core.api.model.IModelWithId;
-import net.nan21.dnet.core.presenter.model.AbstractDsFilter;
+import net.nan21.dnet.core.presenter.model.AbstractDsModel;
 
-public class AbstractTypeWithCodeDsFilter extends AbstractDsFilter implements
-		IModelWithId, IModelWithClientId {
+public class AbstractTypeWithCodeNoTenantDs<E> extends AbstractDsModel<E>
+		implements IModelWithId {
 
+	public static final String f_code = "code";
+	public static final String f_notes = "notes";
+	public static final String f_id = "id";
+	public static final String f_uuid = "uuid";
+	public static final String f_createdAt = "createdAt";
+	public static final String f_modifiedAt = "modifiedAt";
+	public static final String f_createdBy = "createdBy";
+	public static final String f_modifiedBy = "modifiedBy";
+	public static final String f_version = "version";
+	public static final String f_entityFQN = "entityFQN";
+	public static final String f_name = "name";
+	public static final String f_active = "active";
+	public static final String f_description = "description";
+
+	@DsField
 	protected String name;
 
+	@DsField
 	protected String code;
 
+	@DsField
 	protected Boolean active;
 
+	@DsField
 	protected String description;
 
+	@DsField
 	protected String notes;
 
+	@DsField
 	protected Long id;
 
+	@DsField
 	protected String uuid;
 
-	protected Long clientId;
-
+	@DsField(noUpdate = true)
 	protected Date createdAt;
 
-	protected Date createdAt_From;
-	protected Date createdAt_To;
-
+	@DsField(noUpdate = true)
 	protected Date modifiedAt;
 
-	protected Date modifiedAt_From;
-	protected Date modifiedAt_To;
-
+	@DsField(noUpdate = true)
 	protected String createdBy;
 
+	@DsField(noUpdate = true)
 	protected String modifiedBy;
 
-	public AbstractTypeWithCodeDsFilter() {
+	@DsField
+	protected Long version;
+
+	@DsField(fetch = false, path = "className")
+	protected String entityFQN;
+
+	public AbstractTypeWithCodeNoTenantDs() {
 		super();
+	}
+
+	public AbstractTypeWithCodeNoTenantDs(E e) {
+		super(e);
 	}
 
 	public String getName() {
@@ -100,14 +127,6 @@ public class AbstractTypeWithCodeDsFilter extends AbstractDsFilter implements
 		this.uuid = uuid;
 	}
 
-	public Long getClientId() {
-		return this.clientId;
-	}
-
-	public void setClientId(Long clientId) {
-		this.clientId = clientId;
-	}
-
 	public Date getCreatedAt() {
 		return this.createdAt;
 	}
@@ -140,36 +159,20 @@ public class AbstractTypeWithCodeDsFilter extends AbstractDsFilter implements
 		this.modifiedBy = modifiedBy;
 	}
 
-	public Date getCreatedAt_From() {
-		return createdAt_From;
+	public Long getVersion() {
+		return this.version;
 	}
 
-	public void setCreatedAt_From(Date createdAtFrom) {
-		createdAt_From = createdAtFrom;
+	public void setVersion(Long version) {
+		this.version = version;
 	}
 
-	public Date getCreatedAt_To() {
-		return createdAt_To;
+	public String getEntityFQN() {
+		return this.entityFQN;
 	}
 
-	public void setCreatedAt_To(Date createdAtTo) {
-		createdAt_To = createdAtTo;
-	}
-
-	public Date getModifiedAt_From() {
-		return modifiedAt_From;
-	}
-
-	public void setModifiedAt_From(Date modifiedAtFrom) {
-		modifiedAt_From = modifiedAtFrom;
-	}
-
-	public Date getModifiedAt_To() {
-		return modifiedAt_To;
-	}
-
-	public void setModifiedAt_To(Date modifiedAtTo) {
-		modifiedAt_To = modifiedAtTo;
+	public void setEntityFQN(String entityFQN) {
+		this.entityFQN = entityFQN;
 	}
 
 }

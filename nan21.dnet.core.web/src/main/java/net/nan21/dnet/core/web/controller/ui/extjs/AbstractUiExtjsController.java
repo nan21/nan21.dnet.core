@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.nan21.dnet.core.api.Constants;
-import net.nan21.dnet.core.api.SysParam;
+import net.nan21.dnet.core.api.SysParams;
 import net.nan21.dnet.core.api.session.Params;
 import net.nan21.dnet.core.api.session.Session;
 import net.nan21.dnet.core.api.session.User;
@@ -323,7 +323,8 @@ public abstract class AbstractUiExtjsController extends AbstractDnetController {
 		Cookie c = this.getCookie(cookies, Constants.COOKIE_NAME_THEME);
 		if (c == null) {
 			String defaultValue = this.getSystemConfig().getSysParamValue(
-					SysParam.CORE_DEFAULT_THEME_EXTJS);
+					SysParams.CORE_DEFAULT_THEME_EXTJS,
+					SysParams.CORE_DEFAULT_THEME_EXTJS_DEFVAL);
 			if (defaultValue == null || defaultValue.equals("")) {
 				defaultValue = Constants.DEFAULT_THEME_EXTJS;
 			}
@@ -358,7 +359,8 @@ public abstract class AbstractUiExtjsController extends AbstractDnetController {
 		Cookie c = this.getCookie(cookies, Constants.COOKIE_NAME_LANG);
 		if (c == null) {
 			String defaultValue = this.getSystemConfig().getSysParamValue(
-					SysParam.CORE_DEFAULT_LANGUAGE);
+					SysParams.CORE_DEFAULT_LANGUAGE,
+					SysParams.CORE_DEFAULT_LANGUAGE_DEFVAL);
 			if (defaultValue == null || defaultValue.equals("")) {
 				defaultValue = Constants.DEFAULT_LANGUAGE;
 			}

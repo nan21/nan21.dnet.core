@@ -7,7 +7,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.nan21.dnet.core.api.SysParam;
+import net.nan21.dnet.core.api.SysParams;
 import net.nan21.dnet.core.api.setup.ISetupParticipant;
 import net.nan21.dnet.core.api.setup.IStartupParticipant;
 import net.nan21.dnet.core.api.ui.extjs.IExtensionContentProvider;
@@ -61,7 +61,8 @@ public class UiExtjsMainController extends AbstractUiExtjsController {
 		model.put("extensionsContent", getExtensionContent(IExtensions.MAIN));
 
 		String logoUrl = this.getSystemConfig().getSysParamValue(
-				SysParam.CORE_LOGO_URL_EXTJS);
+				SysParams.CORE_LOGO_URL_EXTJS,
+				SysParams.CORE_LOGO_URL_EXTJS_DEFVAL);
 
 		if (logoUrl != null && !logoUrl.equals("")) {
 			model.put("logoUrl", logoUrl);

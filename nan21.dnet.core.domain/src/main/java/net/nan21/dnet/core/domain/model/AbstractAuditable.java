@@ -30,13 +30,13 @@ public abstract class AbstractAuditable extends AbstractEntityBase implements Se
 	@NotNull
 	protected Long clientId;
 
-	/** Timestamp when this record was created. */
+	/** Time-stamp when this record was created. */
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "CREATEDAT", nullable = false)
 	@NotNull
 	protected Date createdAt;
 
-	/** Timestamp when this record was last modified. */
+	/** Time-stamp when this record was last modified. */
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "MODIFIEDAT", nullable = false)
 	@NotNull

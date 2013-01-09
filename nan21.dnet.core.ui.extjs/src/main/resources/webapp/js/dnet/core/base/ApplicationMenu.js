@@ -308,6 +308,16 @@ Ext.define("dnet.core.base.ApplicationMenu", {
 					url : path
 				});
 			}
+		}, {
+			text : Dnet.translate("appmenuitem", "sysparams__lbl"),
+			handler : function() {
+				var bundle = "nan21.dnet.module.ad.ui.extjs";
+				var frame = "net.nan21.dnet.module.ad.system.frame.SysParam_UI";
+				var path = Dnet.buildUiPath(bundle, frame, false);
+				getApplication().showFrame(frame, {
+					url : path
+				});
+			}
 		}];
 		var _menu = {
 			xtype : "splitbutton",

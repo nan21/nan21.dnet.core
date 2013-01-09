@@ -16,7 +16,7 @@ import net.nan21.dnet.core.api.setup.IStartupParticipant;
  * @author amathe
  * 
  */
-public class SystemConfig implements ISystemConfig, ApplicationContextAware  {
+public class SystemConfig implements ISystemConfig, ApplicationContextAware {
 
 	private ApplicationContext applicationContext;
 
@@ -74,9 +74,7 @@ public class SystemConfig implements ISystemConfig, ApplicationContextAware  {
 		}
 
 		Map<String, String> paramMap = this.sysParams.get(client);
-		// if ( ! paramMap.containsKey(paramName)) {
 		paramMap.put(paramName, paramValue);
-		// }
 	}
 
 	/**
@@ -97,16 +95,32 @@ public class SystemConfig implements ISystemConfig, ApplicationContextAware  {
 	 * @throws Exception
 	 */
 	public String getSysParamValue(String paramName) throws Exception {
+		return this.getSysParamValue(paramName, null);
+	}
+
+	/**
+	 * Get a parameter value of the current user's client.
+	 * 
+	 * @param paramName
+	 * @return
+	 * @throws Exception
+	 */
+	public String getSysParamValue(String paramName, String defaultValue)
+			throws Exception {
 		if (this.sysParams == null) {
 			loadSysparams();
 		}
 		try {
 			String client = Session.user.get().getClientCode();
-			return this.sysParams.get(client).get(paramName);
+			Map<String, String> values = this.sysParams.get(client);
+			if (!values.containsKey(paramName)) {
+				return defaultValue;
+			} else {
+				return values.get(paramName);
+			}
 		} catch (Exception e) {
-			return null;
+			return defaultValue;
 		}
-
 	}
 
 	public Map<String, String> getSysParams() throws Exception {
@@ -122,7 +136,7 @@ public class SystemConfig implements ISystemConfig, ApplicationContextAware  {
 
 	}
 
-	private void loadSysparams() throws Exception {
+	synchronized private void loadSysparams() throws Exception {
 		@SuppressWarnings("unchecked")
 		List<IStartupParticipant> participants = (List<IStartupParticipant>) this.applicationContext
 				.getBean("osgiStartupParticipants");

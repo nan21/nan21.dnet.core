@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import net.nan21.dnet.core.api.Constants;
 import net.nan21.dnet.core.api.IProductInfo;
 import net.nan21.dnet.core.api.ISystemConfig;
-import net.nan21.dnet.core.api.SysParam;
+import net.nan21.dnet.core.api.SysParams;
 import net.nan21.dnet.core.api.session.Params;
 import net.nan21.dnet.core.api.session.Session;
 import net.nan21.dnet.core.api.session.User;
@@ -139,7 +139,8 @@ public abstract class AbstractUiSenchaTouchController extends
 			c = this.createCookie(
 					Constants.COOKIE_NAME_THEME,
 					this.getSystemConfig().getSysParamValue(
-							SysParam.CORE_DEFAULT_THEME_STOUCH),
+							SysParams.CORE_DEFAULT_THEME_STOUCH,
+							SysParams.CORE_DEFAULT_THEME_STOUCH_DEFVAL),
 					60 * 60 * 24 * 365);
 			response.addCookie(c);
 		}
@@ -172,7 +173,9 @@ public abstract class AbstractUiSenchaTouchController extends
 			c = this.createCookie(
 					Constants.COOKIE_NAME_LANG,
 					this.getSystemConfig().getSysParamValue(
-							SysParam.CORE_DEFAULT_LANGUAGE), 60 * 60 * 24 * 365);
+							SysParams.CORE_DEFAULT_LANGUAGE,
+							SysParams.CORE_DEFAULT_LANGUAGE_DEFVAL),
+					60 * 60 * 24 * 365);
 			response.addCookie(c);
 		}
 

@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import net.nan21.dnet.core.api.IProductInfo;
 import net.nan21.dnet.core.api.ISystemConfig;
-import net.nan21.dnet.core.api.SysParam;
+import net.nan21.dnet.core.api.SysParams;
 import net.nan21.dnet.core.api.security.IAuthorizationFactory;
 import net.nan21.dnet.core.api.session.Params;
 import net.nan21.dnet.core.api.session.Session;
@@ -106,10 +106,11 @@ public abstract class AbstractDnetController implements ApplicationContextAware 
 		Session.params.set(params);
 
 		String checkIp = this.getSystemConfig().getSysParamValue(
-				SysParam.CORE_SESSION_CHECK_IP);
+				SysParams.CORE_SESSION_CHECK_IP,
+				SysParams.CORE_SESSION_CHECK_IP_DEFVAL);
 		if (checkIp != null && checkIp.equals("true")) {
 			if (logger.isDebugEnabled()) {
-				logger.debug(SysParam.CORE_SESSION_CHECK_IP
+				logger.debug(SysParams.CORE_SESSION_CHECK_IP
 						+ " enabled, checking IP against login IP...");
 			}
 			String ip = request.getRemoteAddr();
@@ -122,10 +123,11 @@ public abstract class AbstractDnetController implements ApplicationContextAware 
 		}
 
 		String checkAgent = this.getSystemConfig().getSysParamValue(
-				SysParam.CORE_SESSION_CHECK_USER_AGENT);
+				SysParams.CORE_SESSION_CHECK_USER_AGENT,
+				SysParams.CORE_SESSION_CHECK_USER_AGENT_DEFVAL);
 		if (checkAgent != null && checkAgent.equals("true")) {
 			if (logger.isDebugEnabled()) {
-				logger.debug(SysParam.CORE_SESSION_CHECK_USER_AGENT
+				logger.debug(SysParams.CORE_SESSION_CHECK_USER_AGENT
 						+ " enabled, checking user-agent agianst login user-agent...");
 			}
 			String agent = request.getHeader("User-Agent");
@@ -285,9 +287,9 @@ public abstract class AbstractDnetController implements ApplicationContextAware 
 					.getTargetException();
 
 			if (exc.getMessage() != null) {
-				sb.append( exc.getMessage()+ "\n");
+				sb.append(exc.getMessage() + "\n");
 			}
-			
+
 			if (exc.getCause() != null) {
 				if (sb.length() > 0) {
 					sb.append(" Reason: ");
