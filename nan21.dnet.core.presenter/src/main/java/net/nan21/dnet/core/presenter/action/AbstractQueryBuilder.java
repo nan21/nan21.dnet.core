@@ -16,6 +16,8 @@ import net.nan21.dnet.core.api.action.IQueryBuilder;
 import net.nan21.dnet.core.api.action.ISortToken;
 import net.nan21.dnet.core.api.descriptor.IViewModelDescriptor;
 import net.nan21.dnet.core.api.model.IFilterRule;
+import net.nan21.dnet.core.api.model.IModelWithClientId;
+import net.nan21.dnet.core.api.session.Session;
 
 public abstract class AbstractQueryBuilder<M, F, P> implements
 		IQueryBuilder<M, F, P> {
@@ -96,7 +98,7 @@ public abstract class AbstractQueryBuilder<M, F, P> implements
 	 * Set the values for the result range.
 	 */
 	public IQueryBuilder<M, F, P> addFilter(F filter) {
-		this.filter = filter;
+		this.setFilter(filter);
 		return this;
 	}
 
@@ -295,6 +297,10 @@ public abstract class AbstractQueryBuilder<M, F, P> implements
 
 	public void setFilter(F filter) {
 		this.filter = filter;
+		if (filter instanceof IModelWithClientId) {
+			((IModelWithClientId) filter).setClientId(Session.user.get()
+					.getClientId());
+		}
 	}
 
 	public P getParams() {

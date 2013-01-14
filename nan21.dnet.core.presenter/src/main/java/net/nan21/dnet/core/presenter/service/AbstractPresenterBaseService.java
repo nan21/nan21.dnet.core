@@ -63,6 +63,13 @@ public abstract class AbstractPresenterBaseService extends
 		delegate.setApplicationContext(this.getApplicationContext());
 	}
 
+	protected <T extends AbstractPresenterBaseService> T getDelegate(
+			Class<T> claz) throws Exception {
+		T delegate = claz.newInstance();
+		this.prepareDelegate(delegate);
+		return delegate;
+	}
+
 	public ProcessEngine getWorkflowEngine() throws Exception {
 		if (this.workflowEngine == null) {
 			this.workflowEngine = (ProcessEngine) this.getApplicationContext()
