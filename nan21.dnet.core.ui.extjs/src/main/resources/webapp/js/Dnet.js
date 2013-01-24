@@ -75,7 +75,7 @@ Dnet = {
 	DATETIME_FORMAT : Constants.EXTJS_DATETIME_FORMAT,
 	DATETIMESEC_FORMAT : Constants.EXTJS_DATETIMESEC_FORMAT,
 	MONTH_FORMAT : Constants.EXTJS_MONTH_FORMAT,
-	MODEL_DATE_FORMAT : "Y-m-d\\TH:i:s", //Constants.EXTJS_MODEL_DATE_FORMAT,
+	MODEL_DATE_FORMAT : "Y-m-d\\TH:i:s", // Constants.EXTJS_MODEL_DATE_FORMAT,
 	DATE_ALTFORMATS : Constants.EXTJS_ALT_FORMATS,
 
 	THOUSAND_SEP : Constants.THOUSAND_SEPARATOR,
@@ -356,6 +356,13 @@ Dnet = {
 	 */
 	},
 
+	/**
+	 * Dynamically import dependencies. Declare the dependencies in any file as
+	 * a list of <bundle>/<type>/<name>. The preferred method however is to
+	 * declare the dependencies in a standalone .jsdp file to be able to pack
+	 * and cache them at runtime.
+	 * 
+	 */
 	doImport : function(resourseList) {
 		var list = Ext.Array.unique(resourseList);
 		for ( var i = 0; i < list.length; i++) {
@@ -377,6 +384,9 @@ Dnet = {
 		}
 	},
 
+	/**
+	 * Return an object representation of a resource.
+	 */
 	describeResource : function(artifact) {
 		var rd = {};
 		var t = artifact.split("/");

@@ -28,6 +28,7 @@
 		<property name="urlCoreI18n" value="${url.ui.extjs.core.i18n}" />
 		<property name="urlModulesI18n" value="${url.ui.extjs.modules.i18n}" />
 		<property name="moduleSupath" value="${url.ui.extjs.module.subpath}" />
+		<property name="cacheFolder" value="${cache.ui.extjs}" />
 	</bean>
 
 	<bean id="application_uiSenchaTouchSettings" class="net.nan21.dnet.core.web.settings.UiSenchaTouchSettings"

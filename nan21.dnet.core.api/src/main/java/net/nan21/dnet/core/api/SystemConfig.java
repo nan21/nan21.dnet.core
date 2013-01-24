@@ -25,15 +25,12 @@ public class SystemConfig implements ISystemConfig, ApplicationContextAware {
 	 * bug https://bugs.eclipse.org/bugs/show_bug.cgi?id=337115 When using
 	 * Oracle database should set to true, possibly with other databases.
 	 */
-	private boolean disableFetchGroups;
+	private boolean disableFetchGroups = true;
 
 	/**
 	 * Specify working mode as development or production.
 	 */
-	private String workingMode;
-
-	public final static String WORKING_MODE_DEV = "dev";
-	public final static String WORKING_MODE_PROD = "prod";
+	private String workingMode = ISystemConfig.WORKING_MODE_DEV;
 
 	/**
 	 * Temporary parameter to link the portal content to the specified client

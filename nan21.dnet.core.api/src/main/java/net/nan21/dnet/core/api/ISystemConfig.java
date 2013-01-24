@@ -9,6 +9,9 @@ import java.util.Map;
  */
 public interface ISystemConfig {
 
+	public static final String WORKING_MODE_DEV = "DEV";
+	public static final String WORKING_MODE_PROD = "PROD";
+
 	public boolean isDisableFetchGroups();
 
 	public String getWorkingMode();

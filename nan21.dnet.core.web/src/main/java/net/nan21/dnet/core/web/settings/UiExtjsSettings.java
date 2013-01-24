@@ -16,6 +16,8 @@ package net.nan21.dnet.core.web.settings;
  */
 public class UiExtjsSettings {
 
+	public static final String CACHE_FOLDER_DEFVAL = "~/dnet-ebs/cache/extjs";
+
 	/**
 	 * Root URL of the modules components
 	 */
@@ -50,6 +52,15 @@ public class UiExtjsSettings {
 	 * Token for the module components within the bundle.
 	 */
 	private String moduleSupath;
+
+	/**
+	 * older to store the packed dependencies
+	 */
+	private String cacheFolder;
+
+	public UiExtjsSettings() {
+		this.setCacheFolder(CACHE_FOLDER_DEFVAL);
+	}
 
 	public String getUrlModules() {
 		return urlModules;
@@ -105,6 +116,20 @@ public class UiExtjsSettings {
 
 	public void setModuleSupath(String moduleSupath) {
 		this.moduleSupath = moduleSupath;
+	}
+
+	public String getCacheFolder() {
+		return cacheFolder;
+	}
+
+	public void setCacheFolder(String cacheFolder) {
+		if (cacheFolder.startsWith("~")) {
+			this.cacheFolder = System.getProperty("user.home")
+					+ cacheFolder.replaceFirst("~", "");
+		} else {
+			this.cacheFolder = cacheFolder;
+		}
+
 	}
 
 }

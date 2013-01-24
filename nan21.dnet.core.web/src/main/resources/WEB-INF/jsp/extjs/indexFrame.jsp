@@ -37,10 +37,21 @@
 	</c:if>
 
 	<%@ include file="_dnet_params.jspf"%>
-	<script type="text/javascript"
-		src="${urlUiExtjsModulesI18n}/${shortLanguage}/${bundle}/frame/${itemSimpleName}.js"></script>
-	<script type="text/javascript"
-		src="${urlUiExtjsModules}/${bundle}${urlUiExtjsModuleSubpath}/frame/${itemSimpleName}.js"></script>
+
+	<c:if test="${sysCfg_workingMode == 'dev'}">
+		<c:forEach var="_include" items="${frameDependenciesTrl}">
+			<script type="text/javascript" src="${_include}"></script>
+		</c:forEach>
+		<c:forEach var="_include" items="${frameDependenciesCmp}">
+			<script type="text/javascript" src="${_include}"></script>
+		</c:forEach>
+	</c:if>
+	<c:if test="${sysCfg_workingMode == 'prod'}">
+		<script type="text/javascript"
+			src="${deploymentUrl}/ui/extjs/frame/${bundle}/${shortLanguage}/${itemSimpleName}.js"></script>
+		<script type="text/javascript"
+			src="${deploymentUrl}/ui/extjs/frame/${bundle}/${itemSimpleName}.js"></script>	
+	</c:if>
 
 	${extensions}
 
@@ -61,8 +72,8 @@
 			}
 	<%@ include file="_on_ready.jspf" %>
 		var frameReports = [];
-		
-		${extensionsContent}
+
+			${extensionsContent}
 
 			var cfg = {
 				layout : "fit",
