@@ -10,9 +10,13 @@
 		<class>net.nan21.dnet.core.domain.model.impldummy.AbstractTypeWithCodeDummy</class>
 		<!-- Dependencies -->
 		<class>net.nan21.dnet.core.domain.model.AbstractSimpleEntity</class>
+		<class>net.nan21.dnet.core.domain.model.AbstractSimpleEntityNoTenant</class>
 		<class>net.nan21.dnet.core.domain.model.AbstractAuditable</class>
+		<class>net.nan21.dnet.core.domain.model.AbstractAuditableNoTenant</class>
 		<class>net.nan21.dnet.core.domain.model.AbstractType</class>
+		<class>net.nan21.dnet.core.domain.model.AbstractTypeNoTenant</class>
 		<class>net.nan21.dnet.core.domain.model.AbstractTypeWithCode</class>
+		<class>net.nan21.dnet.core.domain.model.AbstractTypeWithCodeNoTenant</class>
 		<exclude-unlisted-classes>true</exclude-unlisted-classes>
 		<properties>
 			<property name="eclipselink.weaving" value="static" />
