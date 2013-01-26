@@ -5,9 +5,13 @@
 	<persistence-unit name="default" transaction-type="RESOURCE_LOCAL">
 		<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
 		<class>net.nan21.dnet.core.domain.model.impldummy.AbstractSimpleEntityDummy</class>
+		<class>net.nan21.dnet.core.domain.model.impldummy.AbstractSimpleEntityNoTenantDummy</class>
 		<class>net.nan21.dnet.core.domain.model.impldummy.AbstractAuditableDummy</class>
+		<class>net.nan21.dnet.core.domain.model.impldummy.AbstractAuditableNoTenantDummy</class>
 		<class>net.nan21.dnet.core.domain.model.impldummy.AbstractTypeDummy</class>
-		<class>net.nan21.dnet.core.domain.model.impldummy.AbstractTypeWithCodeDummy</class>
+		<class>net.nan21.dnet.core.domain.model.impldummy.AbstractTypeNoTenantDummy</class>
+		<class>net.nan21.dnet.core.domain.model.impldummy.AbstractTypeWithCodeDummy</class>		
+		<class>net.nan21.dnet.core.domain.model.impldummy.AbstractTypeWithCodeNoTenantDummy</class>
 		<!-- Dependencies -->
 		<class>net.nan21.dnet.core.domain.model.AbstractSimpleEntity</class>
 		<class>net.nan21.dnet.core.domain.model.AbstractSimpleEntityNoTenant</class>
