@@ -1,8 +1,11 @@
 package net.nan21.dnet.core.web.controller.ui.extjs;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +34,9 @@ public class DependencyLoader {
 
 		List<String> list = new ArrayList<String>();
 		this.resolveFrameDependencies(bundle, name, null, list, null);
-		Writer writer = new FileWriter(file);
+		Writer writer = new BufferedWriter(new OutputStreamWriter(
+			    new FileOutputStream(file), "ISO-8859-1"));  
+		//new FileWriter(file);
 
 		try {
 			for (String dep : list) {
@@ -47,7 +52,8 @@ public class DependencyLoader {
 
 		List<String> list = new ArrayList<String>();
 		this.resolveFrameDependencies(bundle, name, language, null, list);
-		Writer writer = new FileWriter(file);
+		Writer writer = new BufferedWriter(new OutputStreamWriter(
+				    new FileOutputStream(file), "ISO-8859-1"));  
 
 		try {
 			for (String dep : list) {
