@@ -3,14 +3,14 @@ Bundle-ManifestVersion: 2
 Bundle-Name: DNet Core - Scheduler
 Bundle-SymbolicName: nan21.dnet.core.scheduler
 Bundle-Vendor: Nan21
-Bundle-Version: 1.0.6
+Bundle-Version: 1.0.7
 Bundle-License: http://www.apache.org/licenses/LICENSE-2.0.txt
 Export-Package: 
- net.nan21.dnet.core.scheduler;version="1.0.6"
+ net.nan21.dnet.core.scheduler;version="1.0.7"
 Import-Package: 
  javax.sql,
- net.nan21.dnet.core.api.job;version="1.0.6",
- net.nan21.dnet.core.api.service;version="1.0.6",
+ net.nan21.dnet.core.api.job;version="1.0.7",
+ net.nan21.dnet.core.api.service;version="1.0.7",
  oracle.jdbc;resolution:=optional,
  org.apache.commons.dbcp;version="[1.0,2.0)",
  org.quartz,
